@@ -1,0 +1,83 @@
+/* box sizing: si le doy 10px a un elemento, no sume los px del padding al bloque*/
+html {
+    box-sizing: border-box;
+    font-size: 62.5%;
+    /** Reset para REMS -  62.5% = 10px de 16px**/
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+    font-size: 1.6rem;
+    line-height: 2;
+}
+
+/**GLOBALES**/
+img {
+    max-width: 100%;
+}
+
+.contenedor {
+    width: 95%;
+    max-width: 120rem;
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: 3.8rem;
+}
+
+h2 {
+    font-size: 3.4rem;
+}
+
+h3 {
+    font-size: 3rem;
+}
+
+h4 {
+    font-size: 2.6rem;
+}
+
+/**BARRA DE NAVEGACION: NAVBAR**/
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 30px;
+}
+
+.navbar a img {
+    width: 10rem;
+}
+
+/**NAVEGACION: NAV**/
+
+.nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1.8rem;
+    margin-right: 2rem;
+}
+
+.nav a:last-of-type {
+    margin-right: 0;
+}
+
+.nav a:hover {
+    color: #ff6161;
+}
+
+/**HEADER**/
+.header.inicio {
+    background-color: #333333;
+    height: 100vh;
+    /*Detecta el tamaño de nuestra pantalla*/
+    min-height: 60rem;
+}
