@@ -1,0 +1,49 @@
+/**HEADER**/
+.header.inicio {
+    background: url('../../assets/img/hamburguesa1.jpg');
+    background-position: center center;
+    background-size: cover;
+    height: 100vh;
+    min-height: 60rem;
+}
+
+.row {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.col-2 {
+    flex-basis: 50%;
+    min-width: 300px;
+}
+
+.col-2 img {
+    max-width: 100%;
+    padding: 50px 0;
+}
+
+.col-2 h1 {
+    font-size: 4.5rem;
+    line-height: 6rem;
+    margin: 25px 0;
+    color: white;
+}
+
+.btn {
+    display: inline-block;
+    background: #ff6161;
+    color: white;
+    padding: 8px 30px;
+    margin: 30px 0;
+    border-radius: 30px;
+}
+
+.btn:hover {
+    background: rgba(160, 55, 55, 0.856);
+}
+
+.header .row {
+    margin-top: 70px;
+}

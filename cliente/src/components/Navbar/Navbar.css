@@ -1,0 +1,49 @@
+/**BARRA DE NAVEGACION: NAVBAR**/
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 30px;
+}
+
+.navbar a img {
+    width: 10rem;
+}
+
+/**NAVEGACION: NAV**/
+
+.nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1.8rem;
+    margin-right: 2rem;
+}
+
+.nav a:hover {
+    color: #ff6161;
+}
+
+
+.nav img {
+    margin-right: 1rem;
+}
+
+/*ICONO CARRITO*/
+.header__basketIcon {
+    color: #ffffff;
+    margin-right: 2rem;
+    width: 15rem;
+    height: 15rem;
+}
+
+.header__optionBasket {
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.header__basketCount {
+    margin-left: 10px;
+    margin-right: 10px;
+}
