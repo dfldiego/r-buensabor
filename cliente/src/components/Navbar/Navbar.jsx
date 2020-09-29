@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import '../../assets/css/styles.css';
 import BuenSaborLogo from "../../assets/img/logoBuenSabor.png";
 import './Navbar.css';
 import { Link } from 'react-router-dom';
@@ -7,13 +8,13 @@ const Navbar = () => {
     return (
         <Fragment>
             <div className="navbar">
-                <Link to="/">
+                <Link to={"/"}>
                     <img src={BuenSaborLogo} alt="Logotipo Buen Sabor" />
                 </Link>
                 <nav className="nav">
-                    <Link to="/">Inicio</Link>
-                    <Link to="#">Productos</Link>
-                    <Link to="#">Iniciar Sesion</Link>
+                    <Link to={"/"}>Inicio</Link>
+                    <Link to={"#"}>Productos</Link>
+                    <Link to={"#"}>Iniciar Sesion</Link>
                 </nav>
             </div>
         </Fragment>
