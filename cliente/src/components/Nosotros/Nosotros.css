@@ -1,24 +1,18 @@
-/**UTILIDADES**/
-.seccion {
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-}
-
 /**ICONOS NOSOTROS **/
-.row {
+.nosotros .row {
     display: flex;
     justify-content: space-between;
 }
 
-.col-3 {
+.nosotros .col-3 {
     flex-basis: calc(33.3% - 1rem);
     text-align: center;
 }
 
-.col-3 h3 {
+.nosotros .col-3 h3 {
     text-transform: uppercase;
 }
 
-.col-3 img {
+.nosotros .col-3 img {
     max-width: 10rem;
 }

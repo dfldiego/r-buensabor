@@ -1,0 +1,48 @@
+/*******TESTIMONIALES********/
+
+.testimonial .row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.testimonial .col-4 {
+    flex-basis: calc(25% - 1rem);
+    text-align: center;
+    padding: 2rem 2rem;
+    box-shadow: 0 0 2rem 0 rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.5s;
+}
+
+.testimonial .col-4 img {
+    width: 5rem;
+    margin-top: 2rem;
+    border-radius: 50%;
+}
+
+.testimonial .col-4:hover {
+    transform: translateY(-1rem);
+}
+
+.fa.fa-quote-left {
+    font-size: 3.4rem;
+    color: #ff6161;
+}
+
+.fas.fa-star,
+.fas.fa-star-half-alt {
+    color: #ff6161;
+}
+
+.testimonial .col-4 p {
+    font-size: 1.2rem;
+    margin: 1.2rem 0;
+    color: #777777;
+}
+
+.testimonial .col-4 h4 {
+    font-weight: 600;
+    color: #555555;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+}

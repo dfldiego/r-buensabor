@@ -5,7 +5,7 @@ import './Nosotros.css';
 const Nosotros = () => {
     return (
         <Fragment>
-            <section className="contenedor seccion">
+            <section className="contenedor seccion nosotros">
                 <h2 class="fw-300 centrar-texto">Pasos a Seguir</h2>
                 <div className="row">
                     <div className="col-3">
