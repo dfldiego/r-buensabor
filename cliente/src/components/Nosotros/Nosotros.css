@@ -5,20 +5,20 @@
 }
 
 /**ICONOS NOSOTROS **/
-.iconos-nosotros {
+.row {
     display: flex;
     justify-content: space-between;
 }
 
-.icono {
+.col-3 {
     flex-basis: calc(33.3% - 1rem);
     text-align: center;
 }
 
-.icono h3 {
+.col-3 h3 {
     text-transform: uppercase;
 }
 
-.icono img {
+.col-3 img {
     max-width: 10rem;
 }
