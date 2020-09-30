@@ -6,7 +6,7 @@ const Nosotros = () => {
     return (
         <Fragment>
             <section className="contenedor seccion nosotros">
-                <h2 class="fw-300 centrar-texto">Pasos a Seguir</h2>
+                <h2 className="fw-300 centrar-texto">Pasos a Seguir</h2>
                 <div className="row">
                     <div className="col-3">
                         <img src={require('../../assets/img/comida-rapida.svg')} alt="Icono elegi tu comida" />

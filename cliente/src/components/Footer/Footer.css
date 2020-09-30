@@ -1,0 +1,41 @@
+/*****FOOTER*******/
+.footer {
+    background-color: #000;
+    color: #8a8a8a;
+    font-size: 1.4rem;
+    padding: 2rem 0 2rem;
+}
+
+.footer p {
+    color: #8a8a8a;
+}
+
+.footer h3 {
+    color: whitesmoke;
+}
+
+.footer__col__1 {
+    flex: 1;
+    text-align: center;
+}
+
+.footer__col__1 img {
+    height: 100%;
+}
+
+.footer__col__1 .footer__col__2,
+.footer__col__3 {
+    flex-basis: calc(33% - 1rem);
+    text-align: center;
+}
+
+ul {
+    list-style: none;
+}
+
+.footer hr {
+    border: none;
+    background: #b5b5b5;
+    height: 1px;
+    margin: 10px 0;
+}

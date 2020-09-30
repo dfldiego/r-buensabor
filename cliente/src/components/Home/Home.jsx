@@ -3,6 +3,7 @@ import Header from '../Header/Header';
 import Nosotros from '../Nosotros/Nosotros';
 import Testimoniales from '../Testimoniales/Testimoniales';
 import DosColumnas from '../Dos-columnas/DosColumnas';
+import Footer from '../Footer/Footer';
 
 const Home = () => {
     return (
@@ -11,7 +12,7 @@ const Home = () => {
             <Nosotros />
             <DosColumnas />
             <Testimoniales />
-
+            <Footer />
         </Fragment>
     )
 }
