@@ -1,0 +1,1 @@
+export const ABRIR_MODAL = 'ABRIR_MODAL';
