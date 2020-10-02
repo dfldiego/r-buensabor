@@ -3,15 +3,15 @@ import React from 'react';
 import { Modal } from '@material-ui/core';
 import './ModalContainer.css';
 
-const ModalContainer = () => {
+const ModalContainer = (props) => {
 
-    const { isOpenModal, closeModal, children } = Modal;
+    const { openModal, closeModal, children } = props;
 
     return (
         <div>
             <Modal
                 className="modal__container"
-                open={isOpenModal}
+                open={openModal}
                 onClose={closeModal}
                 closeAfterTransition
             >

@@ -20,7 +20,6 @@ const Header = () => {
                             {/* <img src={LogoHamburguesa} alt="imagen principal" /> */}
                         </div>
                     </div>
-
                 </div>
             </header>
         </Fragment>
