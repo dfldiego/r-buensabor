@@ -1,5 +1,6 @@
 import {
     ABRIR_MODAL,
+    CERRAR_MODAL,
 } from '../types';
 
 const initialState = {
@@ -11,9 +12,13 @@ export default function (state = initialState, action) {
         case ABRIR_MODAL:
             return {
                 ...state,
-                abrir_modal: true
+                abrir_modal: action.payload
             }
-
+        case CERRAR_MODAL:
+            return {
+                ...state,
+                abrir_modal: action.payload
+            }
         default:
             return state;
     }
