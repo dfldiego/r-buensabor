@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 
 //importamos componentes
 import ModalContainer from '../ModalContainer/ModalContainer';
+import Login from '../auth/Login';
+import Register from '../auth/Register';
 
 // Redux
 import { useDispatch, useSelector } from 'react-redux';
@@ -34,6 +36,8 @@ const Navbar = () => {
         // si se hizo click, cambiar a true openModal
         if (openModal === false || openModal === null) {
             setOpenModal(true);
+        } else {
+            closeModal();
         }
     }
 
@@ -61,7 +65,7 @@ const Navbar = () => {
                     <Link
                         to={"#"}
                         onClick={e => handleClick_abrir_modal()}
-                    >Iniciar Sesion</Link>
+                    >Ingresar</Link>
                 </nav>
             </div>
             {abrir_modal_state_store ?
@@ -69,7 +73,7 @@ const Navbar = () => {
                     openModal={openModal}
                     closeModal={closeModal}
                 >
-                    <p>Contenido del modal</p>
+                    <Login />
                 </ModalContainer>
                 : null
             }
