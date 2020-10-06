@@ -36,8 +36,10 @@ const Navbar = () => {
         // si se hizo click, cambiar a true openModal
         if (openModal === false || openModal === null) {
             setOpenModal(true);
+            abrir_cerrar_Modal(true);
         } else {
             closeModal();
+            abrir_cerrar_Modal(false);
         }
     }
 
@@ -45,13 +47,11 @@ const Navbar = () => {
         setOpenModal(false);
     }
 
-    // si se hizo click en iniciar Sesion -> abrir modal.
+    // le pasa el state principal al state local
     useEffect(() => {
-        if (openModal !== null) {
-            abrir_cerrar_Modal(openModal);
-        }
+        setOpenModal(abrir_modal_state_store);
         // eslint-disable-next-line
-    }, [openModal])
+    }, [abrir_modal_state_store])
 
     return (
         <Fragment>

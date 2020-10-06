@@ -1,6 +1,9 @@
 import React from 'react';
 import './Login.css';
 
+// Material Icons
+import ClearIcon from '@material-ui/icons/Clear';
+
 //Actions de Redux
 import {
     abrirCerrarModalAction
@@ -40,7 +43,10 @@ const Login = () => {
             *************************/}
 
                 <div className="form-container sign-in-container">
-
+                    <ClearIcon
+                        className="volver"
+                        onClick={cerrar_modal}
+                    />
                     <form>
 
                         <h1>Inicia Sesión</h1>
@@ -55,10 +61,7 @@ const Login = () => {
                         <input type="password" placeholder="Password" />
                         <a href="#">¿Olvidaste tu contraseña?</a>
                         <button>Iniciar Sesión</button>
-                        <button
-                            className="volver"
-                            onClick={cerrar_modal}
-                        >Volver</button>
+
 
                     </form>
 
