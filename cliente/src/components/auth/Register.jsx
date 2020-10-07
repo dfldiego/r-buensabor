@@ -24,7 +24,7 @@ const Register = () => {
     let cerrar_modal_state_store = useSelector(state => state.home.abrir_modal);
     let abrir_registrate_state_store = useSelector(state => state.home.abrir_registrarse);
 
-    /***********METODO QUE CIERRA MODAL: modifico el state *************/
+    /***********METODO QUE CIERRA MODAL Y ABRE REGISTRATE: modifico el state *************/
     const cerrar_modal = e => {
         e.preventDefault();
         if (cerrar_modal_state_store) {
@@ -36,6 +36,13 @@ const Register = () => {
         return;
     }
 
+    /***********METODO QUE ABRE INICIAR SESION Y CIERRA REGISTRATE: modifico el state *************/
+    const handleClickToLogin = e => {
+        e.preventDefault();
+
+        // cerrar registrate
+        abrir_registrarse_callAction(false);
+    }
 
     return (
 
@@ -89,6 +96,7 @@ const Register = () => {
 
                             <button
                                 className="ghost"
+                                onClick={handleClickToLogin}
                             >Iniciar Sesión</button>
 
                         </div>

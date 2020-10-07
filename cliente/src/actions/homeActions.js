@@ -28,7 +28,7 @@ const cerrarModal = estado_modal => ({
     payload: estado_modal
 })
 
-/********* ABRIR REGISTRARSE ********/
+/********* ABRIR/CERRAR REGISTRARSE ********/
 export function abrirRegistrarseAction(estado_registrate) {
     return (dispatch) => {
         if (estado_registrate) {
