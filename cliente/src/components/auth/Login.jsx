@@ -6,7 +6,8 @@ import ClearIcon from '@material-ui/icons/Clear';
 
 //Actions de Redux
 import {
-    abrirCerrarModalAction
+    abrirCerrarModalAction,
+    abrirRegistrarseAction,
 } from '../../actions/homeActions';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -16,6 +17,8 @@ const Login = () => {
     const dispatch = useDispatch();
 
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarModalAction(nuevo_estado));
+
+    const abrir_registrarse_callAction = nuevo_estado => dispatch(abrirRegistrarseAction(nuevo_estado));
 
     /*************USAR USE SELECTOR: capturo el valor de state del store  *******************/
     let cerrar_modal_state_store = useSelector(state => state.home.abrir_modal);
@@ -30,6 +33,20 @@ const Login = () => {
             cerrar_modal_callAction(cerrar_modal_state_store);
         }
         return;
+    }
+
+    /************METODO QUE ABRE PANTALLA DE REGISTRACION ****************/
+    const handleClickToRegister = e => {
+        e.preventDefault();
+
+        // pasar a true el state de registrateClickeado.
+        abrir_registrarse_callAction(true);
+
+        // cerrar login
+
+
+        // abrir register
+
     }
 
     return (
@@ -83,6 +100,7 @@ const Login = () => {
 
                             <button
                                 className="ghost"
+                                onClick={handleClickToRegister}
                             >Registrate</button>
 
                         </div>

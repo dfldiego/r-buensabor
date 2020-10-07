@@ -25,8 +25,10 @@ const Navbar = () => {
     // utilizar useDispatch y te crea una funcion
     const dispatch = useDispatch();
 
-    // acceder al state del store
+    /*************USAR USE SELECTOR: capturo el valor de state del store  *******************/
     const abrir_modal_state_store = useSelector(state => state.home.abrir_modal);
+    const abrir_registrate = useSelector(state => state.home.abrir_registrarse);
+    /* console.log(abrir_registrate); */
 
     // manda llamar el action de homeActions
     const abrir_cerrar_Modal = (estado_modal) => dispatch(abrirCerrarModalAction(estado_modal));
@@ -73,7 +75,13 @@ const Navbar = () => {
                     openModal={openModal}
                     closeModal={closeModal}
                 >
-                    <Login />
+                    {
+                        abrir_registrate ?
+                            <Register />
+                            :
+                            <Login />
+                    }
+
                 </ModalContainer>
                 : null
             }

@@ -1,6 +1,7 @@
 import {
     ABRIR_MODAL,
     CERRAR_MODAL,
+    ABRIR_REGISTRARSE,
 } from '../types';
 
 // aca es donde vamos a abrir el modal  
@@ -24,4 +25,16 @@ const abrirModal = estado_modal => ({
 const cerrarModal = estado_modal => ({
     type: CERRAR_MODAL,
     payload: estado_modal
+})
+
+/********* ABRIR REGISTRARSE ********/
+export function abrirRegistrarseAction(estado_registrate) {
+    return (dispatch) => {
+        dispatch(abrirRegistrarse(estado_registrate));
+    }
+}
+
+const abrirRegistrarse = estado_registrate => ({
+    type: ABRIR_REGISTRARSE,
+    payload: estado_registrate
 })
