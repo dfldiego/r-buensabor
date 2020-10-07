@@ -70,7 +70,6 @@ const Register = () => {
 
                         <span>o usa tu email para la registracion</span>
 
-                        <input type="text" placeholder="Nombre" />
                         <input type="email" placeholder="Email" />
                         <input type="password" placeholder="Password" />
 
