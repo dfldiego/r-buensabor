@@ -27,7 +27,7 @@ const Navbar = () => {
 
     /*************USAR USE SELECTOR: capturo el valor de state del store  *******************/
     const abrir_modal_state_store = useSelector(state => state.home.abrir_modal);
-    const abrir_registrate = useSelector(state => state.home.abrir_registrarse);
+    const abrir_registrate_state_store = useSelector(state => state.home.abrir_registrarse);
     /* console.log(abrir_registrate); */
 
     // manda llamar el action de homeActions
@@ -76,7 +76,7 @@ const Navbar = () => {
                     closeModal={closeModal}
                 >
                     {
-                        abrir_registrate ?
+                        abrir_registrate_state_store ?
                             <Register />
                             :
                             <Login />

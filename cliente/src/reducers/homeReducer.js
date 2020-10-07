@@ -2,6 +2,7 @@ import {
     ABRIR_MODAL,
     CERRAR_MODAL,
     ABRIR_REGISTRARSE,
+    CERRAR_REGISTRARSE,
 } from '../types';
 
 const initialState = {
@@ -18,6 +19,7 @@ export default function (state = initialState, action) {
                 abrir_modal: action.payload
             }
         case ABRIR_REGISTRARSE:
+        case CERRAR_REGISTRARSE:
             return {
                 ...state,
                 abrir_registrarse: action.payload
