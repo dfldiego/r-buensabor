@@ -17,6 +17,7 @@ dbconnection();
 
 // rutas
 app.use('/api/departamentos', require('./routes/departamento.routes'));
+app.use('/api/domicilios', require('./routes/domicilio.routes'));
 
 //iniciar el servidor de express
 app.listen(process.env.PORT, () => {

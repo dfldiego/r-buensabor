@@ -12,4 +12,4 @@ DepartamentoSchema.method('toJSON', function () {
     return object;
 })
 
-module.exports = model('departamento', DepartamentoSchema);
+module.exports = model('Departamento', DepartamentoSchema);
