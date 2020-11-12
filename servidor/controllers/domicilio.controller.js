@@ -16,10 +16,10 @@ exports.CrearDomicilio = async (req, res = response) => {
             });
         }
 
-        // si no existe, creamos un nuevo Departamento con los datos
+        // si no existe, creamos un nuevo domicilio con los datos
         const domicilio = new Domicilio(req.body);
 
-        // añadimos el nuevo departamento a la BD
+        // añadimos el nuevo domicilio a la BD
         await domicilio.save();
 
         res.json({
@@ -40,7 +40,7 @@ exports.CrearDomicilio = async (req, res = response) => {
 
 exports.obtenerDomicilio = async (req, res = response) => {
     try {
-        // obtenemos los deptos de la BD
+        // obtenemos los domicilio de la BD
         const domicilios = await Domicilio.find();
 
         res.json({
@@ -101,10 +101,10 @@ exports.eliminarDomicilio = async (req, res = response) => {
 
     try {
 
-        // encontrar el departamento con el id pasado por URL en la BD
+        // encontrar el domicilio con el id pasado por URL en la BD
         const domicilioDB = await Domicilio.findById(id);
 
-        //si el departamento buscado no existe
+        //si el domicilio buscado no existe
         if (!domicilioDB) {
             return res.status(404).json({
                 ok: false,
@@ -112,7 +112,7 @@ exports.eliminarDomicilio = async (req, res = response) => {
             });
         }
 
-        // borrar departamento de la DB
+        // borrar domicilio de la DB
         await Domicilio.findByIdAndDelete(id);
 
         res.json({
