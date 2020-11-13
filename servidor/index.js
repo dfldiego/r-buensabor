@@ -19,7 +19,6 @@ dbconnection();
 app.use('/api/departamentos', require('./routes/departamento.routes'));
 app.use('/api/domicilios', require('./routes/domicilio.routes'));
 app.use('/api/roles', require('./routes/rol.routes'));
-app.use('/api/personas', require('./routes/persona.routes'));
 app.use('/api/clientes', require('./routes/cliente.routes'));
 app.use('/api/empleados', require('./routes/empleado.routes'));
 

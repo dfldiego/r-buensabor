@@ -1,51 +1,55 @@
 const { response } = require('express');
 const Cliente = require('../models/cliente.model');
+const bcrypt = require('bcryptjs');
 
 exports.crearCliente = async (req, res = response) => {
-    // hacemos destructuring de los datos introducidos.
-    const { persona } = req.body;
+    const { email_cliente, contrasena_cliente } = req.body;
 
     try {
 
-        // verificiamos si existe el departamento
-        const existe_persona = await Cliente.findOne({ persona });
-        if (existe_persona) {
+        const existeEmail = await Cliente.findOne({ email_cliente });
+        if (existeEmail) {
             return res.status(400).json({
                 ok: false,
-                msg: 'El cliente ya existe en la BD'
+                msg: "Ya Existe un email con ese nombre"
             });
         }
 
-        // si no existe, creamos un nuevo Cliente con los datos
+        // crear una instancia del nuevo Cliente
         const cliente = new Cliente(req.body);
 
-        // añadimos el nuevo cliente a la BD
+        // encriptar contraseña
+        const salt = bcrypt.genSaltSync();
+        cliente.contrasena_cliente = bcrypt.hashSync(contrasena_cliente, salt);
+
+        // guardar cliente en la BD
         await cliente.save();
 
         res.json({
             ok: true,
             cliente
         });
+
     } catch (error) {
-        return res.status(500).json({
+        res.status(400).json({
             ok: false,
-            msg: "Error inesperado."
+            msg: "Error inesperado"
         });
     }
 }
 exports.obtenerCliente = async (req, res = response) => {
     try {
-        // obtenemos los deptos de la BD
-        const cliente = await Cliente.find();
+        const clientes = await Cliente.find()
+            .populate('Domicilio', 'calle_domicilio numero_domicilio');
 
         res.json({
             ok: true,
-            cliente
+            clientes
         });
     } catch (error) {
-        res.status(500).json({
+        res.status(400).json({
             ok: false,
-            msg: 'Error inesperado en obtenerCliente'
+            msg: "Error inesperado"
         });
     }
 }
@@ -66,11 +70,11 @@ exports.actualizarCliente = async (req, res = response) => {
 
         // El cliente existe y queremos actualizarlo
         // destructuring al dato que actualizará el cliente
-        const { persona, ...campos } = req.body;
+        const { email_cliente, ...campos } = req.body;
 
-        // verificamos que ese nombre de cliente no exista en la BD
-        if (clienteDB.persona !== persona) {
-            const existe_cliente = await Cliente.findOne({ persona });
+        // verificamos que el email del cliente no exista en la BD
+        if (clienteDB.email_cliente !== email_cliente) {
+            const existe_cliente = await Cliente.findOne({ email_cliente });
             if (existe_cliente) {
                 return res.status(400).json({
                     ok: false,
@@ -80,7 +84,7 @@ exports.actualizarCliente = async (req, res = response) => {
         }
 
         // debemos colocar el nombre de cliente que queremos actualizar
-        campos.persona = persona;
+        campos.email_cliente = email_cliente;
 
         //actualizamos
         const clienteActualizado = await Cliente.findByIdAndUpdate(id, campos, { new: true });

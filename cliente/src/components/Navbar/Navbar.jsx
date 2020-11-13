@@ -62,7 +62,6 @@ const Navbar = () => {
                     <img src={BuenSaborLogo} alt="Logotipo Buen Sabor" />
                 </Link>
                 <nav className="nav">
-                    <Link to={"/"}>Inicio</Link>
                     <Link to={"#"}>Productos</Link>
                     <Link
                         to={"#"}
