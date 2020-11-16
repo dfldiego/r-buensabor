@@ -28,7 +28,7 @@ const Navbar = () => {
     /*************USAR USE SELECTOR: capturo el valor de state del store  *******************/
     const abrir_modal_state_store = useSelector(state => state.home.abrir_modal);
     const abrir_registrate_state_store = useSelector(state => state.home.abrir_registrarse);
-    /* console.log(abrir_registrate); */
+    const esta_logueado_state_store = useSelector(state => state.home.esta_logueado);
 
     // manda llamar el action de homeActions
     const abrir_cerrar_Modal = (estado_modal) => dispatch(abrirCerrarModalAction(estado_modal));
@@ -62,7 +62,7 @@ const Navbar = () => {
                     <img src={BuenSaborLogo} alt="Logotipo Buen Sabor" />
                 </Link>
                 <nav className="nav">
-                    <Link to={"#"}>Productos</Link>
+                    {esta_logueado_state_store ? <Link to={"#"}>Productos</Link> : null}
                     <Link
                         to={"#"}
                         onClick={e => handleClick_abrir_modal()}

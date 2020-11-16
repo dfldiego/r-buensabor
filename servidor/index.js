@@ -2,6 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { dbconnection } = require('./database/config');
+const passport = require('passport');
+const expressSession = require('express-session');
 
 // crear el servidor de express
 const app = express();
@@ -21,6 +23,7 @@ app.use('/api/domicilios', require('./routes/domicilio.routes'));
 app.use('/api/roles', require('./routes/rol.routes'));
 app.use('/api/clientes', require('./routes/cliente.routes'));
 app.use('/api/empleados', require('./routes/empleado.routes'));
+/* app.use('/api/auth', require('./routes/auth.routes')); */
 
 //iniciar el servidor de express
 app.listen(process.env.PORT, () => {

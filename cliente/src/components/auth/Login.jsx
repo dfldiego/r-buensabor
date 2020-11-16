@@ -15,14 +15,11 @@ const Login = () => {
 
     /************USAR DISPATCH: paso el nuevo state al action **********************/
     const dispatch = useDispatch();
-
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarModalAction(nuevo_estado));
-
     const abrir_registrarse_callAction = nuevo_estado => dispatch(abrirRegistrarseAction(nuevo_estado));
 
     /*************USAR USE SELECTOR: capturo el valor de state del store  *******************/
     let cerrar_modal_state_store = useSelector(state => state.home.abrir_modal);
-    /* console.log(cerrar_modal_state_store); */
 
 
     /***********METODO QUE CIERRA MODAL: modifico el state *************/

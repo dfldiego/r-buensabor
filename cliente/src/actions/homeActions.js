@@ -13,8 +13,6 @@ export function abrirCerrarModalAction(estado_modal) {
         } else {
             dispatch(cerrarModal(estado_modal));
         }
-
-
     }
 }
 
@@ -36,7 +34,6 @@ export function abrirRegistrarseAction(estado_registrate) {
         } else {
             dispatch(cerrarRegistrarse(estado_registrate));
         }
-
     }
 }
 

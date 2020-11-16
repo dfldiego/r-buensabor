@@ -1,10 +1,11 @@
-const { response } = require('express');
+/* const { response } = require('express');
 const Cliente = require('../models/cliente.model');
+const { generarJWT } = require('../helpers/jwt');
 const bcrypt = require('bcryptjs');
 
 exports.loginCliente = async (req, res = response) => {
 
-    // obtenemos los datos de la peticion 
+    // obtenemos los datos de la peticion
     const { email_cliente, contrasena_cliente } = req.body;
 
     try {
@@ -27,6 +28,7 @@ exports.loginCliente = async (req, res = response) => {
         }
 
         // TOKEN
+        const token = await generarJWT(clienteDB._id);
 
         //mostramos por pantalla
         res.json({
@@ -41,4 +43,4 @@ exports.loginCliente = async (req, res = response) => {
             msg: 'Error inesperado.'
         });
     }
-}
+} */

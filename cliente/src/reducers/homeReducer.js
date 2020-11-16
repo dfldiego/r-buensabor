@@ -8,6 +8,7 @@ import {
 const initialState = {
     abrir_modal: false,
     abrir_registrarse: false,
+    esta_logueado: false,
 }
 
 export default function (state = initialState, action) {

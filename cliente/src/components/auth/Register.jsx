@@ -15,9 +15,7 @@ const Register = () => {
 
     /************USAR DISPATCH: paso el nuevo state al action **********************/
     const dispatch = useDispatch();
-
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarModalAction(nuevo_estado));
-
     const abrir_registrarse_callAction = nuevo_estado => dispatch(abrirRegistrarseAction(nuevo_estado));
 
     /*************USAR USE SELECTOR: capturo el valor de state del store  *******************/
@@ -39,7 +37,6 @@ const Register = () => {
     /***********METODO QUE ABRE INICIAR SESION Y CIERRA REGISTRATE: modifico el state *************/
     const handleClickToLogin = e => {
         e.preventDefault();
-
         // cerrar registrate
         abrir_registrarse_callAction(false);
     }
