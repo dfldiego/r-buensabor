@@ -9,6 +9,26 @@ import {
     LOGIN_ERROR,
 } from '../types';
 
+//aca es donde vamos a loguear un usuario
+export function loginAction(msj, datos) {
+    return (dispatch) => {
+        if (msj === '') {
+            dispatch(loginUsuario(datos));
+        }
+        dispatch(loginUsuarioError(msj));
+    }
+}
+
+const loginUsuario = datos => ({
+    type: LOGIN_EXITOSO,
+    payload: datos
+})
+
+const loginUsuarioError = msj => ({
+    type: LOGIN_ERROR,
+    payload: msj
+})
+
 //aca es donde vamos a registrar un usuario
 export function registrarAction(datos) {
     return (dispatch) => {

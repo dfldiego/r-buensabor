@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import '../../assets/css/styles.css';
 import './Header.css'
-import { Link } from 'react-router-dom';
-import Swal from 'sweetalert2'
+import { Link, useHistory } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 //importamos componentes
 import Navbar from '../Navbar/Navbar';
@@ -18,6 +18,9 @@ import {
 
 const Header = ({ history }) => {
 
+    // redireccionar a la pagina principal una vez que editamos el producto
+    const history = useHistory();
+
     const dispatch = useDispatch();
 
     // USE SELECTOR
@@ -29,6 +32,7 @@ const Header = ({ history }) => {
     const handleClick_abrir_catalogo = async (e) => {
         if (esta_logueado_state_store) {
             history.push('/catalogo');
+            return;
         }
         await Swal.fire({
             icon: 'error',

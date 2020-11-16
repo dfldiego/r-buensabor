@@ -41,11 +41,19 @@ export default function (state = initialState, action) {
                 mensaje: '',
                 usuarios: [...state.usuarios, action.payload]
             }
+        case LOGIN_ERROR:
         case REGISTRO_ERROR:
             return {
                 ...state,
                 mensaje: action.payload,
                 alerta: true,
+            }
+        case LOGIN_EXITOSO:
+            return {
+                ...state,
+                alerta: null,
+                mensaje: '',
+                esta_logueado: true,
             }
         default:
             return state;

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Login.css';
+import { Link } from 'react-router-dom';
 
 // Material Icons
 import ClearIcon from '@material-ui/icons/Clear';
@@ -55,22 +56,23 @@ const Register = () => {
     }
 
     /** METODO PARA CAPTURAR LO QUE EL USUARIO ESCRIBE **/
-    var actualizarState = e => {
+    const actualizarState = e => {
         setRegistro({
             ...registro,
             [e.target.name]: e.target.value
         })
-
     }
 
     /** METODO SUBMIT**/
-    const submitRegistro = e => {
+    const submitRegistro = async (e) => {
         e.preventDefault();
-
-
 
         //enviar al action los datos ingresados
         registrarAction_callAction(registro);
+        setRegistro({
+            email: "",
+            password: ""
+        });
     }
 
     return (
@@ -90,7 +92,7 @@ const Register = () => {
                     >
                         <h1>Crear Cuenta</h1>
                         <div className="social-container">
-                            <a href="#" className="social"><i className="fab fa-google-plus-g"></i></a>
+                            <Link href="#" className="social"><i className="fab fa-google-plus-g"></i></Link>
                         </div>
                         <span>o usa tu email para la registracion</span>
                         <input
