@@ -3,7 +3,42 @@ import {
     CERRAR_MODAL,
     ABRIR_REGISTRARSE,
     CERRAR_REGISTRARSE,
+    REGISTRO_EXITOSO,
+    REGISTRO_ERROR,
+    LOGIN_EXITOSO,
+    LOGIN_ERROR,
 } from '../types';
+
+//aca es donde vamos a registrar un usuario
+export function registrarAction(datos) {
+    return (dispatch) => {
+
+        const { email, password } = datos;
+
+        // validar formulario
+        if (email.trim() === '' || password.trim() === '') {
+            dispatch(registrarUsuarioError('Todos los campos son obligatorios'));
+            return;
+        }
+        if (password.length < 6) {
+            dispatch(registrarUsuarioError('El password debe ser de al menos 6 caracteres'));
+            return;
+        }
+
+        dispatch(registrarUsuario(datos));
+    }
+}
+
+const registrarUsuario = datos => ({
+    type: REGISTRO_EXITOSO,
+    payload: datos,
+})
+
+const registrarUsuarioError = msj => ({
+    type: REGISTRO_ERROR,
+    payload: msj
+})
+
 
 // aca es donde vamos a abrir el modal  
 export function abrirCerrarModalAction(estado_modal) {

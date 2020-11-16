@@ -177,3 +177,16 @@ button.ghost {
     right: 0;
     transform: translateX(0);
 }
+
+.alerta-error {
+    border-radius: 20px;
+    color: rgb(230, 78, 78);
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 12px;
+    margin-bottom: 10px;
+    min-width: 250px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 80ms ease-in;
+}
