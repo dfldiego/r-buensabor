@@ -92,7 +92,7 @@ const Register = () => {
                     >
                         <h1>Crear Cuenta</h1>
                         <div className="social-container">
-                            <Link href="#" className="social"><i className="fab fa-google-plus-g"></i></Link>
+                            <Link to={'#'} className="social"><i className="fab fa-google-plus-g"></i></Link>
                         </div>
                         <span>o usa tu email para la registracion</span>
                         <input

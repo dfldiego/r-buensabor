@@ -82,10 +82,10 @@ const Login = () => {
                 // redireaccionar a componente catalogo
                 history.push('/catalogo');
                 return;
+            } else {
+                loginAction_callAction('No hay un usuario con ese email y contraseña', null);
             }
         });
-        loginAction_callAction('No hay un usuario con ese email y contraseña', null);
-        return;
 
     }
 
@@ -106,7 +106,7 @@ const Login = () => {
                     <form onSubmit={submitLogin}>
                         <h1>Inicia Sesión</h1>
                         <div className="social-container">
-                            <Link href="#" className="social"><i className="fab fa-google-plus-g"></i></Link>
+                            <Link to={'#'} className="social"><i className="fab fa-google-plus-g"></i></Link>
                         </div>
                         <span>o usa tu cuenta</span>
                         <input
@@ -141,7 +141,7 @@ const Login = () => {
                                 className="ghost"
                                 onClick={handleClickToRegister}
                             >Registrate</button>
-                            <Link href="#" className="olvidepass">¿Olvidaste tu contraseña?</Link>
+                            <Link to={'#'} className="olvidepass">¿Olvidaste tu contraseña?</Link>
                         </div>
                     </div>
                 </div>

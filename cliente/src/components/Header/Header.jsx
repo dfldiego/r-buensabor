@@ -16,7 +16,7 @@ import {
 } from '../../actions/homeActions';
 
 
-const Header = ({ history }) => {
+const Header = () => {
 
     // redireccionar a la pagina principal una vez que editamos el producto
     const history = useHistory();

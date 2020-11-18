@@ -28,3 +28,9 @@
 .nav img {
     margin-right: 1rem;
 }
+
+nav i {
+    width: 5rem;
+    margin-top: 2rem;
+    border-radius: 50%;
+}

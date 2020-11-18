@@ -14,8 +14,9 @@ export function loginAction(msj, datos) {
     return (dispatch) => {
         if (msj === '') {
             dispatch(loginUsuario(datos));
+        } else {
+            dispatch(loginUsuarioError(msj));
         }
-        dispatch(loginUsuarioError(msj));
     }
 }
 

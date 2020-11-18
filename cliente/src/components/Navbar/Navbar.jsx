@@ -62,11 +62,17 @@ const Navbar = () => {
                     <img src={BuenSaborLogo} alt="Logotipo Buen Sabor" />
                 </Link>
                 <nav className="nav">
-                    {esta_logueado_state_store ? <Link to={"#"}>Productos</Link> : null}
-                    <Link
-                        to={"#"}
-                        onClick={e => handleClick_abrir_modal()}
-                    >Ingresar</Link>
+                    {esta_logueado_state_store ? <Link to={"/catalogo"}>Productos</Link> : null}
+                    {
+                        esta_logueado_state_store ?
+                            <i class="fas fa-user-circle"></i>
+                            :
+                            <Link
+                                to={"#"}
+                                onClick={e => handleClick_abrir_modal()}
+                            >Ingresar</Link>
+                    }
+
                 </nav>
             </div>
             {abrir_modal_state_store ?
