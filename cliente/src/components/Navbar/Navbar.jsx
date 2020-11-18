@@ -57,7 +57,7 @@ const Navbar = () => {
 
     return (
         <Fragment>
-            <div className="navbar">
+            <div className="navbar contenedor">
                 <Link to={"/"}>
                     <img src={BuenSaborLogo} alt="Logotipo Buen Sabor" />
                 </Link>

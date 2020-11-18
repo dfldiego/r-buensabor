@@ -2,7 +2,7 @@
 @media (min-width: 768px) {
     .dos-columnas .row {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr) !important;
         column-gap: 2rem;
     }
 }

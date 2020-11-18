@@ -1,0 +1,9 @@
+.fondo-negro {
+    background-color: #333333;
+}
+
+.dos-columnas-admin {
+    display: grid;
+    grid-template-columns: 20% 80%;
+    /* column-gap: 2rem; */
+}

@@ -1,15 +1,21 @@
 /**BARRA DE NAVEGACION: NAVBAR**/
 
+.contenedor {
+    width: 95%;
+    max-width: 120rem;
+    margin: 0 auto 0 auto;
+}
+
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 30px;
 }
 
 .navbar a img {
     width: 10rem;
 }
+
 
 /**NAVEGACION: NAV**/
 
