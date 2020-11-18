@@ -3,7 +3,7 @@ import '../../assets/css/styles.css';
 import BuenSaborLogo from "../../assets/img/logoBuenSabor.png";
 import './Navbar.css';
 import { Link } from 'react-router-dom';
-
+import { FaUserCircle } from "react-icons/fa";
 //importamos componentes
 import ModalContainer from '../ModalContainer/ModalContainer';
 import Login from '../auth/Login';
@@ -62,10 +62,11 @@ const Navbar = () => {
                     <img src={BuenSaborLogo} alt="Logotipo Buen Sabor" />
                 </Link>
                 <nav className="nav">
+                    <Link to={"/admin"}>Admin</Link>
                     {esta_logueado_state_store ? <Link to={"/catalogo"}>Productos</Link> : null}
                     {
                         esta_logueado_state_store ?
-                            <i class="fas fa-user-circle"></i>
+                            <FaUserCircle className="usercircle" />
                             :
                             <Link
                                 to={"#"}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Login.css';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, /* useHistory */ } from 'react-router-dom';
 
 // Material Icons
 import ClearIcon from '@material-ui/icons/Clear';
@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 const Login = () => {
 
     // redireccionar a la pagina principal una vez que editamos el producto
-    const history = useHistory();
+    /* const history = useHistory(); */
 
     const [login, setLogin] = useState({
         email: "",
@@ -80,7 +80,7 @@ const Login = () => {
                 //enviar al action los datos ingresados
                 loginAction_callAction('', login);
                 // redireaccionar a componente catalogo
-                history.push('/catalogo');
+                /* history.push('/catalogo'); */
                 return;
             } else {
                 loginAction_callAction('No hay un usuario con ese email y contraseña', null);

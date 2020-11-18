@@ -14,6 +14,7 @@ export function loginAction(msj, datos) {
     return (dispatch) => {
         if (msj === '') {
             dispatch(loginUsuario(datos));
+            dispatch(cerrarModal(false));
         } else {
             dispatch(loginUsuarioError(msj));
         }

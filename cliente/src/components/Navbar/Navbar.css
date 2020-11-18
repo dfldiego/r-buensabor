@@ -20,7 +20,8 @@
     margin-right: 2rem;
 }
 
-.nav a:hover {
+.nav a:hover,
+.usercircle:hover {
     color: #ff6161;
 }
 
@@ -29,8 +30,13 @@
     margin-right: 1rem;
 }
 
-nav i {
+nav i,
+.usercircle {
     width: 5rem;
-    margin-top: 2rem;
     border-radius: 50%;
+    color: #fff;
+    margin-right: 1rem;
+    height: 30px;
+    text-align: center;
+    vertical-align: top;
 }
