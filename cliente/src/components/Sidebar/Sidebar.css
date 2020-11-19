@@ -10,10 +10,6 @@
     background: #151719;
 }
 
-#sidebar.active {
-    left: 0;
-}
-
 #sidebar ul li {
     color: #e7e5e5d7;
     text-align: center;

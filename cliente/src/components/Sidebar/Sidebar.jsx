@@ -1,17 +1,36 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import './Sidebar.css';
+
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    usuarioAction,
+} from '../../actions/adminActions';
 
 const Sidebar = () => {
 
-    const agregarEstilo = e => {
+    const [enUsuarios, setEnUsuarios] = useState(false);
 
+    const dispatch = useDispatch();
+
+    // ENVIAR ESTADOS AL ACTION -> ADMINACTION.
+    const entrar_usuarios_crud = estadoNuevo => dispatch(usuarioAction(estadoNuevo));
+
+    // metodo que corrobora si mostrar CRUD de usuarios.
+    const entra_usuarios = e => {
+        e.preventDefault();
+
+        if (enUsuarios) {
+            entrar_usuarios_crud(setEnUsuarios(false));
+        } else {
+            entrar_usuarios_crud(setEnUsuarios(true));
+        }
     }
 
     return (
         <Fragment>
-            <div id="sidebar" onClick={agregarEstilo}>
+            <div id="sidebar">
                 <ul>
-                    <li>Usuarios</li>
+                    <li onClick={entra_usuarios}>Usuarios</li>
                     <li>Otros</li>
                 </ul>
             </div>
