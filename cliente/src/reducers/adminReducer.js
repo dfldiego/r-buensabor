@@ -2,11 +2,17 @@ import {
     ENTRAR_CRUD_USUARIOS,
     ABRIR_AGREGAR_USUARIOS,
     CERRAR_AGREGAR_USUARIOS,
+    AGREGAR_USUARIO,
+    AGREGAR_USUARIO_EXITO,
+    AGREGAR_USUARIO_ERROR,
 } from '../types';
 
 const initialState = {
     en_usuario: null,
+    loading: false,
     abrir_agregar_usuario: null,
+    usuarios: [],
+    error: null,
 }
 
 export default function (state = initialState, action) {
@@ -21,6 +27,23 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 abrir_agregar_usuario: action.payload,
+            }
+        case AGREGAR_USUARIO:
+            return {
+                ...state,
+                loading: action.payload,
+            }
+        case AGREGAR_USUARIO_EXITO:
+            return {
+                ...state,
+                loading: false,
+                usuarios: [...state.usuarios, action.payload]
+            }
+        case AGREGAR_USUARIO_ERROR:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload
             }
         default:
             return state;

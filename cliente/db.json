@@ -1,0 +1,20 @@
+{
+    "admin": [
+        {
+            "id": "1",
+            "nombre": "Roberto",
+            "apellido": "Juarez",
+            "domicilio": "Talcahuano",
+            "nro. domicilio": "2009",
+            "rol": "Cocinero"
+        },
+        {
+            "nombre": "asdasd",
+            "apellido": "asdasd",
+            "domicilio": "qweqw",
+            "nro_domicilio": "123",
+            "rol": "administrativo",
+            "id": "hKCSuiW"
+        }
+    ]
+}

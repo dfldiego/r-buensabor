@@ -54,4 +54,9 @@ select {
 select {
     -webkit-appearance: none;
     appearance: none;
+    text-align: center;
+}
+
+.form-control {
+    text-align: center;
 }

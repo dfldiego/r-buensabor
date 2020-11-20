@@ -1,0 +1,17 @@
+.titulo {
+    margin: 5px 0;
+    text-align: center;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th,
+td {
+    width: 16.66%;
+    padding: 0.25rem;
+    text-align: center;
+    border: 1px solid #ccc;
+}

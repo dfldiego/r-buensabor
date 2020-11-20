@@ -5,6 +5,7 @@ import './Usuario.css';
 //importamos componentes
 import ModalContainer from '../ModalContainer/ModalContainer';
 import CrearUsuario from './CrearUsuario';
+import GetUsuarios from './GetUsuarios';
 
 // redux
 import { useSelector, useDispatch } from 'react-redux'
@@ -51,15 +52,12 @@ function Usuario() {
         <Fragment>
             <div className="container">
                 <div className="row one">
-
                     <button
                         href="#"
                         onClick={handleClick_abrir_agregar_usuario}
                     >Agregar Usuario</button>
                 </div>
-                <div className="row">
-                    <h1>otra fila</h1>
-                </div>
+                <GetUsuarios />
             </div>
             { modalAgregarUsuario ?
                 <ModalContainer
