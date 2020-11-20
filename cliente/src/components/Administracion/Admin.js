@@ -5,18 +5,12 @@ import Usuario from '../Usuario/Usuario';
 import './Admin.css';
 
 // REDUX
-import { useDispatch, useSelector } from 'react-redux';
-
-//Actions de Redux
-import {
-    usuarioAction,
-} from '../../actions/adminActions';
+import { useSelector } from 'react-redux';
 
 const Admin = () => {
 
     /*USAR USE SELECTOR*/
     const en_usuario_state_store = useSelector(state => state.admin.en_usuario);
-    console.log(en_usuario_state_store);
 
     return (
         <Fragment>

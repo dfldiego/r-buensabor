@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import './Sidebar.css';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
     usuarioAction,
 } from '../../actions/adminActions';
