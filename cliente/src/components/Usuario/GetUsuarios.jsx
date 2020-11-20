@@ -11,11 +11,16 @@ const GetUsuarios = () => {
 
     const dispatch = useDispatch();
 
+    const error = useSelector(state => state.admin.error);
+    const cargando = useSelector(state => state.admin.loading);
+
     useEffect(() => {
         // consultar la api
         const cargarUsuarios = () => dispatch(obtenerUsuariosAction());
         //llamar la funcion
         cargarUsuarios();
+
+        // eslint-disable-next-line
     }, []);
 
     const usuarios_state = useSelector(state => state.admin.usuarios);
@@ -26,6 +31,8 @@ const GetUsuarios = () => {
         <Fragment>
             <h2 className="titulo">Listado de Usuarios</h2>
 
+            {error ? <p className="error">Hubo un error</p> : null}
+            {cargando ? <p>Cargando...</p> : null}
             <table>
                 <thead>
                     <tr>
