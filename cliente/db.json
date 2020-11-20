@@ -1,20 +1,28 @@
 {
-    "admin": [
-        {
-            "id": "1",
-            "nombre": "Roberto",
-            "apellido": "Juarez",
-            "domicilio": "Talcahuano",
-            "nro. domicilio": "2009",
-            "rol": "Cocinero"
-        },
-        {
-            "nombre": "asdasd",
-            "apellido": "asdasd",
-            "domicilio": "qweqw",
-            "nro_domicilio": "123",
-            "rol": "administrativo",
-            "id": "hKCSuiW"
-        }
-    ]
+  "admin": [
+    {
+      "id": "1",
+      "nombre": "Roberto",
+      "apellido": "Juarez",
+      "domicilio": "Talcahuano",
+      "nro. domicilio": "2009",
+      "rol": "Cocinero"
+    },
+    {
+      "nombre": "asdasd",
+      "apellido": "asdasd",
+      "domicilio": "qweqw",
+      "nro_domicilio": "123",
+      "rol": "administrativo",
+      "id": "hKCSuiW"
+    },
+    {
+      "nombre": "Diego",
+      "apellido": "Longo",
+      "domicilio": "Talcahuano",
+      "nro_domicilio": "2700",
+      "rol": "administrativo",
+      "id": "uwB251O"
+    }
+  ]
 }

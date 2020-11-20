@@ -13,6 +13,7 @@ const initialState = {
     abrir_agregar_usuario: null,
     usuarios: [],
     error: null,
+    mensaje: null,
 }
 
 export default function (state = initialState, action) {
@@ -27,6 +28,8 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 abrir_agregar_usuario: action.payload,
+                mensaje: null,
+                error: null,
             }
         case AGREGAR_USUARIO:
             return {
@@ -37,13 +40,16 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 loading: false,
-                usuarios: [...state.usuarios, action.payload]
+                usuarios: [...state.usuarios, action.payload],
+                mensaje: null,
+                error: false,
             }
         case AGREGAR_USUARIO_ERROR:
             return {
                 ...state,
                 loading: false,
-                error: action.payload
+                error: true,
+                mensaje: action.payload,
             }
         default:
             return state;

@@ -36,6 +36,8 @@ function CrearUsuario() {
 
     /*************USAR USE SELECTOR: capturo el valor de state del store  *******************/
     let cerrar_modal_state_store = useSelector(state => state.admin.abrir_agregar_usuario);
+    let error_admin = useSelector(state => state.admin.error);
+    let mensaje_admin = useSelector(state => state.admin.mensaje);
 
     /***********METODO QUE CIERRA MODAL: modifico el state *************/
     const cerrar_modal = e => {
@@ -49,11 +51,6 @@ function CrearUsuario() {
 
     const handleSubmitAgregarUsuario = e => {
         e.preventDefault();
-
-        // validar campos vacios
-        if (nombre === '' || apellido === '' || domicilio === '' || nro_domicilio <= 0 || rol === '') {
-            return;
-        }
 
         agregar_usuario_action({
             nombre,
@@ -73,6 +70,7 @@ function CrearUsuario() {
                             className="volver"
                             onClick={cerrar_modal}
                         />
+                        {error_admin ? <p className="error">{mensaje_admin} </p> : null}
                         <form onSubmit={handleSubmitAgregarUsuario}>
                             <div className="form-row">
                                 <label>Nombre</label>
