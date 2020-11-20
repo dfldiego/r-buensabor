@@ -5,8 +5,41 @@ import {
     AGREGAR_USUARIO,
     AGREGAR_USUARIO_EXITO,
     AGREGAR_USUARIO_ERROR,
+    COMENZAR_DESCARGA_USUARIOS,
+    DESCARGA_USUARIOS_EXITO,
+    DESCARGA_USUARIOS_ERROR,
 } from '../types';
 import clienteAxios from '../config/axios';
+
+/**********************  para obtener los usuarios de la BBDD ********************************/
+export function obtenerUsuariosAction() {
+    return async (dispatch) => {
+        dispatch(descargarUsuarios());
+
+        try {
+            const respuesta = await clienteAxios.get('/admin');
+            dispatch(descargarUsuariosExito(respuesta.data));
+        } catch (error) {
+            console.log(error);
+            dispatch(descargarUsuariosError('Error al descargar los usuarios'));
+        }
+
+    }
+}
+const descargarUsuariosError = mensaje => ({
+    type: DESCARGA_USUARIOS_ERROR,
+    payload: mensaje,
+});
+
+const descargarUsuariosExito = respuesta => ({
+    type: DESCARGA_USUARIOS_EXITO,
+    payload: respuesta,
+});
+
+const descargarUsuarios = () => ({
+    type: COMENZAR_DESCARGA_USUARIOS,
+    payload: true
+});
 
 /**********************  para crear un nuevo usuario ********************************/
 export function crearNuevoUsuarioAction(datosNuevoUsuario) {

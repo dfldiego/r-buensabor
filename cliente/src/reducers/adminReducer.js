@@ -5,6 +5,9 @@ import {
     AGREGAR_USUARIO,
     AGREGAR_USUARIO_EXITO,
     AGREGAR_USUARIO_ERROR,
+    COMENZAR_DESCARGA_USUARIOS,
+    DESCARGA_USUARIOS_EXITO,
+    DESCARGA_USUARIOS_ERROR,
 } from '../types';
 
 const initialState = {
@@ -31,6 +34,7 @@ export default function (state = initialState, action) {
                 mensaje: null,
                 error: null,
             }
+        case COMENZAR_DESCARGA_USUARIOS:
         case AGREGAR_USUARIO:
             return {
                 ...state,
@@ -43,13 +47,23 @@ export default function (state = initialState, action) {
                 usuarios: [...state.usuarios, action.payload],
                 mensaje: null,
                 error: false,
+                abrir_agregar_usuario: null,
             }
         case AGREGAR_USUARIO_ERROR:
+        case DESCARGA_USUARIOS_ERROR:
             return {
                 ...state,
                 loading: false,
                 error: true,
                 mensaje: action.payload,
+            }
+        case DESCARGA_USUARIOS_EXITO:
+            return {
+                ...state,
+                loading: false,
+                error: null,
+                mensaje: null,
+                usuarios: action.payload,
             }
         default:
             return state;

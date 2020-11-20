@@ -23,6 +23,22 @@
       "nro_domicilio": "2700",
       "rol": "administrativo",
       "id": "uwB251O"
+    },
+    {
+      "nombre": "asdsa",
+      "apellido": "qwewq",
+      "domicilio": "qweqw",
+      "nro_domicilio": "123",
+      "rol": "administrativo",
+      "id": "CNI201c"
+    },
+    {
+      "nombre": "asdas",
+      "apellido": "qwe",
+      "domicilio": "qwe",
+      "nro_domicilio": "123",
+      "rol": "cajero",
+      "id": "J8KEoNq"
     }
   ]
 }
