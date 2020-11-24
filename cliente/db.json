@@ -39,6 +39,14 @@
       "nro_domicilio": "123",
       "rol": "cajero",
       "id": "J8KEoNq"
+    },
+    {
+      "nombre": "German",
+      "apellido": "Juarez",
+      "domicilio": "talcahuano",
+      "nro_domicilio": "222",
+      "rol": "administrativo",
+      "id": "OTGOHCL"
     }
   ]
 }

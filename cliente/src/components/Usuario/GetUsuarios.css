@@ -28,7 +28,7 @@ td {
     width: 150px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1250px) {
     .acciones {
         display: flex;
         justify-content: space-around;

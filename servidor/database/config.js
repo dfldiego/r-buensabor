@@ -8,10 +8,10 @@ const dbconnection = async () => {
             useUnifiedTopology: true,
             useCreateIndex: true,
         });
-        console.log('Conexión DB establecida');
+        console.log('Connection database successfully');
     } catch (error) {
         console.log(error);
-        throw new Error('Error al iniciar conexión con DB')
+        throw new Error('Error trying to connect to the database')
     }
 }
 
