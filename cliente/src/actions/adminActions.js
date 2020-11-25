@@ -47,24 +47,26 @@ export function crearNuevoUsuarioAction(datosNuevoUsuario) {
     return async (dispatch) => {
         dispatch(agregarUsuario());
 
-        const { nombre, apellido, domicilio, nro_domicilio, rol } = datosNuevoUsuario;
+        const { name, email, password, telephoneNumber, role } = datosNuevoUsuario;
 
         // validar campos vacios
-        if (nombre === '' || apellido === '' || domicilio === '' || rol === '') {
+        if (name === '' || email === '' || password === '' || role === '') {
+            console.log(datosNuevoUsuario);
             dispatch(agregarUsuarioError('Todos los campos son obligatorios'));
             return;
         }
-        if (nro_domicilio <= 0) {
-            dispatch(agregarUsuarioError('Nro de domicilio no válido'));
+        if (telephoneNumber <= 0) {
+            dispatch(agregarUsuarioError('Nro de Teléfono no válido'));
             return;
         }
         // hacemos consulta a la BBDD
         try {
             // insertar en la API
-            await clienteAxios.post('/admin', datosNuevoUsuario)
+            await clienteAxios.post('/api/users', datosNuevoUsuario)
             // si todo sale bien
             dispatch(agregarUsuarioExito(datosNuevoUsuario));
         } catch (error) {
+            console.log(error);
             // si hay un error
             dispatch(agregarUsuarioError('Hubo un error, por favor comuniquese con el administrador'));
         }

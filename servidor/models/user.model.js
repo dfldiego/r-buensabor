@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
 let roles = {
-    values: ['ADMIN_ROLE', 'USER_ROLE'],
+    values: ['ADMIN_ROLE', 'SUPER_ADMIN_ROLE', 'USER_ROLE', 'CASHIER_ROLE', 'CHEF_ROLE'],
     message: '{VALUE} is not a valid role'
 };
 

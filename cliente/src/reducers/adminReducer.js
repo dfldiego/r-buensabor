@@ -39,6 +39,8 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 loading: action.payload,
+                error: null,
+                mensaje: null,
             }
         case AGREGAR_USUARIO_EXITO:
             return {

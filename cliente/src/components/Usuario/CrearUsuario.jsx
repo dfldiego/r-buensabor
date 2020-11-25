@@ -13,14 +13,14 @@ import {
 function CrearUsuario() {
 
     const [usuario, setUsuario] = useState({
-        nombre: '',
-        apellido: '',
-        domicilio: '',
-        nro_domicilio: 0,
-        rol: '',
+        name: '',
+        email: '',
+        password: '',
+        telephoneNumber: 0,
+        role: ''
     });
 
-    const { nombre, apellido, domicilio, nro_domicilio, rol } = usuario;
+    const { name, email, password, telephoneNumber, role } = usuario;
 
     const handleChange = e => {
         setUsuario({
@@ -52,13 +52,15 @@ function CrearUsuario() {
     const handleSubmitAgregarUsuario = e => {
         e.preventDefault();
 
-        agregar_usuario_action({
-            nombre,
-            apellido,
-            domicilio,
-            nro_domicilio,
-            rol,
-        });
+        agregar_usuario_action(usuario);
+
+        setUsuario({
+            name: '',
+            email: '',
+            password: '',
+            telephoneNumber: 0,
+            role: ''
+        })
     }
 
     return (
@@ -78,55 +80,56 @@ function CrearUsuario() {
                                     type="text"
                                     className="form-control"
                                     placeholder="Nombre"
-                                    name="nombre"
-                                    value={nombre}
+                                    name="name"
+                                    value={name}
                                     onChange={handleChange}
                                 />
                             </div>
                             <div className="form-row">
-                                <label>Apellido</label>
+                                <label>Email</label>
+                                <input
+                                    type="email"
+                                    className="form-control"
+                                    placeholder="Email"
+                                    name="email"
+                                    value={email}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="form-row">
+                                <label>Password</label>
                                 <input
                                     type="text"
                                     className="form-control"
-                                    placeholder="Apellido"
-                                    name="apellido"
-                                    value={apellido}
+                                    placeholder="Password"
+                                    name="password"
+                                    value={password}
                                     onChange={handleChange}
                                 />
                             </div>
                             <div className="form-row">
-                                <label>Domicilio</label>
+                                <label>Nro Telefono</label>
                                 <input
-                                    type="text"
+                                    type="phone"
                                     className="form-control"
-                                    placeholder="Domicilio"
-                                    name="domicilio"
-                                    value={domicilio}
-                                    onChange={handleChange}
-                                />
-                            </div>
-                            <div className="form-row">
-                                <label>Nro Domicilio</label>
-                                <input
-                                    type="number"
-                                    className="form-control"
-                                    placeholder="Nro Domicilio"
-                                    name="nro_domicilio"
-                                    value={nro_domicilio}
+                                    placeholder="Nro Telefono"
+                                    name="telephoneNumber"
+                                    value={telephoneNumber}
                                     onChange={handleChange}
                                 />
                             </div>
                             <div className="form-row">
                                 <label>Rol</label>
                                 <select
-                                    name="rol"
-                                    value={rol}
+                                    name="role"
+                                    value={role}
                                     onChange={handleChange}
                                 >
                                     <option value="">-- Seleccione un rol --</option>
-                                    <option value="administrativo">Administrativo</option>
-                                    <option value="cajero">Cajero</option>
-                                    <option value="cocinero">Cocinero</option>
+                                    <option value="ADMIN_ROLE">Administrativo</option>
+                                    <option value="CASHIER_ROLE">Cajero</option>
+                                    <option value="CHEF_ROLE">Cocinero</option>
+                                    <option value="USER_ROLE">Usuario</option>
                                 </select>
                             </div>
 
