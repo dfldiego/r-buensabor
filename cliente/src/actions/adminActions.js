@@ -8,8 +8,49 @@ import {
     COMENZAR_DESCARGA_USUARIOS,
     DESCARGA_USUARIOS_EXITO,
     DESCARGA_USUARIOS_ERROR,
+    OBTENER_USUARIO_ELIMINAR,
+    USUARIO_ELIMINADO_EXITO,
+    USUARIO_ELIMINADO_ERROR,
 } from '../types';
 import clienteAxios from '../config/axios';
+import Swal from 'sweetalert2';
+
+/**********************  para eliminar un usuario de la BBDD ********************************/
+export function eliminarUsuarioAction(datos_usuario) {
+    return async (dispatch) => {
+        datos_usuario.status = false;
+        dispatch(obtenerUsuarioEliminar(datos_usuario._id));
+
+        try {
+            await clienteAxios.put(`/api/users/${datos_usuario._id}`, datos_usuario);
+            dispatch(usuarioEliminadoExito(datos_usuario));
+            // si se elimina, mostrar alerta
+            Swal.fire(
+                'Eliminado!',
+                'El usuario se eliminó correctamente.',
+                'success'
+            )
+        } catch (error) {
+            console.log(error);
+            dispatch(usuarioEliminadoError('Error al eliminar el usuario'));
+        }
+    }
+}
+
+const usuarioEliminadoError = msj => ({
+    type: USUARIO_ELIMINADO_ERROR,
+    payload: msj
+})
+
+const usuarioEliminadoExito = datos_usuario => ({
+    type: USUARIO_ELIMINADO_EXITO,
+    payload: datos_usuario
+})
+
+const obtenerUsuarioEliminar = idUsuario => ({
+    type: OBTENER_USUARIO_ELIMINAR,
+    payload: idUsuario
+})
 
 /**********************  para obtener los usuarios de la BBDD ********************************/
 export function obtenerUsuariosAction() {
@@ -18,7 +59,6 @@ export function obtenerUsuariosAction() {
 
         try {
             const respuesta = await clienteAxios.get('/api/users');
-            console.log(respuesta);
             dispatch(descargarUsuariosExito(respuesta.data.users));
         } catch (error) {
             console.log(error);
@@ -59,6 +99,10 @@ export function crearNuevoUsuarioAction(datosNuevoUsuario) {
             dispatch(agregarUsuarioError('Nro de Teléfono no válido'));
             return;
         }
+
+        // ACA SALTA UN ERROR CUANDO EL EMAIL YA EXISTE EN BBDD
+        // APRENDER A PASAR LOS ERRORES DE LA BBDD A LA VISTA
+
         // hacemos consulta a la BBDD
         try {
             // insertar en la API

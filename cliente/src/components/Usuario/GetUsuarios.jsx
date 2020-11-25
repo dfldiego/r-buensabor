@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
 import './GetUsuarios.css';
-import UsuarioDB from './usuarioDB';
+import Usuariodb from './Usuariodb';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -11,17 +11,16 @@ const GetUsuarios = () => {
 
     const dispatch = useDispatch();
 
-    const error = useSelector(state => state.admin.error);
     const cargando = useSelector(state => state.admin.loading);
     const usuarios_state = useSelector(state => state.admin.usuarios);
-    console.log(usuarios_state);
-
+    const estadoError = useSelector(state => state.admin.error);
+    const mensajeError = useSelector(state => state.admin.mensaje);
     useEffect(() => {
         // consultar la api
         const cargarUsuarios = () => dispatch(obtenerUsuariosAction());
         //llamar la funcion
         cargarUsuarios();
-
+        console.log(usuarios_state);
         // eslint-disable-next-line
     }, []);
 
@@ -29,8 +28,9 @@ const GetUsuarios = () => {
         <Fragment>
             <h2 className="titulo">Listado de Usuarios</h2>
 
-            {error ? <p className="error">Hubo un error</p> : null}
+            {estadoError ? <p className="error">{mensajeError}</p> : null}
             {cargando ? <p>Cargando...</p> : null}
+            {usuarios_state.length === 0 ? <p className="error">No hay usuarios</p> : null}
             <table>
                 <thead>
                     <tr>
@@ -43,10 +43,10 @@ const GetUsuarios = () => {
                 </thead>
                 <tbody>
                     {
-                        usuarios_state.length === 0 ? 'No hay usuarios' :
+                        usuarios_state.length === 0 ? null :
                             usuarios_state.map((usuario) => (
-                                <UsuarioDB
-                                    key={usuario._id}
+                                <Usuariodb
+                                    key={usuario.email}
                                     usuario={usuario}
                                 />
                             ))

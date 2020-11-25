@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState } from 'react';
 import './Sidebar.css';
 
 import { useDispatch } from 'react-redux';
@@ -27,14 +27,12 @@ const Sidebar = () => {
     }
 
     return (
-        <Fragment>
-            <div id="sidebar">
-                <ul>
-                    <li onClick={entra_usuarios}>Usuarios</li>
-                    <li>Otros</li>
-                </ul>
-            </div>
-        </Fragment>
+        <div id="sidebar">
+            <ul>
+                <li onClick={entra_usuarios}>Usuarios</li>
+                <li>Otros</li>
+            </ul>
+        </div>
     );
 }
 

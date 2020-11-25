@@ -96,10 +96,6 @@ const update = async (req, res = response) => {
         // debemos colocar el nombre de user que queremos actualizar
         campos.email = email;
 
-        // si actualizamos password, la volvemos a encriptar.
-        const salt = bcrypt.genSaltSync();
-        campos.password = bcrypt.hashSync(password, salt);
-
         //actualizamos
         const userStored = await User.findByIdAndUpdate(id, campos, { new: true });
 

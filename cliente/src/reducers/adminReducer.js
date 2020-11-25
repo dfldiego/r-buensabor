@@ -8,6 +8,9 @@ import {
     COMENZAR_DESCARGA_USUARIOS,
     DESCARGA_USUARIOS_EXITO,
     DESCARGA_USUARIOS_ERROR,
+    OBTENER_USUARIO_ELIMINAR,
+    USUARIO_ELIMINADO_EXITO,
+    USUARIO_ELIMINADO_ERROR,
 } from '../types';
 
 const initialState = {
@@ -17,6 +20,7 @@ const initialState = {
     usuarios: [],
     error: null,
     mensaje: null,
+    usuario_eliminar: null,
 }
 
 export default function (state = initialState, action) {
@@ -53,6 +57,7 @@ export default function (state = initialState, action) {
             }
         case AGREGAR_USUARIO_ERROR:
         case DESCARGA_USUARIOS_ERROR:
+        case USUARIO_ELIMINADO_ERROR:
             return {
                 ...state,
                 loading: false,
@@ -66,6 +71,22 @@ export default function (state = initialState, action) {
                 error: null,
                 mensaje: null,
                 usuarios: action.payload,
+            }
+        case OBTENER_USUARIO_ELIMINAR:
+            return {
+                ...state,
+                usuario_eliminar: action.payload
+            }
+        case USUARIO_ELIMINADO_EXITO:
+            return {
+                ...state,
+                usuario_eliminar: null,
+                usuarios: state.usuarios.map(usuario =>
+                    usuario._id === action.payload._id ?
+                        usuario = action.payload
+                        :
+                        usuario
+                )
             }
         default:
             return state;
