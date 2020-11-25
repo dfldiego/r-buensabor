@@ -2,16 +2,15 @@ import React, { Fragment } from 'react'
 
 const usuarioDB = ({ usuario }) => {
 
-    const { nombre, apellido, domicilio, nro_domicilio, rol } = usuario;
+    const { name, email, telephoneNumber, role } = usuario;
 
     return (
         <Fragment>
             <tr>
-                <td>{nombre}</td>
-                <td>{apellido}</td>
-                <td>{domicilio}</td>
-                <td>{nro_domicilio}</td>
-                <td>{rol}</td>
+                <td>{name}</td>
+                <td>{email}</td>
+                <td>{telephoneNumber}</td>
+                <td>{role}</td>
                 <td>
                     <div className="acciones">
                         <button className="boton_editar">

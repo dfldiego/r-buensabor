@@ -17,8 +17,9 @@ export function obtenerUsuariosAction() {
         dispatch(descargarUsuarios());
 
         try {
-            const respuesta = await clienteAxios.get('/admin');
-            dispatch(descargarUsuariosExito(respuesta.data));
+            const respuesta = await clienteAxios.get('/api/users');
+            console.log(respuesta);
+            dispatch(descargarUsuariosExito(respuesta.data.users));
         } catch (error) {
             console.log(error);
             dispatch(descargarUsuariosError('Error al descargar los usuarios'));

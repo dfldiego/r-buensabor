@@ -13,6 +13,8 @@ const GetUsuarios = () => {
 
     const error = useSelector(state => state.admin.error);
     const cargando = useSelector(state => state.admin.loading);
+    const usuarios_state = useSelector(state => state.admin.usuarios);
+    console.log(usuarios_state);
 
     useEffect(() => {
         // consultar la api
@@ -22,10 +24,6 @@ const GetUsuarios = () => {
 
         // eslint-disable-next-line
     }, []);
-
-    const usuarios_state = useSelector(state => state.admin.usuarios);
-    console.log(usuarios_state);
-
 
     return (
         <Fragment>
@@ -37,11 +35,10 @@ const GetUsuarios = () => {
                 <thead>
                     <tr>
                         <th scope="col">Nombre</th>
-                        <th scope="col">Apellido</th>
-                        <th scope="col">Domicilio</th>
-                        <th scope="col">Nro. Domicilio</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Nro. Teléfono</th>
                         <th scope="col">Rol</th>
-                        <th scope="col">Estado</th>
+                        <th scope="col">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,7 +46,7 @@ const GetUsuarios = () => {
                         usuarios_state.length === 0 ? 'No hay usuarios' :
                             usuarios_state.map((usuario) => (
                                 <UsuarioDB
-                                    key={usuario.id}
+                                    key={usuario._id}
                                     usuario={usuario}
                                 />
                             ))

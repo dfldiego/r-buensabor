@@ -18,6 +18,7 @@ const list = async (req, res = response) => {
             users
         });
     } catch (error) {
+        console.log(error);
         res.status(500).json({
             ok: false,
             msg: error
@@ -54,6 +55,7 @@ const create = async (req, res = response) => {
         });
 
     } catch (error) {
+        console.log(error);
         res.status(500).json({
             ok: false,
             msg: error
@@ -62,6 +64,7 @@ const create = async (req, res = response) => {
 }
 
 const update = async (req, res = response) => {
+
     // obtenemos el id por parametro
     const id = req.params.id;
 
@@ -77,7 +80,7 @@ const update = async (req, res = response) => {
 
         // El usuario existe y queremos actualizarlo
         // destructuring al dato que actualizará el usuario
-        const { email, ...campos } = req.body;
+        const { email, password, ...campos } = req.body;
 
         // verificamos que el email del usuario no exista en la BD
         if (userDB.email !== email) {
@@ -93,6 +96,10 @@ const update = async (req, res = response) => {
         // debemos colocar el nombre de user que queremos actualizar
         campos.email = email;
 
+        // si actualizamos password, la volvemos a encriptar.
+        const salt = bcrypt.genSaltSync();
+        campos.password = bcrypt.hashSync(password, salt);
+
         //actualizamos
         const userStored = await User.findByIdAndUpdate(id, campos, { new: true });
 
@@ -101,12 +108,14 @@ const update = async (req, res = response) => {
             userStored
         });
     } catch (error) {
+        console.log(error);
         return res.status(500).json({
             ok: false,
             msg: error
         });
     }
 }
+
 const remove = async (req, res = response) => {
 
     let id = req.params.id;
