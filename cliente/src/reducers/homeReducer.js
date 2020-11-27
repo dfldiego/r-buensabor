@@ -15,7 +15,6 @@ const initialState = {
     esta_logueado: false,
     alerta: null,
     mensaje: '',
-    usuarios: [],
 }
 
 export default function (state = initialState, action) {
@@ -39,7 +38,6 @@ export default function (state = initialState, action) {
                 ...state,
                 alerta: null,
                 mensaje: '',
-                usuarios: [...state.usuarios, action.payload]
             }
         case LOGIN_ERROR:
         case REGISTRO_ERROR:

@@ -14,6 +14,8 @@ import {
     OBTENER_USUARIO_EDITAR,
     USUARIO_EDITADO_EXITO,
     USUARIO_EDITADO_ERROR,
+    REGISTRO_EXITOSO,
+    REGISTRO_ERROR,
 } from '../types';
 
 const initialState = {
@@ -60,6 +62,7 @@ export default function (state = initialState, action) {
                 mensaje: null,
             }
         case AGREGAR_USUARIO_EXITO:
+        case REGISTRO_EXITOSO:
             return {
                 ...state,
                 loading: false,
@@ -72,6 +75,7 @@ export default function (state = initialState, action) {
         case DESCARGA_USUARIOS_ERROR:
         case USUARIO_ELIMINADO_ERROR:
         case USUARIO_EDITADO_ERROR:
+        case REGISTRO_ERROR:
             return {
                 ...state,
                 loading: false,

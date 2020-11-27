@@ -7,7 +7,10 @@ import {
     REGISTRO_ERROR,
     LOGIN_EXITOSO,
     LOGIN_ERROR,
+    AGREGAR_USUARIO_EXITO,
+    AGREGAR_USUARIO_ERROR,
 } from '../types';
+import clienteAxios from '../config/axios';
 
 //aca es donde vamos a loguear un usuario
 export function loginAction(msj, datos) {
@@ -33,7 +36,7 @@ const loginUsuarioError = msj => ({
 
 //aca es donde vamos a registrar un usuario
 export function registrarAction(datos) {
-    return (dispatch) => {
+    return async (dispatch) => {
 
         const { email, password } = datos;
 
@@ -47,9 +50,25 @@ export function registrarAction(datos) {
             return;
         }
 
-        dispatch(registrarUsuario(datos));
+        // ACA SALTA UN ERROR CUANDO EL EMAIL YA EXISTE EN BBDD
+        // APRENDER A PASAR LOS ERRORES DE LA BBDD A LA VISTA
+
+        // hacemos consulta a la BBDD
+        try {
+            // insertar en la API
+            await clienteAxios.post('/api/users', datos)
+            // si todo sale bien
+            dispatch(registrarUsuario(datos));
+        } catch (error) {
+            console.log(error);
+            // si hay un error
+            dispatch(registrarUsuarioError('Hubo un error, por favor comuniquese con el administrador'));
+        }
     }
 }
+/* 
+    AGREGAR_USUARIO_EXITO,
+    AGREGAR_USUARIO_ERROR, */
 
 const registrarUsuario = datos => ({
     type: REGISTRO_EXITOSO,
