@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import './CrearUsuario.css';
 import { useDispatch, useSelector } from 'react-redux';
 // Material Icons
@@ -8,6 +8,8 @@ import ClearIcon from '@material-ui/icons/Clear';
 import {
     abrirCerrarAgregarUsuarioAction,
     crearNuevoUsuarioAction,
+    editarUsuarioAction,
+    obtenerUsuariosAction,
 } from '../../actions/adminActions';
 
 function CrearUsuario() {
@@ -29,15 +31,20 @@ function CrearUsuario() {
         });
     }
 
+
+
     /************USAR DISPATCH: paso el nuevo state al action **********************/
     const dispatch = useDispatch();
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarUsuarioAction(nuevo_estado));
     const agregar_usuario_action = (datosNuevoUsuario) => dispatch(crearNuevoUsuarioAction(datosNuevoUsuario));
+    const usuario_editar_action = (datosUsuario) => dispatch(editarUsuarioAction(datosUsuario));
+    const cargarUsuarios = () => dispatch(obtenerUsuariosAction());
 
     /*************USAR USE SELECTOR: capturo el valor de state del store  *******************/
     let cerrar_modal_state_store = useSelector(state => state.admin.abrir_agregar_usuario);
     let error_admin = useSelector(state => state.admin.error);
     let mensaje_admin = useSelector(state => state.admin.mensaje);
+    let usuario_editar_store = useSelector(state => state.admin.usuario_editar);
 
     /***********METODO QUE CIERRA MODAL: modifico el state *************/
     const cerrar_modal = e => {
@@ -52,16 +59,43 @@ function CrearUsuario() {
     const handleSubmitAgregarUsuario = e => {
         e.preventDefault();
 
-        agregar_usuario_action(usuario);
+        // si apretamos boton editar
+        if (usuario_editar_store) {
+            // le pasamos al usuarioEditado el id del usuario original
+            usuario._id = usuario_editar_store._id;
+            // pasamos los datos del usuario editado al action
+            usuario_editar_action(usuario);
+            //cargamos los usuarios en la tabla
+            cargarUsuarios();
+            //finalmente, cerramos modal
+            cerrar_modal_state_store = false;
+            cerrar_modal_callAction(cerrar_modal_state_store);
+        } else {
+            agregar_usuario_action(usuario);
 
-        setUsuario({
-            name: '',
-            email: '',
-            password: '',
-            telephoneNumber: 0,
-            role: ''
-        })
+            setUsuario({
+                name: '',
+                email: '',
+                password: '',
+                telephoneNumber: 0,
+                role: ''
+            })
+        }
     }
+
+    useEffect(() => {
+        if (usuario_editar_store) {
+            setUsuario({
+                name: usuario_editar_store.name,
+                email: usuario_editar_store.email,
+                password: usuario_editar_store.password,
+                telephoneNumber: usuario_editar_store.telephoneNumber,
+                role: usuario_editar_store.role
+            })
+        }
+
+        // eslint-disable-next-line
+    }, [usuario_editar_store])
 
     return (
         <Fragment>
@@ -96,17 +130,22 @@ function CrearUsuario() {
                                     onChange={handleChange}
                                 />
                             </div>
-                            <div className="form-row">
-                                <label>Password</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Password"
-                                    name="password"
-                                    value={password}
-                                    onChange={handleChange}
-                                />
-                            </div>
+                            {
+                                usuario_editar_store === null ?
+                                    <div className="form-row">
+                                        <label>Password</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Password"
+                                            name="password"
+                                            value={password}
+                                            onChange={handleChange}
+                                        />
+                                    </div>
+                                    :
+                                    null
+                            }
                             <div className="form-row">
                                 <label>Nro Telefono</label>
                                 <input
@@ -132,10 +171,17 @@ function CrearUsuario() {
                                     <option value="USER_ROLE">Usuario</option>
                                 </select>
                             </div>
+                            {
+                                usuario_editar_store ?
+                                    <button
+                                        type="submit"
+                                    >Editar</button>
+                                    :
+                                    <button
+                                        type="submit"
+                                    >Agregar</button>
+                            }
 
-                            <button
-                                type="submit"
-                            >Agregar</button>
                         </form>
                     </div>
                 </div>

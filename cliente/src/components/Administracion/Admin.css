@@ -1,3 +1,8 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
 .fondo-negro {
     background-color: #333333;
 }
@@ -19,4 +24,17 @@
     padding: 1rem;
     border-radius: 0.5rem;
     margin-bottom: 1rem;
+}
+
+#sidebar {
+    background: #151719;
+}
+
+#sidebar ul li {
+    color: #e7e5e5d7;
+    text-align: center;
+    padding: 15px 10px;
+    list-style: none;
+    border-bottom: 1px solid #e7e5e5d7;
+    cursor: pointer;
 }

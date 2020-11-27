@@ -11,6 +11,9 @@ import {
     OBTENER_USUARIO_ELIMINAR,
     USUARIO_ELIMINADO_EXITO,
     USUARIO_ELIMINADO_ERROR,
+    OBTENER_USUARIO_EDITAR,
+    USUARIO_EDITADO_EXITO,
+    USUARIO_EDITADO_ERROR,
 } from '../types';
 
 const initialState = {
@@ -21,6 +24,8 @@ const initialState = {
     error: null,
     mensaje: null,
     usuario_eliminar: null,
+    usuario_editar: null,
+    mostrarUsuarios: false,
 }
 
 export default function (state = initialState, action) {
@@ -30,8 +35,16 @@ export default function (state = initialState, action) {
                 ...state,
                 en_usuario: true,
             }
-        case ABRIR_AGREGAR_USUARIOS:
         case CERRAR_AGREGAR_USUARIOS:
+            return {
+                ...state,
+                abrir_agregar_usuario: action.payload,
+                mensaje: null,
+                error: null,
+                usuario_eliminar: null,
+                usuario_editar: null,
+            }
+        case ABRIR_AGREGAR_USUARIOS:
             return {
                 ...state,
                 abrir_agregar_usuario: action.payload,
@@ -58,11 +71,13 @@ export default function (state = initialState, action) {
         case AGREGAR_USUARIO_ERROR:
         case DESCARGA_USUARIOS_ERROR:
         case USUARIO_ELIMINADO_ERROR:
+        case USUARIO_EDITADO_ERROR:
             return {
                 ...state,
                 loading: false,
                 error: true,
                 mensaje: action.payload,
+                usuario_eliminar: null,
             }
         case DESCARGA_USUARIOS_EXITO:
             return {
@@ -71,11 +86,17 @@ export default function (state = initialState, action) {
                 error: null,
                 mensaje: null,
                 usuarios: action.payload,
+                mostrarUsuarios: true,
             }
         case OBTENER_USUARIO_ELIMINAR:
             return {
                 ...state,
                 usuario_eliminar: action.payload
+            }
+        case OBTENER_USUARIO_EDITAR:
+            return {
+                ...state,
+                usuario_editar: action.payload,
             }
         case USUARIO_ELIMINADO_EXITO:
             return {
@@ -87,6 +108,17 @@ export default function (state = initialState, action) {
                         :
                         usuario
                 )
+            }
+        case USUARIO_EDITADO_EXITO:
+            return {
+                ...state,
+                usuarios: state.usuarios.map(usuario =>
+                    usuario._id === action.payload._id ?
+                        usuario = action.payload
+                        :
+                        usuario
+                ),
+                usuario_editar: null,
             }
         default:
             return state;

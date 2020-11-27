@@ -1,8 +1,10 @@
 import React, { Fragment, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
     eliminarUsuarioAction,
     obtenerUsuariosAction,
+    abrirCerrarAgregarUsuarioAction,
+    obtenerUsuarioAction,
 } from '../../actions/adminActions';
 import Swal from 'sweetalert2';
 
@@ -12,10 +14,10 @@ const Usuariodb = ({ usuario }) => {
     const dispatch = useDispatch();
     /** ENVIAR AL STORE **/
     const baja_usuario = datos_usuario => dispatch(eliminarUsuarioAction(datos_usuario));
-    // consultar la api
     const cargarUsuarios = () => dispatch(obtenerUsuariosAction());
+    const abrir_cerrar_usuario = estadoEditarUsuario => dispatch(abrirCerrarAgregarUsuarioAction(estadoEditarUsuario));
+    const obtener_usuario_editar = usuario => dispatch(obtenerUsuarioAction(usuario));
     /** OBTENER DEL STORE **/
-    let usuario_eliminado_state = useSelector(state => state.admin.usuario_eliminar);
 
     /** USE EFFECT: cada vez que se modifica usuarios */
     useEffect(() => {
@@ -23,7 +25,7 @@ const Usuariodb = ({ usuario }) => {
         cargarUsuarios();
 
         // eslint-disable-next-line
-    }, [usuario_eliminado_state]);
+    }, []);
 
     /** EVENTO DE ELIMINAR USUARIO **/
     const handleClick_eliminar_usuario = async datos_usuario => {
@@ -47,6 +49,11 @@ const Usuariodb = ({ usuario }) => {
 
     }
 
+    /** EVENTO PARA EDITAR USUARIO **/
+    const handleClick_editar_usuario = usuario => {
+        abrir_cerrar_usuario(true);
+        obtener_usuario_editar(usuario);
+    }
     return (
         <Fragment>
             <tr>
@@ -58,6 +65,7 @@ const Usuariodb = ({ usuario }) => {
                     <div className="acciones">
                         <button
                             className="boton_editar"
+                            onClick={() => handleClick_editar_usuario(usuario)}
                         >
                             Editar
                         </button>

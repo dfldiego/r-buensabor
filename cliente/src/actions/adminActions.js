@@ -11,9 +11,58 @@ import {
     OBTENER_USUARIO_ELIMINAR,
     USUARIO_ELIMINADO_EXITO,
     USUARIO_ELIMINADO_ERROR,
+    OBTENER_USUARIO_EDITAR,
+    USUARIO_EDITADO_EXITO,
+    USUARIO_EDITADO_ERROR,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
+
+/**********************  para editar un usuario de la BBDD ********************************/
+export function obtenerUsuarioAction(datos_usuario) {
+    return async (dispatch) => {
+        dispatch(editarUsuario(datos_usuario))
+    }
+}
+
+export function editarUsuarioAction(datos_usuario) {
+    return async (dispatch) => {
+        const { name, email, telephoneNumber, role } = datos_usuario;
+        // validar campos vacios
+        if (name === '' || email === '' || role === '') {
+            dispatch(agregarUsuarioError('Todos los campos son obligatorios'));
+            return;
+        }
+        if (telephoneNumber <= 0) {
+            dispatch(agregarUsuarioError('Nro de Teléfono no válido'));
+            return;
+        }
+
+        try {
+            await clienteAxios.put(`/api/users/${datos_usuario._id}`, datos_usuario);
+            dispatch(editarUsuarioExito(datos_usuario));
+        } catch (error) {
+            console.log(error);
+            dispatch(editarUsuarioError('Error al editar el usuario'));
+        }
+    }
+}
+
+const editarUsuario = usuario => ({
+    type: OBTENER_USUARIO_EDITAR,
+    payload: usuario
+})
+
+const editarUsuarioExito = usuario => ({
+    type: USUARIO_EDITADO_EXITO,
+    payload: usuario
+})
+
+const editarUsuarioError = msj => ({
+    type: USUARIO_EDITADO_ERROR,
+    payload: msj
+})
+
 
 /**********************  para eliminar un usuario de la BBDD ********************************/
 export function eliminarUsuarioAction(datos_usuario) {

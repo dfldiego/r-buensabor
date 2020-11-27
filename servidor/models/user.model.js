@@ -9,7 +9,7 @@ let roles = {
 const UserSchema = Schema({
     name: {
         type: String,
-        required: [true, 'The name is required']
+        required: [false]
     },
     email: {
         type: String,
@@ -26,7 +26,7 @@ const UserSchema = Schema({
     },
     telephoneNumber: {
         type: Number,
-        required: [true, 'The Telephone number is required']
+        required: [false]
     },
     role: {
         type: String,
