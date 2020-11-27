@@ -52,10 +52,24 @@ function Usuario() {
         <Fragment>
             <div className="container">
                 <div className="row one">
-                    <button
-                        href="#"
-                        onClick={handleClick_abrir_agregar_usuario}
-                    >Agregar Usuario</button>
+                    <div>
+                        <button
+                            href="#"
+                            onClick={handleClick_abrir_agregar_usuario}
+                        >Agregar Usuario</button>
+                    </div>
+                    <div className="buscador">
+                        <input
+                            type="text"
+                            name="buscador"
+                            className="input_buscador"
+                        />
+
+                        <button
+                            href="#"
+                            className="button_buscador"
+                        >Buscar</button>
+                    </div>
                 </div>
                 <GetUsuarios />
             </div>
