@@ -34,7 +34,7 @@ const Login = () => {
 
     /*************USAR USE SELECTOR: capturo el valor de state del store  *******************/
     let cerrar_modal_state_store = useSelector(state => state.home.abrir_modal);
-    let usuarios_state_store = useSelector(state => state.home.usuarios);
+    let usuarios_state_store = useSelector(state => state.admin.usuarios);
     let alerta_state_store = useSelector(state => state.home.alerta);
     let mensaje_state_store = useSelector(state => state.home.mensaje);
 

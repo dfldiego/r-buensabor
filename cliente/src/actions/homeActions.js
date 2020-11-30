@@ -7,8 +7,6 @@ import {
     REGISTRO_ERROR,
     LOGIN_EXITOSO,
     LOGIN_ERROR,
-    AGREGAR_USUARIO_EXITO,
-    AGREGAR_USUARIO_ERROR,
 } from '../types';
 import clienteAxios from '../config/axios';
 
@@ -56,7 +54,7 @@ export function registrarAction(datos) {
         // hacemos consulta a la BBDD
         try {
             // insertar en la API
-            await clienteAxios.post('/api/users', datos)
+            await clienteAxios.post('/api/register', datos)
             // si todo sale bien
             dispatch(registrarUsuario(datos));
         } catch (error) {

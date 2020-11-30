@@ -3,12 +3,13 @@
  */
 
 const { Router } = require('express');
+const { checkAdminRole, checkToken } = require('../middlewares/authentication');
 const userController = require('../controllers/user.controller');
 const router = Router();
 
-router.get('/', userController.list);
-router.post('/', userController.create);
-router.put('/:id', userController.update);
-router.delete('/:id', userController.remove);
+router.get('/', [checkToken], userController.list);
+router.post('/', [checkToken, checkAdminRole], userController.create);
+router.put('/:id', [checkToken], userController.update);
+router.delete('/:id', [checkToken], userController.remove);
 
 module.exports = router;

@@ -73,6 +73,7 @@ const Register = () => {
             email: "",
             password: ""
         });
+        cerrar_modal_callAction(false);
     }
 
     return (
