@@ -1,14 +1,15 @@
 const User = require('../models/user.model');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-
-const { OAuth2Client } = require('google-auth-library');
-const client = new OAuth2Client(process.env.CLIENT_ID);
+const { googleVerify } = require('../helpers/google-verify');
+const { generateJWT } = require('../helpers/generate-jwt');
 
 const login = async (req, res) => {
     let body = req.body;
-    console.log(body);
-    User.findOne({ email: body.email }, (err, user) => {
+
+    // buscar en la BD un user que coincida con el email pasado por cliente.
+    await User.findOne({ email: body.email }, async (err, user) => {
+        // validamos si hay un error en el servidor.
         if (err) {
             return res.status(500).json({
                 ok: false,
@@ -16,6 +17,7 @@ const login = async (req, res) => {
             });
         }
 
+        // validamos el usuario
         if (!user) {
             return res.status(400).json({
                 ok: false,
@@ -25,6 +27,7 @@ const login = async (req, res) => {
             });
         }
 
+        // validamos el password
         if (!bcrypt.compareSync(body.password, user.password)) {
             return res.status(400).json({
                 ok: false,
@@ -34,9 +37,10 @@ const login = async (req, res) => {
             });
         }
 
-        let token = jwt.sign({
-            user
-        }, process.env.SEED, { expiresIn: process.env.EXP_TOKEN });
+        // si email y password es correcto
+        // creamos el token. 
+        // GENERAR UN TOKEN -- JWT
+        const token = await generateJWT(user._id);
 
         res.json({
             ok: true,
@@ -47,16 +51,24 @@ const login = async (req, res) => {
 };
 
 const loginGoogle = async (req, res) => {
+
+    // verificamos el token pasado
     let token = req.body.idtoken;
-    let googleUser = await verify(token).catch(err => {
+    console.log(token);
+    // verificamos los datos de google. Si hay error -> salta un 403
+    let googleUser = await googleVerify(token).catch(err => {
         return res.status(403).json({
             ok: false,
             err
         });
     });
 
-    User.findOne({ email: googleUser.email }, (err, userDB) => {
+    // buscamos en la BD un email con los datos del usuario de google
+    await User.findOne({ email: googleUser.email }, async (err, userDB) => {
+
+        // si existe un usuario con ese email
         if (userDB) {
+            // verificamos el estado del usuario. si no es de google mandamos un msj de error
             if (userDB.google === false) {
                 return res.status(400).json({
                     ok: false,
@@ -65,9 +77,10 @@ const loginGoogle = async (req, res) => {
                     }
                 });
             }
-            let token = jwt.sign({
-                user: userDB
-            }, process.env.SEED, { expiresIn: process.env.EXP_TOKEN });
+
+            // si usuario es de google
+            // GENERAR UN TOKEN -- JWT
+            const token = await generateJWT(userDB.id);
 
             return res.json({
                 ok: true,
@@ -76,14 +89,19 @@ const loginGoogle = async (req, res) => {
             });
         }
 
+        // si no existe un usuario con ese email en la BD
+        // lo creamos un usuario con los datos de google.
         let user = new User();
         user.name = googleUser.name;
         user.email = googleUser.email;
         user.img = googleUser.img;
         user.google = true;
+        // google no nos pasa el pass, pero le agregamos algo por defecto.
         user.password = '###';
 
-        user.save((err, userStored) => {
+        // guardamos el usuario en la BD
+        await user.save(async (err, userStored) => {
+            // si hay error
             if (err) {
                 return res.status(500).json({
                     ok: false,
@@ -91,9 +109,9 @@ const loginGoogle = async (req, res) => {
                 });
             };
 
-            let token = jwt.sign({
-                user: userStored
-            }, process.env.SEED, { expiresIn: process.env.EXP_TOKEN });
+            // si no hay error 
+            // GENERAR UN TOKEN -- JWT
+            const token = await generateJWT(userStored.id);
 
             return res.json({
                 ok: true,
@@ -102,21 +120,6 @@ const loginGoogle = async (req, res) => {
             });
         });
     });
-};
-
-async function verify(token) {
-    const ticket = await client.verifyIdToken({
-        idToken: token,
-        audience: process.env.CLIENT_ID,
-    });
-    const payload = ticket.getPayload();
-
-    return {
-        name: payload.name,
-        email: payload.email,
-        img: payload.picture,
-        google: true
-    }
 };
 
 module.exports = {
