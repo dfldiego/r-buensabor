@@ -38,6 +38,7 @@ export default function (state = initialState, action) {
                 ...state,
                 alerta: null,
                 mensaje: '',
+                abrir_registrarse: false,
             }
         case LOGIN_ERROR:
         case REGISTRO_ERROR:
