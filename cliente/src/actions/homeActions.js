@@ -36,6 +36,18 @@ const loginUsuarioError = msj => ({
 export function registrarAction(datos) {
     return async (dispatch) => {
 
+        const { email, password } = datos;
+
+        // validar formulario
+        if (email.trim() === '' || password.trim() === '') {
+            dispatch(registrarUsuarioError('Todos los campos son obligatorios'));
+            return;
+        }
+        if (password.length < 6) {
+            dispatch(registrarUsuarioError('El password debe ser de al menos 6 caracteres'));
+            return;
+        }
+
         try {
             // insertarlo en la BD
             await clienteAxios.post('/api/register', datos)
