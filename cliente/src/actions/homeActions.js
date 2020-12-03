@@ -53,14 +53,14 @@ export function registrarAction(datos) {
 
         // hacemos consulta a la BBDD
         try {
-            // insertar en la API
+            // insertarlo en la BD
             await clienteAxios.post('/api/register', datos)
             // si todo sale bien
             dispatch(registrarUsuario(datos));
         } catch (error) {
-            console.log(error);
+            console.log(error.response.data.msg);
             // si hay un error
-            dispatch(registrarUsuarioError('Hubo un error, por favor comuniquese con el administrador'));
+            dispatch(registrarUsuarioError(String(error.response.data.msg)));
         }
     }
 }

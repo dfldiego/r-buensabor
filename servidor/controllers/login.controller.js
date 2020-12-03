@@ -1,6 +1,5 @@
 const User = require('../models/user.model');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const { googleVerify } = require('../helpers/google-verify');
 const { generateJWT } = require('../helpers/generate-jwt');
 
@@ -22,7 +21,7 @@ const login = async (req, res) => {
             return res.status(400).json({
                 ok: false,
                 err: {
-                    message: 'User or password invalid'
+                    message: 'email o contraseña invalido'
                 }
             });
         }
@@ -32,7 +31,7 @@ const login = async (req, res) => {
             return res.status(400).json({
                 ok: false,
                 err: {
-                    message: 'User or password invalid'
+                    message: 'email o contraseña invalido'
                 }
             });
         }
@@ -59,6 +58,7 @@ const loginGoogle = async (req, res) => {
     let googleUser = await googleVerify(token).catch(err => {
         return res.status(403).json({
             ok: false,
+            msg: "Token no válido",
             err
         });
     });
@@ -73,7 +73,7 @@ const loginGoogle = async (req, res) => {
                 return res.status(400).json({
                     ok: false,
                     err: {
-                        message: 'You must use your normal authentication'
+                        message: 'Debes usar una autenticación normal'
                     }
                 });
             }
@@ -91,13 +91,14 @@ const loginGoogle = async (req, res) => {
 
         // si no existe un usuario con ese email en la BD
         // lo creamos un usuario con los datos de google.
-        let user = new User();
-        user.name = googleUser.name;
-        user.email = googleUser.email;
-        user.img = googleUser.img;
-        user.google = true;
         // google no nos pasa el pass, pero le agregamos algo por defecto.
-        user.password = '###';
+        let user = new User({
+            name: googleUser.name,
+            email: googleUser.email,
+            img: googleUser.picture,
+            google: googleUser.google,
+            password: '###',
+        });
 
         // guardamos el usuario en la BD
         await user.save(async (err, userStored) => {

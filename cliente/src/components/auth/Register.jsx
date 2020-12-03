@@ -68,12 +68,15 @@ const Register = () => {
         e.preventDefault();
 
         //enviar al action los datos ingresados
-        registrarAction_callAction(registro);
-        setRegistro({
-            email: "",
-            password: ""
-        });
-        cerrar_modal_callAction(false);
+        await registrarAction_callAction(registro);
+        if (!alerta_state_store && alerta_state_store != null) {
+            setRegistro({
+                email: "",
+                password: ""
+            });
+            cerrar_modal_callAction(false);
+        }
+
     }
 
     return (

@@ -35,7 +35,7 @@ const create = async (req, res = response) => {
         if (existeEmail) {
             return res.status(400).json({
                 ok: false,
-                msg: "There is already an email with that name"
+                msg: "ese email ya se encuentra registrado"
             });
         }
 
@@ -88,7 +88,7 @@ const update = async (req, res = response) => {
             if (existe_user) {
                 return res.status(400).json({
                     ok: false,
-                    msg: 'The user already exists in the DB'
+                    msg: 'El usuario ya existe en la DB'
                 });
             }
         }
@@ -131,7 +131,7 @@ const remove = async (req, res = response) => {
             return res.status(400).json({
                 ok: false,
                 err: {
-                    message: 'User not found'
+                    message: 'Usuario no encontrado'
                 }
             });
         }
