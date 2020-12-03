@@ -38,6 +38,18 @@ const create = async (req, res = response) => {
                 msg: "ese email ya se encuentra registrado"
             });
         }
+        if (email.trim() === '' || password.trim() === '') {
+            return res.status(400).json({
+                ok: false,
+                msg: "Todos los campos son obligatorios"
+            });
+        }
+        if (password.length < 6) {
+            return res.status(400).json({
+                ok: false,
+                msg: "El password debe ser de al menos 6 caracteres"
+            });
+        }
 
         // crear una instancia del nuevo User
         const user = new User(req.body);
@@ -74,7 +86,7 @@ const update = async (req, res = response) => {
         if (!userDB) {
             return res.status(404).json({
                 ok: false,
-                msg: 'There is no user with that id'
+                msg: 'No existe un usuario con ese ID'
             });
         }
 

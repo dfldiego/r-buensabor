@@ -36,22 +36,6 @@ const loginUsuarioError = msj => ({
 export function registrarAction(datos) {
     return async (dispatch) => {
 
-        const { email, password } = datos;
-
-        // validar formulario
-        if (email.trim() === '' || password.trim() === '') {
-            dispatch(registrarUsuarioError('Todos los campos son obligatorios'));
-            return;
-        }
-        if (password.length < 6) {
-            dispatch(registrarUsuarioError('El password debe ser de al menos 6 caracteres'));
-            return;
-        }
-
-        // ACA SALTA UN ERROR CUANDO EL EMAIL YA EXISTE EN BBDD
-        // APRENDER A PASAR LOS ERRORES DE LA BBDD A LA VISTA
-
-        // hacemos consulta a la BBDD
         try {
             // insertarlo en la BD
             await clienteAxios.post('/api/register', datos)
@@ -64,9 +48,6 @@ export function registrarAction(datos) {
         }
     }
 }
-/* 
-    AGREGAR_USUARIO_EXITO,
-    AGREGAR_USUARIO_ERROR, */
 
 const registrarUsuario = datos => ({
     type: REGISTRO_EXITOSO,
