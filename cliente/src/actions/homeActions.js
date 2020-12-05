@@ -7,20 +7,70 @@ import {
     REGISTRO_ERROR,
     LOGIN_EXITOSO,
     LOGIN_ERROR,
+    ESTA_LOGUEADO,
+    NO_ESTA_LOGUEADO,
 } from '../types';
 import clienteAxios from '../config/axios';
 
-//aca es donde vamos a loguear un usuario
-export function loginAction(msj, datos) {
+export function estaLogueadoAction() {
     return (dispatch) => {
-        if (msj === '') {
-            dispatch(loginUsuario(datos));
-            dispatch(cerrarModal(false));
+        var token = localStorage.getItem('token');
+        if (token === null) {
+            dispatch(noestalogueado(null))
         } else {
-            dispatch(loginUsuarioError(msj));
+            dispatch(estaloguado(token));
         }
     }
 }
+
+const estaloguado = token => ({
+    type: ESTA_LOGUEADO,
+    payload: token
+})
+
+const noestalogueado = estado => ({
+    type: NO_ESTA_LOGUEADO,
+    payload: estado
+})
+
+//aca es donde vamos a loguear un usuario
+export function loginAction(datos) {
+    return async (dispatch) => {
+
+        const { email, password } = datos;
+
+        // validaciones
+        if (email.trim() === '' || password.trim() === '') {
+            dispatch(loginUsuarioError('Todos los campos son obligatorios'));
+            return;
+        }
+
+        try {
+            // buscar usuarios en la BD
+            await clienteAxios.post('/login', datos)
+                .then(response => {
+                    // obtenemos datos del response
+                    const { token } = response.data;
+                    // guardamos token en el localStorage
+                    localStorage.setItem('token', token);
+                    dispatch(guardarToken(token));
+                })
+
+            // SI TODO SALE BIEN
+            dispatch(loginUsuario(datos));
+
+        } catch (error) {
+            console.log(error.response.data.err.msg);
+            // si hay un error
+            dispatch(loginUsuarioError(String(error.response.data.err.msg)));
+        }
+    }
+}
+
+const guardarToken = token => ({
+    type: ESTA_LOGUEADO,
+    payload: token
+})
 
 const loginUsuario = datos => ({
     type: LOGIN_EXITOSO,

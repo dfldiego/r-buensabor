@@ -12,16 +12,19 @@ const login = async (req, res) => {
         if (err) {
             return res.status(500).json({
                 ok: false,
-                err
+                msg: err
             });
         }
-
+        if (body.email.trim() === '' || body.password.trim() === '') {
+            dispatch(loginUsuarioError('Todos los campos son obligatorios'));
+            return;
+        }
         // validamos el usuario
         if (!user) {
             return res.status(400).json({
                 ok: false,
                 err: {
-                    message: 'email o contraseña invalido'
+                    msg: 'email o contraseña invalido'
                 }
             });
         }
@@ -31,7 +34,7 @@ const login = async (req, res) => {
             return res.status(400).json({
                 ok: false,
                 err: {
-                    message: 'email o contraseña invalido'
+                    msg: 'email o contraseña invalido'
                 }
             });
         }
@@ -73,7 +76,7 @@ const loginGoogle = async (req, res) => {
                 return res.status(400).json({
                     ok: false,
                     err: {
-                        message: 'Debes usar una autenticación normal'
+                        msg: 'Debes usar una autenticación normal'
                     }
                 });
             }

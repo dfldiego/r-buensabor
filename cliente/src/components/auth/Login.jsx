@@ -30,11 +30,10 @@ const Login = () => {
     const dispatch = useDispatch();
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarModalAction(nuevo_estado));
     const abrir_registrarse_callAction = nuevo_estado => dispatch(abrirRegistrarseAction(nuevo_estado));
-    const loginAction_callAction = (msj, datos) => dispatch(loginAction(msj, datos));
+    const loginAction_callAction = datos => dispatch(loginAction(datos));
 
     /*************USAR USE SELECTOR: capturo el valor de state del store  *******************/
     let cerrar_modal_state_store = useSelector(state => state.home.abrir_modal);
-    let usuarios_state_store = useSelector(state => state.admin.usuarios);
     let alerta_state_store = useSelector(state => state.home.alerta);
     let mensaje_state_store = useSelector(state => state.home.mensaje);
 
@@ -67,26 +66,7 @@ const Login = () => {
     /** METODO SUBMIT**/
     const submitLogin = async (e) => {
         e.preventDefault();
-
-        // validaciones
-        if (email.trim() === '' || password.trim() === '') {
-            loginAction_callAction('Todos los campos son obligatorios', null);
-            return;
-        }
-
-        await usuarios_state_store.forEach(usuario => {
-            if (usuario.email === email && usuario.password === password) {
-                console.log("entra");
-                //enviar al action los datos ingresados
-                loginAction_callAction('', login);
-                // redireaccionar a componente catalogo
-                /* history.push('/catalogo'); */
-                return;
-            } else {
-                loginAction_callAction('No hay un usuario con ese email y contraseña', null);
-            }
-        });
-
+        loginAction_callAction(login);
     }
 
     return (

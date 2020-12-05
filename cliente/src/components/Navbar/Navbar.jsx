@@ -14,7 +14,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 //Actions de Redux
 import {
-    abrirCerrarModalAction
+    abrirCerrarModalAction,
+    estaLogueadoAction,
 } from '../../actions/homeActions';
 
 const Navbar = () => {
@@ -24,6 +25,16 @@ const Navbar = () => {
 
     // utilizar useDispatch y te crea una funcion
     const dispatch = useDispatch();
+
+    const estaLogueado_callAction = () => dispatch(estaLogueadoAction());
+
+    let estaLogueado_token = useSelector(state => state.home.token);
+    let estaLogueado_estado = useSelector(state => state.home.esta_logueado);
+
+    useEffect(() => {
+        estaLogueado_callAction()
+    }, [estaLogueado_token, estaLogueado_estado]);
+
 
     /*************USAR USE SELECTOR: capturo el valor de state del store  *******************/
     const abrir_modal_state_store = useSelector(state => state.home.abrir_modal);
@@ -53,7 +64,7 @@ const Navbar = () => {
     useEffect(() => {
         setOpenModal(abrir_modal_state_store);
         // eslint-disable-next-line
-    }, [abrir_modal_state_store])
+    }, [abrir_modal_state_store, esta_logueado_state_store])
 
     return (
         <Fragment>
@@ -62,7 +73,12 @@ const Navbar = () => {
                     <img src={BuenSaborLogo} alt="Logotipo Buen Sabor" />
                 </Link>
                 <nav className="nav">
-                    <Link to={"/admin"}>Admin</Link>
+                    {
+                        esta_logueado_state_store ?
+                            <Link to={"/admin"}>Admin</Link>
+                            :
+                            null
+                    }
                     {esta_logueado_state_store ? <Link to={"/catalogo"}>Productos</Link> : null}
                     {
                         esta_logueado_state_store ?

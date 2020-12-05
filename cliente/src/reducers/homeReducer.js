@@ -7,6 +7,8 @@ import {
     REGISTRO_ERROR,
     LOGIN_EXITOSO,
     LOGIN_ERROR,
+    ESTA_LOGUEADO,
+    NO_ESTA_LOGUEADO,
 } from '../types';
 
 const initialState = {
@@ -15,6 +17,7 @@ const initialState = {
     esta_logueado: false,
     alerta: null,
     mensaje: '',
+    token: null,
 }
 
 export default function (state = initialState, action) {
@@ -53,6 +56,19 @@ export default function (state = initialState, action) {
                 alerta: null,
                 mensaje: '',
                 esta_logueado: true,
+                abrir_modal: false,
+            }
+        case ESTA_LOGUEADO:
+            return {
+                ...state,
+                token: action.payload,
+                esta_logueado: true,
+            }
+        case NO_ESTA_LOGUEADO:
+            return {
+                ...state,
+                token: action.payload,
+                esta_logueado: false,
             }
         default:
             return state;
