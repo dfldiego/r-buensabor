@@ -1,5 +1,9 @@
 /*******TESTIMONIALES********/
 
+.testimonial {
+    margin-bottom: 5rem;
+}
+
 .testimonial .row {
     display: flex;
     justify-content: space-between;

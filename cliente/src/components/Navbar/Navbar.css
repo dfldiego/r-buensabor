@@ -13,36 +13,49 @@
 }
 
 .navbar a img {
-    width: 10rem;
+    width: 15rem;
 }
 
 
 /**NAVEGACION: NAV**/
-
-.nav a {
-    color: #ffffff;
-    text-decoration: none;
-    font-size: 1.8rem;
-    margin-right: 2rem;
-}
-
 .nav a:hover,
 .usercircle:hover {
     color: #ff6161;
 }
 
-
-.nav img {
-    margin-right: 1rem;
+ul {
+    display: inline-flex;
+    list-style: none;
+    color: #fff;
 }
 
-nav i,
-.usercircle {
-    width: 5rem;
-    border-radius: 50%;
+li {
+    width: 12rem;
+    margin: 1.5rem;
+    padding: 1.5rem;
+}
+
+nav ul li a {
+    text-decoration: none;
     color: #fff;
-    margin-right: 1rem;
-    height: 30px;
-    text-align: center;
-    vertical-align: top;
+    font-size: 1.8rem;
+}
+
+.tamañoImagen {
+    width: 4rem !important;
+}
+
+.sub-menu {
+    display: block;
+    position: absolute;
+}
+
+div li,
+.sub-menu li {
+    margin: 0;
+    padding: 0;
+}
+
+.sub-menu li a {
+    font-size: 1.5rem !important;
 }

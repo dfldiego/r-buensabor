@@ -14,6 +14,10 @@
     color: whitesmoke;
 }
 
+.row {
+    display: flex;
+}
+
 .footer__col__1 {
     flex: 1;
     text-align: center;

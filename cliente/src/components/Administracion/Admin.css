@@ -26,15 +26,18 @@
     margin-bottom: 1rem;
 }
 
-#sidebar {
+#sidebar ul {
     background: #151719;
 }
 
+#sidebar ul {
+    display: inline-block;
+}
+
 #sidebar ul li {
-    color: #e7e5e5d7;
+    color: #b4a6a6d7;
     text-align: center;
     padding: 15px 10px;
     list-style: none;
-    border-bottom: 1px solid #e7e5e5d7;
     cursor: pointer;
 }

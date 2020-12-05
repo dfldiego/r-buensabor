@@ -18,8 +18,6 @@ const Footer = () => {
                             <li>Retornar a la policia</li>
                             <li>Unirse a la afiliación</li>
                         </ul>
-                    </div>
-                    <div className="footer__col__3">
                         <h3>Síguenos</h3>
                         <ul>
                             <li>Facebook</li>
