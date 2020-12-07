@@ -30,9 +30,8 @@ ul {
 }
 
 li {
-    width: 12rem;
-    margin: 1.5rem;
-    padding: 1.5rem;
+    width: 9rem;
+    text-align: center;
 }
 
 nav ul li a {

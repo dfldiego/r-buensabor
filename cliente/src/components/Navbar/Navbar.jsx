@@ -107,7 +107,7 @@ const Navbar = () => {
                                     {
                                         openDropDown ?
                                             <div className="sub-menu">
-                                                <li><Link to={'#'} className="sub-menu-li">Actualizar Perfil</Link></li>
+                                                <li><Link to={'#'} className="sub-menu-li">Perfil</Link></li>
                                                 <li><Link to={'#'} className="sub-menu-li">Cerrar Sesión</Link></li>
                                             </div>
                                             :

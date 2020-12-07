@@ -42,7 +42,7 @@ const login = async (req, res) => {
         // si email y password es correcto
         // creamos el token. 
         // GENERAR UN TOKEN -- JWT
-        const token = await generateJWT(user._id);
+        const token = await generateJWT(user);
 
         res.json({
             ok: true,
@@ -83,7 +83,7 @@ const loginGoogle = async (req, res) => {
 
             // si usuario es de google
             // GENERAR UN TOKEN -- JWT
-            const token = await generateJWT(userDB.id);
+            const token = await generateJWT(userDB);
 
             return res.json({
                 ok: true,
