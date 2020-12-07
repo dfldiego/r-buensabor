@@ -18,6 +18,7 @@ export function validarRolAction(roleRequerido) {
             } else {
                 dispatch(NoValidarRol("No valido para acceder a la ruta"));
             }
+            return true;
         }
     }
 }
