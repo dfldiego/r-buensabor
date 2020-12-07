@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import ModalContainer from '../ModalContainer/ModalContainer';
 import Login from '../auth/Login';
 import Register from '../auth/Register';
+import { validarRol } from "../../helpers/helpers";
 
 // Redux
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,6 +21,8 @@ import {
 
 const Navbar = () => {
 
+    const esAdmin = validarRol('ADMIN_ROLE');
+    console.log(esAdmin);
     //useState locales
     const [openModal, setOpenModal] = useState(null);
     const [openDropDown, setOpenDropDown] = useState(false);
@@ -83,7 +86,7 @@ const Navbar = () => {
                 <nav className="nav">
                     <ul>
                         {
-                            esta_logueado_state_store ?
+                            esta_logueado_state_store && esAdmin ?
                                 <li><Link to={"/admin"}>Admin</Link></li>
                                 :
                                 null
