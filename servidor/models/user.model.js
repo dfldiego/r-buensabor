@@ -28,6 +28,11 @@ const UserSchema = Schema({
         type: Number,
         required: [false]
     },
+    address: {
+        type: Schema.Types.ObjectId,
+        required: [false],
+        ref: 'Address'
+    },
     role: {
         type: String,
         default: 'USER_ROLE',
