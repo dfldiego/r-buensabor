@@ -17,12 +17,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     abrirCerrarModalAction,
     estaLogueadoAction,
+    cerrarSesionAction,
 } from '../../actions/homeActions';
 
 const Navbar = () => {
 
     const esAdmin = validarRol('ADMIN_ROLE');
-    console.log(esAdmin);
+    /* console.log(esAdmin); */
     //useState locales
     const [openModal, setOpenModal] = useState(null);
     const [openDropDown, setOpenDropDown] = useState(false);
@@ -33,6 +34,7 @@ const Navbar = () => {
     // manda llamar el action de homeActions
     const estaLogueado_callAction = () => dispatch(estaLogueadoAction());
     const abrir_cerrar_Modal = estado_modal => dispatch(abrirCerrarModalAction(estado_modal));
+    const cerrar_sesion_callAction = () => dispatch(cerrarSesionAction());
 
     /*************USAR USE SELECTOR: capturo el valor de state del store  *******************/
     const abrir_modal_state_store = useSelector(state => state.home.abrir_modal);
@@ -77,6 +79,12 @@ const Navbar = () => {
         }
     }
 
+    const handleClick_cerrar_sesion = e => {
+        e.preventDefault();
+        cerrar_sesion_callAction();
+
+    }
+
     return (
         <Fragment>
             <div className="navbar contenedor">
@@ -110,8 +118,17 @@ const Navbar = () => {
                                     {
                                         openDropDown ?
                                             <div className="sub-menu">
-                                                <li><Link to={'#'} className="sub-menu-li">Perfil</Link></li>
-                                                <li><Link to={'#'} className="sub-menu-li">Cerrar Sesión</Link></li>
+                                                <li>
+                                                    <Link to={'#'} className="sub-menu-li">Perfil</Link>
+                                                </li>
+                                                <li>
+                                                    <Link
+                                                        to={'#'}
+                                                        className="sub-menu-li"
+                                                        onClick={handleClick_cerrar_sesion}
+                                                    >Cerrar Sesión
+                                                    </Link>
+                                                </li>
                                             </div>
                                             :
                                             null

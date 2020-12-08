@@ -9,9 +9,24 @@ import {
     LOGIN_ERROR,
     ESTA_LOGUEADO,
     NO_ESTA_LOGUEADO,
+    CERRAR_SESION,
 } from '../types';
 import clienteAxios from '../config/axios';
 
+/************ CERRAR SESION  ***************/
+export function cerrarSesionAction() {
+    return (dispatch) => {
+        localStorage.clear();
+        dispatch(cerrar_sesion());
+    }
+}
+
+const cerrar_sesion = () => ({
+    type: CERRAR_SESION,
+    payload: null,
+})
+
+/*************VERIFICA SI ESTA LOGUEADO OBTENIENDO TOKEN DEL LOCALSTORAGE ***/
 export function estaLogueadoAction() {
     return (dispatch) => {
         var token = localStorage.getItem('token');

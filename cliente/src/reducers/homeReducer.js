@@ -9,6 +9,7 @@ import {
     LOGIN_ERROR,
     ESTA_LOGUEADO,
     NO_ESTA_LOGUEADO,
+    CERRAR_SESION,
 } from '../types';
 
 const initialState = {
@@ -65,6 +66,7 @@ export default function (state = initialState, action) {
                 esta_logueado: true,
             }
         case NO_ESTA_LOGUEADO:
+        case CERRAR_SESION:
             return {
                 ...state,
                 token: action.payload,
