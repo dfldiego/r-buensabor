@@ -55,7 +55,7 @@ const login = async (req, res) => {
 const loginGoogle = async (req, res) => {
 
     // verificamos el token pasado
-    let token = req.body.idtoken;
+    let token = req.body.tokenId;
     console.log(token);
     // verificamos los datos de google. Si hay error -> salta un 403
     let googleUser = await googleVerify(token).catch(err => {
@@ -67,8 +67,9 @@ const loginGoogle = async (req, res) => {
     });
 
     // buscamos en la BD un email con los datos del usuario de google
-    await User.findOne({ email: googleUser.email }, async (err, userDB) => {
-
+    User.findOne({ email: googleUser.email }, async (err, userDB) => {
+        console.log(googleUser.email);
+        console.log("entra a findOne");
         // si existe un usuario con ese email
         if (userDB) {
             // verificamos el estado del usuario. si no es de google mandamos un msj de error
@@ -77,14 +78,15 @@ const loginGoogle = async (req, res) => {
                     ok: false,
                     err: {
                         msg: 'Debes usar una autenticación normal'
-                    }
+                    },
+                    err
                 });
             }
-
+            console.log("entra a findOne2");
             // si usuario es de google
             // GENERAR UN TOKEN -- JWT
-            const token = await generateJWT(userDB);
-
+            const token = await generateJWT(userDB._id);
+            console.log(token);
             return res.json({
                 ok: true,
                 user: userDB,
@@ -102,20 +104,22 @@ const loginGoogle = async (req, res) => {
             google: googleUser.google,
             password: '###',
         });
+        console.log(user);
 
         // guardamos el usuario en la BD
-        await user.save(async (err, userStored) => {
+        user.save(async (err, userStored) => {
             // si hay error
             if (err) {
                 return res.status(500).json({
                     ok: false,
+                    msg: "Error al grabar usuario en la DB",
                     err
                 });
             };
 
             // si no hay error 
             // GENERAR UN TOKEN -- JWT
-            const token = await generateJWT(userStored.id);
+            const token = await generateJWT(userStored._id);
 
             return res.json({
                 ok: true,

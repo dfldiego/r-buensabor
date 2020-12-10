@@ -10,6 +10,7 @@ import {
     ESTA_LOGUEADO,
     NO_ESTA_LOGUEADO,
     CERRAR_SESION,
+    ROL_USUARIO,
 } from '../types';
 
 const initialState = {
@@ -19,6 +20,7 @@ const initialState = {
     alerta: null,
     mensaje: '',
     token: null,
+    rol: null,
 }
 
 export default function (state = initialState, action) {
@@ -71,6 +73,12 @@ export default function (state = initialState, action) {
                 ...state,
                 token: action.payload,
                 esta_logueado: false,
+                rol: null,
+            }
+        case ROL_USUARIO:
+            return {
+                ...state,
+                rol: action.payload
             }
         default:
             return state;

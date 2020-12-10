@@ -10,8 +10,62 @@ import {
     ESTA_LOGUEADO,
     NO_ESTA_LOGUEADO,
     CERRAR_SESION,
+    ROL_USUARIO,
 } from '../types';
 import clienteAxios from '../config/axios';
+
+/************ LOGIN - GOOGLE ***************/
+export function loginGoogleAction(datos) {
+    return async (dispatch) => {
+
+        try {
+            // buscar usuarios en la BD
+            await clienteAxios.post('/login-google', datos)
+                .then(response => {
+                    console.log("entra a then");
+                    console.log(response);
+                    // obtenemos datos del response
+                    const { token, user } = response.data;
+                    console.log(token);
+                    // guardamos token en el localStorage
+                    localStorage.setItem('token', token);
+                    dispatch(guardarTokenGoogle(token));
+                    dispatch(guardarRol(user.role));
+                })
+
+            // SI TODO SALE BIEN
+            dispatch(loginGoogleUsuario(true));
+
+
+
+        } catch (error) {
+            console.log(error.response.data.msg);
+            console.log(error.response.data.err.errors.email.message);
+            // si hay un error
+            dispatch(loginGoogleUsuarioError(String(error.response.data.msg)));
+        }
+    }
+}
+
+const guardarRol = role => ({
+    type: ROL_USUARIO,
+    payload: role
+})
+
+const guardarTokenGoogle = token => ({
+    type: ESTA_LOGUEADO,
+    payload: token
+})
+
+const loginGoogleUsuario = estado => ({
+    type: LOGIN_EXITOSO,
+    payload: estado
+})
+
+const loginGoogleUsuarioError = msj => ({
+    type: LOGIN_ERROR,
+    payload: msj
+})
 
 /************ CERRAR SESION  ***************/
 export function cerrarSesionAction() {
@@ -65,10 +119,11 @@ export function loginAction(datos) {
             await clienteAxios.post('/login', datos)
                 .then(response => {
                     // obtenemos datos del response
-                    const { token } = response.data;
+                    const { token, user } = response.data;
                     // guardamos token en el localStorage
                     localStorage.setItem('token', token);
                     dispatch(guardarToken(token));
+                    dispatch(guardarRolusuario(user.role));
                 })
 
             // SI TODO SALE BIEN
@@ -81,6 +136,11 @@ export function loginAction(datos) {
         }
     }
 }
+
+const guardarRolusuario = role => ({
+    type: ROL_USUARIO,
+    payload: role
+})
 
 const guardarToken = token => ({
     type: ESTA_LOGUEADO,

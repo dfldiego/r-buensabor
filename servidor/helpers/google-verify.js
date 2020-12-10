@@ -11,6 +11,9 @@ const googleVerify = async (token) => {
     const payload = ticket.getPayload();
 
     const { name, email, picture } = payload;
+    console.log(name);
+    console.log(email);
+    console.log(picture);
 
     // retornamos un objeto con datos de google
     return { name, email, picture, google: true }

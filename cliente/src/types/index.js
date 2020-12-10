@@ -31,3 +31,4 @@ export const ESTA_LOGUEADO = 'ESTA_LOGUEADO';
 export const NO_ESTA_LOGUEADO = 'NO_ESTA_LOGUEADO';
 
 export const CERRAR_SESION = 'CERRAR_SESION';
+export const ROL_USUARIO = 'ROL_USUARIO';

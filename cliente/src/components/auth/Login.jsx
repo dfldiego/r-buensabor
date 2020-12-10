@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Login.css';
 import { Link, /* useHistory */ } from 'react-router-dom';
-
+import { GoogleLogin } from 'react-google-login';
 // Material Icons
 import ClearIcon from '@material-ui/icons/Clear';
 
@@ -10,6 +10,7 @@ import {
     abrirCerrarModalAction,
     abrirRegistrarseAction,
     loginAction,
+    loginGoogleAction,
 } from '../../actions/homeActions';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -31,6 +32,7 @@ const Login = () => {
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarModalAction(nuevo_estado));
     const abrir_registrarse_callAction = nuevo_estado => dispatch(abrirRegistrarseAction(nuevo_estado));
     const loginAction_callAction = datos => dispatch(loginAction(datos));
+    const loginGoogle_callAction = datos => dispatch(loginGoogleAction(datos));
 
     /*************USAR USE SELECTOR: capturo el valor de state del store  *******************/
     let cerrar_modal_state_store = useSelector(state => state.home.abrir_modal);
@@ -69,6 +71,12 @@ const Login = () => {
         loginAction_callAction(login);
     }
 
+    /**LOGIN CON GOOGLE **/
+    const responseGoogle = (response) => {
+        console.log(response);
+        loginGoogle_callAction(response);
+    }
+
     return (
 
         <div className="login">
@@ -86,7 +94,13 @@ const Login = () => {
                     <form onSubmit={submitLogin}>
                         <h1>Inicia Sesión</h1>
                         <div className="social-container">
-                            <Link to={'#'} className="social"><i className="fab fa-google-plus-g"></i></Link>
+                            <GoogleLogin
+                                clientId="751594683411-f3rg3qjfkba8uissihrmfvv0m62pn7bg.apps.googleusercontent.com"
+                                buttonText="Login"
+                                onSuccess={responseGoogle}
+                                onFailure={responseGoogle}
+                                cookiePolicy={'single_host_origin'}
+                            />
                         </div>
                         <span>o usa tu cuenta</span>
                         <input
@@ -131,3 +145,11 @@ const Login = () => {
 }
 
 export default Login
+/**
+ * <Link
+                                to={'#'}
+                                className="social"
+                                onClick={handleClick_login_google}
+                            >
+                            </Link>
+ */

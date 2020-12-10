@@ -9,7 +9,7 @@ import ModalContainer from '../ModalContainer/ModalContainer';
 import Login from '../auth/Login';
 import Register from '../auth/Register';
 import { validarRol } from "../../helpers/helpers";
-
+import { useHistory } from "react-router-dom";
 // Redux
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -21,9 +21,10 @@ import {
 } from '../../actions/homeActions';
 
 const Navbar = () => {
+    let history = useHistory();
 
-    const esAdmin = validarRol('ADMIN_ROLE');
-    /* console.log(esAdmin); */
+    /*  const esAdmin = validarRol('ADMIN_ROLE');
+     console.log(esAdmin); */
     //useState locales
     const [openModal, setOpenModal] = useState(null);
     const [openDropDown, setOpenDropDown] = useState(false);
@@ -42,6 +43,7 @@ const Navbar = () => {
     const esta_logueado_state_store = useSelector(state => state.home.esta_logueado);
     const estaLogueado_token = useSelector(state => state.home.token);
     const estaLogueado_estado = useSelector(state => state.home.esta_logueado);
+    const rol_store = useSelector(state => state.home.rol);
 
     useEffect(() => {
         estaLogueado_callAction()
@@ -67,6 +69,10 @@ const Navbar = () => {
     // le pasa el state principal al state local
     useEffect(() => {
         setOpenModal(abrir_modal_state_store);
+
+        if (!esta_logueado_state_store) {
+            history.push('/')
+        }
         // eslint-disable-next-line
     }, [abrir_modal_state_store, esta_logueado_state_store])
 
@@ -79,11 +85,11 @@ const Navbar = () => {
         }
     }
 
-    const handleClick_cerrar_sesion = e => {
+    const handleClick_cerrar_sesion = async (e) => {
         e.preventDefault();
-        cerrar_sesion_callAction();
-
+        await cerrar_sesion_callAction();
     }
+
 
     return (
         <Fragment>
@@ -94,7 +100,7 @@ const Navbar = () => {
                 <nav className="nav">
                     <ul>
                         {
-                            esta_logueado_state_store && esAdmin ?
+                            esta_logueado_state_store && rol_store === 'ADMIN_ROLE' ?
                                 <li><Link to={"/admin"}>Admin</Link></li>
                                 :
                                 null
@@ -103,7 +109,8 @@ const Navbar = () => {
                             esta_logueado_state_store ?
                                 <li><Link to={"/catalogo"}>Productos</Link></li>
                                 :
-                                null}
+                                null
+                        }
                         {
                             esta_logueado_state_store ?
                                 <div>
