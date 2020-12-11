@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import ModalContainer from '../ModalContainer/ModalContainer';
 import Login from '../auth/Login';
 import Register from '../auth/Register';
-import { validarRol } from "../../helpers/helpers";
+import Perfil from '../Perfil/Perfil';
 import { useHistory } from "react-router-dom";
 // Redux
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,15 +18,14 @@ import {
     abrirCerrarModalAction,
     estaLogueadoAction,
     cerrarSesionAction,
+    perfilAction,
 } from '../../actions/homeActions';
 
 const Navbar = () => {
     let history = useHistory();
-
-    /*  const esAdmin = validarRol('ADMIN_ROLE');
-     console.log(esAdmin); */
     //useState locales
     const [openModal, setOpenModal] = useState(null);
+    const [openModalPerfil, setOpenModalPerfil] = useState(null);
     const [openDropDown, setOpenDropDown] = useState(false);
 
     // utilizar useDispatch y te crea una funcion
@@ -36,6 +35,7 @@ const Navbar = () => {
     const estaLogueado_callAction = () => dispatch(estaLogueadoAction());
     const abrir_cerrar_Modal = estado_modal => dispatch(abrirCerrarModalAction(estado_modal));
     const cerrar_sesion_callAction = () => dispatch(cerrarSesionAction());
+    const perfil_callAction = estadoPerfil => dispatch(perfilAction(estadoPerfil));
 
     /*************USAR USE SELECTOR: capturo el valor de state del store  *******************/
     const abrir_modal_state_store = useSelector(state => state.home.abrir_modal);
@@ -44,8 +44,10 @@ const Navbar = () => {
     const estaLogueado_token = useSelector(state => state.home.token);
     const estaLogueado_estado = useSelector(state => state.home.esta_logueado);
     const rol_store = useSelector(state => state.home.rol);
+    const abrir_modal_perfil_store = useSelector(state => state.home.abrir_modal_perfil);
 
     useEffect(() => {
+        setOpenDropDown(false);
         estaLogueado_callAction()
         // eslint-disable-next-line
     }, [estaLogueado_token, estaLogueado_estado]);
@@ -90,6 +92,26 @@ const Navbar = () => {
         await cerrar_sesion_callAction();
     }
 
+    const handleclick_openPerfil = e => {
+        e.preventDefault();
+        // si se hizo click, cambiar a true openModal
+        if (openModalPerfil === false || openModalPerfil === null) {
+            setOpenModalPerfil(true);
+            perfil_callAction(true);
+        } else {
+            closeModalPerfil();
+            perfil_callAction(false);
+        }
+    }
+
+    const closeModalPerfil = () => {
+        setOpenModalPerfil(false);
+    }
+
+    useEffect(() => {
+        setOpenModalPerfil(abrir_modal_perfil_store);
+        // eslint-disable-next-line
+    }, [abrir_modal_perfil_store])
 
     return (
         <Fragment>
@@ -126,7 +148,11 @@ const Navbar = () => {
                                         openDropDown ?
                                             <div className="sub-menu">
                                                 <li>
-                                                    <Link to={'#'} className="sub-menu-li">Perfil</Link>
+                                                    <Link
+                                                        to={'#'}
+                                                        className="sub-menu-li"
+                                                        onClick={handleclick_openPerfil}
+                                                    >Perfil</Link>
                                                 </li>
                                                 <li>
                                                     <Link
@@ -163,6 +189,16 @@ const Navbar = () => {
                                 <Login />
                         }
 
+                    </ModalContainer>
+                    : null
+            }
+            {
+                abrir_modal_perfil_store ?
+                    <ModalContainer
+                        openModal={openModalPerfil}
+                        closeModal={closeModalPerfil}
+                    >
+                        <Perfil />
                     </ModalContainer>
                     : null
             }

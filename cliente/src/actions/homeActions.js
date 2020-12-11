@@ -11,8 +11,33 @@ import {
     NO_ESTA_LOGUEADO,
     CERRAR_SESION,
     ROL_USUARIO,
+    ABRIR_PERFIL,
+    CERRAR_PERFIL,
+    ACTUALIZADO_PERFIL,
+    ACTUALIZADO_PERFIL_ERROR,
 } from '../types';
 import clienteAxios from '../config/axios';
+
+/************ ABRIR/CERRAR PERFIL ***************/
+export function perfilAction(estadoPerfil) {
+    return (dispatch) => {
+        if (estadoPerfil) {
+            dispatch(abrirModalPerfil(estadoPerfil))
+        } else {
+            dispatch(cerrarModalPerfil(estadoPerfil))
+        }
+    }
+}
+
+const abrirModalPerfil = estadoPerfil => ({
+    type: ABRIR_PERFIL,
+    payload: estadoPerfil
+})
+
+const cerrarModalPerfil = estadoPerfil => ({
+    type: CERRAR_PERFIL,
+    payload: estadoPerfil
+})
 
 /************ LOGIN - GOOGLE ***************/
 export function loginGoogleAction(datos) {

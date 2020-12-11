@@ -144,12 +144,4 @@ const Login = () => {
     )
 }
 
-export default Login
-/**
- * <Link
-                                to={'#'}
-                                className="social"
-                                onClick={handleClick_login_google}
-                            >
-                            </Link>
- */
+export default Login;

@@ -56,7 +56,6 @@ const loginGoogle = async (req, res) => {
 
     // verificamos el token pasado
     let token = req.body.tokenId;
-    console.log(token);
     // verificamos los datos de google. Si hay error -> salta un 403
     let googleUser = await googleVerify(token).catch(err => {
         return res.status(403).json({
@@ -68,8 +67,6 @@ const loginGoogle = async (req, res) => {
 
     // buscamos en la BD un email con los datos del usuario de google
     User.findOne({ email: googleUser.email }, async (err, userDB) => {
-        console.log(googleUser.email);
-        console.log("entra a findOne");
         // si existe un usuario con ese email
         if (userDB) {
             // verificamos el estado del usuario. si no es de google mandamos un msj de error
@@ -82,11 +79,9 @@ const loginGoogle = async (req, res) => {
                     err
                 });
             }
-            console.log("entra a findOne2");
             // si usuario es de google
             // GENERAR UN TOKEN -- JWT
             const token = await generateJWT(userDB._id);
-            console.log(token);
             return res.json({
                 ok: true,
                 user: userDB,
@@ -104,7 +99,6 @@ const loginGoogle = async (req, res) => {
             google: googleUser.google,
             password: '###',
         });
-        console.log(user);
 
         // guardamos el usuario en la BD
         user.save(async (err, userStored) => {

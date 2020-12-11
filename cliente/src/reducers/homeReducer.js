@@ -11,6 +11,10 @@ import {
     NO_ESTA_LOGUEADO,
     CERRAR_SESION,
     ROL_USUARIO,
+    ABRIR_PERFIL,
+    CERRAR_PERFIL,
+    ACTUALIZADO_PERFIL,
+    ACTUALIZADO_PERFIL_ERROR,
 } from '../types';
 
 const initialState = {
@@ -21,6 +25,7 @@ const initialState = {
     mensaje: '',
     token: null,
     rol: null,
+    abrir_modal_perfil: false,
 }
 
 export default function (state = initialState, action) {
@@ -79,6 +84,16 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 rol: action.payload
+            }
+        case ABRIR_PERFIL:
+            return {
+                ...state,
+                abrir_modal_perfil: true,
+            }
+        case CERRAR_PERFIL:
+            return {
+                ...state,
+                abrir_modal_perfil: false,
             }
         default:
             return state;

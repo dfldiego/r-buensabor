@@ -13,8 +13,6 @@ const GetUsuarios = () => {
 
     /* const cargando = useSelector(state => state.admin.loading); */
     const usuarios_state = useSelector(state => state.admin.usuarios);
-    const estadoError = useSelector(state => state.admin.error);
-    const mensajeError = useSelector(state => state.admin.mensaje);
 
     useEffect(() => {
         // consultar la api
@@ -27,8 +25,6 @@ const GetUsuarios = () => {
     return (
         <Fragment>
             <h2 className="titulo">Listado de Usuarios</h2>
-
-            {estadoError ? <p className="error">{mensajeError}</p> : null}
             {usuarios_state.length === 0 ? <p className="error">No hay usuarios</p> : null}
             <table>
                 <thead>
