@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 let checkToken = (req, res, next) => {
     // le paso a token -> el valor del header Authorization
     let token = req.get('Authorization');
-
     // podemos validar si existe el token. 
 
     // metodo verify.(verificar el token)

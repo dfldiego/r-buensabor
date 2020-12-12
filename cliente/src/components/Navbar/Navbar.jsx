@@ -9,6 +9,7 @@ import ModalContainer from '../ModalContainer/ModalContainer';
 import Login from '../auth/Login';
 import Register from '../auth/Register';
 import Perfil from '../Perfil/Perfil';
+import { validarRol } from "../../helpers/helpers";
 import { useHistory } from "react-router-dom";
 // Redux
 import { useDispatch, useSelector } from 'react-redux';
@@ -113,6 +114,12 @@ const Navbar = () => {
         // eslint-disable-next-line
     }, [abrir_modal_perfil_store])
 
+    const [isAdmin, setIsAdmin] = React.useState('loading');
+    const validateRol = async () => {
+        const isAdmin = await validarRol('ADMIN_ROLE');
+        setIsAdmin(isAdmin);
+    };
+    validateRol();
     return (
         <Fragment>
             <div className="navbar contenedor">
@@ -122,7 +129,7 @@ const Navbar = () => {
                 <nav className="nav">
                     <ul>
                         {
-                            esta_logueado_state_store && rol_store === 'ADMIN_ROLE' ?
+                            isAdmin ?
                                 <li><Link to={"/admin"}>Admin</Link></li>
                                 :
                                 null

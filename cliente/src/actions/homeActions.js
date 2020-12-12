@@ -61,8 +61,6 @@ export function loginGoogleAction(datos) {
             // SI TODO SALE BIEN
             dispatch(loginGoogleUsuario(true));
 
-
-
         } catch (error) {
             console.log(error.response.data.msg);
             console.log(error.response.data.err.errors.email.message);

@@ -107,7 +107,13 @@ export function obtenerUsuariosAction() {
         dispatch(descargarUsuarios());
 
         try {
-            const respuesta = await clienteAxios.get('/api/users');
+            const token = localStorage.getItem('token');
+            const header = {
+                headers: {
+                    'Authorization': `${token}`
+                }
+            }
+            const respuesta = await clienteAxios.get('/api/users', header);
             dispatch(descargarUsuariosExito(respuesta.data.users));
         } catch (error) {
             console.log(error);
