@@ -7,9 +7,9 @@ const { checkToken } = require('../middlewares/authentication');
 const addressController = require('../controllers/address.controller');
 const router = Router();
 
-router.get('/', addressController.list);
-router.post('/', addressController.create);
-router.put('/:id', addressController.update);
-router.delete('/:id', addressController.remove);
+router.get('/', checkToken, addressController.list);
+router.post('/', checkToken, addressController.create);
+router.put('/:id', checkToken, addressController.update);
+router.delete('/:id', checkToken, addressController.remove);
 
 module.exports = router;

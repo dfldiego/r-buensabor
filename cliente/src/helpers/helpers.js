@@ -2,7 +2,6 @@ const validarRol = async (roleRequerido) => {
     var token = localStorage.getItem('token');
 
     if (!token) {
-        console.log('exit');
         return false;
     }
     console.log(token);

@@ -99,7 +99,7 @@ const update = async (req, res = response) => {
         res.json({
             ok: true,
             addressStored,
-            msj: "Domicilio Eliminado"
+            msj: "Domicilio Modificado"
         });
     } catch (error) {
         console.log(error);
@@ -136,7 +136,8 @@ const remove = async (req, res = response) => {
 
         res.json({
             ok: true,
-            user: addressDeleted
+            user: addressDeleted,
+            msj: "Domicilio Eliminado"
         });
     });
 }
