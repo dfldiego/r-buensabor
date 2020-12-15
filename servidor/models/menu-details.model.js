@@ -26,7 +26,7 @@ let menuDetailSchema = new Schema({
 }, { collection: 'menuDetail' });
 
 menuDetailSchema.method('toJSON', function () {
-    const { __v, ...object } = this.toObject();
+    const { __v, menu, ...object } = this.toObject();
     return object;
 })
 
