@@ -4,6 +4,7 @@ const menuSchema = Schema({
     description: {
         type: String,
         required: [true, 'La Denominacion es requerida'],
+        unique: true,
     },
     finished_time: {
         type: Number,
