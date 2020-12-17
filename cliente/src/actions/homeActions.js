@@ -24,19 +24,29 @@ export function perfilAction(estadoPerfil) {
         if (estadoPerfil) {
             // hacemos consulta a la BBDD pidiendo perfil
             try {
+                //obtenemos el id del perfil desde el token
                 const token = localStorage.getItem('token');
                 var usuarioBase64 = token.split('.')[1];
                 usuarioBase64 = usuarioBase64.replace('-', '+').replace('_', '/');
                 var response = await JSON.parse(window.atob(usuarioBase64));
-                console.log(response.user);
 
-                dispatch(abrirModalPerfil(response.user))
+                //obtenemos los datos del id desde la DB - getOne User
+                //añadimos header para obtener autorizacion
+                const header = {
+                    headers: {
+                        'Authorization': `${token}`
+                    }
+                }
+                const respuesta = await clienteAxios.get(`/api/users/${response.user._id}`, header);
+
+                // enviamos la respuesta del getOne al reducer.
+                dispatch(abrirModalPerfil(respuesta.data));
 
             } catch (error) {
                 console.log(error);
             }
         } else {
-            dispatch(cerrarModalPerfil(estadoPerfil))
+            dispatch(cerrarModalPerfil(estadoPerfil));
         }
     }
 }
