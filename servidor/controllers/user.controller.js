@@ -160,38 +160,21 @@ const remove = async (req, res = response) => {
 const getById = async (req, res = response) => {
     let userId = req.params.id;
 
-    User.findById(userId).exec((err, user) => {
-        if (err) {
-            return res.status(500).json({
-                ok: false,
-                err
-            });
-        }
-
-        let userSearchData = {
-            user: userId
-        };
-
-        Address.find(userSearchData)
-            .populate('address', 'nameStreet numberStreet location')
-            .exec((errr, address) => {
-                if (errr) {
-                    return res.status(500).json({
-                        ok: false,
-                        errr
-                    });
-                }
-
-
-
-
-                res.json({
-                    ok: true,
-                    user,
-                    address
+    User.findById(userId)
+        .populate('address', 'nameStreet numberStreet location')
+        .exec((err, user) => {
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    err
                 });
+            }
+
+            res.json({
+                ok: true,
+                user,
             });
-    });
+        });
 };
 
 module.exports = {

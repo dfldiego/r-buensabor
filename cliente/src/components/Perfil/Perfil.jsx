@@ -36,13 +36,11 @@ const Perfil = () => {
     /*************USAR USE SELECTOR: capturo el valor de state del store  *******************/
     let abrir_modal_perfil_store = useSelector(state => state.home.abrir_modal_perfil);
     let perfil_usuario_store = useSelector(state => state.home.perfil);
-
+    console.log(perfil_usuario_store);
 
     /************** METODO USE EFFECT ********************************/
     useEffect(() => {
-        setPerfil({
-
-        })
+        setPerfil(perfil_usuario_store);
     }, [])
 
     /************** METODO PARA CERRAR MODAL *************************/
