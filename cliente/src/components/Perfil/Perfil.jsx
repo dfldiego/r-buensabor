@@ -11,6 +11,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     perfilAction,
+    actualizarPerfilAction,
 } from '../../actions/homeActions';
 
 
@@ -19,29 +20,40 @@ const Perfil = () => {
     const [perfil, setPerfil] = useState({
         name: '',
         password: '',
+        new_password: '',
+        new_password_repeat: '',
         img: '',
-        telephoneNumber: null,
-        address: '',
-        numberAddress: null,
-        location: ''
+        telephoneNumber: 0,
+        nameStreet: '',
+        numberStreet: 0,
+        location: '',
     });
-    const { name, password, img, telephoneNumber, address, numberAddress, location } = perfil;
+    const { name, password, new_password, new_password_repeat, img, telephoneNumber, nameStreet, numberStreet, location } = perfil;
 
     const dispatch = useDispatch();
 
     /************USAR DISPATCH: paso el nuevo state al action **********************/
     const perfil_callAction = estadoPerfil => dispatch(perfilAction(estadoPerfil));
+    const actualizar_perfil_callAction = datosPerfil => dispatch(actualizarPerfilAction(datosPerfil));
 
 
     /*************USAR USE SELECTOR: capturo el valor de state del store  *******************/
     let abrir_modal_perfil_store = useSelector(state => state.home.abrir_modal_perfil);
     let perfil_usuario_store = useSelector(state => state.home.perfil);
-    console.log(perfil_usuario_store);
 
     /************** METODO USE EFFECT ********************************/
     useEffect(() => {
-        setPerfil(perfil_usuario_store);
-    }, [])
+        setPerfil({
+            ...perfil,
+            name: perfil_usuario_store.name,
+            img: perfil_usuario_store.img,
+            telephoneNumber: perfil_usuario_store.telephoneNumber,
+            nameStreet: perfil_usuario_store.address.nameStreet,
+            numberStreet: perfil_usuario_store.address.numberStreet,
+            location: perfil_usuario_store.address.location
+        });
+        // eslint-disable-next-line
+    }, [perfil_usuario_store])
 
     /************** METODO PARA CERRAR MODAL *************************/
     const cerrar_modal = e => {
@@ -65,7 +77,7 @@ const Perfil = () => {
     const handleSubmit_guardarPerfil = e => {
         e.preventDefault();
 
-
+        actualizar_perfil_callAction(perfil);
 
     }
 
@@ -78,7 +90,7 @@ const Perfil = () => {
                         className="volver"
                         onClick={cerrar_modal}
                     />
-                    <h2 className="centrar-texto">Nuestro Perfil</h2>
+                    <h5 className="centrar-texto">Nuestro Perfil</h5>
                     <div className="dos_columnas">
                         <div className="form_container_perfil">
                             <div className="circular">
@@ -86,7 +98,7 @@ const Perfil = () => {
                             </div>
                         </div>
                         <div className="form_container_perfil">
-                            <form onSubmit={e => handleSubmit_guardarPerfil()}>
+                            <form onSubmit={handleSubmit_guardarPerfil}>
                                 <div className="form-row">
                                     <label>Nombre</label>
                                     <input
@@ -99,13 +111,35 @@ const Perfil = () => {
                                     />
                                 </div>
                                 <div className="form-row">
-                                    <label>Contraseña</label>
+                                    <label>Contraseña Actual</label>
                                     <input
                                         type="password"
                                         className="form-control"
-                                        placeholder="Contraseña"
+                                        placeholder="Contraseña vieja"
                                         name="password"
                                         value={password}
+                                        onChange={handleChange_perfil}
+                                    />
+                                </div>
+                                <div className="form-row">
+                                    <label>Contraseña Nueva</label>
+                                    <input
+                                        type="password"
+                                        className="form-control"
+                                        placeholder="Contraseña vieja"
+                                        name="new_password"
+                                        value={new_password}
+                                        onChange={handleChange_perfil}
+                                    />
+                                </div>
+                                <div className="form-row">
+                                    <label>Repetir Contraseña nueva</label>
+                                    <input
+                                        type="password"
+                                        className="form-control"
+                                        placeholder="Contraseña vieja"
+                                        name="new_password_repeat"
+                                        value={new_password_repeat}
                                         onChange={handleChange_perfil}
                                     />
                                 </div>
@@ -114,7 +148,6 @@ const Perfil = () => {
                                     <input
                                         type="file"
                                         name="img"
-                                        value={img}
                                         onChange={handleChange_perfil}
                                     />
                                 </div>
@@ -132,11 +165,11 @@ const Perfil = () => {
                                 <div className="form-row">
                                     <label>Domicilio</label>
                                     <input
-                                        type="String"
+                                        type="text"
                                         className="form-control"
                                         placeholder="Nombre Domicilio"
-                                        name="address"
-                                        value={address}
+                                        name="nameStreet"
+                                        value={nameStreet}
                                         onChange={handleChange_perfil}
                                     />
                                 </div>
@@ -146,8 +179,8 @@ const Perfil = () => {
                                         type="number"
                                         className="form-control"
                                         placeholder="Numero Domicilio"
-                                        name="numberAddress"
-                                        value={numberAddress}
+                                        name="numberStreet"
+                                        value={numberStreet}
                                         onChange={handleChange_perfil}
                                     />
                                 </div>

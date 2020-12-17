@@ -17,6 +17,34 @@ import {
     ACTUALIZADO_PERFIL_ERROR,
 } from '../types';
 import clienteAxios from '../config/axios';
+import { desencriptarToken } from '../helpers/desencriptar_token';
+import { authorizationHeader } from '../helpers/authorization_header';
+/************ ACTUALIZAR PERFIL DE USUARIO  ********/
+export function actualizarPerfilAction(datosPerfil) {
+    return async (dispatch) => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await desencriptarToken(token);
+            const header = authorizationHeader(token);
+            console.log(datosPerfil);
+            await clienteAxios.put(`/api/users/${response.user._id}`, datosPerfil, header);
+            dispatch(actualizarPerfil(true));
+        } catch (err) {
+            console.log(err);
+            dispatch(actualizarPerfilError("Error al actualizar Perfil"));
+        }
+    }
+}
+
+const actualizarPerfil = respuesta => ({
+    type: ACTUALIZADO_PERFIL,
+    payload: respuesta
+})
+
+const actualizarPerfilError = msg => ({
+    type: ACTUALIZADO_PERFIL_ERROR,
+    payload: msg
+})
 
 /************ ABRIR/CERRAR PERFIL ***************/
 export function perfilAction(estadoPerfil) {
@@ -40,7 +68,7 @@ export function perfilAction(estadoPerfil) {
                 const respuesta = await clienteAxios.get(`/api/users/${response.user._id}`, header);
 
                 // enviamos la respuesta del getOne al reducer.
-                dispatch(abrirModalPerfil(respuesta.data));
+                dispatch(abrirModalPerfil(respuesta.data.user));
 
             } catch (error) {
                 console.log(error);

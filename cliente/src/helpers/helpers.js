@@ -4,7 +4,6 @@ const validarRol = async (roleRequerido) => {
     if (!token) {
         return false;
     }
-    console.log(token);
     try {
         var usuarioBase64 = token.split('.')[1];
         usuarioBase64 = usuarioBase64.replace('-', '+').replace('_', '/');

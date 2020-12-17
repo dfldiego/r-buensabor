@@ -54,6 +54,7 @@ export default function (state = initialState, action) {
             }
         case LOGIN_ERROR:
         case REGISTRO_ERROR:
+        case ACTUALIZADO_PERFIL_ERROR:
             return {
                 ...state,
                 mensaje: action.payload,
@@ -97,6 +98,12 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 abrir_modal_perfil: false,
+            }
+        case ACTUALIZADO_PERFIL:
+            return {
+                ...state,
+                abrir_modal_perfil: false,
+                perfil: null,
             }
         default:
             return state;

@@ -44,7 +44,7 @@ const Navbar = () => {
     const esta_logueado_state_store = useSelector(state => state.home.esta_logueado);
     const estaLogueado_token = useSelector(state => state.home.token);
     const estaLogueado_estado = useSelector(state => state.home.esta_logueado);
-    const rol_store = useSelector(state => state.home.rol);
+    /* const rol_store = useSelector(state => state.home.rol); */
     const abrir_modal_perfil_store = useSelector(state => state.home.abrir_modal_perfil);
 
     useEffect(() => {
