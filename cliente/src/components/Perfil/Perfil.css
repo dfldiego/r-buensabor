@@ -17,20 +17,27 @@
     min-height: 480px;
 }
 
-.form-container-usuario form {
+.form_container_perfil form {
     background: #fff;
     display: flex;
     flex-direction: column;
-    padding: 5rem 5rem;
+    padding: 3rem 3rem;
+    padding-left: 0;
     justify-content: center;
-    align-items: center;
     text-align: center;
+    font-size: 12px;
 }
 
 .form-row {
     min-width: 70%;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+}
+
+.dos_columnas {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    column-gap: 2rem;
 }
 
 label {
@@ -38,6 +45,7 @@ label {
     text-transform: uppercase;
     display: block;
     min-width: 30%;
+    margin-right: 2rem;
 }
 
 input:not([type="submit"]),
@@ -59,4 +67,12 @@ select {
 
 .form-control {
     text-align: center;
+}
+
+.circular {
+    width: 200px;
+    height: 200px;
+    border-radius: 150px !important;
+    background: url(https://www.tublog.com/tuimagen.jpg) no-repeat;
+    padding-left: 2rem;
 }

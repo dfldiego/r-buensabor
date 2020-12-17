@@ -26,6 +26,7 @@ const initialState = {
     token: null,
     rol: null,
     abrir_modal_perfil: false,
+    perfil: null,
 }
 
 export default function (state = initialState, action) {
@@ -79,6 +80,7 @@ export default function (state = initialState, action) {
                 token: action.payload,
                 esta_logueado: false,
                 rol: null,
+                perfil: null,
             }
         case ROL_USUARIO:
             return {
@@ -89,6 +91,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 abrir_modal_perfil: true,
+                perfil: action.payload,
             }
         case CERRAR_PERFIL:
             return {

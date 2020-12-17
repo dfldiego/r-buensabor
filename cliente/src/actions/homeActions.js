@@ -20,18 +20,30 @@ import clienteAxios from '../config/axios';
 
 /************ ABRIR/CERRAR PERFIL ***************/
 export function perfilAction(estadoPerfil) {
-    return (dispatch) => {
+    return async (dispatch) => {
         if (estadoPerfil) {
-            dispatch(abrirModalPerfil(estadoPerfil))
+            // hacemos consulta a la BBDD pidiendo perfil
+            try {
+                const token = localStorage.getItem('token');
+                var usuarioBase64 = token.split('.')[1];
+                usuarioBase64 = usuarioBase64.replace('-', '+').replace('_', '/');
+                var response = await JSON.parse(window.atob(usuarioBase64));
+                console.log(response.user);
+
+                dispatch(abrirModalPerfil(response.user))
+
+            } catch (error) {
+                console.log(error);
+            }
         } else {
             dispatch(cerrarModalPerfil(estadoPerfil))
         }
     }
 }
 
-const abrirModalPerfil = estadoPerfil => ({
+const abrirModalPerfil = userPerfil => ({
     type: ABRIR_PERFIL,
-    payload: estadoPerfil
+    payload: userPerfil
 })
 
 const cerrarModalPerfil = estadoPerfil => ({

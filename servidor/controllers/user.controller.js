@@ -1,5 +1,6 @@
 const { response } = require('express');
 const User = require('../models/user.model');
+const Address = require('../models/address.model');
 const bcrypt = require('bcryptjs');
 
 const list = async (req, res = response) => {
@@ -9,6 +10,7 @@ const list = async (req, res = response) => {
 
     try {
         const users = await User.find({ status: true })
+            .populate('address', 'nameStreet numberStreet location')
             .skip(from)
             .limit(limit);
         User.countDocuments({ status: true });
@@ -155,9 +157,47 @@ const remove = async (req, res = response) => {
     });
 }
 
+const getById = async (req, res = response) => {
+    let userId = req.params.id;
+
+    User.findById(userId).exec((err, user) => {
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                err
+            });
+        }
+
+        let userSearchData = {
+            user: userId
+        };
+
+        Address.find(userSearchData)
+            .populate('address', 'nameStreet numberStreet location')
+            .exec((errr, address) => {
+                if (errr) {
+                    return res.status(500).json({
+                        ok: false,
+                        errr
+                    });
+                }
+
+
+
+
+                res.json({
+                    ok: true,
+                    user,
+                    address
+                });
+            });
+    });
+};
+
 module.exports = {
     list,
     create,
+    getById,
     update,
     remove,
 }
