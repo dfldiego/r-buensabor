@@ -26,6 +26,7 @@ export function actualizarPerfilAction(datosPerfil) {
             const token = localStorage.getItem('token');
             const response = await desencriptarToken(token);
             const header = authorizationHeader(token);
+            console.log(response.user._id);
             console.log(datosPerfil);
             await clienteAxios.put(`/api/users/${response.user._id}`, datosPerfil, header);
             dispatch(actualizarPerfil(true));

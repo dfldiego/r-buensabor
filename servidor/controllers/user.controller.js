@@ -1,5 +1,6 @@
 const { response } = require('express');
 const User = require('../models/user.model');
+const Address = require('../models/address.model');
 const bcrypt = require('bcryptjs');
 
 const list = async (req, res = response) => {
@@ -93,7 +94,9 @@ const update = async (req, res = response) => {
 
         // El usuario existe y queremos actualizarlo
         // destructuring al dato que actualizará el usuario
-        const { email, password, ...campos } = req.body;
+        console.log("req.body");
+        console.log(req.body);
+        const { email, password, new_password, new_password_repeat, nameStreet, numberStreet, location, ...campos } = req.body;
 
         // verificamos que el email del usuario no exista en la BD
         if (userDB.email !== email) {
@@ -109,12 +112,48 @@ const update = async (req, res = response) => {
         // debemos colocar el nombre de user que queremos actualizar
         campos.email = email;
 
+        if (new_password && new_password_repeat && password) {
+            // verificamos passwords
+            const validPassword = bcrypt.compareSync(password, userDB.password);
+            if (!validPassword) {
+                return res.status(400).json({
+                    ok: false,
+                    msg: 'password no válido'
+                });
+            } else {
+                if (new_password === new_password_repeat) {
+                    //hashear el nuevo password
+                    const salt = bcrypt.genSaltSync();
+                    //modifico el password del usuario
+                    campos.password = bcrypt.hashSync(new_password, salt);
+                    console.log("campos");
+                    console.log(campos);
+                } else {
+                    return res.status(400).json({
+                        ok: false,
+                        msg: "contraseña nueva y repetir nueva contraseña no coinciden"
+                    });
+                }
+            }
+        }
+
         //actualizamos
         const userStored = await User.findByIdAndUpdate(id, campos, { new: true });
 
+        const camposAddress = {};
+        // actualizar Address del usuario
+        camposAddress.location = location;
+        camposAddress.nameStreet = nameStreet;
+        camposAddress.numberStreet = numberStreet;
+
+        console.log("camposAddress");
+        console.log(camposAddress);
+        const addressStored = await Address.findByIdAndUpdate(userDB.address, camposAddress, { new: true });
+
         res.json({
             ok: true,
-            userStored
+            userStored,
+            addressStored
         });
     } catch (error) {
         console.log(error);
