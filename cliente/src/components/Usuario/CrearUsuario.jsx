@@ -161,6 +161,7 @@ function CrearUsuario() {
                                 <label>Rol</label>
                                 <select
                                     name="role"
+                                    className="form-control"
                                     value={role}
                                     onChange={handleChange}
                                 >

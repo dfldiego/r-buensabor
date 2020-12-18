@@ -3,21 +3,25 @@ const User = require('../models/user.model');
 const Address = require('../models/address.model');
 const bcrypt = require('bcryptjs');
 
+
 const list = async (req, res = response) => {
 
     let from = Number(req.query.from) || 0;
-    let limit = Number(req.query.limit) || 10;
+    let limit = Number(req.query.limit) || 5;
 
     try {
-        const users = await User.find({ status: true })
-            .populate('address', 'nameStreet numberStreet location')
-            .skip(from)
-            .limit(limit);
-        User.countDocuments({ status: true });
+        const [users, total] = await Promise.all([
+            User.find({ status: true })
+                .populate('address', 'nameStreet numberStreet location')
+                .skip(from)
+                .limit(limit),
+            User.countDocuments({ status: true })
+        ]);
 
         res.json({
             ok: true,
-            users
+            users,
+            total,
         });
     } catch (error) {
         console.log(error);
