@@ -2,6 +2,9 @@ import React, { Fragment } from 'react';
 import Navbar from '../Navbar/Navbar';
 import Sidebar from '../Sidebar/Sidebar';
 import Usuario from '../Usuario/Usuario';
+import Menu from '../Menu/Menu';
+import Categorias from '../Categorias/Categorias';
+import Insumos from '../Insumos/Insumos';
 import './Admin.css';
 import { validarRol } from "../../helpers/helpers";
 import { Redirect } from 'react-router';
@@ -12,6 +15,9 @@ import { useSelector } from 'react-redux';
 const Admin = () => {
     /*USAR USE SELECTOR*/
     const en_usuario_state_store = useSelector(state => state.admin.en_usuario);
+    const en_categoria_state_store = useSelector(state => state.admin.en_categoria);
+    const en_menu_state_store = useSelector(state => state.admin.en_menu);
+    const en_insumos_state_store = useSelector(state => state.admin.en_insumos);
 
     const [isValid, setIsValid] = React.useState('loading');
     React.useEffect(() => {
@@ -41,7 +47,11 @@ const Admin = () => {
                     <Sidebar />
                 </div>
                 <div>
-                    {en_usuario_state_store ? <Usuario /> : <h1>Admin</h1>}
+                    {!en_usuario_state_store && !en_menu_state_store && !en_categoria_state_store && !en_insumos_state_store ? <h1>Admin</h1> : null}
+                    {en_usuario_state_store ? <Usuario /> : null}
+                    {en_categoria_state_store ? <Categorias /> : null}
+                    {en_menu_state_store ? <Menu /> : null}
+                    {en_insumos_state_store ? <Insumos /> : null}
                 </div>
             </div>
         </Fragment>

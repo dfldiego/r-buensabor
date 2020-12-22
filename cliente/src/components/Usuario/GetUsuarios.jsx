@@ -14,8 +14,8 @@ const GetUsuarios = () => {
 
     const usuarios_state = useSelector(state => state.admin.usuarios);
     const elementos_por_pagina_state = useSelector(state => state.admin.elementoPorPagina);
-    const total_elementos_state = useSelector(state => state.admin.totalElementos);
-    const desdeElemento_state = useSelector(state => state.admin.desdeElemento);
+    /* const total_elementos_state = useSelector(state => state.admin.totalElementos);
+    const desdeElemento_state = useSelector(state => state.admin.desdeElemento); */
     const paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
 
 

@@ -1,11 +1,10 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './Paginacion.css';
 import {
     obtenerUsuariosAction,
 } from '../../actions/adminActions';
 const Paginacion = () => {
-    debugger;
     const numero_paginas = [];
 
     const dispatch = useDispatch();
@@ -14,7 +13,7 @@ const Paginacion = () => {
 
     const elementos_por_pagina_state = useSelector(state => state.admin.elementoPorPagina);
     const total_elementos_state = useSelector(state => state.admin.totalElementos);
-    const desdeElemento_state = useSelector(state => state.admin.desdeElemento);
+    /* const desdeElemento_state = useSelector(state => state.admin.desdeElemento); */
     const paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
 
 

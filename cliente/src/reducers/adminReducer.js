@@ -16,10 +16,16 @@ import {
     USUARIO_EDITADO_ERROR,
     REGISTRO_EXITOSO,
     REGISTRO_ERROR,
+    ENTRAR_CRUD_MENU,
+    ENTRAR_CRUD_CATEGORIA,
+    ENTRAR_CRUD_INSUMOS,
 } from '../types';
 
 const initialState = {
     en_usuario: null,
+    en_menu: null,
+    en_categoria: null,
+    en_insumos: null,
     loading: false,
     abrir_agregar_usuario: null,
     usuarios: [],
@@ -40,6 +46,33 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 en_usuario: true,
+                en_menu: null,
+                en_categoria: null,
+                en_insumos: null,
+            }
+        case ENTRAR_CRUD_MENU:
+            return {
+                ...state,
+                en_usuario: null,
+                en_menu: true,
+                en_categoria: null,
+                en_insumos: null,
+            }
+        case ENTRAR_CRUD_CATEGORIA:
+            return {
+                ...state,
+                en_usuario: null,
+                en_menu: null,
+                en_categoria: true,
+                en_insumos: null,
+            }
+        case ENTRAR_CRUD_INSUMOS:
+            return {
+                ...state,
+                en_usuario: null,
+                en_menu: null,
+                en_categoria: null,
+                en_insumos: true,
             }
         case CERRAR_AGREGAR_USUARIOS:
             return {

@@ -1,0 +1,7 @@
+#sidebar ul {
+    padding: 3rem !important;
+}
+
+#sidebar ul li {
+    border-bottom: 1px solid #fff;
+}

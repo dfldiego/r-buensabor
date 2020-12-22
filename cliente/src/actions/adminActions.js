@@ -14,9 +14,49 @@ import {
     OBTENER_USUARIO_EDITAR,
     USUARIO_EDITADO_EXITO,
     USUARIO_EDITADO_ERROR,
+    ENTRAR_CRUD_MENU,
+    ENTRAR_CRUD_CATEGORIA,
+    ENTRAR_CRUD_INSUMOS,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
+
+/********************** Entrar a CRUD MENU ***********************/
+export function pantallaInsumosAction(estadoInsumos) {
+    return (dispatch) => {
+        dispatch(pantallaInsumos(estadoInsumos))
+    }
+}
+
+const pantallaInsumos = estado => ({
+    type: ENTRAR_CRUD_INSUMOS,
+    payload: estado
+})
+
+/********************** Entrar a CRUD CATEGORIA ***********************/
+export function pantallaCategoriaAction(estadoCategoria) {
+    return (dispatch) => {
+        dispatch(pantallaCategoria(estadoCategoria))
+    }
+}
+
+const pantallaCategoria = estado => ({
+    type: ENTRAR_CRUD_CATEGORIA,
+    payload: estado
+})
+
+/********************** Entrar a CRUD MENU ***********************/
+export function pantallaMenuAction(estadoMenu) {
+    return (dispatch) => {
+        dispatch(pantallaMenu(estadoMenu))
+    }
+}
+
+const pantallaMenu = estado => ({
+    type: ENTRAR_CRUD_MENU,
+    payload: estado
+})
+
 
 /**********************  para editar un usuario de la BBDD ********************************/
 export function obtenerUsuarioAction(datos_usuario) {
