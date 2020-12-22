@@ -1,0 +1,29 @@
+.center {
+    text-align: center;
+}
+
+.paginacion {
+    display: inline-block;
+    margin: 3rem auto;
+    text-align: center;
+}
+
+.paginacion button {
+    background-color: #ddd;
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    width: auto;
+    border: none;
+}
+
+.paginacion button:hover {
+    background-color: #4CAF50;
+
+}
+
+.active {
+    background-color: #4CAF50;
+    color: white;
+}

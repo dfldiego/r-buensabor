@@ -98,8 +98,6 @@ const update = async (req, res = response) => {
 
         // El usuario existe y queremos actualizarlo
         // destructuring al dato que actualizará el usuario
-        console.log("req.body");
-        console.log(req.body);
         const { email, password, new_password, new_password_repeat, nameStreet, numberStreet, location, ...campos } = req.body;
 
         // verificamos que el email del usuario no exista en la BD
@@ -130,8 +128,6 @@ const update = async (req, res = response) => {
                     const salt = bcrypt.genSaltSync();
                     //modifico el password del usuario
                     campos.password = bcrypt.hashSync(new_password, salt);
-                    console.log("campos");
-                    console.log(campos);
                 } else {
                     return res.status(400).json({
                         ok: false,
@@ -149,9 +145,6 @@ const update = async (req, res = response) => {
         camposAddress.location = location;
         camposAddress.nameStreet = nameStreet;
         camposAddress.numberStreet = numberStreet;
-
-        console.log("camposAddress");
-        console.log(camposAddress);
         const addressStored = await Address.findByIdAndUpdate(userDB.address, camposAddress, { new: true });
 
         res.json({

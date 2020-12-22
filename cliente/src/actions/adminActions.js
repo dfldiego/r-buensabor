@@ -102,7 +102,7 @@ const obtenerUsuarioEliminar = idUsuario => ({
 })
 
 /**********************  para obtener los usuarios de la BBDD ********************************/
-export function obtenerUsuariosAction() {
+export function obtenerUsuariosAction(indexPrimerUsuario) {
     return async (dispatch) => {
         dispatch(descargarUsuarios());
 
@@ -113,8 +113,10 @@ export function obtenerUsuariosAction() {
                     'Authorization': `${token}`
                 }
             }
-            const respuesta = await clienteAxios.get('/api/users', header);
-            dispatch(descargarUsuariosExito(respuesta.data.users));
+            console.log(indexPrimerUsuario);
+            const respuesta = await clienteAxios.get(`/api/users?from=${indexPrimerUsuario}&limit=5`, header);
+            console.log(respuesta.data);
+            dispatch(descargarUsuariosExito(respuesta.data));
         } catch (error) {
             console.log(error);
             dispatch(descargarUsuariosError('Error al descargar los usuarios'));

@@ -28,6 +28,10 @@ const initialState = {
     usuario_eliminar: null,
     usuario_editar: null,
     mostrarUsuarios: false,
+    elementoPorPagina: 5,
+    totalElementos: null,
+    desdeElemento: 0,
+    paginaCorriente: 1,
 }
 
 export default function (state = initialState, action) {
@@ -89,7 +93,9 @@ export default function (state = initialState, action) {
                 loading: false,
                 error: null,
                 mensaje: null,
-                usuarios: action.payload,
+                usuarios: action.payload.users,
+                elementoPorPagina: action.payload.users.length,
+                totalElementos: action.payload.total,
                 mostrarUsuarios: true,
             }
         case OBTENER_USUARIO_ELIMINAR:

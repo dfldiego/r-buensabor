@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect } from 'react';
 import './GetUsuarios.css';
 import Usuariodb from './Usuariodb';
+import Paginacion from '../Paginacion/Paginacion';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -8,19 +9,30 @@ import {
 } from '../../actions/adminActions';
 
 const GetUsuarios = () => {
-
     const dispatch = useDispatch();
 
-    /* const cargando = useSelector(state => state.admin.loading); */
+
     const usuarios_state = useSelector(state => state.admin.usuarios);
+    const elementos_por_pagina_state = useSelector(state => state.admin.elementoPorPagina);
+    const total_elementos_state = useSelector(state => state.admin.totalElementos);
+    const desdeElemento_state = useSelector(state => state.admin.desdeElemento);
+    const paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
+
+
 
     useEffect(() => {
+        const indexUltimoUsuario = paginaCorriente_state * elementos_por_pagina_state;
+        const indexPrimerUsuario = indexUltimoUsuario - elementos_por_pagina_state;
         // consultar la api
-        const cargarUsuarios = () => dispatch(obtenerUsuariosAction());
+        const cargarUsuarios = (indexPrimerUsuario) => dispatch(obtenerUsuariosAction(indexPrimerUsuario));
         //llamar la funcion
-        cargarUsuarios();
+        cargarUsuarios(indexPrimerUsuario);
+
         // eslint-disable-next-line
     }, []);
+
+
+
 
     return (
         <Fragment>
@@ -48,6 +60,7 @@ const GetUsuarios = () => {
                     }
                 </tbody>
             </table>
+            <Paginacion />
         </Fragment>
     )
 }
