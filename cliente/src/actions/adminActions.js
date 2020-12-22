@@ -17,9 +17,32 @@ import {
     ENTRAR_CRUD_MENU,
     ENTRAR_CRUD_CATEGORIA,
     ENTRAR_CRUD_INSUMOS,
+    ABRIR_AGREGAR_CATEGORIA,
+    CERRAR_AGREGAR_CATEGORIA,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
+
+// abrir modal agregar categoria
+export function abrirCerrarAgregarCategoriaAction(estadoAgregarCategoria) {
+    return (dispatch) => {
+        if (estadoAgregarCategoria) {
+            dispatch(abrirAgregarCategoria(estadoAgregarCategoria));
+        } else {
+            dispatch(cerrarAgregarCategoria(estadoAgregarCategoria));
+        }
+    }
+}
+
+const abrirAgregarCategoria = estadoAgregarCategoria => ({
+    type: ABRIR_AGREGAR_CATEGORIA,
+    payload: estadoAgregarCategoria
+})
+
+const cerrarAgregarCategoria = estadoAgregarCategoria => ({
+    type: CERRAR_AGREGAR_CATEGORIA,
+    payload: estadoAgregarCategoria
+})
 
 /********************** Entrar a CRUD MENU ***********************/
 export function pantallaInsumosAction(estadoInsumos) {

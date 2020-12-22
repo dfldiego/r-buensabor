@@ -19,6 +19,8 @@ import {
     ENTRAR_CRUD_MENU,
     ENTRAR_CRUD_CATEGORIA,
     ENTRAR_CRUD_INSUMOS,
+    ABRIR_AGREGAR_CATEGORIA,
+    CERRAR_AGREGAR_CATEGORIA,
 } from '../types';
 
 const initialState = {
@@ -28,6 +30,7 @@ const initialState = {
     en_insumos: null,
     loading: false,
     abrir_agregar_usuario: null,
+    abrir_agregar_categoria: null,
     usuarios: [],
     error: null,
     mensaje: null,
@@ -162,6 +165,12 @@ export default function (state = initialState, action) {
                         usuario
                 ),
                 usuario_editar: null,
+            }
+        case ABRIR_AGREGAR_CATEGORIA:
+        case CERRAR_AGREGAR_CATEGORIA:
+            return {
+                ...state,
+                abrir_agregar_categoria: action.payload
             }
         default:
             return state;
