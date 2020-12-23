@@ -14,6 +14,11 @@ const menuSchema = Schema({
         type: String,
         required: [true, 'El precio es requerido'],
     },
+    general_category: {
+        type: Schema.Types.ObjectId,
+        ref: 'GeneralCategory',
+        required: true
+    },
     status: {
         type: Boolean,
         default: true

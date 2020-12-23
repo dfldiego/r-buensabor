@@ -5,7 +5,7 @@ const MenuDetail = require('../models/menu-details.model');
 const list = async (req, res = response) => {
 
     const menus = await Menu.find({ status: true })
-
+        .populate('general_category', 'name')
     res.json({
         ok: true,
         menus
@@ -62,7 +62,7 @@ const getById = async (req, res) => {
             menu: menuId
         };
 
-        MenuDetail.find(menuSearchData)
+        MenuDetail.find(menuSearchData, { status: true })
             .populate('product', 'description')
             .exec((errr, ingredients) => {
                 if (errr) {
