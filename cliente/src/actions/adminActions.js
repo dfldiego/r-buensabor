@@ -25,6 +25,8 @@ import {
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
+import { desencriptarToken } from '../helpers/desencriptar_token';
+import { authorizationHeader } from '../helpers/authorization_header';
 
 /**********************  para crear una nueva categoria ********************************/
 export function crearNuevaCategoriaAction(datosNuevaCategoria) {
@@ -33,10 +35,16 @@ export function crearNuevaCategoriaAction(datosNuevaCategoria) {
 
         // hacemos consulta a la BBDD
         try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
             // insertar en la API
-            await clienteAxios.post('/admin', datosNuevaCategoria)
-            // si todo sale bien
-            dispatch(agregarCategoriaExito(datosNuevaCategoria));
+            await clienteAxios.post('/api/generalCategory', datosNuevaCategoria, header)
+                .then(response => {
+                    // obtenemos datos del response
+                    const { category } = response.data;
+                    // si todo sale bien
+                    dispatch(agregarCategoriaExito(category));
+                })
         } catch (error) {
             // si hay un error
             dispatch(agregarCategoriaError(true));
@@ -50,9 +58,9 @@ const agregarCategoria = () => ({
 })
 
 // si el producto se guarda en la BBDD
-const agregarCategoriaExito = datosNuevaCategoria => ({
+const agregarCategoriaExito = category => ({
     type: AGREGAR_CATEGORIA_EXITO,
-    payload: datosNuevaCategoria
+    payload: category
 });
 
 // si hubo un error

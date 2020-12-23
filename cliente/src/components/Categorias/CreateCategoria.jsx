@@ -13,8 +13,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const CreateCategoria = () => {
 
-    const [categoria, setCategoria] = useState({ nombre: '' });
-    const { nombre } = categoria;
+    const [categoria, setCategoria] = useState({ name: '' });
+    const { name } = categoria;
 
     const handleChange = e => {
         setCategoria({
@@ -46,11 +46,11 @@ const CreateCategoria = () => {
         e.preventDefault();
 
         // validar campos vacios
-        if (nombre === '') {
+        if (name === '') {
             return;
         }
 
-        agregar_categoria_action({ nombre });
+        agregar_categoria_action({ name });
     }
 
     return (
@@ -69,8 +69,8 @@ const CreateCategoria = () => {
                                     type="text"
                                     className="form-control"
                                     placeholder="Nombre Categoria"
-                                    name="nombre"
-                                    value={nombre}
+                                    name="name"
+                                    value={name}
                                     onChange={handleChange}
                                 />
                             </div>

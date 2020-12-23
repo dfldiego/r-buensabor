@@ -40,7 +40,7 @@ const create = async (req, res = response) => {
                 msg: "esa denominacion ya se encuentra registrada"
             });
         }
-        if (name.trim() === '') {
+        if (name === '') {
             return res.status(400).json({
                 ok: false,
                 msg: "Todos los campos son obligatorios"

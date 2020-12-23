@@ -120,7 +120,8 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 loading: false,
-                categorias: [...state.categorias, action.payload]
+                categorias: [...state.categorias, action.payload],
+                abrir_agregar_categoria: null,
             }
         case AGREGAR_USUARIO_ERROR:
         case AGREGAR_CATEGORIA_ERROR:
