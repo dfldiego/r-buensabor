@@ -21,6 +21,9 @@ import {
     ENTRAR_CRUD_INSUMOS,
     ABRIR_AGREGAR_CATEGORIA,
     CERRAR_AGREGAR_CATEGORIA,
+    AGREGAR_CATEGORIA,
+    AGREGAR_CATEGORIA_EXITO,
+    AGREGAR_CATEGORIA_ERROR,
 } from '../types';
 
 const initialState = {
@@ -32,6 +35,7 @@ const initialState = {
     abrir_agregar_usuario: null,
     abrir_agregar_categoria: null,
     usuarios: [],
+    categorias: [],
     error: null,
     mensaje: null,
     usuario_eliminar: null,
@@ -95,6 +99,7 @@ export default function (state = initialState, action) {
             }
         case COMENZAR_DESCARGA_USUARIOS:
         case AGREGAR_USUARIO:
+        case AGREGAR_CATEGORIA:
             return {
                 ...state,
                 loading: action.payload,
@@ -111,7 +116,14 @@ export default function (state = initialState, action) {
                 error: false,
                 abrir_agregar_usuario: null,
             }
+        case AGREGAR_CATEGORIA_EXITO:
+            return {
+                ...state,
+                loading: false,
+                categorias: [...state.categorias, action.payload]
+            }
         case AGREGAR_USUARIO_ERROR:
+        case AGREGAR_CATEGORIA_ERROR:
         case DESCARGA_USUARIOS_ERROR:
         case USUARIO_ELIMINADO_ERROR:
         case USUARIO_EDITADO_ERROR:

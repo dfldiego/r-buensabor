@@ -19,9 +19,47 @@ import {
     ENTRAR_CRUD_INSUMOS,
     ABRIR_AGREGAR_CATEGORIA,
     CERRAR_AGREGAR_CATEGORIA,
+    AGREGAR_CATEGORIA,
+    AGREGAR_CATEGORIA_EXITO,
+    AGREGAR_CATEGORIA_ERROR,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
+
+/**********************  para crear una nueva categoria ********************************/
+export function crearNuevaCategoriaAction(datosNuevaCategoria) {
+    return async (dispatch) => {
+        dispatch(agregarCategoria());
+
+        // hacemos consulta a la BBDD
+        try {
+            // insertar en la API
+            await clienteAxios.post('/admin', datosNuevaCategoria)
+            // si todo sale bien
+            dispatch(agregarCategoriaExito(datosNuevaCategoria));
+        } catch (error) {
+            // si hay un error
+            dispatch(agregarCategoriaError(true));
+        }
+    }
+}
+
+const agregarCategoria = () => ({
+    type: AGREGAR_CATEGORIA,
+    payload: true
+})
+
+// si el producto se guarda en la BBDD
+const agregarCategoriaExito = datosNuevaCategoria => ({
+    type: AGREGAR_CATEGORIA_EXITO,
+    payload: datosNuevaCategoria
+});
+
+// si hubo un error
+const agregarCategoriaError = estado => ({
+    type: AGREGAR_CATEGORIA_ERROR,
+    payload: estado
+})
 
 // abrir modal agregar categoria
 export function abrirCerrarAgregarCategoriaAction(estadoAgregarCategoria) {
