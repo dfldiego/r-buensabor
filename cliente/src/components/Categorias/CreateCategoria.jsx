@@ -30,6 +30,7 @@ const CreateCategoria = () => {
 
     /*************USAR USE SELECTOR: capturo el valor de state del store  *******************/
     let cerrar_modal_state_store = useSelector(state => state.admin.abrir_agregar_categoria);
+    let error_store = useSelector(state => state.admin.mensaje);
 
     /***********METODO QUE CIERRA MODAL: modifico el state *************/
     const cerrar_modal = e => {
@@ -47,6 +48,7 @@ const CreateCategoria = () => {
 
         // validar campos vacios
         if (name === '') {
+            agregar_categoria_action({ name });
             return;
         }
 
@@ -62,6 +64,7 @@ const CreateCategoria = () => {
                             className="volver"
                             onClick={cerrar_modal}
                         />
+                        {error_store ? <p className="error">{error_store}</p> : null}
                         <form onSubmit={handleSubmitAgregarCategoria}>
                             <div className="form-row">
                                 <label>Nombre</label>

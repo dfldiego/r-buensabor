@@ -24,6 +24,9 @@ import {
     AGREGAR_CATEGORIA,
     AGREGAR_CATEGORIA_EXITO,
     AGREGAR_CATEGORIA_ERROR,
+    COMENZAR_DESCARGA_CATEGORIA,
+    DESCARGA_CATEGORIA_EXITO,
+    DESCARGA_CATEGORIA_ERROR,
 } from '../types';
 
 const initialState = {
@@ -98,6 +101,7 @@ export default function (state = initialState, action) {
                 error: null,
             }
         case COMENZAR_DESCARGA_USUARIOS:
+        case COMENZAR_DESCARGA_CATEGORIA:
         case AGREGAR_USUARIO:
         case AGREGAR_CATEGORIA:
             return {
@@ -126,6 +130,7 @@ export default function (state = initialState, action) {
         case AGREGAR_USUARIO_ERROR:
         case AGREGAR_CATEGORIA_ERROR:
         case DESCARGA_USUARIOS_ERROR:
+        case DESCARGA_CATEGORIA_ERROR:
         case USUARIO_ELIMINADO_ERROR:
         case USUARIO_EDITADO_ERROR:
         case REGISTRO_ERROR:
@@ -146,6 +151,14 @@ export default function (state = initialState, action) {
                 elementoPorPagina: action.payload.users.length,
                 totalElementos: action.payload.total,
                 mostrarUsuarios: true,
+            }
+        case DESCARGA_CATEGORIA_EXITO:
+            return {
+                ...state,
+                loading: false,
+                error: null,
+                mensaje: null,
+                categorias: action.payload,
             }
         case OBTENER_USUARIO_ELIMINAR:
             return {

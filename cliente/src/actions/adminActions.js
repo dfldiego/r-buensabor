@@ -22,17 +22,56 @@ import {
     AGREGAR_CATEGORIA,
     AGREGAR_CATEGORIA_EXITO,
     AGREGAR_CATEGORIA_ERROR,
+    COMENZAR_DESCARGA_CATEGORIA,
+    DESCARGA_CATEGORIA_EXITO,
+    DESCARGA_CATEGORIA_ERROR,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
-import { desencriptarToken } from '../helpers/desencriptar_token';
+/* import { desencriptarToken } from '../helpers/desencriptar_token'; */
 import { authorizationHeader } from '../helpers/authorization_header';
+
+/**********************  para obtener los categorias de la BBDD ********************************/
+export function obtenerCategoriaAction() {
+    return async (dispatch) => {
+        dispatch(descargarCategorias());
+
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            const respuesta = await clienteAxios.get('api/generalCategory', header);
+            dispatch(descargarCategoriasExito(respuesta.data.categories));
+        } catch (error) {
+            console.log(error);
+            dispatch(descargarCategoriasError('Error al descargar los categoria'));
+        }
+
+    }
+}
+const descargarCategoriasError = mensaje => ({
+    type: DESCARGA_CATEGORIA_ERROR,
+    payload: mensaje,
+});
+
+const descargarCategoriasExito = respuesta => ({
+    type: DESCARGA_CATEGORIA_EXITO,
+    payload: respuesta,
+});
+
+const descargarCategorias = () => ({
+    type: COMENZAR_DESCARGA_CATEGORIA,
+    payload: true
+});
 
 /**********************  para crear una nueva categoria ********************************/
 export function crearNuevaCategoriaAction(datosNuevaCategoria) {
     return async (dispatch) => {
         dispatch(agregarCategoria());
-
+        // validaciones
+        if (datosNuevaCategoria.name.trim() === '') {
+            dispatch(agregarCategoriaError('Todos los campos son obligatorios'));
+            return;
+        }
         // hacemos consulta a la BBDD
         try {
             const token = localStorage.getItem('token');
@@ -46,8 +85,9 @@ export function crearNuevaCategoriaAction(datosNuevaCategoria) {
                     dispatch(agregarCategoriaExito(category));
                 })
         } catch (error) {
+            console.log(error.response);
             // si hay un error
-            dispatch(agregarCategoriaError(true));
+            dispatch(agregarCategoriaError("Error al enviar datos al BD"));
         }
     }
 }
