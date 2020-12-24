@@ -25,11 +25,53 @@ import {
     COMENZAR_DESCARGA_CATEGORIA,
     DESCARGA_CATEGORIA_EXITO,
     DESCARGA_CATEGORIA_ERROR,
+    OBTENER_CATEGORIA_ELIMINAR,
+    CATEGORIA_ELIMINADO_EXITO,
+    CATEGORIA_ELIMINADO_ERROR,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
 /* import { desencriptarToken } from '../helpers/desencriptar_token'; */
 import { authorizationHeader } from '../helpers/authorization_header';
+
+/**********************  para eliminar un categoria de la BBDD ********************************/
+export function eliminarCategoriaAction(datos_categoria) {
+    return async (dispatch) => {
+        datos_categoria.status = false;
+        dispatch(obtenerCategoriaEliminar(datos_categoria._id));
+
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            await clienteAxios.put(`/api/generalCategory/${datos_categoria._id}`, datos_categoria, header);
+            dispatch(categoriaEliminadoExito(datos_categoria));
+            // si se elimina, mostrar alerta
+            Swal.fire(
+                'Eliminado!',
+                'La categoria se eliminó correctamente.',
+                'success'
+            )
+        } catch (error) {
+            console.log(error);
+            dispatch(categoriaEliminadoError('Error al eliminar la categoria'));
+        }
+    }
+}
+
+const categoriaEliminadoError = msj => ({
+    type: CATEGORIA_ELIMINADO_ERROR,
+    payload: msj
+})
+
+const categoriaEliminadoExito = datos_categoria => ({
+    type: CATEGORIA_ELIMINADO_EXITO,
+    payload: datos_categoria
+})
+
+const obtenerCategoriaEliminar = idcategoria => ({
+    type: OBTENER_CATEGORIA_ELIMINAR,
+    payload: idcategoria
+})
 
 /**********************  para obtener los categorias de la BBDD ********************************/
 export function obtenerCategoriaAction() {

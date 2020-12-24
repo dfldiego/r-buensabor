@@ -27,6 +27,9 @@ import {
     COMENZAR_DESCARGA_CATEGORIA,
     DESCARGA_CATEGORIA_EXITO,
     DESCARGA_CATEGORIA_ERROR,
+    OBTENER_CATEGORIA_ELIMINAR,
+    CATEGORIA_ELIMINADO_EXITO,
+    CATEGORIA_ELIMINADO_ERROR,
 } from '../types';
 
 const initialState = {
@@ -42,6 +45,7 @@ const initialState = {
     error: null,
     mensaje: null,
     usuario_eliminar: null,
+    categoria_eliminar: null,
     usuario_editar: null,
     mostrarUsuarios: false,
     elementoPorPagina: 5,
@@ -134,12 +138,14 @@ export default function (state = initialState, action) {
         case USUARIO_ELIMINADO_ERROR:
         case USUARIO_EDITADO_ERROR:
         case REGISTRO_ERROR:
+        case CATEGORIA_ELIMINADO_ERROR:
             return {
                 ...state,
                 loading: false,
                 error: true,
                 mensaje: action.payload,
                 usuario_eliminar: null,
+                categoria_eliminar: null,
             }
         case DESCARGA_USUARIOS_EXITO:
             return {
@@ -200,6 +206,22 @@ export default function (state = initialState, action) {
                 error: null,
                 mensaje: null,
                 abrir_agregar_categoria: action.payload
+            }
+        case OBTENER_CATEGORIA_ELIMINAR:
+            return {
+                ...state,
+                categoria_eliminar: action.payload
+            }
+        case CATEGORIA_ELIMINADO_EXITO:
+            return {
+                ...state,
+                categoria_eliminar: null,
+                categorias: state.categorias.map(categoria =>
+                    categoria._id === action.payload._id ?
+                        categoria = action.payload
+                        :
+                        categoria
+                )
             }
         default:
             return state;
