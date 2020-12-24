@@ -196,6 +196,9 @@ export default function (state = initialState, action) {
         case CERRAR_AGREGAR_CATEGORIA:
             return {
                 ...state,
+                loading: false,
+                error: null,
+                mensaje: null,
                 abrir_agregar_categoria: action.payload
             }
         default:

@@ -53,6 +53,7 @@ const CreateCategoria = () => {
         }
 
         agregar_categoria_action({ name });
+        setCategoria({ name: '' });
     }
 
     return (

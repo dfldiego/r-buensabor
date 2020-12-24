@@ -73,18 +73,6 @@ select {
     text-align: center;
 }
 
-.error {
-    background-color: #ff6161;
-    width: 70%;
-    color: #fff;
-    text-align: center;
-    text-transform: uppercase;
-    font-weight: bold;
-    margin: auto auto;
-    padding: 1rem;
-    border-radius: 0.5rem;
-}
-
 /***********GET CATEGORIAS **************/
 .titulo {
     margin: 5px 0;
