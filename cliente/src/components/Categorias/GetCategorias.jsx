@@ -4,7 +4,7 @@ import CategoriaDB from './CategoriaDB';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
-    obtenerCategoriaAction,
+    obtenerCategoriasAction,
 } from '../../actions/adminActions';
 
 const GetCategorias = () => {
@@ -13,7 +13,7 @@ const GetCategorias = () => {
 
     useEffect(() => {
         // consultar la api
-        const cargarCategorias = () => dispatch(obtenerCategoriaAction());
+        const cargarCategorias = () => dispatch(obtenerCategoriasAction());
         //llamar la funcion
         cargarCategorias();
 

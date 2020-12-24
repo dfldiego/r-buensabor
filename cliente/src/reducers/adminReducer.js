@@ -30,6 +30,9 @@ import {
     OBTENER_CATEGORIA_ELIMINAR,
     CATEGORIA_ELIMINADO_EXITO,
     CATEGORIA_ELIMINADO_ERROR,
+    OBTENER_CATEGORIA_EDITAR,
+    CATEGORIA_EDITADO_EXITO,
+    CATEGORIA_EDITADO_ERROR,
 } from '../types';
 
 const initialState = {
@@ -47,7 +50,9 @@ const initialState = {
     usuario_eliminar: null,
     categoria_eliminar: null,
     usuario_editar: null,
+    categoria_editar: null,
     mostrarUsuarios: false,
+    mostrarCategorias: false,
     elementoPorPagina: 5,
     totalElementos: null,
     desdeElemento: 0,
@@ -139,6 +144,7 @@ export default function (state = initialState, action) {
         case USUARIO_EDITADO_ERROR:
         case REGISTRO_ERROR:
         case CATEGORIA_ELIMINADO_ERROR:
+        case CATEGORIA_EDITADO_ERROR:
             return {
                 ...state,
                 loading: false,
@@ -205,7 +211,8 @@ export default function (state = initialState, action) {
                 loading: false,
                 error: null,
                 mensaje: null,
-                abrir_agregar_categoria: action.payload
+                abrir_agregar_categoria: action.payload,
+                categoria_editar: null,
             }
         case OBTENER_CATEGORIA_ELIMINAR:
             return {
@@ -222,6 +229,22 @@ export default function (state = initialState, action) {
                         :
                         categoria
                 )
+            }
+        case OBTENER_CATEGORIA_EDITAR:
+            return {
+                ...state,
+                categoria_editar: action.payload,
+            }
+        case CATEGORIA_EDITADO_EXITO:
+            return {
+                ...state,
+                categorias: state.categorias.map(categoria =>
+                    categoria._id === action.payload._id ?
+                        categoria = action.payload
+                        :
+                        categoria
+                ),
+                categoria_editar: null,
             }
         default:
             return state;

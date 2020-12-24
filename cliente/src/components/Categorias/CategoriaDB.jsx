@@ -2,7 +2,9 @@ import React, { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     eliminarCategoriaAction,
+    obtenerCategoriasAction,
     obtenerCategoriaAction,
+    abrirCerrarAgregarCategoriaAction,
 } from '../../actions/adminActions';
 import Swal from 'sweetalert2';
 
@@ -14,7 +16,9 @@ const CategoriaDB = ({ categoria }) => {
 
     /** ENVIAR AL STORE **/
     const baja_categoria = datos_categoria => dispatch(eliminarCategoriaAction(datos_categoria));
-    const cargarcategorias = () => dispatch(obtenerCategoriaAction());
+    const cargarcategorias = () => dispatch(obtenerCategoriasAction());
+    const abrir_cerrar_categoria = estadoEditarUsuario => dispatch(abrirCerrarAgregarCategoriaAction(estadoEditarUsuario));
+    const obtener_categoria_editar = usuario => dispatch(obtenerCategoriaAction(usuario));
     /** OBTENER DEL STORE **/
     const recargarTablaCategoria = useSelector(state => state.admin.categoria_eliminar);
 
@@ -47,14 +51,22 @@ const CategoriaDB = ({ categoria }) => {
 
     }
 
+    /** EVENTO PARA EDITAR CATEGORIAS **/
+    const handleClick_editar_categoria = categoria => {
+        abrir_cerrar_categoria(true);
+        obtener_categoria_editar(categoria);
+    }
+
     return (
         <Fragment>
             <tr>
                 <td>{name}</td>
                 <td>
                     <div className="acciones">
-                        <button className="boton_editar">
-                            Editar
+                        <button
+                            className="boton_editar"
+                            onClick={() => handleClick_editar_categoria(categoria)}
+                        >Editar
                         </button>
                         <button
                             className="boton_borrar"

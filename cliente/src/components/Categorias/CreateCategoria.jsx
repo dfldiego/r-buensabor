@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import './Categorias.css';
 
 // Material Icons
@@ -8,6 +8,8 @@ import ClearIcon from '@material-ui/icons/Clear';
 import {
     abrirCerrarAgregarCategoriaAction,
     crearNuevaCategoriaAction,
+    editarCategoriaAction,
+    obtenerCategoriaAction,
 } from '../../actions/adminActions';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -27,10 +29,13 @@ const CreateCategoria = () => {
     const dispatch = useDispatch();
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarCategoriaAction(nuevo_estado));
     const agregar_categoria_action = (datosNuevaCategoria) => dispatch(crearNuevaCategoriaAction(datosNuevaCategoria));
+    const categoria_editar_action = (datoscategoria) => dispatch(editarCategoriaAction(datoscategoria));
+    const cargarcategorias = () => dispatch(obtenerCategoriaAction());
 
     /*************USAR USE SELECTOR: capturo el valor de state del store  *******************/
     let cerrar_modal_state_store = useSelector(state => state.admin.abrir_agregar_categoria);
     let error_store = useSelector(state => state.admin.mensaje);
+    let categoria_editar_store = useSelector(state => state.admin.categoria_editar);
 
     /***********METODO QUE CIERRA MODAL: modifico el state *************/
     const cerrar_modal = e => {
@@ -52,9 +57,34 @@ const CreateCategoria = () => {
             return;
         }
 
-        agregar_categoria_action({ name });
-        setCategoria({ name: '' });
+        // si apretamos boton editar
+        if (categoria_editar_store) {
+            // le pasamos al categoriaEditado el id del categoria original
+            categoria._id = categoria_editar_store._id;
+            // pasamos los datos del categoria editado al action
+            categoria_editar_action(categoria);
+            //cargamos los categorias en la tabla
+            cargarcategorias();
+            //finalmente, cerramos modal
+            cerrar_modal_state_store = false;
+            cerrar_modal_callAction(cerrar_modal_state_store);
+        } else {
+            agregar_categoria_action({ name });
+            setCategoria({ name: '' });
+        }
     }
+
+    // campos cargados
+    useEffect(() => {
+        if (categoria_editar_store) {
+            setCategoria({
+                ...categoria,
+                name: categoria_editar_store.name,
+            })
+        }
+
+        // eslint-disable-next-line
+    }, [categoria_editar_store])
 
     return (
         <Fragment>
@@ -78,9 +108,16 @@ const CreateCategoria = () => {
                                     onChange={handleChange}
                                 />
                             </div>
-                            <button
-                                type="submit"
-                            >Agregar</button>
+                            {
+                                categoria_editar_store ?
+                                    <button
+                                        type="submit"
+                                    >Editar</button>
+                                    :
+                                    <button
+                                        type="submit"
+                                    >Agregar</button>
+                            }
                         </form>
                     </div>
                 </div>

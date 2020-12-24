@@ -28,11 +28,57 @@ import {
     OBTENER_CATEGORIA_ELIMINAR,
     CATEGORIA_ELIMINADO_EXITO,
     CATEGORIA_ELIMINADO_ERROR,
+    OBTENER_CATEGORIA_EDITAR,
+    CATEGORIA_EDITADO_EXITO,
+    CATEGORIA_EDITADO_ERROR,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
 /* import { desencriptarToken } from '../helpers/desencriptar_token'; */
 import { authorizationHeader } from '../helpers/authorization_header';
+
+/**********************  para editar una categoria de la BBDD ********************************/
+export function obtenerCategoriaAction(datos_categoria) {
+    return async (dispatch) => {
+        dispatch(editarCategoria(datos_categoria))
+    }
+}
+
+export function editarCategoriaAction(datos_categoria) {
+    return async (dispatch) => {
+        const { name } = datos_categoria;
+        // validar campos vacios
+        if (name === '') {
+            dispatch(agregarCategoriaError('Todos los campos son obligatorios'));
+            return;
+        }
+
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            await clienteAxios.put(`/api/generalCategory/${datos_categoria._id}`, datos_categoria, header);
+            dispatch(editarCategoriaExito(datos_categoria));
+        } catch (error) {
+            console.log(error);
+            dispatch(editarCategoriaError('Error al editar la categoria'));
+        }
+    }
+}
+
+const editarCategoria = categoria => ({
+    type: OBTENER_CATEGORIA_EDITAR,
+    payload: categoria
+})
+
+const editarCategoriaExito = categoria => ({
+    type: CATEGORIA_EDITADO_EXITO,
+    payload: categoria
+})
+
+const editarCategoriaError = msj => ({
+    type: CATEGORIA_EDITADO_ERROR,
+    payload: msj
+})
 
 /**********************  para eliminar un categoria de la BBDD ********************************/
 export function eliminarCategoriaAction(datos_categoria) {
@@ -74,7 +120,7 @@ const obtenerCategoriaEliminar = idcategoria => ({
 })
 
 /**********************  para obtener los categorias de la BBDD ********************************/
-export function obtenerCategoriaAction() {
+export function obtenerCategoriasAction() {
     return async (dispatch) => {
         dispatch(descargarCategorias());
 
