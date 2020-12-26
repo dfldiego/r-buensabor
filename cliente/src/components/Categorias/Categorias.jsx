@@ -15,7 +15,7 @@ import {
 const Categorias = () => {
 
     //useState locales
-    const [openModal, setOpenModal] = useState(null);
+    const [openModal, setOpenModal] = useState(false);
 
     const dispatch = useDispatch();
 

@@ -1,20 +1,24 @@
 const { Schema, model } = require('mongoose');
 
-let generalCategorySchema = new Schema({
+let CategoriesMenuSchema = new Schema({
     name: {
         type: String,
         required: [true, 'La denominacion es requerida'],
         unique: true,
     },
+    img: {
+        type: String,
+        required: [false]
+    },
     status: {
         type: Boolean,
         default: true
     }
-}, { collection: 'generalCategories' });
+}, { collection: 'menuCategories' });
 
-generalCategorySchema.method('toJSON', function () {
+CategoriesMenuSchema.method('toJSON', function () {
     const { __v, ...object } = this.toObject();
     return object;
 })
 
-module.exports = model('GeneralCategory', generalCategorySchema);
+module.exports = model('CategoriesMenu', CategoriesMenuSchema);

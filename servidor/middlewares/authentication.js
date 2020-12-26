@@ -28,15 +28,15 @@ let checkToken = (req, res, next) => {
 let checkAdminRole = (req, res, next) => {
     let user = req.user;
     if (user.role === 'ADMIN_ROLE') {
-        return;
+        next();
+    } else {
+        res.status(401).json({
+            ok: false,
+            err: {
+                message: 'The user is not admin'
+            }
+        });
     }
-
-    res.status(401).json({
-        ok: false,
-        err: {
-            message: 'The user is not admin'
-        }
-    });
 };
 
 module.exports = {

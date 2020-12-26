@@ -8,7 +8,7 @@ const userController = require('../controllers/user.controller');
 const router = Router();
 
 router.get('/', [checkToken], userController.list);
-router.post('/', userController.create);
+router.post('/', [checkToken], userController.create);
 router.get('/:id', [checkToken], userController.getById);
 router.put('/:id', [checkToken], userController.update);
 router.delete('/:id', [checkToken], userController.remove);

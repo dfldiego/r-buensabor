@@ -25,7 +25,7 @@ import {
 const Navbar = () => {
     let history = useHistory();
     //useState locales
-    const [openModal, setOpenModal] = useState(null);
+    const [openModal, setOpenModal] = useState(false);
     const [openModalPerfil, setOpenModalPerfil] = useState(null);
     const [openDropDown, setOpenDropDown] = useState(false);
 

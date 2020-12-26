@@ -16,7 +16,7 @@ import {
 function Usuario() {
 
     //useState locales
-    const [openModal, setOpenModal] = useState(null);
+    const [openModal, setOpenModal] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -29,7 +29,7 @@ function Usuario() {
     const handleClick_abrir_agregar_usuario = e => {
         e.preventDefault();
 
-        if (openModal === false || openModal === null) {
+        if (openModal === false) {
             setOpenModal(true);
             abrir_cerrar_agregarUsuario(true);
         } else {
@@ -48,6 +48,7 @@ function Usuario() {
         // eslint-disable-next-line
     }, [modalAgregarUsuario])
 
+    console.log(openModal);
     return (
         <Fragment>
             <div className="container">

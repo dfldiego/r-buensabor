@@ -6,7 +6,7 @@ import './ModalContainer.css';
 const ModalContainer = (props) => {
 
     const { openModal, closeModal, children } = props;
-
+    console.log(openModal);;
     return (
         <div>
             <Modal

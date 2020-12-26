@@ -56,7 +56,7 @@ export function editarCategoriaAction(datos_categoria) {
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            await clienteAxios.put(`/api/generalCategory/${datos_categoria._id}`, datos_categoria, header);
+            await clienteAxios.put(`/api/categories-menu/${datos_categoria._id}`, datos_categoria, header);
             dispatch(editarCategoriaExito(datos_categoria));
         } catch (error) {
             console.log(error);
@@ -89,7 +89,7 @@ export function eliminarCategoriaAction(datos_categoria) {
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            await clienteAxios.put(`/api/generalCategory/${datos_categoria._id}`, datos_categoria, header);
+            await clienteAxios.put(`/api/categories-menu/${datos_categoria._id}`, datos_categoria, header);
             dispatch(categoriaEliminadoExito(datos_categoria));
             // si se elimina, mostrar alerta
             Swal.fire(
@@ -127,7 +127,7 @@ export function obtenerCategoriasAction() {
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            const respuesta = await clienteAxios.get('api/generalCategory', header);
+            const respuesta = await clienteAxios.get('/api/categories-menu', header);
             dispatch(descargarCategoriasExito(respuesta.data.categories));
         } catch (error) {
             console.log(error);
@@ -165,7 +165,7 @@ export function crearNuevaCategoriaAction(datosNuevaCategoria) {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
             // insertar en la API
-            await clienteAxios.post('/api/generalCategory', datosNuevaCategoria, header)
+            await clienteAxios.post('/api/categories-menu', datosNuevaCategoria, header)
                 .then(response => {
                     // obtenemos datos del response
                     const { category } = response.data;
@@ -276,7 +276,9 @@ export function editarUsuarioAction(datos_usuario) {
         }
 
         try {
-            await clienteAxios.put(`/api/users/${datos_usuario._id}`, datos_usuario);
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            await clienteAxios.put(`/api/users/${datos_usuario._id}`, datos_usuario, header);
             dispatch(editarUsuarioExito(datos_usuario));
         } catch (error) {
             console.log(error);

@@ -5,7 +5,7 @@ const MenuDetail = require('../models/menu-details.model');
 const list = async (req, res = response) => {
 
     const menus = await Menu.find({ status: true })
-        .populate('general_category', 'name')
+    /* .populate('general_category', 'name') */
     res.json({
         ok: true,
         menus

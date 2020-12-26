@@ -14,7 +14,7 @@ const menuSchema = Schema({
         type: String,
         required: [true, 'El precio es requerido'],
     },
-    general_category: {
+    category: {
         type: Schema.Types.ObjectId,
         ref: 'GeneralCategory',
         required: true
@@ -30,5 +30,4 @@ menuSchema.method('toJSON', function () {
     return object;
 })
 
-//implementar el modelo
 module.exports = model('Menu', menuSchema);
