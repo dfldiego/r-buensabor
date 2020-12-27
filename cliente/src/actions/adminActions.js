@@ -56,7 +56,7 @@ export function editarCategoriaAction(datos_categoria) {
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            await clienteAxios.put(`/api/categories-menu/${datos_categoria._id}`, datos_categoria, header);
+            await clienteAxios.put(`/api/menu-categories/${datos_categoria._id}`, datos_categoria, header);
             dispatch(editarCategoriaExito(datos_categoria));
         } catch (error) {
             console.log(error);
@@ -89,7 +89,7 @@ export function eliminarCategoriaAction(datos_categoria) {
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            await clienteAxios.put(`/api/categories-menu/${datos_categoria._id}`, datos_categoria, header);
+            await clienteAxios.put(`/api/menu-categories/${datos_categoria._id}`, datos_categoria, header);
             dispatch(categoriaEliminadoExito(datos_categoria));
             // si se elimina, mostrar alerta
             Swal.fire(
@@ -127,7 +127,7 @@ export function obtenerCategoriasAction() {
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            const respuesta = await clienteAxios.get('/api/categories-menu', header);
+            const respuesta = await clienteAxios.get('/api/menu-categories', header);
             dispatch(descargarCategoriasExito(respuesta.data.categories));
         } catch (error) {
             console.log(error);
@@ -165,7 +165,7 @@ export function crearNuevaCategoriaAction(datosNuevaCategoria) {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
             // insertar en la API
-            await clienteAxios.post('/api/categories-menu', datosNuevaCategoria, header)
+            await clienteAxios.post('/api/menu-categories', datosNuevaCategoria, header)
                 .then(response => {
                     // obtenemos datos del response
                     const { category } = response.data;

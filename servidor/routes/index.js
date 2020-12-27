@@ -7,6 +7,6 @@ app.use('/api/register', require('./register.routes'));
 app.use('/api/address', require('./address.routes'));
 app.use('/api/menu', require('./menu.routes'));
 app.use('/api/product', require('./product.routes'));
-app.use('/api/categories-menu', require('./categories-menu.routes'));
+app.use('/api/menu-categories', require('./menu-categories.routes'));
 
 module.exports = app;
