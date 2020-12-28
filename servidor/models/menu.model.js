@@ -16,7 +16,7 @@ const menuSchema = Schema({
     },
     category: {
         type: Schema.Types.ObjectId,
-        ref: 'GeneralCategory',
+        ref: 'MenuCategories',
         required: true
     },
     status: {
