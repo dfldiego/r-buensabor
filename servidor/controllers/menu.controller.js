@@ -13,16 +13,28 @@ const list = async (req, res = response) => {
 }
 
 const create = async (req, res = response) => {
-    const { description, finished_time, price } = req.body;
+    const { description } = req.body;
 
     try {
-        // verifico si el menu ya existe
-        existeMenu = await Menu.findOne({ description });
-        if (existeMenu) {
-            return res.status(400).json({
-                ok: false,
-                msg: "ese menú ya se encuentra registrado"
-            });
+        const existeDescription = await Menu.findOne({ description });
+        if (existeDescription) {
+            if (existeDescription.status === true) {
+                return res.status(400).json({
+                    ok: false,
+                    msg: "ese menu ya se encuentra registrado"
+                });
+            } else {
+                const menu = new Menu(req.body);
+                menu._id = existeDescription._id;
+
+                const menuStored = await Menu.findByIdAndUpdate(menu._id, menu, { new: true });
+
+                return res.json({
+                    ok: true,
+                    msg: "menu dado de alta nuevamente",
+                    menuStored
+                });
+            }
         }
 
         // creo un menu nuevo
@@ -138,7 +150,9 @@ const update = async (req, res = response) => {
 
 const remove = async (req, res = response) => {
     const id = req.params.id;
-
+    let changeStatus = {
+        status: false
+    };
     try {
 
         const menuDB = await Menu.findById(id);
@@ -150,12 +164,20 @@ const remove = async (req, res = response) => {
             });
         }
 
-        await Menu.findByIdAndDelete(id);
-
-        res.json({
-            ok: true,
-            msg: 'Menu borrado'
+        Menu.findByIdAndUpdate(id, changeStatus, { new: true }, (err, menuDeleted) => {
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    err
+                });
+            }
+            res.json({
+                ok: true,
+                msg: 'Menu borrado',
+                menu: menuDeleted
+            });
         });
+
 
     } catch (err) {
 

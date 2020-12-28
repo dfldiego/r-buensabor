@@ -23,6 +23,7 @@ const list = async (req, res = response) => {
                 res.json({
                     ok: true,
                     menudetails,
+                    err,
                     size
                 });
             });
@@ -30,22 +31,57 @@ const list = async (req, res = response) => {
 }
 
 const create = async (req, res = response) => {
+    console.log(req.body);
+    const { product, menu } = req.body;
 
-    let menudetail = new MenuDetail(req.body);
+    try {
 
-    menudetail.save((err, menudetailStored) => {
-        if (err) {
-            return res.status(500).json({
-                ok: false,
-                err
-            });
+        const existeDetalleMenu = await MenuDetail.findOne({ product, menu });
+        console.log(existeDetalleMenu);
+        if (existeDetalleMenu) {
+            if (existeDetalleMenu.status === true) {
+                return res.status(400).json({
+                    ok: false,
+                    msg: "ese detalle de menu ya se encuentra registrado"
+                });
+            } else {
+                const menuDetail = new MenuDetail(req.body);
+                menuDetail._id = existeDetalleMenu._id;
+
+                const menuDetailStored = await MenuDetail.findByIdAndUpdate(menuDetail._id, menuDetail, { new: true });
+
+                return res.json({
+                    ok: true,
+                    msg: "detalle de menu dado de alta nuevamente",
+                    menuDetailStored
+                });
+            }
         }
 
-        res.json({
-            ok: true,
-            menudetail: menudetailStored
+
+        let menudetail = new MenuDetail(req.body);
+
+        menudetail.save((err, menudetailStored) => {
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    err
+                });
+            }
+
+            res.json({
+                ok: true,
+                menudetail: menudetailStored
+            });
         });
-    });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            ok: false,
+            err,
+            msg: "Error inesperado. Hable con el admin."
+        });
+    }
 }
 
 const update = async (req, res = response) => {

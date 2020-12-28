@@ -33,19 +33,35 @@ const create = async (req, res = response) => {
 
     try {
 
-        const existeName = await MenuCategory.findOne({ name });
-        if (existeName) {   // cambiar el estado a true y hacer un update y poner un return res.json con category
-            return res.status(400).json({
-                ok: false,
-                msg: "esa denominacion ya se encuentra registrada"
-            });
-        }
         if (name === '') {
             return res.status(400).json({
                 ok: false,
                 msg: "Todos los campos son obligatorios"
             });
         }
+
+        const existeName = await MenuCategory.findOne({ name });
+
+        if (existeName) {
+            if (existeName.status === true) {
+                return res.status(400).json({
+                    ok: false,
+                    msg: "esa denominacion de categoria de menu ya se encuentra registrada"
+                });
+            } else {
+                const menuCategory = new MenuCategory(req.body);
+                menuCategory._id = existeName._id;
+
+                const menuCategoryStored = await MenuCategory.findByIdAndUpdate(menuCategory._id, menuCategory, { new: true });
+
+                return res.json({
+                    ok: true,
+                    msg: "categoria de menu dado de alta nuevamente",
+                    menuCategoryStored
+                });
+            }
+        }
+
 
         // crear una instancia del nuevo category
         const category = new MenuCategory(req.body);

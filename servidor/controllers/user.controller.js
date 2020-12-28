@@ -34,7 +34,7 @@ const list = async (req, res = response) => {
 
 const create = async (req, res = response) => {
 
-    let { email, password } = req.body;
+    const { email, password } = req.body;
 
     try {
 

@@ -37,9 +37,30 @@ const create = async (req, res = response) => {
             });
         }
 
+        const existeAddress = await Address.findOne({ nameStreet, numberStreet, location });
+
+        if (existeAddress) {
+            if (existeAddress.status === true) {
+                return res.status(400).json({
+                    ok: false,
+                    msg: "esa direccion postal ya se encuentra registrada"
+                });
+            } else {
+                const address = new Address(req.body);
+                address._id = existeAddress._id;
+
+                const addressStored = await Address.findByIdAndUpdate(address._id, address, { new: true });
+
+                return res.json({
+                    ok: true,
+                    msg: "direccion postal dada de alta nuevamente",
+                    addressStored
+                });
+            }
+        }
+
         // crear una instancia del nuevo Address
         const address = new Address(req.body);
-
 
         // guardar user en la BD
         await address.save();
