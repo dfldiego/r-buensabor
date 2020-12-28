@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import './Menu.css';
 
 import ClearIcon from '@material-ui/icons/Clear';
@@ -6,6 +6,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     abrirCerrarAgregarMenuAction,
+    obtenerCategoriasAction,
 } from '../../actions/adminActions';
 
 
@@ -13,8 +14,10 @@ const CreateMenu = () => {
 
     const dispatch = useDispatch();
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarMenuAction(nuevo_estado));
+    const obtenerCategorias_callAction = () => dispatch(obtenerCategoriasAction());
 
     let cerrar_modal_state_store = useSelector(state => state.admin.abrir_agregar_menu);
+    const categorias = useSelector(state => state.admin.categorias);
 
     const cerrar_modal = e => {
         e.preventDefault();
@@ -24,6 +27,12 @@ const CreateMenu = () => {
         }
         return;
     }
+
+    useEffect(() => {
+        obtenerCategorias_callAction();
+
+        // eslint-disable-next-line
+    }, []);
 
     return (
         <Fragment>
@@ -69,7 +78,14 @@ const CreateMenu = () => {
                                     name="category"
                                 >
                                     <option value="">-- Seleccione una categoria --</option>
-                                    <option value="pizza">Pizza</option>
+                                    {
+                                        categorias.map(categoria => (
+                                            <option
+                                                key={categoria._id}
+                                                value={categoria._id}
+                                            >{categoria.name}</option>
+                                        ))
+                                    }
                                 </select>
                             </div>
                             <button
