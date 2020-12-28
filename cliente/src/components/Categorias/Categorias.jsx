@@ -28,7 +28,7 @@ const Categorias = () => {
     const handleClick_abrir_agregar_categoria = e => {
         e.preventDefault();
 
-        if (openModal === false || openModal === null) {
+        if (openModal === false) {
             setOpenModal(true);
             abrir_cerrar_agregarCategoria(true);
         } else {

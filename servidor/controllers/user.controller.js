@@ -33,28 +33,46 @@ const list = async (req, res = response) => {
 }
 
 const create = async (req, res = response) => {
-    const { email, password } = req.body;
+
+    let { email, password } = req.body;
 
     try {
 
-        const existeEmail = await User.findOne({ email });
-        if (existeEmail) {
-            return res.status(400).json({
-                ok: false,
-                msg: "ese email ya se encuentra registrado"
-            });
-        }
         if (email.trim() === '' || password.trim() === '') {
             return res.status(400).json({
                 ok: false,
                 msg: "Todos los campos son obligatorios"
             });
         }
+
         if (password.length < 6) {
             return res.status(400).json({
                 ok: false,
                 msg: "El password debe ser de al menos 6 caracteres"
             });
+        }
+
+        const existeEmail = await User.findOne({ email });
+        if (existeEmail) {
+            if (existeEmail.status === true) {
+                return res.status(400).json({
+                    ok: false,
+                    msg: "ese email ya se encuentra registrado"
+                });
+            } else {
+                const user = new User(req.body);
+                user._id = existeEmail._id;
+                const salt = bcrypt.genSaltSync();
+                user.password = bcrypt.hashSync(password, salt);
+
+                const userStored = await User.findByIdAndUpdate(user._id, user, { new: true });
+
+                return res.json({
+                    ok: true,
+                    msg: "usuario dado de alta nuevamente",
+                    userStored
+                });
+            }
         }
 
         // crear una instancia del nuevo User

@@ -310,7 +310,9 @@ export function eliminarUsuarioAction(datos_usuario) {
         dispatch(obtenerUsuarioEliminar(datos_usuario._id));
 
         try {
-            await clienteAxios.put(`/api/users/${datos_usuario._id}`, datos_usuario);
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            await clienteAxios.put(`/api/users/${datos_usuario._id}`, datos_usuario, header);
             dispatch(usuarioEliminadoExito(datos_usuario));
             // si se elimina, mostrar alerta
             Swal.fire(
@@ -352,9 +354,7 @@ export function obtenerUsuariosAction(indexPrimerUsuario) {
                     'Authorization': `${token}`
                 }
             }
-            console.log(indexPrimerUsuario);
             const respuesta = await clienteAxios.get(`/api/users?from=${indexPrimerUsuario}&limit=5`, header);
-            console.log(respuesta.data);
             dispatch(descargarUsuariosExito(respuesta.data));
         } catch (error) {
             console.log(error);
@@ -401,8 +401,10 @@ export function crearNuevoUsuarioAction(datosNuevoUsuario) {
 
         // hacemos consulta a la BBDD
         try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
             // insertar en la API
-            await clienteAxios.post('/api/users', datosNuevoUsuario)
+            await clienteAxios.post('/api/users', datosNuevoUsuario, header)
             // si todo sale bien
             dispatch(agregarUsuarioExito(datosNuevoUsuario));
         } catch (error) {
