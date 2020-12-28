@@ -31,11 +31,33 @@ import {
     OBTENER_CATEGORIA_EDITAR,
     CATEGORIA_EDITADO_EXITO,
     CATEGORIA_EDITADO_ERROR,
+    ABRIR_AGREGAR_MENU,
+    CERRAR_AGREGAR_MENU,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
-/* import { desencriptarToken } from '../helpers/desencriptar_token'; */
 import { authorizationHeader } from '../helpers/authorization_header';
+
+/**********************  para abrir modal agregar Menu ********************************/
+export function abrirCerrarAgregarMenuAction(estadoAgregarMenu) {
+    return (dispatch) => {
+        if (estadoAgregarMenu) {
+            dispatch(abrirAgregarMenu(estadoAgregarMenu));
+        } else {
+            dispatch(cerrarAgregarMenu(estadoAgregarMenu));
+        }
+    }
+}
+
+const abrirAgregarMenu = estadoAgregarMenu => ({
+    type: ABRIR_AGREGAR_MENU,
+    payload: estadoAgregarMenu
+})
+
+const cerrarAgregarMenu = estadoAgregarMenu => ({
+    type: CERRAR_AGREGAR_MENU,
+    payload: estadoAgregarMenu
+})
 
 /**********************  para editar una categoria de la BBDD ********************************/
 export function obtenerCategoriaAction(datos_categoria) {

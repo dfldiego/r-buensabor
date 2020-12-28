@@ -33,6 +33,8 @@ import {
     OBTENER_CATEGORIA_EDITAR,
     CATEGORIA_EDITADO_EXITO,
     CATEGORIA_EDITADO_ERROR,
+    ABRIR_AGREGAR_MENU,
+    CERRAR_AGREGAR_MENU,
 } from '../types';
 
 const initialState = {
@@ -43,6 +45,7 @@ const initialState = {
     loading: false,
     abrir_agregar_usuario: false,
     abrir_agregar_categoria: false,
+    abrir_agregar_menu: false,
     usuarios: [],
     categorias: [],
     error: null,
@@ -245,6 +248,12 @@ export default function (state = initialState, action) {
                         categoria
                 ),
                 categoria_editar: null,
+            }
+        case ABRIR_AGREGAR_MENU:
+        case CERRAR_AGREGAR_MENU:
+            return {
+                ...state,
+                abrir_agregar_menu: action.payload
             }
         default:
             return state;
