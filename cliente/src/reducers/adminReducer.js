@@ -269,6 +269,7 @@ export default function (state = initialState, action) {
                 ...state,
                 abrir_agregar_menu: action.payload,
                 errores: [],
+                mensaje: null,
             }
         case AGREGAR_MENU_EXITO:
             return {
@@ -277,11 +278,13 @@ export default function (state = initialState, action) {
                 menus: [...state.menus, action.payload],
                 errores: [],
                 abrir_agregar_menu: false,
+                mensaje: null,
             }
         case AGREGAR_MENU_ERRORES:
             return {
                 ...state,
-                errores: [action.payload]
+                errores: [action.payload],
+                mensaje: null,
             }
         case DESCARGA_MENU_EXITO:
             return {
@@ -291,6 +294,7 @@ export default function (state = initialState, action) {
                 menus: action.payload,
                 abrir_agregar_menu: false,
                 error: null,
+                mensaje: null,
             }
         default:
             return state;

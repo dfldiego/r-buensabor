@@ -64,7 +64,6 @@ export function obtenerMenuAction() {
             console.log(err);
             dispatch(descargarMenusError('Error al descargar los menus'));
         }
-
     }
 }
 
@@ -108,8 +107,6 @@ export function crearNuevoMenuAction(datosNuevoMenu) {
                     dispatch(agregarMenuErrores(err.response.data.err.errors));
                 }
             }
-
-
         }
     }
 }

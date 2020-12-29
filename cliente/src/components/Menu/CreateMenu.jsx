@@ -60,11 +60,10 @@ const CreateMenu = () => {
     const handleSubmitAgregarMenu = e => {
         e.preventDefault();
 
-        agregar_nuevo_menu_action({ description, finished_time, price, category });
-        cargarMenus();
-        if (errores === []) {
-            cerrar_modal_state_store = false;
-            cerrar_modal_callAction(cerrar_modal_state_store);
+        agregar_nuevo_menu_action({ description, finished_time, price, category })
+
+        if (errores === [] && msj_error === null) {
+            cerrar_modal();
         }
     }
 
