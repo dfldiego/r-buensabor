@@ -134,7 +134,7 @@ const update = async (req, res = response) => {
 
         res.json({
             ok: true,
-            medico: menuActualizado
+            menu: menuActualizado
         })
 
     } catch (err) {

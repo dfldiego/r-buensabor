@@ -43,10 +43,66 @@ import {
     OBTENER_MENU_ELIMINAR,
     MENU_ELIMINADO_EXITO,
     MENU_ELIMINADO_ERROR,
+    OBTENER_MENU_EDITAR,
+    MENU_EDITADO_EXITO,
+    MENU_EDITADO_ERROR,
+    MENU_EDITADO_ERRORES,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
 import { authorizationHeader } from '../helpers/authorization_header';
+
+/**********************  para editar un menu de la BBDD ********************************/
+export function obtenerUnMenuAction(datos_menu) {
+    return async (dispatch) => {
+        dispatch(editarMenu(datos_menu))
+    }
+}
+
+export function editarMenuAction(datos_menu) {
+    return async (dispatch) => {
+
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            await clienteAxios.put(`/api/menu/${datos_menu._id}`, datos_menu, header)
+                .then(response => {
+                    console.log(response.data);
+                    const { menu } = response.data;
+                    dispatch(editarMenuExito(menu));
+                })
+
+        } catch (err) {
+            if (err.response.data.msg !== undefined) {
+                dispatch(editarMenuError(err.response.data.msg));
+            } else {
+                if (err.response.data.err.errors) {
+                    dispatch(editarMenuErrores(err.response.data.err.errors));
+                }
+            }
+        }
+    }
+}
+
+const editarMenu = menu => ({
+    type: OBTENER_MENU_EDITAR,
+    payload: menu
+})
+
+const editarMenuExito = menu => ({
+    type: MENU_EDITADO_EXITO,
+    payload: menu
+})
+
+const editarMenuErrores = errores => ({
+    type: MENU_EDITADO_ERRORES,
+    payload: errores,
+});
+
+const editarMenuError = msj => ({
+    type: MENU_EDITADO_ERROR,
+    payload: msj
+})
 
 /**********************  para eliminar un menu de la BBDD ********************************/
 export function eliminarMenuAction(datos_menu) {

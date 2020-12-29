@@ -9,6 +9,7 @@ import {
     obtenerCategoriasAction,
     crearNuevoMenuAction,
     obtenerMenuAction,
+    editarMenuAction,
 } from '../../actions/adminActions';
 
 
@@ -35,11 +36,13 @@ const CreateMenu = () => {
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarMenuAction(nuevo_estado));
     const obtenerCategorias_callAction = () => dispatch(obtenerCategoriasAction());
     const agregar_nuevo_menu_action = (datosNuevoMenu) => dispatch(crearNuevoMenuAction(datosNuevoMenu));
+    const menu_editar_action = (datosmenu) => dispatch(editarMenuAction(datosmenu));
 
     let cerrar_modal_state_store = useSelector(state => state.admin.abrir_agregar_menu);
     const categorias = useSelector(state => state.admin.categorias);
     const errores = useSelector(state => state.admin.errores);
     const msj_error = useSelector(state => state.admin.mensaje);
+    let menu_editar_store = useSelector(state => state.admin.menu_editar);
 
     const cerrar_modal = e => {
         e.preventDefault();
@@ -59,12 +62,37 @@ const CreateMenu = () => {
     const handleSubmitAgregarMenu = e => {
         e.preventDefault();
 
-        agregar_nuevo_menu_action({ description, finished_time, price, category })
+        if (menu_editar_store) {
+            menu._id = menu_editar_store._id;
+            console.log(menu);
+            menu_editar_action(menu);
 
-        if (errores === [] && msj_error === null) {
-            cerrar_modal();
+            if (errores === [] && msj_error === null) {
+                cerrar_modal();
+            }
+        } else {
+            agregar_nuevo_menu_action({ description, finished_time, price, category })
+
+            if (errores === [] && msj_error === null) {
+                cerrar_modal();
+            }
         }
+
     }
+
+    useEffect(() => {
+        if (menu_editar_store) {
+            setMenu({
+                ...menu,
+                description: menu_editar_store.description,
+                finished_time: menu_editar_store.finished_time,
+                price: menu_editar_store.price,
+                category: menu_editar_store.category
+            })
+        }
+
+        // eslint-disable-next-line
+    }, [menu_editar_store])
 
     return (
         <Fragment>
@@ -149,7 +177,15 @@ const CreateMenu = () => {
                                     value={category}
                                     onChange={handleChange}
                                 >
-                                    <option value="">-- Seleccione una categoria --</option>
+                                    {
+                                        menu_editar_store ?
+                                            <option
+                                                key={menu_editar_store.category._id}
+                                                value={menu_editar_store.category._id}
+                                            >{menu_editar_store.category.name}</option>
+                                            :
+                                            <option value="">-- Seleccione una categoria --</option>
+                                    }
                                     {
                                         categorias.map(categoria => (
                                             <option
@@ -160,9 +196,16 @@ const CreateMenu = () => {
                                     }
                                 </select>
                             </div>
-                            <button
-                                type="submit"
-                            >Agregar</button>
+                            {
+                                menu_editar_store ?
+                                    <button
+                                        type="submit"
+                                    >Editar</button>
+                                    :
+                                    <button
+                                        type="submit"
+                                    >Agregar</button>
+                            }
                         </form>
                     </div>
                 </div>

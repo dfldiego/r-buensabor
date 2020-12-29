@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     eliminarMenuAction,
     obtenerMenuAction,
+    obtenerUnMenuAction,
+    abrirCerrarAgregarMenuAction,
 } from '../../actions/adminActions';
 
 import Swal from 'sweetalert2';
@@ -16,8 +18,17 @@ const MenuDB = ({ menu }) => {
 
     const baja_menu = datos_menu => dispatch(eliminarMenuAction(datos_menu));
     const cargarmenus = () => dispatch(obtenerMenuAction());
+    const abrir_cerrar_menu = estadoEditarMenu => dispatch(abrirCerrarAgregarMenuAction(estadoEditarMenu));
+    const obtener_menu_editar = datos_menu => dispatch(obtenerUnMenuAction(datos_menu));
 
     const recargarTablaMenu = useSelector(state => state.admin.menu_eliminar);
+    const recargarTablaMenuAlEditar = useSelector(state => state.admin.menu_editar);
+
+    useEffect(() => {
+        if (recargarTablaMenuAlEditar === null) {
+            cargarmenus();
+        }
+    }, [recargarTablaMenuAlEditar])
 
     /** USE EFFECT: cada vez que se modifica categorias */
     useEffect(() => {
@@ -46,6 +57,11 @@ const MenuDB = ({ menu }) => {
 
     }
 
+    const handleClick_editar_menu = menu => {
+        abrir_cerrar_menu(true);
+        obtener_menu_editar(menu);
+    }
+
     return (
         <Fragment>
             <tr>
@@ -55,8 +71,10 @@ const MenuDB = ({ menu }) => {
                 <td>{category.name}</td>
                 <td>
                     <div className="acciones">
-                        <button className="boton_editar">
-                            Editar
+                        <button
+                            className="boton_editar"
+                            onClick={() => handleClick_editar_menu(menu)}
+                        >Editar
                         </button>
                         <button
                             className="boton_borrar"

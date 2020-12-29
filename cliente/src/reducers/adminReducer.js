@@ -45,6 +45,10 @@ import {
     OBTENER_MENU_ELIMINAR,
     MENU_ELIMINADO_EXITO,
     MENU_ELIMINADO_ERROR,
+    OBTENER_MENU_EDITAR,
+    MENU_EDITADO_EXITO,
+    MENU_EDITADO_ERROR,
+    MENU_EDITADO_ERRORES,
 } from '../types';
 
 const initialState = {
@@ -67,8 +71,10 @@ const initialState = {
     menu_eliminar: null,
     usuario_editar: null,
     categoria_editar: null,
+    menu_editar: null,
     mostrarUsuarios: false,
     mostrarCategorias: false,
+    mostrarMenus: false,
     elementoPorPagina: 5,
     totalElementos: null,
     desdeElemento: 0,
@@ -166,6 +172,7 @@ export default function (state = initialState, action) {
         case DESCARGA_MENU_ERROR:
         case AGREGAR_MENU_ERROR:
         case MENU_ELIMINADO_ERROR:
+        case MENU_EDITADO_ERROR:
             return {
                 ...state,
                 loading: false,
@@ -277,6 +284,7 @@ export default function (state = initialState, action) {
                 errores: [],
                 mensaje: null,
                 error: null,
+                menu_editar: null,
             }
         case AGREGAR_MENU_EXITO:
             return {
@@ -289,6 +297,7 @@ export default function (state = initialState, action) {
                 error: null,
             }
         case AGREGAR_MENU_ERRORES:
+        case MENU_EDITADO_ERRORES:
             return {
                 ...state,
                 errores: [action.payload],
@@ -315,6 +324,23 @@ export default function (state = initialState, action) {
                 ...state,
                 menus: state.menus.filter(menu => menu._id !== state.menu_eliminar),
                 menu_eliminar: null,
+            }
+        case OBTENER_MENU_EDITAR:
+            return {
+                ...state,
+                menu_editar: action.payload,
+            }
+        case MENU_EDITADO_EXITO:
+            return {
+                ...state,
+                menus: state.menus.map(menu =>
+                    menu._id === action.payload._id ?
+                        menu = action.payload
+                        :
+                        menu
+                ),
+                menu_editar: null,
+                abrir_agregar_menu: false,
             }
         default:
             return state;
