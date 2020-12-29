@@ -36,10 +36,52 @@ import {
     AGREGAR_MENU,
     AGREGAR_MENU_EXITO,
     AGREGAR_MENU_ERROR,
+    AGREGAR_MENU_ERRORES,
+    COMENZAR_DESCARGA_MENU,
+    DESCARGA_MENU_EXITO,
+    DESCARGA_MENU_ERROR,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
 import { authorizationHeader } from '../helpers/authorization_header';
+
+/**********************  para obtener los menus de la BBDD ********************************/
+export function obtenerMenuAction() {
+    return async (dispatch) => {
+        dispatch(descargarMenus());
+
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            await clienteAxios.get('/api/menu', header)
+                .then(response => {
+                    // obtenemos datos del response
+                    const { menus } = response.data;
+                    // si todo sale bien
+                    dispatch(descargarMenusExito(menus));
+                })
+        } catch (err) {
+            console.log(err);
+            dispatch(descargarMenusError('Error al descargar los menus'));
+        }
+
+    }
+}
+
+const descargarMenus = () => ({
+    type: COMENZAR_DESCARGA_MENU,
+    payload: true
+});
+
+const descargarMenusExito = respuesta => ({
+    type: DESCARGA_MENU_EXITO,
+    payload: respuesta,
+});
+
+const descargarMenusError = errores => ({
+    type: DESCARGA_MENU_ERROR,
+    payload: errores,
+});
 
 /**********************  para crear una nuevo menu ********************************/
 export function crearNuevoMenuAction(datosNuevoMenu) {
@@ -58,8 +100,16 @@ export function crearNuevoMenuAction(datosNuevoMenu) {
                     dispatch(agregarMenuExito(menu));
                 })
         } catch (err) {
-            console.log(err.response.data.err.errors);
-            dispatch(agregarMenuError(err.response.data.err.errors));
+            console.log(err.response.data.msg);
+            if (err.response.data.msg !== undefined) {
+                dispatch(agregarMenuError(err.response.data.msg));
+            } else {
+                if (err.response.data.err.errors) {
+                    dispatch(agregarMenuErrores(err.response.data.err.errors));
+                }
+            }
+
+
         }
     }
 }
@@ -76,10 +126,15 @@ const agregarMenuExito = datosNuevoMenu => ({
 });
 
 // si hubo un error
-const agregarMenuError = errores => ({
-    type: AGREGAR_MENU_ERROR,
+const agregarMenuErrores = errores => ({
+    type: AGREGAR_MENU_ERRORES,
     payload: errores
 })
+
+const agregarMenuError = msj => ({
+    type: AGREGAR_MENU_ERROR,
+    payload: msj,
+});
 
 /**********************  para abrir modal agregar Menu ********************************/
 export function abrirCerrarAgregarMenuAction(estadoAgregarMenu) {

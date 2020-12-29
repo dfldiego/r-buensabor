@@ -5,7 +5,7 @@ const MenuDetail = require('../models/menu-details.model');
 const list = async (req, res = response) => {
 
     const menus = await Menu.find({ status: true })
-    /* .populate('general_category', 'name') */
+        .populate('category', 'name')
     res.json({
         ok: true,
         menus
@@ -53,7 +53,6 @@ const create = async (req, res = response) => {
         res.status(500).json({
             ok: false,
             err,
-            msg: "Error inesperado. Hable con el admin."
         });
     }
 

@@ -8,6 +8,7 @@ import {
     abrirCerrarAgregarMenuAction,
     obtenerCategoriasAction,
     crearNuevoMenuAction,
+    obtenerMenuAction,
 } from '../../actions/adminActions';
 
 
@@ -15,9 +16,9 @@ const CreateMenu = () => {
 
     const [menu, setMenu] = useState({
         description: '',
-        finished_time: null,
-        price: null,
-        category: null
+        finished_time: undefined,
+        price: undefined,
+        category: undefined
     });
 
 
@@ -34,10 +35,12 @@ const CreateMenu = () => {
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarMenuAction(nuevo_estado));
     const obtenerCategorias_callAction = () => dispatch(obtenerCategoriasAction());
     const agregar_nuevo_menu_action = (datosNuevoMenu) => dispatch(crearNuevoMenuAction(datosNuevoMenu));
+    const cargarMenus = () => dispatch(obtenerMenuAction());
 
     let cerrar_modal_state_store = useSelector(state => state.admin.abrir_agregar_menu);
     const categorias = useSelector(state => state.admin.categorias);
     const errores = useSelector(state => state.admin.errores);
+    const msj_error = useSelector(state => state.admin.mensaje);
 
     const cerrar_modal = e => {
         e.preventDefault();
@@ -58,12 +61,11 @@ const CreateMenu = () => {
         e.preventDefault();
 
         agregar_nuevo_menu_action({ description, finished_time, price, category });
-
+        cargarMenus();
         if (errores === []) {
             cerrar_modal_state_store = false;
             cerrar_modal_callAction(cerrar_modal_state_store);
         }
-
     }
 
     return (
@@ -75,6 +77,8 @@ const CreateMenu = () => {
                             className="volver"
                             onClick={cerrar_modal}
                         />
+
+                        {msj_error ? <p className="error">{msj_error}</p> : null}
 
                         {errores[0] ?
                             <div>

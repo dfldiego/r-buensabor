@@ -3,6 +3,7 @@ import './Menu.css';
 
 import ModalContainer from '../ModalContainer/ModalContainer';
 import CreateMenu from '../Menu/CreateMenu';
+import GetMenu from '../Menu/GetMenu';
 
 import { useSelector, useDispatch } from 'react-redux'
 import {
@@ -64,6 +65,7 @@ const Menu = () => {
                         >Buscar</button>
                     </div>
                 </div>
+                <GetMenu />
             </div>
             { modalAgregarMenu ?
                 <ModalContainer

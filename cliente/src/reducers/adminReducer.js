@@ -38,6 +38,10 @@ import {
     AGREGAR_MENU,
     AGREGAR_MENU_EXITO,
     AGREGAR_MENU_ERROR,
+    AGREGAR_MENU_ERRORES,
+    COMENZAR_DESCARGA_MENU,
+    DESCARGA_MENU_EXITO,
+    DESCARGA_MENU_ERROR,
 } from '../types';
 
 const initialState = {
@@ -119,6 +123,7 @@ export default function (state = initialState, action) {
             }
         case COMENZAR_DESCARGA_USUARIOS:
         case COMENZAR_DESCARGA_CATEGORIA:
+        case COMENZAR_DESCARGA_MENU:
         case AGREGAR_USUARIO:
         case AGREGAR_CATEGORIA:
         case AGREGAR_MENU:
@@ -154,6 +159,8 @@ export default function (state = initialState, action) {
         case REGISTRO_ERROR:
         case CATEGORIA_ELIMINADO_ERROR:
         case CATEGORIA_EDITADO_ERROR:
+        case DESCARGA_MENU_ERROR:
+        case AGREGAR_MENU_ERROR:
             return {
                 ...state,
                 loading: false,
@@ -161,6 +168,7 @@ export default function (state = initialState, action) {
                 mensaje: action.payload,
                 usuario_eliminar: null,
                 categoria_eliminar: null,
+                errores: [],
             }
         case DESCARGA_USUARIOS_EXITO:
             return {
@@ -270,10 +278,19 @@ export default function (state = initialState, action) {
                 errores: [],
                 abrir_agregar_menu: false,
             }
-        case AGREGAR_MENU_ERROR:
+        case AGREGAR_MENU_ERRORES:
             return {
                 ...state,
                 errores: [action.payload]
+            }
+        case DESCARGA_MENU_EXITO:
+            return {
+                ...state,
+                loading: false,
+                errores: [],
+                menus: action.payload,
+                abrir_agregar_menu: false,
+                error: null,
             }
         default:
             return state;

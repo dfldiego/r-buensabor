@@ -72,3 +72,57 @@ select {
 .form-control {
     text-align: center;
 }
+
+/***********GET MENUS **************/
+.titulo {
+    margin: 5px 0;
+    text-align: center;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th,
+td {
+    width: 16.66%;
+    padding: 0.25rem;
+    text-align: center;
+    border: 1px solid #ccc;
+}
+
+.boton_editar {
+    background: rgb(93, 201, 72);
+    border: none;
+    width: 150px;
+}
+
+.boton_borrar {
+    background: rgb(218, 46, 46);
+    border: none;
+    width: 150px;
+}
+
+@media (min-width: 768px) {
+    .acciones {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .boton_editar {
+        background: rgb(93, 201, 72);
+        border: none;
+        border-radius: 0px;
+        padding: 10px 5px;
+        width: 40%;
+    }
+
+    .boton_borrar {
+        background: rgb(218, 46, 46);
+        border: none;
+        border-radius: 0px;
+        padding: 10px 5px;
+        width: 40%;
+    }
+}
