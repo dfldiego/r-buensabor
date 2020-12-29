@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import './Menu.css';
 
 import MenuDB from '../Menu/MenuDB';
@@ -13,7 +13,8 @@ const GetMenu = () => {
     const dispatch = useDispatch();
 
     const menus_state = useSelector(state => state.admin.menus);
-
+    const error = useSelector(state => state.admin.error);
+    const mensaje_error = useSelector(state => state.admin.mensaje);
 
     useEffect(() => {
 
@@ -29,7 +30,9 @@ const GetMenu = () => {
     return (
         <Fragment>
             <h2 className="titulo">Listado de Menus</h2>
-
+            {
+                error ? <p className="error">{mensaje_error}</p> : null
+            }
             <table>
                 <thead>
                     <tr>

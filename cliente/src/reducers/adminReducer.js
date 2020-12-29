@@ -42,6 +42,9 @@ import {
     COMENZAR_DESCARGA_MENU,
     DESCARGA_MENU_EXITO,
     DESCARGA_MENU_ERROR,
+    OBTENER_MENU_ELIMINAR,
+    MENU_ELIMINADO_EXITO,
+    MENU_ELIMINADO_ERROR,
 } from '../types';
 
 const initialState = {
@@ -61,6 +64,7 @@ const initialState = {
     mensaje: null,
     usuario_eliminar: null,
     categoria_eliminar: null,
+    menu_eliminar: null,
     usuario_editar: null,
     categoria_editar: null,
     mostrarUsuarios: false,
@@ -161,6 +165,7 @@ export default function (state = initialState, action) {
         case CATEGORIA_EDITADO_ERROR:
         case DESCARGA_MENU_ERROR:
         case AGREGAR_MENU_ERROR:
+        case MENU_ELIMINADO_ERROR:
             return {
                 ...state,
                 loading: false,
@@ -168,6 +173,7 @@ export default function (state = initialState, action) {
                 mensaje: action.payload,
                 usuario_eliminar: null,
                 categoria_eliminar: null,
+                menu_eliminar: null,
                 errores: [],
             }
         case DESCARGA_USUARIOS_EXITO:
@@ -270,6 +276,7 @@ export default function (state = initialState, action) {
                 abrir_agregar_menu: action.payload,
                 errores: [],
                 mensaje: null,
+                error: null,
             }
         case AGREGAR_MENU_EXITO:
             return {
@@ -279,12 +286,14 @@ export default function (state = initialState, action) {
                 errores: [],
                 abrir_agregar_menu: false,
                 mensaje: null,
+                error: null,
             }
         case AGREGAR_MENU_ERRORES:
             return {
                 ...state,
                 errores: [action.payload],
                 mensaje: null,
+                error: null,
             }
         case DESCARGA_MENU_EXITO:
             return {
@@ -295,6 +304,17 @@ export default function (state = initialState, action) {
                 abrir_agregar_menu: false,
                 error: null,
                 mensaje: null,
+            }
+        case OBTENER_MENU_ELIMINAR:
+            return {
+                ...state,
+                menu_eliminar: action.payload
+            }
+        case MENU_ELIMINADO_EXITO:
+            return {
+                ...state,
+                menus: state.menus.filter(menu => menu._id !== state.menu_eliminar),
+                menu_eliminar: null,
             }
         default:
             return state;

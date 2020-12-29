@@ -40,10 +40,50 @@ import {
     COMENZAR_DESCARGA_MENU,
     DESCARGA_MENU_EXITO,
     DESCARGA_MENU_ERROR,
+    OBTENER_MENU_ELIMINAR,
+    MENU_ELIMINADO_EXITO,
+    MENU_ELIMINADO_ERROR,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
 import { authorizationHeader } from '../helpers/authorization_header';
+
+/**********************  para eliminar un menu de la BBDD ********************************/
+export function eliminarMenuAction(datos_menu) {
+    return async (dispatch) => {
+        dispatch(obtenerMenuEliminar(datos_menu._id));
+        console.log(datos_menu);
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            await clienteAxios.delete(`/api/menu/${datos_menu._id}`, header)
+            dispatch(menuEliminadoExito(datos_menu));
+            Swal.fire(
+                'Eliminado!',
+                'El menu se eliminó correctamente.',
+                'success'
+            )
+        } catch (err) {
+            console.log(err);
+            dispatch(menuEliminadoError('Error al eliminar el menu'));
+        }
+    }
+}
+
+const obtenerMenuEliminar = idmenu => ({
+    type: OBTENER_MENU_ELIMINAR,
+    payload: idmenu
+})
+
+const menuEliminadoExito = datos_menu => ({
+    type: MENU_ELIMINADO_EXITO,
+    payload: datos_menu
+})
+
+const menuEliminadoError = msj => ({
+    type: MENU_ELIMINADO_ERROR,
+    payload: msj
+})
 
 /**********************  para obtener los menus de la BBDD ********************************/
 export function obtenerMenuAction() {
@@ -55,9 +95,7 @@ export function obtenerMenuAction() {
             const header = authorizationHeader(token);
             await clienteAxios.get('/api/menu', header)
                 .then(response => {
-                    // obtenemos datos del response
                     const { menus } = response.data;
-                    // si todo sale bien
                     dispatch(descargarMenusExito(menus));
                 })
         } catch (err) {
@@ -92,14 +130,16 @@ export function crearNuevoMenuAction(datosNuevoMenu) {
             const header = authorizationHeader(token);
             await clienteAxios.post('/api/menu', datosNuevoMenu, header)
                 .then(response => {
-                    console.log(response.data);
-                    // obtenemos datos del response
-                    const { menu } = response.data;
-                    // si todo sale bien
-                    dispatch(agregarMenuExito(menu));
+                    if (!response.data.menuStored) {
+                        const { menu } = response.data;
+                        dispatch(agregarMenuExito(menu));
+                    } else {
+                        const { menuStored } = response.data;   // menus con status=false a status=true
+                        dispatch(agregarMenuExito(menuStored));
+                        console.log(response.data.msg);
+                    }
                 })
         } catch (err) {
-            console.log(err.response.data.msg);
             if (err.response.data.msg !== undefined) {
                 dispatch(agregarMenuError(err.response.data.msg));
             } else {

@@ -35,7 +35,6 @@ const CreateMenu = () => {
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarMenuAction(nuevo_estado));
     const obtenerCategorias_callAction = () => dispatch(obtenerCategoriasAction());
     const agregar_nuevo_menu_action = (datosNuevoMenu) => dispatch(crearNuevoMenuAction(datosNuevoMenu));
-    const cargarMenus = () => dispatch(obtenerMenuAction());
 
     let cerrar_modal_state_store = useSelector(state => state.admin.abrir_agregar_menu);
     const categorias = useSelector(state => state.admin.categorias);
