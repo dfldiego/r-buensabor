@@ -17,7 +17,7 @@ const menuSchema = Schema({
     category: {
         type: Schema.Types.ObjectId,
         ref: 'MenuCategories',
-        required: true
+        required: [true, 'La categoria es requerida'],
     },
     status: {
         type: Boolean,

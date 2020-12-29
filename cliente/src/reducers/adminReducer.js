@@ -35,6 +35,9 @@ import {
     CATEGORIA_EDITADO_ERROR,
     ABRIR_AGREGAR_MENU,
     CERRAR_AGREGAR_MENU,
+    AGREGAR_MENU,
+    AGREGAR_MENU_EXITO,
+    AGREGAR_MENU_ERROR,
 } from '../types';
 
 const initialState = {
@@ -48,7 +51,9 @@ const initialState = {
     abrir_agregar_menu: false,
     usuarios: [],
     categorias: [],
+    menus: [],
     error: null,
+    errores: {},
     mensaje: null,
     usuario_eliminar: null,
     categoria_eliminar: null,
@@ -116,6 +121,7 @@ export default function (state = initialState, action) {
         case COMENZAR_DESCARGA_CATEGORIA:
         case AGREGAR_USUARIO:
         case AGREGAR_CATEGORIA:
+        case AGREGAR_MENU:
             return {
                 ...state,
                 loading: action.payload,
@@ -253,7 +259,20 @@ export default function (state = initialState, action) {
         case CERRAR_AGREGAR_MENU:
             return {
                 ...state,
-                abrir_agregar_menu: action.payload
+                abrir_agregar_menu: action.payload,
+                errores: [],
+            }
+        case AGREGAR_MENU_EXITO:
+            return {
+                ...state,
+                loading: false,
+                menus: [...state.menus, action.payload],
+                errores: [],
+            }
+        case AGREGAR_MENU_ERROR:
+            return {
+                ...state,
+                errores: [...state.errores, action.payload]
             }
         default:
             return state;
