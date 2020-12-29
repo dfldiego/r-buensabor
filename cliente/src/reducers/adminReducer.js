@@ -53,7 +53,7 @@ const initialState = {
     categorias: [],
     menus: [],
     error: null,
-    errores: {},
+    errores: [],
     mensaje: null,
     usuario_eliminar: null,
     categoria_eliminar: null,
@@ -268,11 +268,12 @@ export default function (state = initialState, action) {
                 loading: false,
                 menus: [...state.menus, action.payload],
                 errores: [],
+                abrir_agregar_menu: false,
             }
         case AGREGAR_MENU_ERROR:
             return {
                 ...state,
-                errores: [...state.errores, action.payload]
+                errores: [action.payload]
             }
         default:
             return state;

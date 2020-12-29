@@ -58,8 +58,12 @@ const CreateMenu = () => {
         e.preventDefault();
 
         agregar_nuevo_menu_action({ description, finished_time, price, category });
-        cerrar_modal_state_store = false;
-        cerrar_modal_callAction(cerrar_modal_state_store);
+
+        if (errores === []) {
+            cerrar_modal_state_store = false;
+            cerrar_modal_callAction(cerrar_modal_state_store);
+        }
+
     }
 
     return (
@@ -74,10 +78,30 @@ const CreateMenu = () => {
 
                         {errores[0] ?
                             <div>
-                                <p className="error">{errores[0].category.message}</p>
-                                <p className="error">{errores[0].description.message}</p>
-                                <p className="error">{errores[0].finished_time.message}</p>
-                                <p className="error">{errores[0].price.message}</p>
+                                {
+                                    errores[0].category ?
+                                        <p className="error">{errores[0].category.message}</p>
+                                        :
+                                        null
+                                }
+                                {
+                                    errores[0].description ?
+                                        <p className="error">{errores[0].description.message}</p>
+                                        :
+                                        null
+                                }
+                                {
+                                    errores[0].finished_time ?
+                                        <p className="error">{errores[0].finished_time.message}</p>
+                                        :
+                                        null
+                                }
+                                {
+                                    errores[0].price ?
+                                        <p className="error">{errores[0].price.message}</p>
+                                        :
+                                        null
+                                }
                             </div>
                             : null}
 
