@@ -1,3 +1,37 @@
+/******NAVBAR*****/
 .fondo-negro {
     background-color: #333333;
+}
+
+/******CATALOGO*****/
+.catalogo .row_catalogo {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.catalogo .col_2_catalogo {
+    flex-basis: calc(45% - 1rem);
+    min-width: 200px;
+    margin: 5rem 2rem;
+    border: 1px solid #ecebeb;
+    background-color: #f5f5f5;
+    cursor: pointer;
+}
+
+.catalogo .col_2_catalogo img {
+    width: 100%;
+    border-radius: 1rem;
+}
+
+.catalogo .col_2_catalogo h4 {
+    color: #555555;
+    font-weight: normal;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.catalogo .row_catalogo .col_2_catalogo:hover {
+    transform: translateY(-1rem);
 }
