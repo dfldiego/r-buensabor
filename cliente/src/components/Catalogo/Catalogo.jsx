@@ -1,8 +1,17 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import './Catalogo.css';
+
+
+import Navbar from '../Navbar/Navbar';
+
 
 const Catalogo = () => {
     return (
-        <h1>Catalogo</h1>
+        <Fragment>
+            <div className="fondo-negro">
+                <Navbar />
+            </div>
+        </Fragment>
     );
 }
 

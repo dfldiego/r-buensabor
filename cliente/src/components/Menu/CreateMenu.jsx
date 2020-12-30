@@ -8,7 +8,6 @@ import {
     abrirCerrarAgregarMenuAction,
     obtenerCategoriasAction,
     crearNuevoMenuAction,
-    obtenerMenuAction,
     editarMenuAction,
 } from '../../actions/adminActions';
 

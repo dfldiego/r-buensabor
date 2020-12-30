@@ -13,7 +13,8 @@
 }
 
 .navbar a img {
-    width: 15rem;
+    width: 12rem;
+    margin: 0 !important;
 }
 
 
@@ -57,4 +58,16 @@ div li,
 
 .sub-menu li a {
     font-size: 1.5rem !important;
+}
+
+.sub-menu li input {
+    color: #fff;
+    width: 11.5rem;
+    background-color: #333333;
+    padding: 1rem;
+    margin-bottom: 0.1rem !important;
+}
+
+.sub-menu li input:hover {
+    color: #ff6161;
 }

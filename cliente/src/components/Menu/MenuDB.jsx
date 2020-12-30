@@ -28,9 +28,10 @@ const MenuDB = ({ menu }) => {
         if (recargarTablaMenuAlEditar === null) {
             cargarmenus();
         }
+
+        // eslint-disable-next-line
     }, [recargarTablaMenuAlEditar])
 
-    /** USE EFFECT: cada vez que se modifica categorias */
     useEffect(() => {
         cargarmenus();
 

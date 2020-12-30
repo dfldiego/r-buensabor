@@ -155,19 +155,20 @@ const Navbar = () => {
                                         openDropDown ?
                                             <div className="sub-menu">
                                                 <li>
-                                                    <Link
-                                                        to={'#'}
+                                                    <input
+                                                        type="button"
                                                         className="sub-menu-li"
                                                         onClick={handleclick_openPerfil}
-                                                    >Perfil</Link>
+                                                        value="Perfil"
+                                                    />
                                                 </li>
                                                 <li>
-                                                    <Link
+                                                    <input
                                                         to={'#'}
                                                         className="sub-menu-li"
                                                         onClick={handleClick_cerrar_sesion}
-                                                    >Cerrar Sesión
-                                                    </Link>
+                                                        value="Cerrar Sesión"
+                                                    />
                                                 </li>
                                             </div>
                                             :
