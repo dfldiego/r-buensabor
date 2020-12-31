@@ -1,5 +1,4 @@
 /**CATALOGO FILTRADO**/
-
 .catalogo .row {
     display: flex;
     justify-content: space-between;
@@ -50,8 +49,8 @@
 
 .btn_ver_detalle,
 .btn_agregar_carrito {
-    display: inline-block;
-    flex-basis: calc(50% - 0.2rem);
+    display: inline-block !important;
+    flex-basis: calc(50% - 2rem);
     color: #fff;
     background-color: #eb6864 !important;
     border-color: #eb6864 !important;
@@ -68,7 +67,7 @@
 
 
 /*************MENU DETALLE ********************/
-.modal-menu {
+.modal_menu {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -77,56 +76,36 @@
     margin: -20px 0 50px;
 }
 
-.modal-container-menu {
+.modal_container_menu {
     background: #fff;
     border-radius: 10px;
     position: relative;
-    overflow: hidden;
-    width: 768px;
+    overflow: scroll;
+    width: 580px;
     max-width: 100%;
-    max-height: 520px;
+    max-height: 590px;
 }
 
-.form-container-menu form {
-    background: #fff;
-    display: flex;
-    flex-direction: column;
-    padding: 1rem 1rem;
-    justify-content: center;
-    align-items: center;
+.row_menu_detalle {
+    padding: 0 1rem;
+}
+
+.row_menu_detalle .menu_detalle_descripcion {
+    text-transform: uppercase;
     text-align: center;
 }
 
-.form-row {
-    min-width: 70%;
-    display: flex;
-    justify-content: space-between;
-}
-
-label {
-    font-weight: 700;
-    text-transform: uppercase;
-    display: block;
-    min-width: 30%;
-}
-
-input:not([type="submit"]),
-select {
-    padding: 1rem;
-    display: block;
-    width: 100%;
-    background-color: #e1e1e1;
-    margin-bottom: 2rem;
-    border: none;
+.row_menu_detalle img {
     border-radius: 1rem;
 }
 
-select {
-    -webkit-appearance: none;
-    appearance: none;
-    text-align: center;
+.li_ingredientes {
+    color: #000000;
+    width: 100%;
+    list-style-type: circle;
 }
 
-.form-control {
-    text-align: center;
+.flex_menu_detalle {
+    display: flex;
+    justify-content: space-between;
 }

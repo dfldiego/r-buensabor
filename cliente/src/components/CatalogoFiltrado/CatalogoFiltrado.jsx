@@ -14,6 +14,7 @@ import {
 } from '../../actions/adminActions';
 import {
     abrirCerrarDetalleMenuAction,
+    obtenerMenuPorIdAction,
 } from '../../actions/catalogoActions';
 
 const CatalogoFiltrado = ({ name }) => {
@@ -27,6 +28,7 @@ const CatalogoFiltrado = ({ name }) => {
     const consultarCategorias = () => dispatch(obtenerCategoriasAction());
     const consultarMenus = () => dispatch(obtenerMenuAction());
     const abrirModalMenuDetalle = (estadoDetalleMenu) => dispatch(abrirCerrarDetalleMenuAction(estadoDetalleMenu));
+    const consultarMenuPorId = idMenu => dispatch(obtenerMenuPorIdAction(idMenu));
 
     const categorias = useSelector(state => state.admin.categorias);
     const menus = useSelector(state => state.admin.menus);
@@ -35,17 +37,11 @@ const CatalogoFiltrado = ({ name }) => {
     const filtrarCategoriaPorName = nombreCategoria => {
         const categoriaEncontradaPorName = categorias.filter(categoria => categoria.name === nombreCategoria);
         setCategoriaFiltrada(categoriaEncontradaPorName[0]);
-
-        console.log(categoriaEncontradaPorName[0]);
     }
 
     const filtrarMenusPorCategoria = (menus, categoria) => {
-        console.log(categoria._id);
-        console.log(menus);
         const menusFiltrados = menus.filter(menu => menu.category._id === categoria._id);
         setMenusFiltradosPorCategoria(menusFiltrados);
-
-        console.log(menusFiltrados);
     }
 
     useEffect(() => {
@@ -57,14 +53,13 @@ const CatalogoFiltrado = ({ name }) => {
     }, []);
 
     useEffect(() => {
-        console.log(categoriaFiltrada);
         if (categoriaFiltrada !== null) {
             filtrarMenusPorCategoria(menus, categoriaFiltrada);
         }
     }, [menus])
 
-    const handleClickAbrirModalDetalle = e => {
-        e.preventDefault();
+    const handleClickAbrirModalDetalle = id_menu => {
+        consultarMenuPorId(id_menu);
 
         if (openModal === false) {
             setOpenModal(true);
@@ -104,7 +99,7 @@ const CatalogoFiltrado = ({ name }) => {
                                 <img
                                     src={require('../../assets/img/pizza.jpg')}
                                     alt="pizza1"
-                                    onClick={handleClickAbrirModalDetalle}
+                                    onClick={() => handleClickAbrirModalDetalle(menu._id)}
                                 />
                                 <div className="titulos">
                                     <h3 className="fw-300">{menu.description}</h3>
@@ -115,7 +110,7 @@ const CatalogoFiltrado = ({ name }) => {
                                         type="button"
                                         className="btn_ver_detalle"
                                         value="Ver Detalle"
-                                        onClick={handleClickAbrirModalDetalle}
+                                        onClick={() => handleClickAbrirModalDetalle(menu._id)}
                                     />
                                     <input
                                         type="button"
