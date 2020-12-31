@@ -1,0 +1,29 @@
+/**CATALOGO FILTRADO**/
+
+.catalogo .row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.catalogo .col_3 {
+    flex-basis: calc(33.3% - 1rem);
+    text-align: center;
+    padding: 2rem 2rem;
+    box-shadow: 0 0 2rem 0 rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.5s;
+}
+
+.catalogo .col_3:hover {
+    transform: translateY(-1rem);
+}
+
+.catalogo .col_3 h3 {
+    text-transform: uppercase;
+}
+
+.catalogo .col_3 img {
+    height: 30rem;
+    width: 40rem;
+    border-radius: 1rem;
+}

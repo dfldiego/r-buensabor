@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect } from 'react';
 import '../../assets/css/styles.css';
 import './Catalogo.css';
+import { Link } from 'react-router-dom';
 
 import Navbar from '../Navbar/Navbar';
 
@@ -9,20 +10,28 @@ import {
     obtenerCategoriasAction,
 } from '../../actions/adminActions';
 
+import {
+    paginaMenuesFiltradosAction,
+} from '../../actions/catalogoActions';
+
 const Catalogo = () => {
 
     const dispatch = useDispatch();
 
     const consultar_categorias = () => dispatch(obtenerCategoriasAction());
+    const entradaMenuesFiltrados = estado => dispatch(paginaMenuesFiltradosAction(estado));
 
     const categorias = useSelector(state => state.admin.categorias);
-    console.log(categorias);
 
     useEffect(() => {
         consultar_categorias();
 
         // eslint-disable-next-line
     }, [])
+
+    const onClickEntrarMenuesFiltrados = () => {
+        entradaMenuesFiltrados(true);
+    }
 
     return (
         <Fragment>
@@ -39,17 +48,42 @@ const Catalogo = () => {
                                 key={categoria._id}
                             >
                                 {
-                                    categoria.name === "pizza" ?
-                                        <img src={require('../../assets/img/pizza.jpg')} alt="pizza" />
+                                    categoria.name === "Pizzas" ?
+                                        <Link to={`/catalogo/${categoria.name}`}>
+                                            <img
+                                                src={require('../../assets/img/pizza.jpg')}
+                                                alt="pizza"
+                                                onClick={onClickEntrarMenuesFiltrados}
+                                            />
+                                        </Link>
                                         : categoria.name === "Hamburguesas" ?
-                                            <img src={require('../../assets/img/hamburguesa.jpg')} alt="hamburguesa" />
+                                            <Link to={`/catalogo/${categoria.name}`}>
+                                                <img
+                                                    src={require('../../assets/img/hamburguesa.jpg')} alt="hamburguesa"
+                                                    onClick={onClickEntrarMenuesFiltrados}
+                                                />
+                                            </Link>
                                             : categoria.name === "Postres" ?
-                                                <img src={require('../../assets/img/postres.jpg')} alt="postres" />
+                                                <Link to={`/catalogo/${categoria.name}`}>
+                                                    <img
+                                                        src={require('../../assets/img/postres.jpg')}
+                                                        alt="postres"
+                                                        onClick={onClickEntrarMenuesFiltrados}
+                                                    />
+                                                </Link>
                                                 : categoria.name === "Pescados" ?
-                                                    <img src={require('../../assets/img/pescado.jpg')} alt="pescado" />
+                                                    <Link to={`/catalogo/${categoria.name}`}>
+                                                        <img
+                                                            src={require('../../assets/img/pescado.jpg')}
+                                                            alt="pescado"
+                                                            onClick={onClickEntrarMenuesFiltrados}
+                                                        />
+                                                    </Link>
                                                     : null
                                 }
-                                <h4>{categoria.name}</h4>
+                                <Link to={`/catalogo/${categoria.name}`}>
+                                    <h4 onClick={onClickEntrarMenuesFiltrados}>{categoria.name}</h4>
+                                </Link>
                             </div>
                         ))
                     }

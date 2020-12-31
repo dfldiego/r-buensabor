@@ -5,6 +5,7 @@ import Home from './components/Home/Home';
 import Catalogo from './components/Catalogo/Catalogo';
 import Admin from './components/Administracion/Admin';
 import NoPermitido from './components/NoPermitido/NoPermitido';
+import CatalogoFiltrado from './components/CatalogoFiltrado/CatalogoFiltrado';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route exact path="/admin" component={Admin}></Route>
           <Route exact path="/" component={Home}></Route>
           <Route exact path="/catalogo" component={Catalogo}></Route>
+          <Route exact path="/catalogo/:name" render={({ match }) => <CatalogoFiltrado name={match.params.name}></CatalogoFiltrado>}></Route>
           <Route exact path="/error404" component={NoPermitido}></Route>
         </Switch>
       </Router>
