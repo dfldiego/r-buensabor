@@ -11,20 +11,28 @@ import GetUsuarios from './GetUsuarios';
 import { useSelector, useDispatch } from 'react-redux'
 import {
     abrirCerrarAgregarUsuarioAction,
+    obtenerUsuariosBuscadorAction,
 } from '../../actions/adminActions';
 
 function Usuario() {
 
     //useState locales
     const [openModal, setOpenModal] = useState(false);
+    const [buscador, setBuscador] = useState({
+        busqueda: '',
+    });
+
+    const { busqueda } = buscador;
 
     const dispatch = useDispatch();
 
     // enviar a store
     const abrir_cerrar_agregarUsuario = estadoAgregarUsuario => dispatch(abrirCerrarAgregarUsuarioAction(estadoAgregarUsuario));
+    const busqueda_usuario = palabraBusqueda => dispatch(obtenerUsuariosBuscadorAction(palabraBusqueda));
 
     // recibir de store
     const modalAgregarUsuario = useSelector(state => state.admin.abrir_agregar_usuario);
+
 
     const handleClick_abrir_agregar_usuario = e => {
         e.preventDefault();
@@ -48,7 +56,21 @@ function Usuario() {
         // eslint-disable-next-line
     }, [modalAgregarUsuario])
 
-    console.log(openModal);
+    const handleChangeBuscador = e => {
+        setBuscador({
+            ...buscador,
+            [e.target.name]: e.target.value
+        });
+    }
+
+    const handleClick_buscador = e => {
+        e.preventDefault();
+        busqueda_usuario(buscador);
+        setBuscador({
+            busqueda: '',
+        });
+    }
+
     return (
         <Fragment>
             <div className="container">
@@ -62,13 +84,16 @@ function Usuario() {
                     <div className="buscador">
                         <input
                             type="text"
-                            name="buscador"
+                            name="busqueda"
                             className="input_buscador"
+                            onChange={handleChangeBuscador}
+                            value={busqueda}
                         />
 
                         <button
                             href="#"
                             className="button_buscador"
+                            onClick={handleClick_buscador}
                         >Buscar</button>
                     </div>
                 </div>

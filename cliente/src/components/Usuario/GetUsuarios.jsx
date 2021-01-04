@@ -17,7 +17,7 @@ const GetUsuarios = () => {
     /* const total_elementos_state = useSelector(state => state.admin.totalElementos);
     const desdeElemento_state = useSelector(state => state.admin.desdeElemento); */
     const paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
-
+    console.log(usuarios_state);
 
 
     useEffect(() => {

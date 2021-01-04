@@ -230,10 +230,34 @@ const getById = async (req, res = response) => {
         });
 };
 
+const search = async (req, res) => {
+    let search = req.params.words;
+    let regExWords = new RegExp(search, 'i');
+
+    User.find({ $or: [{ name: regExWords }, { email: regExWords }, { role: regExWords }] })
+        .exec((err, users) => {
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    err
+                });
+            }
+
+            User.countDocuments({ status: true }, (err, size) => {
+                res.json({
+                    ok: true,
+                    users,
+                    size
+                });
+            });
+        });
+};
+
 module.exports = {
     list,
     create,
     getById,
     update,
     remove,
+    search,
 }

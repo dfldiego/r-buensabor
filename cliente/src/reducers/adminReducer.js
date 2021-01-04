@@ -49,6 +49,7 @@ import {
     MENU_EDITADO_EXITO,
     MENU_EDITADO_ERROR,
     MENU_EDITADO_ERRORES,
+    BUSCAR_USUARIO,
 } from '../types';
 
 const initialState = {

@@ -467,6 +467,27 @@ const pantallaMenu = estado => ({
     payload: estado
 })
 
+/**********************  para buscar un usuario de la BBDD ********************************/
+export function obtenerUsuariosBuscadorAction(palabraBusqueda) {
+    return async (dispatch) => {
+        dispatch(descargarUsuarios());
+        console.log(palabraBusqueda.busqueda);
+
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            await clienteAxios.get(`/api/users/search/${String(palabraBusqueda.busqueda)}`, header)
+                .then(response => {
+                    /*  const { users } = response.data; */
+                    console.log(response.data);
+                    dispatch(descargarUsuariosExito(response.data));
+                })
+        } catch (error) {
+            console.log(error);
+            dispatch(descargarUsuariosError('Error al buscar los usuarios'));
+        }
+    }
+}
 
 /**********************  para editar un usuario de la BBDD ********************************/
 export function obtenerUsuarioAction(datos_usuario) {
