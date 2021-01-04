@@ -48,10 +48,34 @@ import {
     MENU_EDITADO_ERROR,
     MENU_EDITADO_ERRORES,
     ENTRAR_CRUD_CATEGORIA_INSUMOS,
+    ABRIR_AGREGAR_CATEGORIA_INSUMO,
+    CERRAR_AGREGAR_CATEGORIA_INSUMO,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
 import { authorizationHeader } from '../helpers/authorization_header';
+
+/**********************  para abrir modal agregar categoria-insumo ********************************/
+export function abrirCerrarAgregarCategoriaInsumoAction(estadoAgregarCategoriaInsumo) {
+    return (dispatch) => {
+        if (estadoAgregarCategoriaInsumo) {
+            dispatch(abrirAgregarCategoriaInsumo(estadoAgregarCategoriaInsumo));
+        } else {
+            dispatch(cerrarAgregarCategoriaInsumo(estadoAgregarCategoriaInsumo));
+        }
+    }
+}
+
+const abrirAgregarCategoriaInsumo = estadoAgregarCategoriaInsumo => ({
+    type: ABRIR_AGREGAR_CATEGORIA_INSUMO,
+    payload: estadoAgregarCategoriaInsumo
+})
+
+const cerrarAgregarCategoriaInsumo = estadoAgregarCategoriaInsumo => ({
+    type: CERRAR_AGREGAR_CATEGORIA_INSUMO,
+    payload: estadoAgregarCategoriaInsumo
+})
+
 
 /**********************  para editar un menu de la BBDD ********************************/
 export function obtenerUnMenuAction(datos_menu) {
