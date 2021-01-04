@@ -1,22 +1,21 @@
 const { response } = require('express');
-const MenuCategory = require('../models/menu-categories.model');
+const ProductCategory = require('../models/product-categories.model');
 
 const list = async (req, res = response) => {
-
     let from = Number(req.query.from) || 0;
     let limit = Number(req.query.limit) || 5;
 
     try {
-        const [categories, total] = await Promise.all([
-            MenuCategory.find({ status: true })
+        const [productCategories, total] = await Promise.all([
+            ProductCategory.find({ status: true })
                 .skip(from)
                 .limit(limit),
-            MenuCategory.countDocuments({ status: true })
+            ProductCategory.countDocuments({ status: true })
         ]);
 
         res.json({
             ok: true,
-            categories,
+            productCategories,
             total,
         });
     } catch (error) {
@@ -29,49 +28,49 @@ const list = async (req, res = response) => {
 }
 
 const create = async (req, res = response) => {
-    const { name } = req.body;
+    const { description } = req.body;
 
     try {
 
-        if (name === '') {
+        if (description === '') {
             return res.status(400).json({
                 ok: false,
                 msg: "Todos los campos son obligatorios"
             });
         }
 
-        const existeName = await MenuCategory.findOne({ name });
+        const existeDescription = await ProductCategory.findOne({ description });
 
-        if (existeName) {
-            if (existeName.status === true) {
+        if (existeDescription) {
+            if (existeDescription.status === true) {
                 return res.status(400).json({
                     ok: false,
-                    msg: "esa denominacion de categoria de menu ya se encuentra registrada"
+                    msg: "esa denominacion de categoria de insumos ya se encuentra registrada"
                 });
             } else {
-                const menuCategory = new MenuCategory(req.body);
-                menuCategory._id = existeName._id;
+                const productCategory = new ProductCategory(req.body);
+                productCategory._id = existeDescription._id;
 
-                const menuCategoryStored = await MenuCategory.findByIdAndUpdate(menuCategory._id, menuCategory, { new: true });
+                const productCategoryStored = await ProductCategory.findByIdAndUpdate(productCategory._id, productCategory, { new: true });
 
                 return res.json({
                     ok: true,
-                    msg: "categoria de menu dado de alta nuevamente",
-                    menuCategoryStored
+                    msg: "categoria de insumo dado de alta nuevamente",
+                    productCategoryStored
                 });
             }
         }
 
 
         // crear una instancia del nuevo category
-        const category = new MenuCategory(req.body);
+        const productCategory = new ProductCategory(req.body);
 
         // guardar category en la BD
-        await category.save();
+        await productCategory.save();
 
         res.json({
             ok: true,
-            category
+            productCategory
         });
 
     } catch (error) {
@@ -88,8 +87,8 @@ const update = async (req, res = response) => {
     const _id = req.params.id;
     try {
 
-        // encontrar el MenuCategory con el id pasado por URL en la BD
-        const categoryDB = await MenuCategory.findById(_id);
+        // encontrar el ProductCategory con el id pasado por URL en la BD
+        const categoryDB = await ProductCategory.findById(_id);
         //si la categoria buscado no existe
         if (!categoryDB) {
             return res.status(404).json({
@@ -100,14 +99,14 @@ const update = async (req, res = response) => {
 
 
         // el Category existe y queremos actualizarlo
-        const { name, ...campos } = req.body;
+        const { description, ...campos } = req.body;
 
         // verificamos que la descripcion del Category no exista en la BD
-        if (categoryDB.name !== name) {
+        if (categoryDB.description !== description) {
             // Category quiere modificar su descripcion.
             //Verificar que descripcion nueva no sea igual a otro.
-            const nameExists = await MenuCategory.findOne({ name });
-            if (nameExists) {
+            const descriptionExists = await ProductCategory.findOne({ description });
+            if (descriptionExists) {
                 return res.status(400).json({
                     ok: false,
                     msg: 'Ya existe una categoria con esa descripcion'
@@ -115,13 +114,13 @@ const update = async (req, res = response) => {
             }
         }
         // debemos colocar la description que queremos actualizar
-        campos.name = name;
+        campos.description = description;
 
-        const categoriaActualizada = await MenuCategory.findByIdAndUpdate(_id, campos, { new: true });
+        const categoriaProductoActualizada = await ProductCategory.findByIdAndUpdate(_id, campos, { new: true });
 
         res.json({
             ok: true,
-            medico: categoriaActualizada
+            medico: categoriaProductoActualizada
         })
 
     } catch (err) {
@@ -140,7 +139,7 @@ const remove = async (req, res = response) => {
         status: false
     };
 
-    MenuCategory.findByIdAndUpdate(id, changeStatus, { new: true }, (err, MenuCategoryDeleted) => {
+    ProductCategory.findByIdAndUpdate(id, changeStatus, { new: true }, (err, ProductCategoryDeleted) => {
         if (err) {
             return res.status(500).json({
                 ok: false,
@@ -148,25 +147,25 @@ const remove = async (req, res = response) => {
             });
         }
 
-        if (!MenuCategoryDeleted) {
+        if (!ProductCategoryDeleted) {
             return res.status(400).json({
                 ok: false,
                 err: {
-                    message: 'Categoria menu no encontrado'
+                    message: 'Categoria insumo no encontrada'
                 }
             });
         }
 
         res.json({
             ok: true,
-            MenuCategory: MenuCategoryDeleted
+            ProductCategory: ProductCategoryDeleted
         });
     });
-};
+}
 
 module.exports = {
     list,
     create,
     update,
-    remove,
+    remove
 }
