@@ -47,6 +47,7 @@ import {
     MENU_EDITADO_EXITO,
     MENU_EDITADO_ERROR,
     MENU_EDITADO_ERRORES,
+    ENTRAR_CRUD_CATEGORIA_INSUMOS,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
@@ -464,6 +465,18 @@ export function pantallaMenuAction(estadoMenu) {
 
 const pantallaMenu = estado => ({
     type: ENTRAR_CRUD_MENU,
+    payload: estado
+})
+
+/********************** Entrar a CRUD CATEGORIA INSUMO ***********************/
+export function pantallaCategoriaInsumoAction(estadoCategoriaInsumo) {
+    return (dispatch) => {
+        dispatch(pantallaCategoriaInsumo(estadoCategoriaInsumo))
+    }
+}
+
+const pantallaCategoriaInsumo = estado => ({
+    type: ENTRAR_CRUD_CATEGORIA_INSUMOS,
     payload: estado
 })
 

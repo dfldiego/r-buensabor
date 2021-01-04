@@ -49,7 +49,7 @@ import {
     MENU_EDITADO_EXITO,
     MENU_EDITADO_ERROR,
     MENU_EDITADO_ERRORES,
-    BUSCAR_USUARIO,
+    ENTRAR_CRUD_CATEGORIA_INSUMOS,
 } from '../types';
 
 const initialState = {
@@ -57,6 +57,7 @@ const initialState = {
     en_menu: null,
     en_categoria: null,
     en_insumos: null,
+    en_categoria_insumos: null,
     loading: false,
     abrir_agregar_usuario: false,
     abrir_agregar_categoria: false,
@@ -91,6 +92,7 @@ export default function (state = initialState, action) {
                 en_menu: null,
                 en_categoria: null,
                 en_insumos: null,
+                en_categoria_insumos: null,
             }
         case ENTRAR_CRUD_MENU:
             return {
@@ -99,6 +101,7 @@ export default function (state = initialState, action) {
                 en_menu: true,
                 en_categoria: null,
                 en_insumos: null,
+                en_categoria_insumos: null,
             }
         case ENTRAR_CRUD_CATEGORIA:
             return {
@@ -107,6 +110,7 @@ export default function (state = initialState, action) {
                 en_menu: null,
                 en_categoria: true,
                 en_insumos: null,
+                en_categoria_insumos: null,
             }
         case ENTRAR_CRUD_INSUMOS:
             return {
@@ -115,6 +119,16 @@ export default function (state = initialState, action) {
                 en_menu: null,
                 en_categoria: null,
                 en_insumos: true,
+                en_categoria_insumos: null,
+            }
+        case ENTRAR_CRUD_CATEGORIA_INSUMOS:
+            return {
+                ...state,
+                en_usuario: null,
+                en_menu: null,
+                en_categoria: null,
+                en_insumos: null,
+                en_categoria_insumos: true,
             }
         case CERRAR_AGREGAR_USUARIOS:
             return {
