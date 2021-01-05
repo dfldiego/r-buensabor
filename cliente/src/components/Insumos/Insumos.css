@@ -1,0 +1,10 @@
+.container {
+    width: 95%;
+    padding: 2rem;
+}
+
+.row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: left;
+}

@@ -66,6 +66,8 @@ import {
     CATEGORIA_INSUMO_EDITADO_EXITO,
     CATEGORIA_INSUMO_EDITADO_ERROR,
     CATEGORIA_INSUMO_EDITADO_ERRORES,
+    ABRIR_AGREGAR_INSUMO,
+    CERRAR_AGREGAR_INSUMO,
 } from '../types';
 
 const initialState = {
@@ -79,6 +81,7 @@ const initialState = {
     abrir_agregar_categoria: false,
     abrir_agregar_menu: false,
     abrir_agregar_categoria_insumo: false,
+    abrir_agregar_insumo: false,
     usuarios: [],
     categorias: [],
     menus: [],
@@ -440,6 +443,12 @@ export default function (state = initialState, action) {
                 ),
                 categoria_insumo_editar: null,
                 abrir_agregar_categoria_insumo: false,
+            }
+        case ABRIR_AGREGAR_INSUMO:
+        case CERRAR_AGREGAR_INSUMO:
+            return {
+                ...state,
+                abrir_agregar_insumo: action.payload
             }
         default:
             return state;
