@@ -59,6 +59,9 @@ import {
     COMENZAR_DESCARGA_CATEGORIA_INSUMO,
     DESCARGA_CATEGORIA_INSUMO_EXITO,
     DESCARGA_CATEGORIA_INSUMO_ERROR,
+    OBTENER_CATEGORIA_INSUMO_ELIMINAR,
+    CATEGORIA_INSUMO_ELIMINADO_EXITO,
+    CATEGORIA_INSUMO_ELIMINADO_ERROR,
 } from '../types';
 
 const initialState = {
@@ -82,6 +85,7 @@ const initialState = {
     usuario_eliminar: null,
     categoria_eliminar: null,
     menu_eliminar: null,
+    categoria_insumo_eliminar: null,
     usuario_editar: null,
     categoria_editar: null,
     menu_editar: null,
@@ -201,6 +205,7 @@ export default function (state = initialState, action) {
         case MENU_EDITADO_ERROR:
         case AGREGAR_CATEGORIA_INSUMO_ERROR:
         case DESCARGA_CATEGORIA_INSUMO_ERROR:
+        case CATEGORIA_INSUMO_ELIMINADO_ERROR:
             return {
                 ...state,
                 loading: false,
@@ -209,6 +214,7 @@ export default function (state = initialState, action) {
                 usuario_eliminar: null,
                 categoria_eliminar: null,
                 menu_eliminar: null,
+                categoria_insumo_eliminar: null,
                 errores: [],
             }
         case DESCARGA_USUARIOS_EXITO:
@@ -378,6 +384,7 @@ export default function (state = initialState, action) {
                 abrir_agregar_categoria_insumo: action.payload,
                 errores: [],
                 mensaje: null,
+                error: null,
             }
         case AGREGAR_CATEGORIA_INSUMO_EXITO:
             return {
@@ -396,6 +403,17 @@ export default function (state = initialState, action) {
                 errores: [],
                 categorias_insumo: action.payload,
                 error: null,
+            }
+        case OBTENER_CATEGORIA_INSUMO_ELIMINAR:
+            return {
+                ...state,
+                categoria_insumo_eliminar: action.payload
+            }
+        case CATEGORIA_INSUMO_ELIMINADO_EXITO:
+            return {
+                ...state,
+                categorias_insumo: state.categorias_insumo.filter(categoria => categoria._id !== state.categoria_insumo_eliminar),
+                categoria_insumo_eliminar: null,
             }
         default:
             return state;

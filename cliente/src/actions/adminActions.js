@@ -57,10 +57,50 @@ import {
     COMENZAR_DESCARGA_CATEGORIA_INSUMO,
     DESCARGA_CATEGORIA_INSUMO_EXITO,
     DESCARGA_CATEGORIA_INSUMO_ERROR,
+    OBTENER_CATEGORIA_INSUMO_ELIMINAR,
+    CATEGORIA_INSUMO_ELIMINADO_EXITO,
+    CATEGORIA_INSUMO_ELIMINADO_ERROR,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
 import { authorizationHeader } from '../helpers/authorization_header';
+
+/**********************  para eliminar las categoria insumos de la BBDD ********************************/
+export function eliminarCategoriaInsumoAction(datos_categoria_insumos) {
+    return async (dispatch) => {
+        dispatch(obtenerCategoriaInsumoEliminar(datos_categoria_insumos._id));
+        console.log(datos_categoria_insumos);
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            await clienteAxios.delete(`/api/product-categories/${datos_categoria_insumos._id}`, header)
+            dispatch(categoriaInsumoEliminadoExito(datos_categoria_insumos));
+            Swal.fire(
+                'Eliminado!',
+                'El categoria insumo se eliminó correctamente.',
+                'success'
+            )
+        } catch (err) {
+            console.log(err);
+            dispatch(categoriaInsumoEliminadoError('Error al eliminar el categoria insumo'));
+        }
+    }
+}
+
+const obtenerCategoriaInsumoEliminar = idcategoriaInsumo => ({
+    type: OBTENER_CATEGORIA_INSUMO_ELIMINAR,
+    payload: idcategoriaInsumo
+})
+
+const categoriaInsumoEliminadoExito = datos_categoria_insumos => ({
+    type: CATEGORIA_INSUMO_ELIMINADO_EXITO,
+    payload: datos_categoria_insumos
+})
+
+const categoriaInsumoEliminadoError = msj => ({
+    type: CATEGORIA_INSUMO_ELIMINADO_ERROR,
+    payload: msj
+})
 
 /**********************  para obtener las categoria insumos de la BBDD ********************************/
 export function obtenerCategoriaInsumoAction() {
