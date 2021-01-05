@@ -60,10 +60,66 @@ import {
     OBTENER_CATEGORIA_INSUMO_ELIMINAR,
     CATEGORIA_INSUMO_ELIMINADO_EXITO,
     CATEGORIA_INSUMO_ELIMINADO_ERROR,
+    OBTENER_CATEGORIA_INSUMO_EDITAR,
+    CATEGORIA_INSUMO_EDITADO_EXITO,
+    CATEGORIA_INSUMO_EDITADO_ERROR,
+    CATEGORIA_INSUMO_EDITADO_ERRORES,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
 import { authorizationHeader } from '../helpers/authorization_header';
+
+/**********************  para editar una categoria de insumo de la BBDD ********************************/
+export function obtenerUnaCategoriaInsumoAction(datos_categoria_insumos) {
+    return async (dispatch) => {
+        dispatch(editarCategoriaInsumo(datos_categoria_insumos))
+    }
+}
+
+export function editarCategoriaInsumoAction(datos_categoria_insumos) {
+    return async (dispatch) => {
+
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            await clienteAxios.put(`/api/product-categories/${datos_categoria_insumos._id}`, datos_categoria_insumos, header)
+                .then(response => {
+                    console.log(response.data);
+                    const { productCategory } = response.data;
+                    dispatch(editarCategoriaInsumoExito(productCategory));
+                })
+
+        } catch (err) {
+            if (err.response.data.msg !== undefined) {
+                dispatch(editarCategoriaInsumoError(err.response.data.msg));
+            } else {
+                if (err.response.data.err.errors) {
+                    dispatch(editarCategoriaInsumoErrores(err.response.data.err.errors));
+                }
+            }
+        }
+    }
+}
+
+const editarCategoriaInsumo = categoriaInsumo => ({
+    type: OBTENER_CATEGORIA_INSUMO_EDITAR,
+    payload: categoriaInsumo
+})
+
+const editarCategoriaInsumoExito = categoriaInsumo => ({
+    type: CATEGORIA_INSUMO_EDITADO_EXITO,
+    payload: categoriaInsumo
+})
+
+const editarCategoriaInsumoErrores = errores => ({
+    type: CATEGORIA_INSUMO_EDITADO_ERRORES,
+    payload: errores,
+});
+
+const editarCategoriaInsumoError = msj => ({
+    type: CATEGORIA_INSUMO_EDITADO_ERROR,
+    payload: msj
+})
 
 /**********************  para eliminar las categoria insumos de la BBDD ********************************/
 export function eliminarCategoriaInsumoAction(datos_categoria_insumos) {
@@ -112,7 +168,6 @@ export function obtenerCategoriaInsumoAction() {
             const header = authorizationHeader(token);
             await clienteAxios.get('/api/product-categories', header)
                 .then(response => {
-                    console.log(response.data);
                     // obtenemos datos del response
                     const { productCategories } = response.data;
                     // si todo sale bien

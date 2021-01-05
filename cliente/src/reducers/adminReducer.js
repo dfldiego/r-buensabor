@@ -62,6 +62,10 @@ import {
     OBTENER_CATEGORIA_INSUMO_ELIMINAR,
     CATEGORIA_INSUMO_ELIMINADO_EXITO,
     CATEGORIA_INSUMO_ELIMINADO_ERROR,
+    OBTENER_CATEGORIA_INSUMO_EDITAR,
+    CATEGORIA_INSUMO_EDITADO_EXITO,
+    CATEGORIA_INSUMO_EDITADO_ERROR,
+    CATEGORIA_INSUMO_EDITADO_ERRORES,
 } from '../types';
 
 const initialState = {
@@ -89,9 +93,11 @@ const initialState = {
     usuario_editar: null,
     categoria_editar: null,
     menu_editar: null,
+    categoria_insumo_editar: null,
     mostrarUsuarios: false,
     mostrarCategorias: false,
     mostrarMenus: false,
+    mostrarCategoriasInsumo: false,
     elementoPorPagina: 5,
     totalElementos: null,
     desdeElemento: 0,
@@ -206,6 +212,7 @@ export default function (state = initialState, action) {
         case AGREGAR_CATEGORIA_INSUMO_ERROR:
         case DESCARGA_CATEGORIA_INSUMO_ERROR:
         case CATEGORIA_INSUMO_ELIMINADO_ERROR:
+        case CATEGORIA_INSUMO_EDITADO_ERROR:
             return {
                 ...state,
                 loading: false,
@@ -333,6 +340,7 @@ export default function (state = initialState, action) {
         case AGREGAR_MENU_ERRORES:
         case MENU_EDITADO_ERRORES:
         case AGREGAR_CATEGORIA_INSUMO_ERRORES:
+        case CATEGORIA_INSUMO_EDITADO_ERRORES:
             return {
                 ...state,
                 errores: [action.payload],
@@ -385,6 +393,7 @@ export default function (state = initialState, action) {
                 errores: [],
                 mensaje: null,
                 error: null,
+                categoria_insumo_editar: null,
             }
         case AGREGAR_CATEGORIA_INSUMO_EXITO:
             return {
@@ -414,6 +423,23 @@ export default function (state = initialState, action) {
                 ...state,
                 categorias_insumo: state.categorias_insumo.filter(categoria => categoria._id !== state.categoria_insumo_eliminar),
                 categoria_insumo_eliminar: null,
+            }
+        case OBTENER_CATEGORIA_INSUMO_EDITAR:
+            return {
+                ...state,
+                categoria_insumo_editar: action.payload,
+            }
+        case CATEGORIA_INSUMO_EDITADO_EXITO:
+            return {
+                ...state,
+                categorias_insumo: state.categorias_insumo.map(categoria =>
+                    categoria._id === action.payload._id ?
+                        categoria = action.payload
+                        :
+                        categoria
+                ),
+                categoria_insumo_editar: null,
+                abrir_agregar_categoria_insumo: false,
             }
         default:
             return state;

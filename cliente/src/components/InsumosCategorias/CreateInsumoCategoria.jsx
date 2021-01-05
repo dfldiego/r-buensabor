@@ -8,6 +8,7 @@ import {
     abrirCerrarAgregarCategoriaInsumoAction,
     crearNuevaCategoriaInsumoAction,
     obtenerCategoriaInsumoAction,
+    editarCategoriaInsumoAction,
 } from '../../actions/adminActions';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -34,32 +35,20 @@ const CreateInsumoCategoria = () => {
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarCategoriaInsumoAction(nuevo_estado));
     const agregar_nuevo_Categoria_action = (datosNuevoCategoriaInsumo) => dispatch(crearNuevaCategoriaInsumoAction(datosNuevoCategoriaInsumo));
     const cargarCategoriaInsumo = () => dispatch(obtenerCategoriaInsumoAction());
+    const categoria_insumo_editar_action = (datos_categoria_insumos) => dispatch(editarCategoriaInsumoAction(datos_categoria_insumos));
 
     let cerrar_modal_state_store = useSelector(state => state.admin.abrir_agregar_categoria_insumo);
     const errores = useSelector(state => state.admin.errores);
     const msj_error = useSelector(state => state.admin.mensaje);
     const categorias_insumo = useSelector(state => state.admin.categorias_insumo);
+    const categoria_insumo_editar = useSelector(state => state.admin.categoria_insumo_editar);
 
     const cerrar_modal = () => {
-        console.log(cerrar_modal_state_store);
         if (cerrar_modal_state_store) {
             cerrar_modal_state_store = false;
             cerrar_modal_callAction(cerrar_modal_state_store);
         }
         return;
-    }
-
-    const handleSubmitAgregarCategoriaInsumo = e => {
-        e.preventDefault();
-
-        agregar_nuevo_Categoria_action({ description, parent, img });
-        cargarCategoriaInsumo();
-
-        if (errores === [] && msj_error === null) {
-            console.log("entra");
-            cerrar_modal();
-        }
-
     }
 
     useEffect(() => {
@@ -68,6 +57,38 @@ const CreateInsumoCategoria = () => {
         // eslint-disable-next-line
     }, []);
 
+    const handleSubmitAgregarCategoriaInsumo = e => {
+        e.preventDefault();
+
+        if (categoria_insumo_editar) {
+            insumoCategoria._id = categoria_insumo_editar._id;
+            console.log(insumoCategoria);
+            categoria_insumo_editar_action(insumoCategoria);
+            if (errores === [] && msj_error === null) {
+                cerrar_modal();
+            }
+        } else {
+            agregar_nuevo_Categoria_action({ description, parent, img });
+
+            if (errores === [] && msj_error === null) {
+                cerrar_modal();
+            }
+        }
+
+    }
+
+    useEffect(() => {
+        if (categoria_insumo_editar) {
+            setInsumoCategoria({
+                ...insumoCategoria,
+                description: categoria_insumo_editar.description,
+                parent: categoria_insumo_editar.parent,
+                img: categoria_insumo_editar.img,
+            })
+        }
+
+        // eslint-disable-next-line
+    }, [categoria_insumo_editar])
 
     return (
         <Fragment>
@@ -115,7 +136,15 @@ const CreateInsumoCategoria = () => {
                                     value={parent}
                                     onChange={handleChange}
                                 >
-                                    <option value="">-- Seleccione una categoria --</option>
+                                    {
+                                        categoria_insumo_editar.parent ?
+                                            <option
+                                                key={categoria_insumo_editar._id}
+                                                value={categoria_insumo_editar._id}
+                                            >{categoria_insumo_editar.parent.description}</option>
+                                            :
+                                            <option value="">-- Seleccione una categoria --</option>
+                                    }
                                     {
                                         categorias_insumo.map(categoria => (
                                             <option
@@ -126,9 +155,16 @@ const CreateInsumoCategoria = () => {
                                     }
                                 </select>
                             </div>
-                            <button
-                                type="submit"
-                            >Agregar</button>
+                            {
+                                categoria_insumo_editar ?
+                                    <button
+                                        type="submit"
+                                    >Editar</button>
+                                    :
+                                    <button
+                                        type="submit"
+                                    >Agregar</button>
+                            }
                         </form>
                     </div>
                 </div>
