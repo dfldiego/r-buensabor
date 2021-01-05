@@ -52,6 +52,10 @@ import {
     ENTRAR_CRUD_CATEGORIA_INSUMOS,
     ABRIR_AGREGAR_CATEGORIA_INSUMO,
     CERRAR_AGREGAR_CATEGORIA_INSUMO,
+    AGREGAR_CATEGORIA_INSUMO,
+    AGREGAR_CATEGORIA_INSUMO_EXITO,
+    AGREGAR_CATEGORIA_INSUMO_ERROR,
+    AGREGAR_CATEGORIA_INSUMO_ERRORES,
 } from '../types';
 
 const initialState = {
@@ -68,6 +72,7 @@ const initialState = {
     usuarios: [],
     categorias: [],
     menus: [],
+    categorias_insumo: [],
     error: null,
     errores: [],
     mensaje: null,
@@ -155,11 +160,10 @@ export default function (state = initialState, action) {
         case AGREGAR_USUARIO:
         case AGREGAR_CATEGORIA:
         case AGREGAR_MENU:
+        case AGREGAR_CATEGORIA_INSUMO:
             return {
                 ...state,
                 loading: action.payload,
-                error: null,
-                mensaje: null,
             }
         case AGREGAR_USUARIO_EXITO:
         case REGISTRO_EXITOSO:
@@ -191,6 +195,7 @@ export default function (state = initialState, action) {
         case AGREGAR_MENU_ERROR:
         case MENU_ELIMINADO_ERROR:
         case MENU_EDITADO_ERROR:
+        case AGREGAR_CATEGORIA_INSUMO_ERROR:
             return {
                 ...state,
                 loading: false,
@@ -316,6 +321,7 @@ export default function (state = initialState, action) {
             }
         case AGREGAR_MENU_ERRORES:
         case MENU_EDITADO_ERRORES:
+        case AGREGAR_CATEGORIA_INSUMO_ERRORES:
             return {
                 ...state,
                 errores: [action.payload],
@@ -364,7 +370,19 @@ export default function (state = initialState, action) {
         case CERRAR_AGREGAR_CATEGORIA_INSUMO:
             return {
                 ...state,
-                abrir_agregar_categoria_insumo: action.payload
+                abrir_agregar_categoria_insumo: action.payload,
+                errores: [],
+                mensaje: null,
+            }
+        case AGREGAR_CATEGORIA_INSUMO_EXITO:
+            return {
+                ...state,
+                loading: false,
+                errores: [],
+                error: null,
+                mensaje: null,
+                abrir_agregar_menu: false,
+                categorias_insumo: [...state.categorias_insumo, action.payload],
             }
         default:
             return state;

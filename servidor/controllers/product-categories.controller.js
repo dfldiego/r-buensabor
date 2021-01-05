@@ -30,6 +30,8 @@ const list = async (req, res = response) => {
 const create = async (req, res = response) => {
     const { description } = req.body;
 
+    console.log(description);
+
     try {
 
         if (description === '') {

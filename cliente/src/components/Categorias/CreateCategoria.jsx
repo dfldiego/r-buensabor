@@ -15,8 +15,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const CreateCategoria = () => {
 
-    const [categoria, setCategoria] = useState({ name: '' });
-    const { name } = categoria;
+    const [categoria, setCategoria] = useState({ name: '', img: '' });
+    const { name, img } = categoria;
 
     const handleChange = e => {
         setCategoria({
@@ -105,6 +105,15 @@ const CreateCategoria = () => {
                                     placeholder="Nombre Categoria"
                                     name="name"
                                     value={name}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="form-row">
+                                <label>Imagen</label>
+                                <input
+                                    type="file"
+                                    name="img"
+                                    value={img}
                                     onChange={handleChange}
                                 />
                             </div>

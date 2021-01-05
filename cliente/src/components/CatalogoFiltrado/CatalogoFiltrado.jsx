@@ -56,6 +56,8 @@ const CatalogoFiltrado = ({ name }) => {
         if (categoriaFiltrada !== null) {
             filtrarMenusPorCategoria(menus, categoriaFiltrada);
         }
+
+        // eslint-disable-next-line
     }, [menus])
 
     const handleClickAbrirModalDetalle = id_menu => {
@@ -77,6 +79,7 @@ const CatalogoFiltrado = ({ name }) => {
     // le pasa el state principal al state local
     useEffect(() => {
         setOpenModal(modalMenuDetalle);
+
         // eslint-disable-next-line
     }, [modalMenuDetalle])
 

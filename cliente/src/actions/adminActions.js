@@ -50,10 +50,70 @@ import {
     ENTRAR_CRUD_CATEGORIA_INSUMOS,
     ABRIR_AGREGAR_CATEGORIA_INSUMO,
     CERRAR_AGREGAR_CATEGORIA_INSUMO,
+    AGREGAR_CATEGORIA_INSUMO,
+    AGREGAR_CATEGORIA_INSUMO_EXITO,
+    AGREGAR_CATEGORIA_INSUMO_ERRORES,
+    AGREGAR_CATEGORIA_INSUMO_ERROR,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
 import { authorizationHeader } from '../helpers/authorization_header';
+
+/**********************  para crear una nueva categoria-insumo ********************************/
+export function crearNuevaCategoriaInsumoAction(datosNuevoCategoriaInsumo) {
+    return async (dispatch) => {
+        dispatch(agregarCategoriaInsumo());
+
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            console.log(datosNuevoCategoriaInsumo);
+            await clienteAxios.post('/api/product-categories', datosNuevoCategoriaInsumo, header)
+                .then(response => {
+                    if (!response.data.productCategoryStored) {
+                        const { productCategory } = response.data;
+                        dispatch(agregarCategoriaInsumoExito(productCategory));
+                    } else {
+                        const { productCategoryStored } = response.data;
+                        dispatch(agregarCategoriaInsumoExito(productCategoryStored));
+                        console.log(response.data.msg);
+                    }
+                })
+        } catch (err) {
+            console.log(err.response);
+            if (err.response.data.msg !== undefined) {
+                dispatch(agregarCategoriaInsumoError(err.response.data.msg));
+            } else {
+                if (err.response.data.err.errors) {
+                    dispatch(agregarCategoriaInsumoErrores(err.response.data.err.errors));
+                }
+            }
+        }
+    }
+}
+
+const agregarCategoriaInsumo = () => ({
+    type: AGREGAR_CATEGORIA_INSUMO,
+    payload: true
+})
+
+// si el producto se guarda en la BBDD
+const agregarCategoriaInsumoExito = datosNuevoCategoriaInsumo => ({
+    type: AGREGAR_CATEGORIA_INSUMO_EXITO,
+    payload: datosNuevoCategoriaInsumo
+});
+
+// si hubo un error
+const agregarCategoriaInsumoErrores = errores => ({
+    type: AGREGAR_CATEGORIA_INSUMO_ERRORES,
+    payload: errores
+})
+
+// si hubo un error
+const agregarCategoriaInsumoError = error => ({
+    type: AGREGAR_CATEGORIA_INSUMO_ERROR,
+    payload: error
+})
 
 /**********************  para abrir modal agregar categoria-insumo ********************************/
 export function abrirCerrarAgregarCategoriaInsumoAction(estadoAgregarCategoriaInsumo) {

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment } from 'react';
 import './CatalogoFiltrado.css';
 
 import ClearIcon from '@material-ui/icons/Clear';
@@ -16,7 +16,7 @@ const MenuDetalle = () => {
 
     let cerrar_modal_state_store = useSelector(state => state.catalogo.abrir_detalle_menu);
     const menuPorId = useSelector(state => state.catalogo.menu);
-    const ingredientesDelMenu = useSelector(state => state.catalogo.ingredientes);
+    /* const ingredientesDelMenu = useSelector(state => state.catalogo.ingredientes); */
 
     const cerrar_modal = e => {
         e.preventDefault();
