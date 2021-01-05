@@ -66,10 +66,71 @@ import {
     CATEGORIA_INSUMO_EDITADO_ERRORES,
     ABRIR_AGREGAR_INSUMO,
     CERRAR_AGREGAR_INSUMO,
+    AGREGAR_INSUMO,
+    AGREGAR_INSUMO_EXITO,
+    AGREGAR_INSUMO_ERRORES,
+    AGREGAR_INSUMO_ERROR,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
 import { authorizationHeader } from '../helpers/authorization_header';
+
+/**********************  para crear una nueva insumo ********************************/
+export function crearNuevaInsumoAction(datosNuevoInsumo) {
+    return async (dispatch) => {
+        dispatch(agregarInsumo());
+
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            console.log(datosNuevoInsumo);
+            await clienteAxios.post('/api/product', datosNuevoInsumo, header)
+                .then(response => {
+                    console.log(response);
+                    if (!response.data.productStored) {
+                        const { product } = response.data;
+                        dispatch(agregarInsumoExito(product));
+                    } else {
+                        const { productStored } = response.data;
+                        dispatch(agregarInsumoExito(productStored));
+                        console.log(response.data.msg);
+                    }
+                })
+        } catch (err) {
+            console.log(err);
+            if (err.response.data.msg !== undefined) {
+                dispatch(agregarInsumoError(err.response.data.msg));
+            } else {
+                if (err.response.data.err.errors) {
+                    dispatch(agregarInsumoErrores(err.response.data.err.errors));
+                }
+            }
+        }
+    }
+}
+
+const agregarInsumo = () => ({
+    type: AGREGAR_INSUMO,
+    payload: true
+})
+
+// si el producto se guarda en la BBDD
+const agregarInsumoExito = datosNuevoInsumo => ({
+    type: AGREGAR_INSUMO_EXITO,
+    payload: datosNuevoInsumo
+});
+
+// si hubo un error
+const agregarInsumoErrores = errores => ({
+    type: AGREGAR_INSUMO_ERRORES,
+    payload: errores
+})
+
+// si hubo un error
+const agregarInsumoError = error => ({
+    type: AGREGAR_INSUMO_ERROR,
+    payload: error
+})
 
 /**********************  para abrir modal agregar insumo ********************************/
 export function abrirCerrarAgregarInsumoAction(estadoAgregarInsumo) {

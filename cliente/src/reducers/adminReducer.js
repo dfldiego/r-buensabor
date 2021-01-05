@@ -68,6 +68,10 @@ import {
     CATEGORIA_INSUMO_EDITADO_ERRORES,
     ABRIR_AGREGAR_INSUMO,
     CERRAR_AGREGAR_INSUMO,
+    AGREGAR_INSUMO,
+    AGREGAR_INSUMO_EXITO,
+    AGREGAR_INSUMO_ERRORES,
+    AGREGAR_INSUMO_ERROR,
 } from '../types';
 
 const initialState = {
@@ -86,6 +90,7 @@ const initialState = {
     categorias: [],
     menus: [],
     categorias_insumo: [],
+    insumos: [],
     error: null,
     errores: [],
     mensaje: null,
@@ -178,6 +183,7 @@ export default function (state = initialState, action) {
         case AGREGAR_CATEGORIA:
         case AGREGAR_MENU:
         case AGREGAR_CATEGORIA_INSUMO:
+        case AGREGAR_INSUMO:
             return {
                 ...state,
                 loading: action.payload,
@@ -216,6 +222,7 @@ export default function (state = initialState, action) {
         case DESCARGA_CATEGORIA_INSUMO_ERROR:
         case CATEGORIA_INSUMO_ELIMINADO_ERROR:
         case CATEGORIA_INSUMO_EDITADO_ERROR:
+        case AGREGAR_INSUMO_ERROR:
             return {
                 ...state,
                 loading: false,
@@ -344,6 +351,7 @@ export default function (state = initialState, action) {
         case MENU_EDITADO_ERRORES:
         case AGREGAR_CATEGORIA_INSUMO_ERRORES:
         case CATEGORIA_INSUMO_EDITADO_ERRORES:
+        case AGREGAR_INSUMO_ERRORES:
             return {
                 ...state,
                 errores: [action.payload],
@@ -448,7 +456,20 @@ export default function (state = initialState, action) {
         case CERRAR_AGREGAR_INSUMO:
             return {
                 ...state,
-                abrir_agregar_insumo: action.payload
+                abrir_agregar_insumo: action.payload,
+                errores: [],
+                mensaje: null,
+                error: null,
+            }
+        case AGREGAR_INSUMO_EXITO:
+            return {
+                ...state,
+                loading: false,
+                errores: [],
+                error: null,
+                mensaje: null,
+                abrir_agregar_insumo: false,
+                insumos: [...state.insumos, action.payload],
             }
         default:
             return state;
