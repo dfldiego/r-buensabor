@@ -8,6 +8,7 @@ const list = async (req, res = response) => {
     try {
         const [productCategories, total] = await Promise.all([
             ProductCategory.find({ status: true })
+                .populate('parent', 'description')
                 .skip(from)
                 .limit(limit),
             ProductCategory.countDocuments({ status: true })
@@ -29,8 +30,6 @@ const list = async (req, res = response) => {
 
 const create = async (req, res = response) => {
     const { description } = req.body;
-
-    console.log(description);
 
     try {
 

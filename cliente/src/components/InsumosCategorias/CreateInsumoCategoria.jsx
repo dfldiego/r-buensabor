@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import './InsumosCategorias.css';
 
 import ClearIcon from '@material-ui/icons/Clear';
@@ -7,6 +7,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import {
     abrirCerrarAgregarCategoriaInsumoAction,
     crearNuevaCategoriaInsumoAction,
+    obtenerCategoriaInsumoAction,
 } from '../../actions/adminActions';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -32,10 +33,12 @@ const CreateInsumoCategoria = () => {
 
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarCategoriaInsumoAction(nuevo_estado));
     const agregar_nuevo_Categoria_action = (datosNuevoCategoriaInsumo) => dispatch(crearNuevaCategoriaInsumoAction(datosNuevoCategoriaInsumo));
+    const cargarCategoriaInsumo = () => dispatch(obtenerCategoriaInsumoAction());
 
     let cerrar_modal_state_store = useSelector(state => state.admin.abrir_agregar_categoria_insumo);
     const errores = useSelector(state => state.admin.errores);
     const msj_error = useSelector(state => state.admin.mensaje);
+    const categorias_insumo = useSelector(state => state.admin.categorias_insumo);
 
     const cerrar_modal = () => {
         console.log(cerrar_modal_state_store);
@@ -50,14 +53,20 @@ const CreateInsumoCategoria = () => {
         e.preventDefault();
 
         agregar_nuevo_Categoria_action({ description, parent, img });
-        console.log(errores);
-        console.log(msj_error);
+        cargarCategoriaInsumo();
+
         if (errores === [] && msj_error === null) {
             console.log("entra");
             cerrar_modal();
         }
 
     }
+
+    useEffect(() => {
+        cargarCategoriaInsumo();
+
+        // eslint-disable-next-line
+    }, []);
 
 
     return (
@@ -107,6 +116,14 @@ const CreateInsumoCategoria = () => {
                                     onChange={handleChange}
                                 >
                                     <option value="">-- Seleccione una categoria --</option>
+                                    {
+                                        categorias_insumo.map(categoria => (
+                                            <option
+                                                key={categoria._id}
+                                                value={categoria._id}
+                                            >{categoria.description}</option>
+                                        ))
+                                    }
                                 </select>
                             </div>
                             <button

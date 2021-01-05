@@ -56,6 +56,9 @@ import {
     AGREGAR_CATEGORIA_INSUMO_EXITO,
     AGREGAR_CATEGORIA_INSUMO_ERROR,
     AGREGAR_CATEGORIA_INSUMO_ERRORES,
+    COMENZAR_DESCARGA_CATEGORIA_INSUMO,
+    DESCARGA_CATEGORIA_INSUMO_EXITO,
+    DESCARGA_CATEGORIA_INSUMO_ERROR,
 } from '../types';
 
 const initialState = {
@@ -157,6 +160,7 @@ export default function (state = initialState, action) {
         case COMENZAR_DESCARGA_USUARIOS:
         case COMENZAR_DESCARGA_CATEGORIA:
         case COMENZAR_DESCARGA_MENU:
+        case COMENZAR_DESCARGA_CATEGORIA_INSUMO:
         case AGREGAR_USUARIO:
         case AGREGAR_CATEGORIA:
         case AGREGAR_MENU:
@@ -196,6 +200,7 @@ export default function (state = initialState, action) {
         case MENU_ELIMINADO_ERROR:
         case MENU_EDITADO_ERROR:
         case AGREGAR_CATEGORIA_INSUMO_ERROR:
+        case DESCARGA_CATEGORIA_INSUMO_ERROR:
             return {
                 ...state,
                 loading: false,
@@ -381,8 +386,16 @@ export default function (state = initialState, action) {
                 errores: [],
                 error: null,
                 mensaje: null,
-                abrir_agregar_menu: false,
+                abrir_agregar_categoria_insumo: false,
                 categorias_insumo: [...state.categorias_insumo, action.payload],
+            }
+        case DESCARGA_CATEGORIA_INSUMO_EXITO:
+            return {
+                ...state,
+                loading: false,
+                errores: [],
+                categorias_insumo: action.payload,
+                error: null,
             }
         default:
             return state;

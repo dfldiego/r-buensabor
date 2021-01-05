@@ -54,10 +54,52 @@ import {
     AGREGAR_CATEGORIA_INSUMO_EXITO,
     AGREGAR_CATEGORIA_INSUMO_ERRORES,
     AGREGAR_CATEGORIA_INSUMO_ERROR,
+    COMENZAR_DESCARGA_CATEGORIA_INSUMO,
+    DESCARGA_CATEGORIA_INSUMO_EXITO,
+    DESCARGA_CATEGORIA_INSUMO_ERROR,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
 import { authorizationHeader } from '../helpers/authorization_header';
+
+/**********************  para obtener las categoria insumos de la BBDD ********************************/
+export function obtenerCategoriaInsumoAction() {
+    return async (dispatch) => {
+        dispatch(descargarCategoriasInsumo());
+
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            await clienteAxios.get('/api/product-categories', header)
+                .then(response => {
+                    console.log(response.data);
+                    // obtenemos datos del response
+                    const { productCategories } = response.data;
+                    // si todo sale bien
+                    dispatch(descargarCategoriasInsumoExito(productCategories));
+                })
+        } catch (err) {
+            console.log(err);
+            dispatch(descargarCategoriasInsumoError('Error al descargar los menus'));
+        }
+
+    }
+}
+
+const descargarCategoriasInsumo = () => ({
+    type: COMENZAR_DESCARGA_CATEGORIA_INSUMO,
+    payload: true
+});
+
+const descargarCategoriasInsumoExito = respuesta => ({
+    type: DESCARGA_CATEGORIA_INSUMO_EXITO,
+    payload: respuesta,
+});
+
+const descargarCategoriasInsumoError = errores => ({
+    type: DESCARGA_CATEGORIA_INSUMO_ERROR,
+    payload: errores,
+});
 
 /**********************  para crear una nueva categoria-insumo ********************************/
 export function crearNuevaCategoriaInsumoAction(datosNuevoCategoriaInsumo) {
@@ -80,7 +122,6 @@ export function crearNuevaCategoriaInsumoAction(datosNuevoCategoriaInsumo) {
                     }
                 })
         } catch (err) {
-            console.log(err.response);
             if (err.response.data.msg !== undefined) {
                 dispatch(agregarCategoriaInsumoError(err.response.data.msg));
             } else {
@@ -110,9 +151,9 @@ const agregarCategoriaInsumoErrores = errores => ({
 })
 
 // si hubo un error
-const agregarCategoriaInsumoError = error => ({
+const agregarCategoriaInsumoError = msj => ({
     type: AGREGAR_CATEGORIA_INSUMO_ERROR,
-    payload: error
+    payload: msj
 })
 
 /**********************  para abrir modal agregar categoria-insumo ********************************/
