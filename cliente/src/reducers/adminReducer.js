@@ -78,6 +78,10 @@ import {
     OBTENER_INSUMO_ELIMINAR,
     INSUMO_ELIMINADO_EXITO,
     INSUMO_ELIMINADO_ERROR,
+    OBTENER_INSUMO_EDITAR,
+    INSUMO_EDITADO_EXITO,
+    INSUMO_EDITADO_ERROR,
+    INSUMO_EDITADO_ERRORES,
 } from '../types';
 
 const initialState = {
@@ -109,10 +113,12 @@ const initialState = {
     categoria_editar: null,
     menu_editar: null,
     categoria_insumo_editar: null,
+    insumo_editar: null,
     mostrarUsuarios: false,
     mostrarCategorias: false,
     mostrarMenus: false,
     mostrarCategoriasInsumo: false,
+    mostrarInsumo: false,
     elementoPorPagina: 5,
     totalElementos: null,
     desdeElemento: 0,
@@ -233,6 +239,7 @@ export default function (state = initialState, action) {
         case AGREGAR_INSUMO_ERROR:
         case DESCARGA_INSUMO_ERROR:
         case INSUMO_ELIMINADO_ERROR:
+        case INSUMO_EDITADO_ERROR:
             return {
                 ...state,
                 loading: false,
@@ -363,6 +370,7 @@ export default function (state = initialState, action) {
         case AGREGAR_CATEGORIA_INSUMO_ERRORES:
         case CATEGORIA_INSUMO_EDITADO_ERRORES:
         case AGREGAR_INSUMO_ERRORES:
+        case INSUMO_EDITADO_ERRORES:
             return {
                 ...state,
                 errores: [action.payload],
@@ -471,6 +479,7 @@ export default function (state = initialState, action) {
                 errores: [],
                 mensaje: null,
                 error: null,
+                insumo_editar: null,
             }
         case AGREGAR_INSUMO_EXITO:
             return {
@@ -500,6 +509,23 @@ export default function (state = initialState, action) {
                 ...state,
                 insumos: state.insumos.filter(insumo => insumo._id !== state.insumo_eliminar),
                 insumo_eliminar: null,
+            }
+        case OBTENER_INSUMO_EDITAR:
+            return {
+                ...state,
+                insumo_editar: action.payload,
+            }
+        case INSUMO_EDITADO_EXITO:
+            return {
+                ...state,
+                insumos: state.insumos.map(insumo =>
+                    insumo._id === action.payload._id ?
+                        insumo = action.payload
+                        :
+                        insumo
+                ),
+                insumo_editar: null,
+                abrir_agregar_insumo: false,
             }
         default:
             return state;

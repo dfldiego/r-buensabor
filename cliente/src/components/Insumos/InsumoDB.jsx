@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     eliminarInsumoAction,
     obtenerInsumosAction,
+    obtenerUnInsumoAction,
+    abrirCerrarAgregarInsumoAction,
 } from '../../actions/adminActions';
 
 import Swal from 'sweetalert2';
@@ -16,8 +18,19 @@ const InsumoDB = ({ insumo }) => {
 
     const baja_insumos = datos_insumo => dispatch(eliminarInsumoAction(datos_insumo));
     const cargarInsumo = () => dispatch(obtenerInsumosAction());
+    const abrir_cerrar_insumo = estadoEditarInsumo => dispatch(abrirCerrarAgregarInsumoAction(estadoEditarInsumo));
+    const obtener_insumo_editar = datos_insumo => dispatch(obtenerUnInsumoAction(datos_insumo));
 
     const recargarTablaInsumo = useSelector(state => state.admin.insumo_eliminar);
+    const recargarTablaInsumoAlEditar = useSelector(state => state.admin.insumo_editar);
+
+    useEffect(() => {
+        if (recargarTablaInsumoAlEditar === null) {
+            cargarInsumo();
+        }
+
+        // eslint-disable-next-line
+    }, [recargarTablaInsumoAlEditar]);
 
     useEffect(() => {
         cargarInsumo();
@@ -45,6 +58,11 @@ const InsumoDB = ({ insumo }) => {
 
     }
 
+    const handleClick_editar_insumo = insumo => {
+        abrir_cerrar_insumo(true);
+        obtener_insumo_editar(insumo);
+    }
+
     return (
         <Fragment>
             <tr>
@@ -63,7 +81,7 @@ const InsumoDB = ({ insumo }) => {
 
                 <td>
                     <div className="acciones">
-                        <button className="boton_editar">
+                        <button className="boton_editar" onClick={() => handleClick_editar_insumo(insumo)}>
                             Editar
                         </button>
                         <button

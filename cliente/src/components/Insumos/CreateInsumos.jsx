@@ -8,6 +8,7 @@ import {
     abrirCerrarAgregarInsumoAction,
     crearNuevaInsumoAction,
     obtenerInsumosAction,
+    editarInsumoAction,
 } from '../../actions/adminActions';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -38,11 +39,13 @@ const CreateInsumos = () => {
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarInsumoAction(nuevo_estado));
     const agregar_nuevo_insumo_action = (datosNuevoInsumo) => dispatch(crearNuevaInsumoAction(datosNuevoInsumo));
     const cargarInsumos = () => dispatch(obtenerInsumosAction());
+    const insumo_editar_action = (datos_insumos) => dispatch(editarInsumoAction(datos_insumos));
 
     let cerrar_modal_state_store = useSelector(state => state.admin.abrir_agregar_insumo);
     const errores = useSelector(state => state.admin.errores);
     const msj_error = useSelector(state => state.admin.mensaje);
     const insumos = useSelector(state => state.admin.insumos);
+    const insumo_editar = useSelector(state => state.admin.insumo_editar);
 
     const cerrar_modal = () => {
         if (cerrar_modal_state_store) {
@@ -55,22 +58,38 @@ const CreateInsumos = () => {
     const handleSubmitAgregarInsumo = e => {
         e.preventDefault();
 
-        agregar_nuevo_insumo_action({ description, purchase_price, sale_price, current_stock, min_stock, unit_measurement, is_supplies });
+        if (insumo_editar) {
+            insumo._id = insumo_editar._id;
+            insumo_editar_action(insumo);
+            if (errores === [] && msj_error === null) {
+                cerrar_modal();
+            }
+        } else {
+            agregar_nuevo_insumo_action({ description, purchase_price, sale_price, current_stock, min_stock, unit_measurement, is_supplies });
 
-        cargarInsumos();
-
-        if (errores === [] && msj_error === null) {
-            console.log("entra");
-            cerrar_modal();
+            if (errores === [] && msj_error === null) {
+                cerrar_modal();
+            }
         }
 
     }
 
     useEffect(() => {
-        cargarInsumos();
+        if (insumo_editar) {
+            setInsumo({
+                ...insumo,
+                description: insumo_editar.description,
+                purchase_price: insumo_editar.purchase_price,
+                sale_price: insumo_editar.sale_price,
+                current_stock: insumo_editar.current_stock,
+                min_stock: insumo_editar.min_stock,
+                unit_measurement: insumo_editar.unit_measurement,
+                is_supplies: insumo_editar.is_supplies,
+            })
+        }
 
         // eslint-disable-next-line
-    }, []);
+    }, [insumo_editar]);
 
     return (
         <Fragment>
@@ -170,9 +189,16 @@ const CreateInsumos = () => {
                                     <option value="false">Falso</option>
                                 </select>
                             </div>
-                            <button
-                                type="submit"
-                            >Agregar</button>
+                            {
+                                insumo_editar ?
+                                    <button
+                                        type="submit"
+                                    >Editar</button>
+                                    :
+                                    <button
+                                        type="submit"
+                                    >Agregar</button>
+                            }
                         </form>
                     </div>
                 </div>

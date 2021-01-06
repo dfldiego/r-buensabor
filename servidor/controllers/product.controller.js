@@ -81,7 +81,7 @@ const update = async (req, res = response) => {
 
         res.json({
             ok: true,
-            user: productStored
+            product: productStored
         });
     });
 }
