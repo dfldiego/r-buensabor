@@ -75,6 +75,9 @@ import {
     COMENZAR_DESCARGA_INSUMO,
     DESCARGA_INSUMO_EXITO,
     DESCARGA_INSUMO_ERROR,
+    OBTENER_INSUMO_ELIMINAR,
+    INSUMO_ELIMINADO_EXITO,
+    INSUMO_ELIMINADO_ERROR,
 } from '../types';
 
 const initialState = {
@@ -101,6 +104,7 @@ const initialState = {
     categoria_eliminar: null,
     menu_eliminar: null,
     categoria_insumo_eliminar: null,
+    insumo_eliminar: null,
     usuario_editar: null,
     categoria_editar: null,
     menu_editar: null,
@@ -228,6 +232,7 @@ export default function (state = initialState, action) {
         case CATEGORIA_INSUMO_EDITADO_ERROR:
         case AGREGAR_INSUMO_ERROR:
         case DESCARGA_INSUMO_ERROR:
+        case INSUMO_ELIMINADO_ERROR:
             return {
                 ...state,
                 loading: false,
@@ -237,6 +242,7 @@ export default function (state = initialState, action) {
                 categoria_eliminar: null,
                 menu_eliminar: null,
                 categoria_insumo_eliminar: null,
+                insumo_eliminar: null,
                 errores: [],
             }
         case DESCARGA_USUARIOS_EXITO:
@@ -483,6 +489,17 @@ export default function (state = initialState, action) {
                 errores: [],
                 insumos: action.payload,
                 error: null,
+            }
+        case OBTENER_INSUMO_ELIMINAR:
+            return {
+                ...state,
+                insumo_eliminar: action.payload
+            }
+        case INSUMO_ELIMINADO_EXITO:
+            return {
+                ...state,
+                insumos: state.insumos.filter(insumo => insumo._id !== state.insumo_eliminar),
+                insumo_eliminar: null,
             }
         default:
             return state;

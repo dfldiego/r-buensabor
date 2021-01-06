@@ -1,8 +1,49 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    eliminarInsumoAction,
+    obtenerInsumosAction,
+} from '../../actions/adminActions';
+
+import Swal from 'sweetalert2';
 
 const InsumoDB = ({ insumo }) => {
 
     const { description, purchase_price, sale_price, current_stock, min_stock, unit_measurement, is_supplies } = insumo;
+
+    const dispatch = useDispatch();
+
+    const baja_insumos = datos_insumo => dispatch(eliminarInsumoAction(datos_insumo));
+    const cargarInsumo = () => dispatch(obtenerInsumosAction());
+
+    const recargarTablaInsumo = useSelector(state => state.admin.insumo_eliminar);
+
+    useEffect(() => {
+        cargarInsumo();
+
+        // eslint-disable-next-line
+    }, [recargarTablaInsumo]);
+
+    const handleClick_eliminar_insumo = async datos_insumos => {
+
+        await Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Un insumo que se elimina, no se puede recuperar",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '¡Si, eliminar!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // pasarlo al action
+                baja_insumos(datos_insumos);
+            }
+        });
+
+    }
 
     return (
         <Fragment>
@@ -28,6 +69,7 @@ const InsumoDB = ({ insumo }) => {
                         <button
                             type="button"
                             className="boton_borrar"
+                            onClick={() => handleClick_eliminar_insumo(insumo)}
                         >Eliminar</button>
                     </div>
                 </td>

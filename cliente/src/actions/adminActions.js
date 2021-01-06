@@ -73,10 +73,50 @@ import {
     COMENZAR_DESCARGA_INSUMO,
     DESCARGA_INSUMO_EXITO,
     DESCARGA_INSUMO_ERROR,
+    OBTENER_INSUMO_ELIMINAR,
+    INSUMO_ELIMINADO_EXITO,
+    INSUMO_ELIMINADO_ERROR,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
 import { authorizationHeader } from '../helpers/authorization_header';
+
+/**********************  para eliminar los insumos de la BBDD ********************************/
+export function eliminarInsumoAction(datos_insumos) {
+    return async (dispatch) => {
+        dispatch(obtenerInsumoEliminar(datos_insumos._id));
+
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            await clienteAxios.delete(`/api/product/${datos_insumos._id}`, header)
+            dispatch(insumoEliminadoExito(datos_insumos));
+            Swal.fire(
+                'Eliminado!',
+                'El insumo se eliminó correctamente.',
+                'success'
+            )
+        } catch (err) {
+            console.log(err);
+            dispatch(insumoEliminadoError('Error al eliminar el insumo'));
+        }
+    }
+}
+
+const obtenerInsumoEliminar = idInsumo => ({
+    type: OBTENER_INSUMO_ELIMINAR,
+    payload: idInsumo
+})
+
+const insumoEliminadoExito = datos_insumos => ({
+    type: INSUMO_ELIMINADO_EXITO,
+    payload: datos_insumos
+})
+
+const insumoEliminadoError = msj => ({
+    type: INSUMO_ELIMINADO_ERROR,
+    payload: msj
+})
 
 /**********************  para obtener los insumos de la BBDD ********************************/
 export function obtenerInsumosAction() {
@@ -88,7 +128,6 @@ export function obtenerInsumosAction() {
             const header = authorizationHeader(token);
             await clienteAxios.get('/api/product', header)
                 .then(response => {
-                    console.log(response.data);
                     // obtenemos datos del response
                     const { products } = response.data;
                     // si todo sale bien
