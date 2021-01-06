@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
     abrirCerrarAgregarUsuarioAction,
     obtenerUsuariosBuscadorAction,
+    obtenerUsuariosAction,
 } from '../../actions/adminActions';
 
 function Usuario() {
@@ -29,10 +30,18 @@ function Usuario() {
     // enviar a store
     const abrir_cerrar_agregarUsuario = estadoAgregarUsuario => dispatch(abrirCerrarAgregarUsuarioAction(estadoAgregarUsuario));
     const busqueda_usuario = palabraBusqueda => dispatch(obtenerUsuariosBuscadorAction(palabraBusqueda));
+    const cargarUsuarios = () => dispatch(obtenerUsuariosAction());
 
     // recibir de store
     const modalAgregarUsuario = useSelector(state => state.admin.abrir_agregar_usuario);
+    const recargarTablaUsuarios = useSelector(state => state.admin.usuario_eliminar);
 
+    useEffect(() => {
+        //llamar la funcion
+        cargarUsuarios();
+
+        // eslint-disable-next-line
+    }, [recargarTablaUsuarios]);
 
     const handleClick_abrir_agregar_usuario = e => {
         e.preventDefault();

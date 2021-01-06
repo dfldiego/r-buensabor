@@ -39,7 +39,7 @@ td {
         border: none;
         border-radius: 0px;
         padding: 10px 5px;
-        width: 40%;
+        min-width: 40%;
     }
 
     .boton_borrar {
@@ -47,6 +47,6 @@ td {
         border: none;
         border-radius: 0px;
         padding: 10px 5px;
-        width: 40%;
+        min-width: 40%;
     }
 }

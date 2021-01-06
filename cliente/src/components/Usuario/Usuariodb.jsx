@@ -14,18 +14,8 @@ const Usuariodb = ({ usuario }) => {
     const dispatch = useDispatch();
     /** ENVIAR AL STORE **/
     const baja_usuario = datos_usuario => dispatch(eliminarUsuarioAction(datos_usuario));
-    const cargarUsuarios = () => dispatch(obtenerUsuariosAction());
     const abrir_cerrar_usuario = estadoEditarUsuario => dispatch(abrirCerrarAgregarUsuarioAction(estadoEditarUsuario));
     const obtener_usuario_editar = usuario => dispatch(obtenerUsuarioAction(usuario));
-    /** OBTENER DEL STORE **/
-    const recargarTablaUsuarios = useSelector(state => state.admin.usuario_eliminar);
-
-    /** USE EFFECT: cada vez que se modifica usuarios */
-    useEffect(() => {
-        //llamar la funcion
-        cargarUsuarios();
-        // eslint-disable-next-line
-    }, [recargarTablaUsuarios]);
 
     /** EVENTO DE ELIMINAR USUARIO **/
     const handleClick_eliminar_usuario = async datos_usuario => {
