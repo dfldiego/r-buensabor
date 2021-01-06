@@ -40,6 +40,7 @@ const GetInsumos = () => {
                         <th scope="col">Stock Minimo</th>
                         <th scope="col">Unidad de Medida</th>
                         <th scope="col">¿Es ingrediente?</th>
+                        <th scope="col">Categoria</th>
                         <th scope="col">Estado</th>
                     </tr>
                 </thead>

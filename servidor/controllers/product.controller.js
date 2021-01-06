@@ -6,6 +6,7 @@ const list = async (req, res = response) => {
     let limit = req.query.limit || 10;
 
     Product.find({ status: true })
+        .populate('category', 'description')
         .skip(Number(from))
         .limit(Number(limit))
         .exec((err, products) => {

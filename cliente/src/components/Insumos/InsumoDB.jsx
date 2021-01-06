@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
 
 const InsumoDB = ({ insumo }) => {
 
-    const { description, purchase_price, sale_price, current_stock, min_stock, unit_measurement, is_supplies } = insumo;
+    const { description, purchase_price, sale_price, current_stock, min_stock, unit_measurement, is_supplies, category } = insumo;
 
     const dispatch = useDispatch();
 
@@ -78,7 +78,12 @@ const InsumoDB = ({ insumo }) => {
                         :
                         <td>no</td>
                 }
-
+                {
+                    category ?
+                        <td>{category.description}</td>
+                        :
+                        <td>{null}</td>
+                }
                 <td>
                     <div className="acciones">
                         <button className="boton_editar" onClick={() => handleClick_editar_insumo(insumo)}>

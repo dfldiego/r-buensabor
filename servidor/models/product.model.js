@@ -32,6 +32,11 @@ let productSchema = new Schema({
         type: Boolean,
         default: false
     },
+    category: {
+        type: Schema.Types.ObjectId,
+        ref: 'ProductCategories',
+        required: false,
+    },
     status: {
         type: Boolean,
         default: true

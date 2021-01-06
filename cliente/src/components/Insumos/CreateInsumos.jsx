@@ -7,8 +7,8 @@ import ClearIcon from '@material-ui/icons/Clear';
 import {
     abrirCerrarAgregarInsumoAction,
     crearNuevaInsumoAction,
-    obtenerInsumosAction,
     editarInsumoAction,
+    obtenerCategoriaInsumoAction,
 } from '../../actions/adminActions';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -22,10 +22,11 @@ const CreateInsumos = () => {
         min_stock: 0,
         unit_measurement: '',
         is_supplies: false,
+        category: undefined,
     });
 
 
-    const { description, purchase_price, sale_price, current_stock, min_stock, unit_measurement, is_supplies } = insumo;
+    const { description, purchase_price, sale_price, current_stock, min_stock, unit_measurement, is_supplies, category } = insumo;
 
     const handleChange = e => {
         setInsumo({
@@ -38,7 +39,7 @@ const CreateInsumos = () => {
 
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarInsumoAction(nuevo_estado));
     const agregar_nuevo_insumo_action = (datosNuevoInsumo) => dispatch(crearNuevaInsumoAction(datosNuevoInsumo));
-    const cargarInsumos = () => dispatch(obtenerInsumosAction());
+    const obtenerCategoriasInsumo_callAction = () => dispatch(obtenerCategoriaInsumoAction());
     const insumo_editar_action = (datos_insumos) => dispatch(editarInsumoAction(datos_insumos));
 
     let cerrar_modal_state_store = useSelector(state => state.admin.abrir_agregar_insumo);
@@ -46,6 +47,7 @@ const CreateInsumos = () => {
     const msj_error = useSelector(state => state.admin.mensaje);
     const insumos = useSelector(state => state.admin.insumos);
     const insumo_editar = useSelector(state => state.admin.insumo_editar);
+    const categoriasInsumo = useSelector(state => state.admin.categorias_insumo);
 
     const cerrar_modal = () => {
         if (cerrar_modal_state_store) {
@@ -54,6 +56,12 @@ const CreateInsumos = () => {
         }
         return;
     }
+
+    useEffect(() => {
+        obtenerCategoriasInsumo_callAction();
+
+        // eslint-disable-next-line
+    }, []);
 
     const handleSubmitAgregarInsumo = e => {
         e.preventDefault();
@@ -65,7 +73,7 @@ const CreateInsumos = () => {
                 cerrar_modal();
             }
         } else {
-            agregar_nuevo_insumo_action({ description, purchase_price, sale_price, current_stock, min_stock, unit_measurement, is_supplies });
+            agregar_nuevo_insumo_action({ description, purchase_price, sale_price, current_stock, min_stock, unit_measurement, is_supplies, category });
 
             if (errores === [] && msj_error === null) {
                 cerrar_modal();
@@ -85,6 +93,7 @@ const CreateInsumos = () => {
                 min_stock: insumo_editar.min_stock,
                 unit_measurement: insumo_editar.unit_measurement,
                 is_supplies: insumo_editar.is_supplies,
+                category: insumo_editar.category,
             })
         }
 
@@ -187,6 +196,33 @@ const CreateInsumos = () => {
                                     <option value="" disabled>-- Seleccione Verdadero o Falso --</option>
                                     <option value="true">Verdadero</option>
                                     <option value="false">Falso</option>
+                                </select>
+                            </div>
+                            <div className="form-row">
+                                <label>Categoria</label>
+                                <select
+                                    className="form-control"
+                                    name="category"
+                                    value={category}
+                                    onChange={handleChange}
+                                >
+                                    {
+                                        insumo_editar ?
+                                            <option
+                                                key={insumo_editar.category._id}
+                                                value={insumo_editar.category._id}
+                                            >{insumo_editar.category.description}</option>
+                                            :
+                                            <option value="">-- Seleccione una categoria --</option>
+                                    }
+                                    {
+                                        categoriasInsumo.map(categoria => (
+                                            <option
+                                                key={categoria._id}
+                                                value={categoria._id}
+                                            >{categoria.description}</option>
+                                        ))
+                                    }
                                 </select>
                             </div>
                             {
