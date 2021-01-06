@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import './Insumos.css';
 
 import ClearIcon from '@material-ui/icons/Clear';
@@ -7,6 +7,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import {
     abrirCerrarAgregarInsumoAction,
     crearNuevaInsumoAction,
+    obtenerInsumosAction,
 } from '../../actions/adminActions';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -36,13 +37,14 @@ const CreateInsumos = () => {
 
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarInsumoAction(nuevo_estado));
     const agregar_nuevo_insumo_action = (datosNuevoInsumo) => dispatch(crearNuevaInsumoAction(datosNuevoInsumo));
+    const cargarInsumos = () => dispatch(obtenerInsumosAction());
 
     let cerrar_modal_state_store = useSelector(state => state.admin.abrir_agregar_insumo);
     const errores = useSelector(state => state.admin.errores);
     const msj_error = useSelector(state => state.admin.mensaje);
+    const insumos = useSelector(state => state.admin.insumos);
 
     const cerrar_modal = () => {
-        console.log(cerrar_modal_state_store);
         if (cerrar_modal_state_store) {
             cerrar_modal_state_store = false;
             cerrar_modal_callAction(cerrar_modal_state_store);
@@ -55,12 +57,20 @@ const CreateInsumos = () => {
 
         agregar_nuevo_insumo_action({ description, purchase_price, sale_price, current_stock, min_stock, unit_measurement, is_supplies });
 
+        cargarInsumos();
+
         if (errores === [] && msj_error === null) {
             console.log("entra");
             cerrar_modal();
         }
 
     }
+
+    useEffect(() => {
+        cargarInsumos();
+
+        // eslint-disable-next-line
+    }, []);
 
     return (
         <Fragment>

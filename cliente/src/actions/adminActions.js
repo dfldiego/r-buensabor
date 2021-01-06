@@ -70,10 +70,52 @@ import {
     AGREGAR_INSUMO_EXITO,
     AGREGAR_INSUMO_ERRORES,
     AGREGAR_INSUMO_ERROR,
+    COMENZAR_DESCARGA_INSUMO,
+    DESCARGA_INSUMO_EXITO,
+    DESCARGA_INSUMO_ERROR,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
 import { authorizationHeader } from '../helpers/authorization_header';
+
+/**********************  para obtener los insumos de la BBDD ********************************/
+export function obtenerInsumosAction() {
+    return async (dispatch) => {
+        dispatch(descargarInsumos());
+
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            await clienteAxios.get('/api/product', header)
+                .then(response => {
+                    console.log(response.data);
+                    // obtenemos datos del response
+                    const { products } = response.data;
+                    // si todo sale bien
+                    dispatch(descargarInsumosExito(products));
+                })
+        } catch (err) {
+            console.log(err);
+            dispatch(descargarInsumosError('Error al descargar los insumos'));
+        }
+
+    }
+}
+
+const descargarInsumos = () => ({
+    type: COMENZAR_DESCARGA_INSUMO,
+    payload: true
+});
+
+const descargarInsumosExito = respuesta => ({
+    type: DESCARGA_INSUMO_EXITO,
+    payload: respuesta,
+});
+
+const descargarInsumosError = errores => ({
+    type: DESCARGA_INSUMO_ERROR,
+    payload: errores,
+});
 
 /**********************  para crear una nueva insumo ********************************/
 export function crearNuevaInsumoAction(datosNuevoInsumo) {
