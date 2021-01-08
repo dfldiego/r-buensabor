@@ -1,8 +1,7 @@
-import React, { Fragment, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { Fragment } from 'react';
+import { useDispatch } from 'react-redux';
 import {
     eliminarUsuarioAction,
-    obtenerUsuariosAction,
     abrirCerrarAgregarUsuarioAction,
     obtenerUsuarioAction,
 } from '../../actions/adminActions';

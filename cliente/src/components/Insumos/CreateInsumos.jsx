@@ -45,7 +45,6 @@ const CreateInsumos = () => {
     let cerrar_modal_state_store = useSelector(state => state.admin.abrir_agregar_insumo);
     const errores = useSelector(state => state.admin.errores);
     const msj_error = useSelector(state => state.admin.mensaje);
-    const insumos = useSelector(state => state.admin.insumos);
     const insumo_editar = useSelector(state => state.admin.insumo_editar);
     const categoriasInsumo = useSelector(state => state.admin.categorias_insumo);
 

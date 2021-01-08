@@ -10,5 +10,6 @@ app.use('/api/menudetail', require('./menu-details.routes'));
 app.use('/api/product', require('./product.routes'));
 app.use('/api/menu-categories', require('./menu-categories.routes'));
 app.use('/api/product-categories', require('./product-categories.routes'));
+app.use('/api/upload', require('./upload.routes'));
 
 module.exports = app;
