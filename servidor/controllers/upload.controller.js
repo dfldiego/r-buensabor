@@ -89,7 +89,7 @@ const upload = async (req, res) => {
             model: collection,
             folder: type
         };
-
+        console.log(genericUpload);
         // agregar imagen al objeto de la coleccion.
         addImageToObject(genericUpload);
     });
@@ -116,7 +116,8 @@ function addImageToObject(upload) {
                 }
             });
         }
-
+        console.log(upload.folder);
+        console.log(objectDB.img);
         deleteImg(upload.folder, objectDB.img);
 
         objectDB.img = upload.fileNameToSave;

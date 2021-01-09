@@ -16,9 +16,10 @@ import {
 
 
 const Perfil = () => {
-
+    const [imageFile, setimageFile] = useState({});
     const [perfil, setPerfil] = useState({
         name: '',
+        email: '',
         password: '',
         new_password: '',
         new_password_repeat: '',
@@ -34,7 +35,7 @@ const Perfil = () => {
 
     /************USAR DISPATCH: paso el nuevo state al action **********************/
     const perfil_callAction = estadoPerfil => dispatch(perfilAction(estadoPerfil));
-    const actualizar_perfil_callAction = datosPerfil => dispatch(actualizarPerfilAction(datosPerfil));
+    const actualizar_perfil_callAction = (perfil, imageFile) => dispatch(actualizarPerfilAction(perfil, imageFile));
 
 
     /*************USAR USE SELECTOR: capturo el valor de state del store  *******************/
@@ -46,6 +47,7 @@ const Perfil = () => {
         setPerfil({
             ...perfil,
             name: perfil_usuario_store.name,
+            email: perfil_usuario_store.email,
             img: perfil_usuario_store.img,
             telephoneNumber: perfil_usuario_store.telephoneNumber,
             nameStreet: perfil_usuario_store.address.nameStreet,
@@ -73,11 +75,23 @@ const Perfil = () => {
         })
     }
 
+    /************* METODO ONCHANGE PERFIL USUARIO ********************/
+    var handleChange_imagen = (e) => {
+        setPerfil({
+            ...perfil,
+            [e.target.name]: e.target.files[0].name,
+        });
+        setimageFile({
+            ...imageFile,
+            [e.target.name]: e.target.files[0],
+        });
+    };
+
     /************* METODO QUE GUARDA PERFIL USUARIO *******************/
     const handleSubmit_guardarPerfil = e => {
         e.preventDefault();
 
-        actualizar_perfil_callAction(perfil);
+        actualizar_perfil_callAction(perfil, imageFile);
 
     }
 
@@ -94,7 +108,7 @@ const Perfil = () => {
                     <div className="dos_columnas">
                         <div className="form_container_perfil">
                             <div className="circular">
-                                <img src={require('../../assets/img/sinuser.png')} alt="" />
+                                <img src={img} alt="" />
                             </div>
                         </div>
                         <div className="form_container_perfil">
@@ -148,7 +162,7 @@ const Perfil = () => {
                                     <input
                                         type="file"
                                         name="img"
-                                        onChange={handleChange_perfil}
+                                        onChange={handleChange_imagen}
                                     />
                                 </div>
                                 <div className="form-row">

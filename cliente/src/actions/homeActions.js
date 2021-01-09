@@ -20,16 +20,21 @@ import clienteAxios from '../config/axios';
 import { desencriptarToken } from '../helpers/desencriptar_token';
 import { authorizationHeader } from '../helpers/authorization_header';
 /************ ACTUALIZAR PERFIL DE USUARIO  ********/
-export function actualizarPerfilAction(datosPerfil) {
+export function actualizarPerfilAction(perfil, imageFile) {
     return async (dispatch) => {
         try {
             const token = localStorage.getItem('token');
             const response = await desencriptarToken(token);
             const header = authorizationHeader(token);
-            console.log(response.user._id);
-            console.log(datosPerfil);
-            await clienteAxios.put(`/api/users/${response.user._id}`, datosPerfil, header);
-            dispatch(actualizarPerfil(true));
+            await clienteAxios.put(`/api/users/${response.user._id}`, perfil, header)
+                .then(responses => {
+                    console.log(responses.data);
+                    const formData = new FormData();
+                    formData.append('file', imageFile.img);
+                    clienteAxios.put(`/api/upload/users/${response.user._id}`, formData, header)
+                    dispatch(actualizarPerfil(true));
+                })
+
         } catch (err) {
             console.log(err);
             dispatch(actualizarPerfilError("Error al actualizar Perfil"));
