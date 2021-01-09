@@ -11,5 +11,6 @@ app.use('/api/product', require('./product.routes'));
 app.use('/api/menu-categories', require('./menu-categories.routes'));
 app.use('/api/product-categories', require('./product-categories.routes'));
 app.use('/api/upload', require('./upload.routes'));
+app.use('/api/image', require('./image.routes'));
 
 module.exports = app;

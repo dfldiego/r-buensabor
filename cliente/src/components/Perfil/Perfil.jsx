@@ -23,13 +23,16 @@ const Perfil = () => {
         password: '',
         new_password: '',
         new_password_repeat: '',
-        img: '',
         telephoneNumber: 0,
         nameStreet: '',
         numberStreet: 0,
         location: '',
     });
-    const { name, password, new_password, new_password_repeat, img, telephoneNumber, nameStreet, numberStreet, location } = perfil;
+    const { name, password, new_password, new_password_repeat, telephoneNumber, nameStreet, numberStreet, location } = perfil;
+    const [imagen, setimagen] = useState({
+        img: '',
+    });
+    const { img } = imagen;
 
     const dispatch = useDispatch();
 
@@ -48,11 +51,13 @@ const Perfil = () => {
             ...perfil,
             name: perfil_usuario_store.name,
             email: perfil_usuario_store.email,
-            img: perfil_usuario_store.img,
             telephoneNumber: perfil_usuario_store.telephoneNumber,
             nameStreet: perfil_usuario_store.address.nameStreet,
             numberStreet: perfil_usuario_store.address.numberStreet,
             location: perfil_usuario_store.address.location
+        });
+        setimagen({
+            img: perfil_usuario_store.img
         });
         // eslint-disable-next-line
     }, [perfil_usuario_store])
@@ -77,10 +82,10 @@ const Perfil = () => {
 
     /************* METODO ONCHANGE PERFIL USUARIO ********************/
     var handleChange_imagen = (e) => {
-        setPerfil({
+        /* setPerfil({
             ...perfil,
             [e.target.name]: e.target.files[0].name,
-        });
+        }); */
         setimageFile({
             ...imageFile,
             [e.target.name]: e.target.files[0],
@@ -108,7 +113,7 @@ const Perfil = () => {
                     <div className="dos_columnas">
                         <div className="form_container_perfil">
                             <div className="circular">
-                                <img src={img} alt="" />
+                                <img src={`http://localhost:4000/api/image/users/${img}`} alt="" />
                             </div>
                         </div>
                         <div className="form_container_perfil">

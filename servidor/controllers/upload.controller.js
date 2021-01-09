@@ -89,7 +89,6 @@ const upload = async (req, res) => {
             model: collection,
             folder: type
         };
-        console.log(genericUpload);
         // agregar imagen al objeto de la coleccion.
         addImageToObject(genericUpload);
     });
@@ -98,8 +97,6 @@ const upload = async (req, res) => {
 function addImageToObject(upload) {
     upload.model.findById(upload.id, (err, objectDB) => {
         if (err) {
-            console.log(upload.folder);
-            console.log(upload.fileNameToSave);
             deleteImg(upload.folder, upload.fileNameToSave);
             return upload.res.status(500).json({
                 ok: false,
@@ -116,8 +113,6 @@ function addImageToObject(upload) {
                 }
             });
         }
-        console.log(upload.folder);
-        console.log(objectDB.img);
         deleteImg(upload.folder, objectDB.img);
 
         objectDB.img = upload.fileNameToSave;
@@ -132,8 +127,10 @@ function addImageToObject(upload) {
 }
 
 function deleteImg(type, fileName) {
+
     let pathImage = path.resolve(__dirname, `../uploads/${type}/${fileName}`);
     if (fs.existsSync(pathImage)) {
+
         fs.unlinkSync(pathImage);
     }
 }

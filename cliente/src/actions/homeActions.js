@@ -26,12 +26,15 @@ export function actualizarPerfilAction(perfil, imageFile) {
             const token = localStorage.getItem('token');
             const response = await desencriptarToken(token);
             const header = authorizationHeader(token);
-            await clienteAxios.put(`/api/users/${response.user._id}`, perfil, header)
+            const formData = new FormData();
+            formData.append('file', imageFile.img);
+            await clienteAxios.put(`/api/upload/users/${response.user._id}`, formData, header)
                 .then(responses => {
                     console.log(responses.data);
-                    const formData = new FormData();
-                    formData.append('file', imageFile.img);
-                    clienteAxios.put(`/api/upload/users/${response.user._id}`, formData, header)
+                    clienteAxios.put(`/api/users/${response.user._id}`, perfil, header)
+
+                })
+                .then(res => {
                     dispatch(actualizarPerfil(true));
                 })
 
