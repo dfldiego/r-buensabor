@@ -1,9 +1,8 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
     eliminarMenuAction,
-    obtenerMenuAction,
     obtenerUnMenuAction,
     abrirCerrarAgregarMenuAction,
 } from '../../actions/adminActions';
@@ -17,26 +16,8 @@ const MenuDB = ({ menu }) => {
     const dispatch = useDispatch();
 
     const baja_menu = datos_menu => dispatch(eliminarMenuAction(datos_menu));
-    const cargarmenus = () => dispatch(obtenerMenuAction());
     const abrir_cerrar_menu = estadoEditarMenu => dispatch(abrirCerrarAgregarMenuAction(estadoEditarMenu));
     const obtener_menu_editar = datos_menu => dispatch(obtenerUnMenuAction(datos_menu));
-
-    const recargarTablaMenu = useSelector(state => state.admin.menu_eliminar);
-    const recargarTablaMenuAlEditar = useSelector(state => state.admin.menu_editar);
-
-    useEffect(() => {
-        if (recargarTablaMenuAlEditar === null) {
-            cargarmenus();
-        }
-
-        // eslint-disable-next-line
-    }, [recargarTablaMenuAlEditar])
-
-    useEffect(() => {
-        cargarmenus();
-
-        // eslint-disable-next-line
-    }, [recargarTablaMenu]);
 
     const handleClick_eliminar_menu = async datos_menu => {
 

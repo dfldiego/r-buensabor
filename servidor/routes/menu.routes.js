@@ -17,4 +17,6 @@ router.put('/:id', [checkToken], menuController.update);
 
 router.delete('/:id', [checkToken], menuController.remove);
 
+router.get('/search/:words', menuController.search);
+
 module.exports = router;
