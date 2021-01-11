@@ -166,55 +166,27 @@ const remove = async (req, res = response) => {
 
 const search = async (req, res) => {
     let search = req.params.words;
-    console.log(search);
     let regExWords = new RegExp(search, 'i');
 
-    if (search === '') {
-        let from = Number(req.query.from) || 0;
-        let limit = Number(req.query.limit) || 5;
+    MenuCategory.find({ $and: [{ name: regExWords }, { status: true }] })
+        .exec((err, menuCategories) => {
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    err
+                });
+            }
 
-        try {
-            const [categories, total] = await Promise.all([
-                MenuCategory.find({ status: true })
-                    .skip(from)
-                    .limit(limit),
-                MenuCategory.countDocuments({ status: true })
-            ]);
-
-            res.json({
-                ok: true,
-                categories,
-                total,
-            });
-        } catch (error) {
-            console.log(error);
-            res.status(500).json({
-                ok: false,
-                msg: error
-            });
-        }
-    } else {
-        MenuCategory.find({ $and: [{ name: regExWords }, { status: true }] })
-            .exec((err, menuCategories) => {
-                if (err) {
-                    return res.status(500).json({
-                        ok: false,
-                        err
-                    });
-                }
-
-                MenuCategory.countDocuments({ status: true }, (err, size) => {
-                    res.json({
-                        ok: true,
-                        menuCategories,
-                        size
-                    });
+            MenuCategory.countDocuments({ status: true }, (err, size) => {
+                res.json({
+                    ok: true,
+                    menuCategories,
+                    size
                 });
             });
-    }
+        });
+}
 
-
-};
 
 module.exports = {
     list,
