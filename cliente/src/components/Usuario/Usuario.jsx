@@ -75,9 +75,6 @@ function Usuario() {
     const handleClick_buscador = e => {
         e.preventDefault();
         busqueda_usuario(buscador);
-        setBuscador({
-            busqueda: '',
-        });
     }
 
     return (

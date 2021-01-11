@@ -1,8 +1,7 @@
-import React, { Fragment, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { Fragment } from 'react';
+import { useDispatch } from 'react-redux';
 import {
     eliminarCategoriaAction,
-    obtenerCategoriasAction,
     obtenerCategoriaAction,
     abrirCerrarAgregarCategoriaAction,
 } from '../../actions/adminActions';
@@ -16,18 +15,9 @@ const CategoriaDB = ({ categoria }) => {
 
     /** ENVIAR AL STORE **/
     const baja_categoria = datos_categoria => dispatch(eliminarCategoriaAction(datos_categoria));
-    const cargarcategorias = () => dispatch(obtenerCategoriasAction());
     const abrir_cerrar_categoria = estadoEditarUsuario => dispatch(abrirCerrarAgregarCategoriaAction(estadoEditarUsuario));
     const obtener_categoria_editar = usuario => dispatch(obtenerCategoriaAction(usuario));
     /** OBTENER DEL STORE **/
-    const recargarTablaCategoria = useSelector(state => state.admin.categoria_eliminar);
-
-    /** USE EFFECT: cada vez que se modifica categorias */
-    useEffect(() => {
-        //llamar la funcion
-        cargarcategorias();
-        // eslint-disable-next-line
-    }, [recargarTablaCategoria]);
 
     /** EVENTO DE ELIMINAR CATEGORIAS **/
     const handleClick_eliminar_categoria = async datos_categoria => {

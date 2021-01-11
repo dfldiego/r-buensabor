@@ -85,6 +85,32 @@ import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
 import { authorizationHeader } from '../helpers/authorization_header';
 
+/**********************  para buscar una categoria de la BBDD ********************************/
+export function obtenerCategoriasBuscadorAction(palabraBusqueda) {
+    return async (dispatch) => {
+        dispatch(descargarCategorias());
+        console.log(palabraBusqueda.busqueda);
+
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            if (!palabraBusqueda.busqueda) {
+                const respuesta = await clienteAxios.get('/api/menu-categories', header);
+                dispatch(descargarCategoriasExito(respuesta.data.categories));
+            } else {
+                await clienteAxios.get(`/api/menu-categories/search/${String(palabraBusqueda.busqueda)}`, header)
+                    .then(response => {
+                        const { menuCategories } = response.data;
+                        dispatch(descargarCategoriasExito(menuCategories));
+                    })
+            }
+        } catch (error) {
+            console.log(error);
+            dispatch(descargarCategoriasError('Error al buscar las categorias'));
+        }
+    }
+}
+
 /**********************  para editar un insumo de la BBDD ********************************/
 export function obtenerUnInsumoAction(datos_insumos) {
     return async (dispatch) => {

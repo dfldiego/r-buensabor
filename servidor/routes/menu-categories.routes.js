@@ -11,5 +11,6 @@ router.get('/', [checkToken], menuCategoriesController.list);
 router.post('/', [checkToken], menuCategoriesController.create);
 router.put('/:id', [checkToken], menuCategoriesController.update);
 router.delete('/:id', [checkToken], menuCategoriesController.remove);
+router.get('/search/:words', menuCategoriesController.search);
 
 module.exports = router;

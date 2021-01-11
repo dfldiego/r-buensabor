@@ -10,20 +10,37 @@ import GetCategoria from '../Categorias/GetCategorias';
 import { useSelector, useDispatch } from 'react-redux'
 import {
     abrirCerrarAgregarCategoriaAction,
+    obtenerCategoriasBuscadorAction,
+    obtenerCategoriasAction,
 } from '../../actions/adminActions';
 
 const Categorias = () => {
 
     //useState locales
     const [openModal, setOpenModal] = useState(false);
+    const [buscador, setBuscador] = useState({
+        busqueda: '',
+    });
+
+    const { busqueda } = buscador;
 
     const dispatch = useDispatch();
 
     // enviar a store
     const abrir_cerrar_agregarCategoria = estadoAgregarCategoria => dispatch(abrirCerrarAgregarCategoriaAction(estadoAgregarCategoria));
+    const busqueda_categorias = palabraBusqueda => dispatch(obtenerCategoriasBuscadorAction(palabraBusqueda));
+    const cargarcategorias = () => dispatch(obtenerCategoriasAction());
 
     // recibir de store
     const modalAgregarCategoria = useSelector(state => state.admin.abrir_agregar_categoria);
+    const recargarTablaCategorias = useSelector(state => state.admin.categoria_eliminar);
+
+    /** USE EFFECT: cada vez que se modifica categorias */
+    useEffect(() => {
+        //llamar la funcion
+        cargarcategorias();
+        // eslint-disable-next-line
+    }, [recargarTablaCategorias]);
 
     const handleClick_abrir_agregar_categoria = e => {
         e.preventDefault();
@@ -47,6 +64,18 @@ const Categorias = () => {
         // eslint-disable-next-line
     }, [modalAgregarCategoria])
 
+    const handleChangeBuscador = e => {
+        setBuscador({
+            ...buscador,
+            [e.target.name]: e.target.value
+        });
+    }
+
+    const handleClick_buscador = e => {
+        e.preventDefault();
+        busqueda_categorias(buscador);
+    }
+
     return (
         <Fragment>
             <div className="container">
@@ -60,13 +89,16 @@ const Categorias = () => {
                     <div className="buscador">
                         <input
                             type="text"
-                            name="buscador"
+                            name="busqueda"
                             className="input_buscador"
+                            onChange={handleChangeBuscador}
+                            value={busqueda}
                         />
 
                         <button
                             href="#"
                             className="button_buscador"
+                            onClick={handleClick_buscador}
                         >Buscar</button>
                     </div>
                 </div>
