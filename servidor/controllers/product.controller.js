@@ -118,9 +118,35 @@ const remove = async (req, res = response) => {
     });
 }
 
+const search = async (req, res) => {
+
+    let search = req.params.words;
+    let regExWords = new RegExp(search, 'i');
+
+    Product.find({ $and: [{ description: regExWords }, { status: true }] })
+        .populate('category', 'description')
+        .exec((err, products) => {
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    err
+                });
+            }
+
+            Product.countDocuments({ status: true }, (err, size) => {
+                res.json({
+                    ok: true,
+                    products,
+                    size
+                });
+            });
+        });
+}
+
 module.exports = {
     list,
     create,
     update,
     remove,
+    search,
 }

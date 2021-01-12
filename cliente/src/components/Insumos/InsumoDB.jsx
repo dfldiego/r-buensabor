@@ -17,26 +17,8 @@ const InsumoDB = ({ insumo }) => {
     const dispatch = useDispatch();
 
     const baja_insumos = datos_insumo => dispatch(eliminarInsumoAction(datos_insumo));
-    const cargarInsumo = () => dispatch(obtenerInsumosAction());
     const abrir_cerrar_insumo = estadoEditarInsumo => dispatch(abrirCerrarAgregarInsumoAction(estadoEditarInsumo));
     const obtener_insumo_editar = datos_insumo => dispatch(obtenerUnInsumoAction(datos_insumo));
-
-    const recargarTablaInsumo = useSelector(state => state.admin.insumo_eliminar);
-    const recargarTablaInsumoAlEditar = useSelector(state => state.admin.insumo_editar);
-
-    useEffect(() => {
-        if (recargarTablaInsumoAlEditar === null) {
-            cargarInsumo();
-        }
-
-        // eslint-disable-next-line
-    }, [recargarTablaInsumoAlEditar]);
-
-    useEffect(() => {
-        cargarInsumo();
-
-        // eslint-disable-next-line
-    }, [recargarTablaInsumo]);
 
     const handleClick_eliminar_insumo = async datos_insumos => {
 

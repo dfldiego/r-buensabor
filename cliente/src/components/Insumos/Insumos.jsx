@@ -8,17 +8,42 @@ import GetInsumos from '../Insumos/GetInsumos';
 import { useSelector, useDispatch } from 'react-redux'
 import {
     abrirCerrarAgregarInsumoAction,
+    obtenerInsumoBuscadorAction,
+    obtenerInsumosAction,
 } from '../../actions/adminActions';
 
 const Insumos = () => {
 
     const [openModal, setOpenModal] = useState(false);
+    const [buscador, setBuscador] = useState({
+        busqueda: '',
+    });
+
+    const { busqueda } = buscador;
 
     const dispatch = useDispatch();
 
     const abrir_cerrar_agregarInsumo = estadoAgregarInsumo => dispatch(abrirCerrarAgregarInsumoAction(estadoAgregarInsumo));
+    const cargarInsumo = () => dispatch(obtenerInsumosAction());
+    const busquedaInsumo = palabraBusqueda => dispatch(obtenerInsumoBuscadorAction(palabraBusqueda));
 
     const modalAgregarInsumo = useSelector(state => state.admin.abrir_agregar_insumo);
+    const recargarTablaInsumo = useSelector(state => state.admin.insumo_eliminar);
+    const recargarTablaInsumoAlEditar = useSelector(state => state.admin.insumo_editar);
+
+    useEffect(() => {
+        if (recargarTablaInsumoAlEditar === null) {
+            cargarInsumo();
+        }
+
+        // eslint-disable-next-line
+    }, [recargarTablaInsumoAlEditar]);
+
+    useEffect(() => {
+        cargarInsumo();
+
+        // eslint-disable-next-line
+    }, [recargarTablaInsumo]);
 
     const handleClick_abrir_agregar_insumo = e => {
         e.preventDefault();
@@ -43,6 +68,18 @@ const Insumos = () => {
         // eslint-disable-next-line
     }, [modalAgregarInsumo])
 
+    const handleChangeBuscador = e => {
+        setBuscador({
+            ...buscador,
+            [e.target.name]: e.target.value
+        });
+    }
+
+    const handleClick_buscador = e => {
+        e.preventDefault();
+        busquedaInsumo(buscador);
+    }
+
     return (
         <Fragment>
             <div className="container">
@@ -56,13 +93,16 @@ const Insumos = () => {
                     <div className="buscador">
                         <input
                             type="text"
-                            name="buscador"
+                            name="busqueda"
                             className="input_buscador"
+                            onChange={handleChangeBuscador}
+                            value={busqueda}
                         />
 
                         <button
                             href="#"
                             className="button_buscador"
+                            onClick={handleClick_buscador}
                         >Buscar</button>
                     </div>
                 </div>
