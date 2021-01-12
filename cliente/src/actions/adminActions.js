@@ -85,6 +85,31 @@ import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
 import { authorizationHeader } from '../helpers/authorization_header';
 
+/**********************  para buscar una categoria-insumo de la BBDD ********************************/
+export function obtenerCategoriasInsumoBuscadorAction(palabraBusqueda) {
+    return async (dispatch) => {
+        dispatch(descargarCategoriasInsumo());
+
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            if (!palabraBusqueda.busqueda) {
+                const respuesta = await clienteAxios.get('/api/product-categories', header);
+                dispatch(descargarCategoriasInsumoExito(respuesta.data.productCategories));
+            } else {
+                await clienteAxios.get(`/api/product-categories/search/${String(palabraBusqueda.busqueda)}`, header)
+                    .then(response => {
+                        const { productCategories } = response.data;
+                        dispatch(descargarCategoriasInsumoExito(productCategories));
+                    })
+            }
+        } catch (error) {
+            console.log(error);
+            dispatch(descargarCategoriasInsumoError('Error al buscar las categorias de insumo'));
+        }
+    }
+}
+
 /**********************  para buscar un menu de la BBDD ********************************/
 export function obtenerMenusBuscadorAction(palabraBusqueda) {
     return async (dispatch) => {
@@ -442,6 +467,7 @@ export function obtenerCategoriaInsumoAction() {
             const header = authorizationHeader(token);
             await clienteAxios.get('/api/product-categories', header)
                 .then(response => {
+                    console.log(response.data);
                     // obtenemos datos del response
                     const { productCategories } = response.data;
                     // si todo sale bien

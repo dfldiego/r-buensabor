@@ -137,7 +137,7 @@ const CreateInsumoCategoria = () => {
                                     onChange={handleChange}
                                 >
                                     {
-                                        categoria_insumo_editar.parent ?
+                                        categoria_insumo_editar ?
                                             <option
                                                 key={categoria_insumo_editar._id}
                                                 value={categoria_insumo_editar._id}

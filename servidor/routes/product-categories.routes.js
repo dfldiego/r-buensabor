@@ -15,4 +15,6 @@ router.put('/:id', [checkToken], productCategoriesController.update);
 
 router.delete('/:id', [checkToken], productCategoriesController.remove);
 
+router.get('/search/:words', [checkToken], productCategoriesController.search);
+
 module.exports = router;

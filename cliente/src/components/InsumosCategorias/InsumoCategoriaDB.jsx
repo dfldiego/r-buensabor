@@ -3,7 +3,6 @@ import React, { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     eliminarCategoriaInsumoAction,
-    obtenerCategoriaInsumoAction,
     obtenerUnaCategoriaInsumoAction,
     abrirCerrarAgregarCategoriaInsumoAction,
 } from '../../actions/adminActions';
@@ -17,27 +16,8 @@ const InsumoCategoriaDB = ({ categoria }) => {
     const dispatch = useDispatch();
 
     const baja_categoria_insumos = datos_menu => dispatch(eliminarCategoriaInsumoAction(datos_menu));
-    const cargarCategoriasInsumo = () => dispatch(obtenerCategoriaInsumoAction());
     const abrir_cerrar_categoria = estadoEditarCategoria => dispatch(abrirCerrarAgregarCategoriaInsumoAction(estadoEditarCategoria));
     const obtener_categoria_insumo_editar = datos_categoria_insumo => dispatch(obtenerUnaCategoriaInsumoAction(datos_categoria_insumo));
-
-    const recargarTablaCategoriaInsumo = useSelector(state => state.admin.categoria_insumo_eliminar);
-    const recargarTablaCategoriaInsumoAlEditar = useSelector(state => state.admin.categoria_insumo_editar);
-
-    useEffect(() => {
-        if (recargarTablaCategoriaInsumoAlEditar === null) {
-            cargarCategoriasInsumo();
-        }
-
-        // eslint-disable-next-line
-    }, [recargarTablaCategoriaInsumoAlEditar]);
-
-    /** USE EFFECT: cada vez que se modifica categorias */
-    useEffect(() => {
-        cargarCategoriasInsumo();
-
-        // eslint-disable-next-line
-    }, [recargarTablaCategoriaInsumo]);
 
     const handleClick_eliminar_categoria_insumo = async datos_categoria_insumos => {
 
