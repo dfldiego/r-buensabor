@@ -1135,10 +1135,9 @@ const obtenerUsuarioEliminar = idUsuario => ({
 })
 
 /**********************  para obtener los usuarios de la BBDD ********************************/
-export function obtenerUsuariosAction(indexPrimerUsuario) {
+export function obtenerUsuariosAction(indexPrimerUsuario, limit, paginaCorriente) {
     return async (dispatch) => {
         dispatch(descargarUsuarios());
-
         try {
             const token = localStorage.getItem('token');
             const header = {
@@ -1146,7 +1145,8 @@ export function obtenerUsuariosAction(indexPrimerUsuario) {
                     'Authorization': `${token}`
                 }
             }
-            const respuesta = await clienteAxios.get(`/api/users?from=${indexPrimerUsuario}&limit=5`, header);
+            const respuesta = await clienteAxios.get(`/api/users?from=${indexPrimerUsuario}&limit=${limit}`, header);
+            respuesta.data.paginaCorriente = paginaCorriente;
             dispatch(descargarUsuariosExito(respuesta.data));
         } catch (error) {
             console.log(error);

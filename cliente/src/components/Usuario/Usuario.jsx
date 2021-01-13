@@ -30,18 +30,22 @@ function Usuario() {
     // enviar a store
     const abrir_cerrar_agregarUsuario = estadoAgregarUsuario => dispatch(abrirCerrarAgregarUsuarioAction(estadoAgregarUsuario));
     const busqueda_usuario = palabraBusqueda => dispatch(obtenerUsuariosBuscadorAction(palabraBusqueda));
-    const cargarUsuarios = () => dispatch(obtenerUsuariosAction());
+    const cargarUsuarios = (indexPrimerUsuario, limite_state, paginaCorriente_state) => dispatch(obtenerUsuariosAction(indexPrimerUsuario, limite_state, paginaCorriente_state))
 
     // recibir de store
     const modalAgregarUsuario = useSelector(state => state.admin.abrir_agregar_usuario);
     const recargarTablaUsuarios = useSelector(state => state.admin.usuario_eliminar);
+    const recargarTablaUsuariosPorAgregar = useSelector(state => state.admin.usuario);
+    const limite_state = useSelector(state => state.admin.limite);
+    const paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
 
     useEffect(() => {
+
         //llamar la funcion
-        cargarUsuarios();
+        cargarUsuarios(0, limite_state, paginaCorriente_state);
 
         // eslint-disable-next-line
-    }, [recargarTablaUsuarios]);
+    }, [recargarTablaUsuarios, recargarTablaUsuariosPorAgregar]);
 
     const handleClick_abrir_agregar_usuario = e => {
         e.preventDefault();

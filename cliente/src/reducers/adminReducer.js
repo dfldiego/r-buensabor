@@ -119,10 +119,9 @@ const initialState = {
     mostrarMenus: false,
     mostrarCategoriasInsumo: false,
     mostrarInsumo: false,
-    elementoPorPagina: 5,
-    totalElementos: null,
-    desdeElemento: 0,
-    paginaCorriente: 1,
+    totalElementos: 0,
+    paginaCorriente: 0,
+    limite: 5,
 }
 
 export default function (state = initialState, action) {
@@ -193,6 +192,13 @@ export default function (state = initialState, action) {
         case COMENZAR_DESCARGA_MENU:
         case COMENZAR_DESCARGA_CATEGORIA_INSUMO:
         case COMENZAR_DESCARGA_INSUMO:
+            return {
+                ...state,
+                loading: action.payload,
+                totalElementos: 0,
+                paginaCorriente: 0,
+                limite: 5,
+            }
         case AGREGAR_USUARIO:
         case AGREGAR_CATEGORIA:
         case AGREGAR_MENU:
@@ -259,9 +265,10 @@ export default function (state = initialState, action) {
                 error: null,
                 mensaje: null,
                 usuarios: action.payload.users,
-                elementoPorPagina: action.payload.users.length,
                 totalElementos: action.payload.total,
                 mostrarUsuarios: true,
+                limite: action.payload.limit,
+                paginaCorriente: action.payload.paginaCorriente,
             }
         case DESCARGA_CATEGORIA_EXITO:
             return {
