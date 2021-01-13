@@ -30,7 +30,7 @@ const list = async (req, res = response) => {
 
 const create = async (req, res = response) => {
     const { name } = req.body;
-
+    console.log(name);
     try {
 
         if (name === '') {

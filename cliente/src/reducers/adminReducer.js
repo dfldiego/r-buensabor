@@ -24,6 +24,7 @@ import {
     AGREGAR_CATEGORIA,
     AGREGAR_CATEGORIA_EXITO,
     AGREGAR_CATEGORIA_ERROR,
+    AGREGAR_CATEGORIA_ERRORES,
     COMENZAR_DESCARGA_CATEGORIA,
     DESCARGA_CATEGORIA_EXITO,
     DESCARGA_CATEGORIA_ERROR,
@@ -372,6 +373,7 @@ export default function (state = initialState, action) {
                 mensaje: null,
                 error: null,
             }
+        case AGREGAR_CATEGORIA_ERRORES:
         case AGREGAR_MENU_ERRORES:
         case MENU_EDITADO_ERRORES:
         case AGREGAR_CATEGORIA_INSUMO_ERRORES:

@@ -42,8 +42,6 @@ const Paginacion = () => {
     }
 
     const handlePage3 = () => {
-        console.log(Math.floor(total_elementos_state / limite_state));
-        console.log(paginaCorriente_state);
         if (paginaCorriente_state >= Math.floor(total_elementos_state / limite_state)) {
             paginaCorriente_state = Math.floor(total_elementos_state / limite_state);
             return;

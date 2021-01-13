@@ -22,6 +22,7 @@ import {
     AGREGAR_CATEGORIA,
     AGREGAR_CATEGORIA_EXITO,
     AGREGAR_CATEGORIA_ERROR,
+    AGREGAR_CATEGORIA_ERRORES,
     COMENZAR_DESCARGA_CATEGORIA,
     DESCARGA_CATEGORIA_EXITO,
     DESCARGA_CATEGORIA_ERROR,
@@ -931,10 +932,15 @@ export function crearNuevaCategoriaAction(datosNuevaCategoria) {
                     // si todo sale bien
                     dispatch(agregarCategoriaExito(category));
                 })
-        } catch (error) {
-            console.log(error.response);
-            // si hay un error
-            dispatch(agregarCategoriaError("Error al enviar datos al BD"));
+        } catch (err) {
+            console.log(err.response);
+            if (err.response.data.msg !== undefined) {
+                dispatch(agregarCategoriaError(err.response.data.msg));
+            } else {
+                if (err.response.data.err.errors) {
+                    dispatch(agregarCategoriaErrores(err.response.data.err.errors));
+                }
+            }
         }
     }
 }
@@ -954,6 +960,12 @@ const agregarCategoriaExito = category => ({
 const agregarCategoriaError = estado => ({
     type: AGREGAR_CATEGORIA_ERROR,
     payload: estado
+})
+
+// si hubo un error
+const agregarCategoriaErrores = errores => ({
+    type: AGREGAR_CATEGORIA_ERRORES,
+    payload: errores
 })
 
 // abrir modal agregar categoria
