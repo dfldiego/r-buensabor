@@ -2,25 +2,15 @@ import React, { Fragment, useEffect } from 'react';
 import './Insumos.css';
 
 import InsumoDB from '../Insumos/InsumoDB';
+import PaginacionInsumos from './PaginacionInsumos';
 
-import {
-    obtenerInsumosAction,
-} from '../../actions/adminActions';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const GetInsumos = () => {
 
-    const dispatch = useDispatch();
-
     const insumos_state = useSelector(state => state.admin.insumos);
-
-    useEffect(() => {
-
-        const cargarInsumos = () => dispatch(obtenerInsumosAction());
-        cargarInsumos();
-
-        // eslint-disable-next-line
-    }, []);
+    const error = useSelector(state => state.admin.error);
+    const mensaje_error = useSelector(state => state.admin.mensaje);
 
     if (!insumos_state) {
         return;
@@ -29,7 +19,9 @@ const GetInsumos = () => {
     return (
         <Fragment>
             <h2 className="titulo">Listado de Insumos</h2>
-
+            {
+                error ? <p className="error">{mensaje_error}</p> : null
+            }
             <table>
                 <thead>
                     <tr>
@@ -56,6 +48,7 @@ const GetInsumos = () => {
                     }
                 </tbody>
             </table>
+            <PaginacionInsumos />
         </Fragment>
     )
 }

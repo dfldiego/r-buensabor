@@ -24,26 +24,20 @@ const Insumos = () => {
     const dispatch = useDispatch();
 
     const abrir_cerrar_agregarInsumo = estadoAgregarInsumo => dispatch(abrirCerrarAgregarInsumoAction(estadoAgregarInsumo));
-    const cargarInsumo = () => dispatch(obtenerInsumosAction());
+    const cargarInsumo = (indexPrimerInsumo, limit, paginaCorriente) => dispatch(obtenerInsumosAction(indexPrimerInsumo, limit, paginaCorriente));
     const busquedaInsumo = palabraBusqueda => dispatch(obtenerInsumoBuscadorAction(palabraBusqueda));
 
     const modalAgregarInsumo = useSelector(state => state.admin.abrir_agregar_insumo);
     const recargarTablaInsumo = useSelector(state => state.admin.insumo_eliminar);
     const recargarTablaInsumoAlEditar = useSelector(state => state.admin.insumo_editar);
+    const limite_state = useSelector(state => state.admin.limite);
+    const paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
 
     useEffect(() => {
-        if (recargarTablaInsumoAlEditar === null) {
-            cargarInsumo();
-        }
+        cargarInsumo(0, limite_state, paginaCorriente_state);
 
         // eslint-disable-next-line
-    }, [recargarTablaInsumoAlEditar]);
-
-    useEffect(() => {
-        cargarInsumo();
-
-        // eslint-disable-next-line
-    }, [recargarTablaInsumo]);
+    }, [recargarTablaInsumo, recargarTablaInsumoAlEditar]);
 
     const handleClick_abrir_agregar_insumo = e => {
         e.preventDefault();

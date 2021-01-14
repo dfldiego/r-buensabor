@@ -22,7 +22,8 @@ const list = async (req, res = response) => {
                 res.json({
                     ok: true,
                     products,
-                    size
+                    size,
+                    limit,
                 });
             });
         });

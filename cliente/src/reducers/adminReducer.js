@@ -518,9 +518,14 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 loading: false,
-                errores: [],
-                insumos: action.payload,
                 error: null,
+                errores: [],
+                mensaje: null,
+                insumos: action.payload.products,
+                mostrarInsumo: true,
+                totalElementos: action.payload.total,
+                limite: action.payload.limit,
+                paginaCorriente: action.payload.paginaCorriente,
             }
         case OBTENER_INSUMO_ELIMINAR:
             return {
