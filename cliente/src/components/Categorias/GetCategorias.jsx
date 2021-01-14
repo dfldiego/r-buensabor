@@ -1,28 +1,16 @@
 import React, { Fragment, useEffect } from 'react';
 import './Categorias.css';
 import CategoriaDB from './CategoriaDB';
+import PaginacionCategoria from './PaginacionCategoria';
 
-import { useDispatch, useSelector } from 'react-redux';
-import {
-    obtenerCategoriasAction,
-} from '../../actions/adminActions';
+import { useSelector } from 'react-redux';
 
 const GetCategorias = () => {
-
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        // consultar la api
-        const cargarCategorias = () => dispatch(obtenerCategoriasAction());
-        //llamar la funcion
-        cargarCategorias();
-
-        // eslint-disable-next-line
-    }, []);
 
     const categorias_state = useSelector(state => state.admin.categorias);
     const error = useSelector(state => state.admin.error);
     const cargando = useSelector(state => state.admin.loading);
+
     if (!categorias_state) {
         return;
     }
@@ -51,6 +39,7 @@ const GetCategorias = () => {
                     }
                 </tbody>
             </table>
+            <PaginacionCategoria />
         </Fragment>
     )
 }

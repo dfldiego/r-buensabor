@@ -35,7 +35,6 @@ function Usuario() {
     // recibir de store
     const modalAgregarUsuario = useSelector(state => state.admin.abrir_agregar_usuario);
     const recargarTablaUsuarios = useSelector(state => state.admin.usuario_eliminar);
-    const recargarTablaUsuariosPorAgregar = useSelector(state => state.admin.usuario);
     const limite_state = useSelector(state => state.admin.limite);
     const paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
 
@@ -45,7 +44,7 @@ function Usuario() {
         cargarUsuarios(0, limite_state, paginaCorriente_state);
 
         // eslint-disable-next-line
-    }, [recargarTablaUsuarios, recargarTablaUsuariosPorAgregar]);
+    }, [recargarTablaUsuarios]);
 
     const handleClick_abrir_agregar_usuario = e => {
         e.preventDefault();

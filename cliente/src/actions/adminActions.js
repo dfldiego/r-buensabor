@@ -880,15 +880,16 @@ const obtenerCategoriaEliminar = idcategoria => ({
 })
 
 /**********************  para obtener los categorias de la BBDD ********************************/
-export function obtenerCategoriasAction() {
+export function obtenerCategoriasAction(indexPrimerUsuario, limit, paginaCorriente) {
     return async (dispatch) => {
         dispatch(descargarCategorias());
 
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            const respuesta = await clienteAxios.get('/api/menu-categories', header);
-            dispatch(descargarCategoriasExito(respuesta.data.categories));
+            const respuesta = await clienteAxios.get(`/api/menu-categories?from=${indexPrimerUsuario}&limit=${limit}`, header);
+            respuesta.data.paginaCorriente = paginaCorriente;
+            dispatch(descargarCategoriasExito(respuesta.data));
         } catch (error) {
             console.log(error);
             dispatch(descargarCategoriasError('Error al descargar los categoria'));

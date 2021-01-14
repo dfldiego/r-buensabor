@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import './GetUsuarios.css';
 import Usuariodb from './Usuariodb';
-import Paginacion from '../Paginacion/Paginacion';
+import Paginacion from './Paginacion';
 
 import { useSelector } from 'react-redux';
 

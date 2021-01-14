@@ -29,16 +29,18 @@ const Categorias = () => {
     // enviar a store
     const abrir_cerrar_agregarCategoria = estadoAgregarCategoria => dispatch(abrirCerrarAgregarCategoriaAction(estadoAgregarCategoria));
     const busqueda_categorias = palabraBusqueda => dispatch(obtenerCategoriasBuscadorAction(palabraBusqueda));
-    const cargarcategorias = () => dispatch(obtenerCategoriasAction());
+    const cargarcategorias = (indexPrimerUsuario, limite_state, paginaCorriente_state) => dispatch(obtenerCategoriasAction(indexPrimerUsuario, limite_state, paginaCorriente_state));
 
     // recibir de store
     const modalAgregarCategoria = useSelector(state => state.admin.abrir_agregar_categoria);
     const recargarTablaCategorias = useSelector(state => state.admin.categoria_eliminar);
+    const limite_state = useSelector(state => state.admin.limite);
+    const paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
 
     /** USE EFFECT: cada vez que se modifica categorias */
     useEffect(() => {
         //llamar la funcion
-        cargarcategorias();
+        cargarcategorias(0, limite_state, paginaCorriente_state);
         // eslint-disable-next-line
     }, [recargarTablaCategorias]);
 

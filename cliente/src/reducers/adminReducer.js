@@ -266,8 +266,8 @@ export default function (state = initialState, action) {
                 error: null,
                 mensaje: null,
                 usuarios: action.payload.users,
-                totalElementos: action.payload.total,
                 mostrarUsuarios: true,
+                totalElementos: action.payload.total,
                 limite: action.payload.limit,
                 paginaCorriente: action.payload.paginaCorriente,
             }
@@ -277,7 +277,11 @@ export default function (state = initialState, action) {
                 loading: false,
                 error: null,
                 mensaje: null,
-                categorias: action.payload,
+                categorias: action.payload.categories,
+                mostrarCategorias: false,
+                totalElementos: action.payload.total,
+                limite: action.payload.limit,
+                paginaCorriente: action.payload.paginaCorriente,
             }
         case OBTENER_USUARIO_ELIMINAR:
             return {
