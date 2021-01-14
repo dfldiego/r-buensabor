@@ -1,9 +1,8 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
     eliminarInsumoAction,
-    obtenerInsumosAction,
     obtenerUnInsumoAction,
     abrirCerrarAgregarInsumoAction,
 } from '../../actions/adminActions';

@@ -689,17 +689,18 @@ const menuEliminadoError = msj => ({
 })
 
 /**********************  para obtener los menus de la BBDD ********************************/
-export function obtenerMenuAction() {
+export function obtenerMenuAction(indexPrimerUsuario, limit, paginaCorriente) {
     return async (dispatch) => {
         dispatch(descargarMenus());
 
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            await clienteAxios.get('/api/menu', header)
+            await clienteAxios.get(`/api/menu?from=${indexPrimerUsuario}&limit=${limit}`, header)
                 .then(response => {
-                    const { menus } = response.data;
-                    dispatch(descargarMenusExito(menus));
+                    response.data.paginaCorriente = paginaCorriente;
+                    console.log(response.data.menus);
+                    dispatch(descargarMenusExito(response.data));
                 })
         } catch (err) {
             console.log(err);

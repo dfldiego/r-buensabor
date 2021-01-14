@@ -1,27 +1,16 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import './Menu.css';
 
 import MenuDB from '../Menu/MenuDB';
+import PaginacionMenu from './PaginacionMenu';
 
-import { useDispatch, useSelector } from 'react-redux';
-import {
-    obtenerMenuAction,
-} from '../../actions/adminActions';
+import { useSelector } from 'react-redux';
 
 const GetMenu = () => {
-
-    const dispatch = useDispatch();
 
     const menus_state = useSelector(state => state.admin.menus);
     const error = useSelector(state => state.admin.error);
     const mensaje_error = useSelector(state => state.admin.mensaje);
-
-    useEffect(() => {
-
-        const cargarMenus = () => dispatch(obtenerMenuAction());
-        cargarMenus();
-        // eslint-disable-next-line
-    }, []);
 
     if (!menus_state) {
         return;
@@ -55,6 +44,7 @@ const GetMenu = () => {
                     }
                 </tbody>
             </table>
+            <PaginacionMenu />
         </Fragment>
     )
 }

@@ -24,26 +24,20 @@ const Menu = () => {
     const dispatch = useDispatch();
 
     const abrir_cerrar_btn_agregar = estadoAgregarMenu => dispatch(abrirCerrarAgregarMenuAction(estadoAgregarMenu));
-    const cargarmenus = () => dispatch(obtenerMenuAction());
+    const cargarmenus = (indexPrimerUsuario, limite_state, paginaCorriente_state) => dispatch(obtenerMenuAction(indexPrimerUsuario, limite_state, paginaCorriente_state));
     const busqueda_menus = palabraBusqueda => dispatch(obtenerMenusBuscadorAction(palabraBusqueda));
 
     const modalAgregarMenu = useSelector(state => state.admin.abrir_agregar_menu);
     const recargarTablaMenu = useSelector(state => state.admin.menu_eliminar);
     const recargarTablaMenuAlEditar = useSelector(state => state.admin.menu_editar);
+    const limite_state = useSelector(state => state.admin.limite);
+    const paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
 
     useEffect(() => {
-        if (recargarTablaMenuAlEditar === null) {
-            cargarmenus();
-        }
+        cargarmenus(0, limite_state, paginaCorriente_state);
 
         // eslint-disable-next-line
-    }, [recargarTablaMenuAlEditar])
-
-    useEffect(() => {
-        cargarmenus();
-
-        // eslint-disable-next-line
-    }, [recargarTablaMenu]);
+    }, [recargarTablaMenu, recargarTablaMenuAlEditar]);
 
     const handleClick_abrir_agregar_menu = e => {
         e.preventDefault();

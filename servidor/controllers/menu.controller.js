@@ -4,12 +4,32 @@ const MenuDetail = require('../models/menu-details.model');
 
 const list = async (req, res = response) => {
 
-    const menus = await Menu.find({ status: true })
-        .populate('category', 'name')
-    res.json({
-        ok: true,
-        menus
-    });
+    let from = Number(req.query.from) || 0;
+    let limit = Number(req.query.limit) || 5;
+
+    try {
+        const [menus, total] = await Promise.all([
+            Menu.find({ status: true })
+                .populate('category', 'name')
+                .skip(from)
+                .limit(limit),
+            Menu.countDocuments({ status: true })
+        ]);
+
+        res.json({
+            ok: true,
+            menus,
+            total,
+            limit,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: error
+        });
+    }
+
 }
 
 const create = async (req, res = response) => {

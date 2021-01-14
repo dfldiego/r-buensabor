@@ -265,6 +265,7 @@ export default function (state = initialState, action) {
                 loading: false,
                 error: null,
                 mensaje: null,
+                errores: [],
                 usuarios: action.payload.users,
                 mostrarUsuarios: true,
                 totalElementos: action.payload.total,
@@ -277,8 +278,9 @@ export default function (state = initialState, action) {
                 loading: false,
                 error: null,
                 mensaje: null,
+                errores: [],
                 categorias: action.payload.categories,
-                mostrarCategorias: false,
+                mostrarCategorias: true,
                 totalElementos: action.payload.total,
                 limite: action.payload.limit,
                 paginaCorriente: action.payload.paginaCorriente,
@@ -394,11 +396,14 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 loading: false,
-                errores: [],
-                menus: action.payload,
-                abrir_agregar_menu: false,
                 error: null,
                 mensaje: null,
+                errores: [],
+                menus: action.payload.menus,
+                mostrarMenus: true,
+                totalElementos: action.payload.total,
+                limite: action.payload.limit,
+                paginaCorriente: action.payload.paginaCorriente,
             }
         case OBTENER_MENU_ELIMINAR:
             return {
