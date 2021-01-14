@@ -18,6 +18,7 @@ const list = async (req, res = response) => {
             ok: true,
             productCategories,
             total,
+            limit,
         });
     } catch (error) {
         console.log(error);

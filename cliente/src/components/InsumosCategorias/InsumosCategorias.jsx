@@ -26,28 +26,20 @@ const InsumosCategorias = () => {
     const dispatch = useDispatch();
 
     const abrir_cerrar_agregarCategoriaInsumo = estadoAgregarCategoriaInsumo => dispatch(abrirCerrarAgregarCategoriaInsumoAction(estadoAgregarCategoriaInsumo));
-    const cargarCategoriasInsumo = () => dispatch(obtenerCategoriaInsumoAction());
+    const cargarCategoriasInsumo = (indexPrimerInsumoCategoria, limit, paginaCorriente) => dispatch(obtenerCategoriaInsumoAction(indexPrimerInsumoCategoria, limit, paginaCorriente));
     const busquedaCategoriasInsumo = palabraBusqueda => dispatch(obtenerCategoriasInsumoBuscadorAction(palabraBusqueda));
 
     const modalAgregarCategoriaInsumo = useSelector(state => state.admin.abrir_agregar_categoria_insumo);
     const recargarTablaCategoriaInsumo = useSelector(state => state.admin.categoria_insumo_eliminar);
     const recargarTablaCategoriaInsumoAlEditar = useSelector(state => state.admin.categoria_insumo_editar);
+    const limite_state = useSelector(state => state.admin.limite);
+    const paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
 
     useEffect(() => {
-        if (recargarTablaCategoriaInsumoAlEditar === null) {
-            cargarCategoriasInsumo();
-        }
+        cargarCategoriasInsumo(0, limite_state, paginaCorriente_state);
 
         // eslint-disable-next-line
-    }, [recargarTablaCategoriaInsumoAlEditar]);
-
-    /** USE EFFECT: cada vez que se modifica categorias */
-    useEffect(() => {
-        cargarCategoriasInsumo();
-
-        // eslint-disable-next-line
-    }, [recargarTablaCategoriaInsumo]);
-
+    }, [recargarTablaCategoriaInsumo, recargarTablaCategoriaInsumoAlEditar]);
 
     const handleClick_abrir_agregar_categoriaInsumo = e => {
         e.preventDefault();

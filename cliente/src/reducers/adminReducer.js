@@ -457,9 +457,14 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 loading: false,
-                errores: [],
-                categorias_insumo: action.payload,
+                mensaje: null,
                 error: null,
+                errores: [],
+                categorias_insumo: action.payload.productCategories,
+                mostrarCategoriasInsumo: true,
+                totalElementos: action.payload.total,
+                limite: action.payload.limit,
+                paginaCorriente: action.payload.paginaCorriente,
             }
         case OBTENER_CATEGORIA_INSUMO_ELIMINAR:
             return {

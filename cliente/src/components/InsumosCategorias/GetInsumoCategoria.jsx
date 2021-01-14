@@ -2,25 +2,15 @@ import React, { Fragment, useEffect } from 'react';
 import './InsumosCategorias.css';
 
 import InsumoCategoriaDB from '../InsumosCategorias/InsumoCategoriaDB';
+import PaginacionInsumoCategoria from './PaginacionInsumoCategoria';
 
-import {
-    obtenerCategoriaInsumoAction,
-} from '../../actions/adminActions';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const GetInsumoCategoria = () => {
 
-    const dispatch = useDispatch();
-
     const categorias_insumo_state = useSelector(state => state.admin.categorias_insumo);
-
-    useEffect(() => {
-
-        const cargarCategoriasInsumo = () => dispatch(obtenerCategoriaInsumoAction());
-        cargarCategoriasInsumo();
-
-        // eslint-disable-next-line
-    }, []);
+    const error = useSelector(state => state.admin.error);
+    const mensaje_error = useSelector(state => state.admin.mensaje);
 
     if (!categorias_insumo_state) {
         return;
@@ -29,7 +19,9 @@ const GetInsumoCategoria = () => {
     return (
         <Fragment>
             <h2 className="titulo">Listado de Categorias de Insumo</h2>
-
+            {
+                error ? <p className="error">{mensaje_error}</p> : null
+            }
             <table>
                 <thead>
                     <tr>
@@ -51,6 +43,7 @@ const GetInsumoCategoria = () => {
                     }
                 </tbody>
             </table>
+            <PaginacionInsumoCategoria />
         </Fragment>
     )
 }

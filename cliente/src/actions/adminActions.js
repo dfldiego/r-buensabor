@@ -484,20 +484,17 @@ const categoriaInsumoEliminadoError = msj => ({
 })
 
 /**********************  para obtener las categoria insumos de la BBDD ********************************/
-export function obtenerCategoriaInsumoAction() {
+export function obtenerCategoriaInsumoAction(indexPrimerInsumoCategoria, limit, paginaCorriente) {
     return async (dispatch) => {
         dispatch(descargarCategoriasInsumo());
 
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            await clienteAxios.get('/api/product-categories', header)
+            await clienteAxios.get(`/api/product-categories?from=${indexPrimerInsumoCategoria}&limit=${limit}`, header)
                 .then(response => {
-                    console.log(response.data);
-                    // obtenemos datos del response
-                    const { productCategories } = response.data;
-                    // si todo sale bien
-                    dispatch(descargarCategoriasInsumoExito(productCategories));
+                    response.data.paginaCorriente = paginaCorriente;
+                    dispatch(descargarCategoriasInsumoExito(response.data));
                 })
         } catch (err) {
             console.log(err);
@@ -539,7 +536,6 @@ export function crearNuevaCategoriaInsumoAction(datosNuevoCategoriaInsumo) {
                     } else {
                         const { productCategoryStored } = response.data;
                         dispatch(agregarCategoriaInsumoExito(productCategoryStored));
-                        console.log(response.data.msg);
                     }
                 })
         } catch (err) {
@@ -614,7 +610,6 @@ export function editarMenuAction(datos_menu) {
             const header = authorizationHeader(token);
             await clienteAxios.put(`/api/menu/${datos_menu._id}`, datos_menu, header)
                 .then(response => {
-                    console.log(response.data);
                     const { menu } = response.data;
                     dispatch(editarMenuExito(menu));
                 })
@@ -699,7 +694,6 @@ export function obtenerMenuAction(indexPrimerUsuario, limit, paginaCorriente) {
             await clienteAxios.get(`/api/menu?from=${indexPrimerUsuario}&limit=${limit}`, header)
                 .then(response => {
                     response.data.paginaCorriente = paginaCorriente;
-                    console.log(response.data.menus);
                     dispatch(descargarMenusExito(response.data));
                 })
         } catch (err) {
