@@ -101,9 +101,9 @@ const CreateInsumos = () => {
 
     return (
         <Fragment>
-            <div className="modal-categoria">
-                <div className="modal-container-categoria">
-                    <div className="form-container-categoria">
+            <div className="modal-insumo">
+                <div className="modal-container-insumo">
+                    <div className="form-container-insumo">
                         <ClearIcon
                             className="volver"
                             onClick={cerrar_modal}
@@ -113,7 +113,36 @@ const CreateInsumos = () => {
 
                         {errores[0] ?
                             <div>
-                                <p className="error">{errores[0].description.message}</p>
+                                {
+                                    errores[0].description ?
+                                        <p className="error">{errores[0].description.message}</p>
+                                        :
+                                        null
+                                }
+                                {
+                                    errores[0].purchase_price ?
+                                        <p className="error">{errores[0].purchase_price.message}</p>
+                                        :
+                                        null
+                                }
+                                {
+                                    errores[0].current_stock ?
+                                        <p className="error">{errores[0].current_stock.message}</p>
+                                        :
+                                        null
+                                }
+                                {
+                                    errores[0].min_stock ?
+                                        <p className="error">{errores[0].min_stock.message}</p>
+                                        :
+                                        null
+                                }
+                                {
+                                    errores[0].unit_measurement ?
+                                        <p className="error">{errores[0].unit_measurement.message}</p>
+                                        :
+                                        null
+                                }
                             </div>
                             : null}
 

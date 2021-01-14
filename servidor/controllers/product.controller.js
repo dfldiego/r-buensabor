@@ -31,43 +31,46 @@ const list = async (req, res = response) => {
 
 const create = async (req, res = response) => {
 
-    let { description } = req.body;
-    const existeDescription = await Product.findOne({ description });
-    if (existeDescription) {
-        if (existeDescription.status === true) {
-            return res.status(400).json({
-                ok: false,
-                msg: "ese producto ya se encuentra registrado"
-            });
-        } else {
-            const product = new Product(req.body);
-            product._id = existeDescription._id;
+    const { description } = req.body;
 
-            const productStored = await Product.findByIdAndUpdate(product._id, product, { new: true });
+    try {
+        const existeDescription = await Product.findOne({ description });
+        if (existeDescription) {
+            if (existeDescription.status === true) {
+                return res.status(400).json({
+                    ok: false,
+                    msg: "ese producto ya se encuentra registrado"
+                });
+            } else {
+                const product = new Product(req.body);
+                product._id = existeDescription._id;
 
-            return res.json({
-                ok: true,
-                msg: "producto dado de alta nuevamente",
-                productStored
-            });
+                const productStored = await Product.findByIdAndUpdate(product._id, product, { new: true });
+
+                return res.json({
+                    ok: true,
+                    msg: "producto dado de alta nuevamente",
+                    productStored
+                });
+            }
         }
-    }
 
-    let product = new Product(req.body);
+        let product = new Product(req.body);
 
-    product.save((err, productStored) => {
-        if (err) {
-            return res.status(500).json({
-                ok: false,
-                err
-            });
-        }
+        const productStored = await product.save();
 
         res.json({
             ok: true,
             product: productStored
         });
-    });
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            ok: false,
+            err,
+        });
+    }
 }
 
 const update = async (req, res = response) => {

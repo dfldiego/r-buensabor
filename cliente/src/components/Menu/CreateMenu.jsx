@@ -41,7 +41,7 @@ const CreateMenu = () => {
     const categorias = useSelector(state => state.admin.categorias);
     const errores = useSelector(state => state.admin.errores);
     const msj_error = useSelector(state => state.admin.mensaje);
-    let menu_editar_store = useSelector(state => state.admin.menu_editar);
+    const menu_editar_store = useSelector(state => state.admin.menu_editar);
 
     const cerrar_modal = e => {
         e.preventDefault();
@@ -63,7 +63,6 @@ const CreateMenu = () => {
 
         if (menu_editar_store) {
             menu._id = menu_editar_store._id;
-            console.log(menu);
             menu_editar_action(menu);
 
             if (errores === [] && msj_error === null) {

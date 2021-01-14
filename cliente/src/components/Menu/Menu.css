@@ -23,7 +23,7 @@
     background: #fff;
     border-radius: 10px;
     position: relative;
-    overflow: hidden;
+    overflow: scroll;
     width: 768px;
     max-width: 100%;
     max-height: 520px;

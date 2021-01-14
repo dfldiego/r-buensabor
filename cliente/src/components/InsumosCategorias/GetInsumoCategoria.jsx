@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import './InsumosCategorias.css';
 
 import InsumoCategoriaDB from '../InsumosCategorias/InsumoCategoriaDB';

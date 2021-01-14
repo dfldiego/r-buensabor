@@ -10,7 +10,7 @@
 }
 
 /**************CREATE INSUMO ******/
-.modal-categoria {
+.modal-insumo {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -19,17 +19,17 @@
     margin: -20px 0 50px;
 }
 
-.modal-container-categoria {
+.modal-container-insumo {
     background: #fff;
     border-radius: 10px;
     position: relative;
     overflow: scroll;
-    width: 580px;
+    width: 768px;
     max-width: 100%;
-    max-height: 590px !important;
+    max-height: 590px;
 }
 
-.form-container-categoria form {
+.form-container-insumo form {
     background: #fff;
     display: flex;
     flex-direction: column;
