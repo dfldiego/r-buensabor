@@ -15,8 +15,10 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const CreateCategoria = () => {
 
-    const [categoria, setCategoria] = useState({ name: '', img: '' });
-    const { name, img } = categoria;
+    const [imageFile, setimageFile] = useState({});
+
+    const [categoria, setCategoria] = useState({ name: '' });
+    const { name } = categoria;
 
     const handleChange = e => {
         setCategoria({
@@ -28,7 +30,7 @@ const CreateCategoria = () => {
     /************USAR DISPATCH: paso el nuevo state al action **********************/
     const dispatch = useDispatch();
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarCategoriaAction(nuevo_estado));
-    const agregar_categoria_action = (datosNuevaCategoria) => dispatch(crearNuevaCategoriaAction(datosNuevaCategoria));
+    const agregar_categoria_action = (datosNuevaCategoria, imageFile) => dispatch(crearNuevaCategoriaAction(datosNuevaCategoria, imageFile));
     const categoria_editar_action = (datoscategoria) => dispatch(editarCategoriaAction(datoscategoria));
     const cargarcategorias = () => dispatch(obtenerCategoriaAction());
 
@@ -46,6 +48,17 @@ const CreateCategoria = () => {
         }
         return;
     }
+
+    var handleChange_imagen = (e) => {
+        /* setPerfil({
+            ...perfil,
+            [e.target.name]: e.target.files[0].name,
+        }); */
+        setimageFile({
+            ...imageFile,
+            [e.target.name]: e.target.files[0],
+        });
+    };
 
     /*****************METODO SUBMIT ******************/
     const handleSubmitAgregarCategoria = e => {
@@ -69,7 +82,7 @@ const CreateCategoria = () => {
             cerrar_modal_state_store = false;
             cerrar_modal_callAction(cerrar_modal_state_store);
         } else {
-            agregar_categoria_action({ name });
+            agregar_categoria_action({ name }, imageFile);
             setCategoria({ name: '' });
         }
     }
@@ -82,7 +95,6 @@ const CreateCategoria = () => {
                 name: categoria_editar_store.name,
             })
         }
-
         // eslint-disable-next-line
     }, [categoria_editar_store])
 
@@ -113,8 +125,7 @@ const CreateCategoria = () => {
                                 <input
                                     type="file"
                                     name="img"
-                                    value={img}
-                                    onChange={handleChange}
+                                    onChange={handleChange_imagen}
                                 />
                             </div>
                             {

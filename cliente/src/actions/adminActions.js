@@ -906,7 +906,7 @@ const descargarCategorias = () => ({
 });
 
 /**********************  para crear una nueva categoria ********************************/
-export function crearNuevaCategoriaAction(datosNuevaCategoria) {
+export function crearNuevaCategoriaAction(datosNuevaCategoria, imageFile) {
     return async (dispatch) => {
         dispatch(agregarCategoria());
         // validaciones
@@ -918,13 +918,20 @@ export function crearNuevaCategoriaAction(datosNuevaCategoria) {
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            // insertar en la API
+
+            const formData = new FormData();
+            formData.append('file', imageFile.img);
             await clienteAxios.post('/api/menu-categories', datosNuevaCategoria, header)
-                .then(response => {
-                    // obtenemos datos del response
-                    const { category } = response.data;
-                    // si todo sale bien
-                    dispatch(agregarCategoriaExito(category));
+                .then((response) => {
+                    if (!response.data.menuCategoryStored) {
+                        const { category } = response.data;
+                        clienteAxios.put(`/api/upload/menu-categories/${category._id}`, formData, header)
+                        dispatch(agregarCategoriaExito(category));
+                    } else {
+                        const { menuCategoryStored } = response.data;   // menus con status=false a status=true
+                        clienteAxios.put(`/api/upload/menu-categories/${menuCategoryStored._id}`, formData, header)
+                        dispatch(agregarMenuExito(menuCategoryStored));
+                    }
                 })
         } catch (err) {
             console.log(err.response);

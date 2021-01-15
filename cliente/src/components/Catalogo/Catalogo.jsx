@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import '../../assets/css/styles.css';
 import './Catalogo.css';
 import { Link } from 'react-router-dom';
@@ -47,40 +47,13 @@ const Catalogo = () => {
                                 className="col_2_catalogo"
                                 key={categoria._id}
                             >
-                                {
-                                    categoria.name === "Pizzas" ?
-                                        <Link to={`/catalogo/${categoria.name}`}>
-                                            <img
-                                                src={require('../../assets/img/pizza.jpg')}
-                                                alt="pizza"
-                                                onClick={onClickEntrarMenuesFiltrados}
-                                            />
-                                        </Link>
-                                        : categoria.name === "Hamburguesas" ?
-                                            <Link to={`/catalogo/${categoria.name}`}>
-                                                <img
-                                                    src={require('../../assets/img/hamburguesa.jpg')} alt="hamburguesa"
-                                                    onClick={onClickEntrarMenuesFiltrados}
-                                                />
-                                            </Link>
-                                            : categoria.name === "Postres" ?
-                                                <Link to={`/catalogo/${categoria.name}`}>
-                                                    <img
-                                                        src={require('../../assets/img/postres.jpg')}
-                                                        alt="postres"
-                                                        onClick={onClickEntrarMenuesFiltrados}
-                                                    />
-                                                </Link>
-                                                : categoria.name === "Pescados" ?
-                                                    <Link to={`/catalogo/${categoria.name}`}>
-                                                        <img
-                                                            src={require('../../assets/img/pescado.jpg')}
-                                                            alt="pescado"
-                                                            onClick={onClickEntrarMenuesFiltrados}
-                                                        />
-                                                    </Link>
-                                                    : null
-                                }
+                                <Link to={`/catalogo/${categoria.name}`}>
+                                    <img
+                                        src={`http://localhost:4000/api/image/menu-categories/${categoria.img}`}
+                                        alt="pizza"
+                                        onClick={onClickEntrarMenuesFiltrados}
+                                    />
+                                </Link>
                                 <Link to={`/catalogo/${categoria.name}`}>
                                     <h4 onClick={onClickEntrarMenuesFiltrados}>{categoria.name}</h4>
                                 </Link>
@@ -88,11 +61,12 @@ const Catalogo = () => {
                         ))
                     }
                 </div>
-
-
             </div>
         </Fragment>
     );
 }
 
 export default Catalogo;
+/**
+ *
+ */
