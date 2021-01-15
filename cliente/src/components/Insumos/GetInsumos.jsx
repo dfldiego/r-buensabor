@@ -38,7 +38,7 @@ const GetInsumos = () => {
                 </thead>
                 <tbody>
                     {
-                        insumos_state.length === 0 ? <tr><td>No hay insumos</td></tr> :
+                        insumos_state.length === 0 ? null :
                             insumos_state.map(insumo => (
                                 <InsumoDB
                                     key={insumo._id}

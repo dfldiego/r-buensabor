@@ -29,7 +29,6 @@ const Insumos = () => {
 
     const modalAgregarInsumo = useSelector(state => state.admin.abrir_agregar_insumo);
     const recargarTablaInsumo = useSelector(state => state.admin.insumo_eliminar);
-    const recargarTablaInsumoAlEditar = useSelector(state => state.admin.insumo_editar);
     const limite_state = useSelector(state => state.admin.limite);
     const paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
 
@@ -37,7 +36,7 @@ const Insumos = () => {
         cargarInsumo(0, limite_state, paginaCorriente_state);
 
         // eslint-disable-next-line
-    }, [recargarTablaInsumo, recargarTablaInsumoAlEditar]);
+    }, [recargarTablaInsumo]);
 
     const handleClick_abrir_agregar_insumo = e => {
         e.preventDefault();

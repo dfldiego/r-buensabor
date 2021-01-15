@@ -1,13 +1,16 @@
 import React, { Fragment } from 'react';
+
 import { useDispatch } from 'react-redux';
 import {
     eliminarUsuarioAction,
     abrirCerrarAgregarUsuarioAction,
     obtenerUsuarioAction,
 } from '../../actions/adminActions';
+
 import Swal from 'sweetalert2';
 
 const Usuariodb = ({ usuario }) => {
+
     const { name, email, telephoneNumber, role } = usuario;
 
     const dispatch = useDispatch();

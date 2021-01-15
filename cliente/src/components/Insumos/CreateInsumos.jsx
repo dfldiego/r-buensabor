@@ -9,6 +9,7 @@ import {
     crearNuevaInsumoAction,
     editarInsumoAction,
     obtenerCategoriaInsumoAction,
+    obtenerInsumosAction,
 } from '../../actions/adminActions';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -41,14 +42,17 @@ const CreateInsumos = () => {
     const agregar_nuevo_insumo_action = (datosNuevoInsumo) => dispatch(crearNuevaInsumoAction(datosNuevoInsumo));
     const obtenerCategoriasInsumo_callAction = () => dispatch(obtenerCategoriaInsumoAction());
     const insumo_editar_action = (datos_insumos) => dispatch(editarInsumoAction(datos_insumos));
+    const cargarInsumos = () => dispatch(obtenerInsumosAction());
 
     let cerrar_modal_state_store = useSelector(state => state.admin.abrir_agregar_insumo);
-    const errores = useSelector(state => state.admin.errores);
-    const msj_error = useSelector(state => state.admin.mensaje);
-    const insumo_editar = useSelector(state => state.admin.insumo_editar);
-    const categoriasInsumo = useSelector(state => state.admin.categorias_insumo);
+    let errores = useSelector(state => state.admin.errores);
+    let error = useSelector(state => state.admin.error);
+    let msj_error = useSelector(state => state.admin.mensaje);
+    let insumo_editar = useSelector(state => state.admin.insumo_editar);
+    let categoriasInsumo = useSelector(state => state.admin.categorias_insumo);
 
-    const cerrar_modal = () => {
+    const cerrar_modal = e => {
+        e.preventDefault();
         if (cerrar_modal_state_store) {
             cerrar_modal_state_store = false;
             cerrar_modal_callAction(cerrar_modal_state_store);
@@ -69,10 +73,22 @@ const CreateInsumos = () => {
             insumo._id = insumo_editar._id;
             insumo_editar_action(insumo);
             if (errores === [] && msj_error === null) {
+                cargarInsumos();
                 cerrar_modal();
             }
         } else {
             agregar_nuevo_insumo_action({ description, purchase_price, sale_price, current_stock, min_stock, unit_measurement, is_supplies, category });
+
+            setInsumo({
+                description: '',
+                purchase_price: 0,
+                sale_price: 0,
+                current_stock: 0,
+                min_stock: 0,
+                unit_measurement: '',
+                is_supplies: false,
+                category: undefined,
+            })
 
             if (errores === [] && msj_error === null) {
                 cerrar_modal();
@@ -109,7 +125,7 @@ const CreateInsumos = () => {
                             onClick={cerrar_modal}
                         />
 
-                        {msj_error ? <p className="error">{msj_error}</p> : null}
+                        {error ? <p className="error">{msj_error}</p> : null}
 
                         {errores[0] ?
                             <div>
@@ -235,7 +251,7 @@ const CreateInsumos = () => {
                                     onChange={handleChange}
                                 >
                                     {
-                                        insumo_editar ?
+                                        insumo_editar.category ?
                                             <option
                                                 key={insumo_editar.category._id}
                                                 value={insumo_editar.category._id}

@@ -32,7 +32,7 @@ const PaginacionInsumos = () => {
             paginaCorriente_state = 0;
             return;
         } else if (numero > Math.floor(total_elementos_state / limite_state)) {
-            paginaCorriente_state = Math.floor(total_elementos_state / limite_state)
+            paginaCorriente_state = Math.floor(total_elementos_state / limite_state);
             return;
         } else {
             paginaCorriente_state = numero;

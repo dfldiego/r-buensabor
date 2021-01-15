@@ -2,31 +2,31 @@ const response = require('express');
 const Product = require('../models/product.model');
 
 const list = async (req, res = response) => {
-    let from = req.query.from || 0;
-    let limit = req.query.limit || 10;
 
-    Product.find({ status: true })
-        .populate('category', 'description')
-        .skip(Number(from))
-        .limit(Number(limit))
-        .exec((err, products) => {
+    let from = Number(req.query.from) || 0;
+    let limit = Number(req.query.limit) || 5;
 
-            if (err) {
-                return res.status(500).json({
-                    ok: false,
-                    err
-                });
-            }
-
-            Product.countDocuments({ status: true }, (err, size) => {
-                res.json({
-                    ok: true,
-                    products,
-                    size,
-                    limit,
-                });
-            });
+    try {
+        const [products, total] = await Promise.all([
+            Product.find({ status: true })
+                .populate('category', 'description')
+                .skip(from)
+                .limit(limit),
+            Product.countDocuments({ status: true })
+        ]);
+        res.json({
+            ok: true,
+            products,
+            total,
+            limit,
         });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            ok: false,
+            msg: err
+        });
+    }
 }
 
 const create = async (req, res = response) => {
