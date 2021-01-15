@@ -33,11 +33,12 @@ const Menu = () => {
     const limite_state = useSelector(state => state.admin.limite);
     const paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
 
+    // modalAgregarMenu -> para que al agregar un menu se actualice en la tabla la categoria.
     useEffect(() => {
         cargarmenus(0, limite_state, paginaCorriente_state);
 
         // eslint-disable-next-line
-    }, [recargarTablaMenu, recargarTablaMenuAlEditar]);
+    }, [recargarTablaMenu, recargarTablaMenuAlEditar, modalAgregarMenu]);
 
     const handleClick_abrir_agregar_menu = e => {
         e.preventDefault();

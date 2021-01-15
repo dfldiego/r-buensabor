@@ -14,6 +14,10 @@ const menuSchema = Schema({
         type: String,
         required: [true, 'El precio es requerido'],
     },
+    img: {
+        type: String,
+        required: [false]
+    },
     category: {
         type: Schema.Types.ObjectId,
         ref: 'MenuCategories',

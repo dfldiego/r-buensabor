@@ -14,6 +14,8 @@ import {
 
 const CreateMenu = () => {
 
+    const [imageFile, setimageFile] = useState({});
+
     const [menu, setMenu] = useState({
         description: '',
         finished_time: undefined,
@@ -34,7 +36,7 @@ const CreateMenu = () => {
     const dispatch = useDispatch();
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarMenuAction(nuevo_estado));
     const obtenerCategorias_callAction = () => dispatch(obtenerCategoriasAction());
-    const agregar_nuevo_menu_action = (datosNuevoMenu) => dispatch(crearNuevoMenuAction(datosNuevoMenu));
+    const agregar_nuevo_menu_action = (datosNuevoMenu, imageFile) => dispatch(crearNuevoMenuAction(datosNuevoMenu, imageFile));
     const menu_editar_action = (datosmenu) => dispatch(editarMenuAction(datosmenu));
 
     let cerrar_modal_state_store = useSelector(state => state.admin.abrir_agregar_menu);
@@ -42,6 +44,14 @@ const CreateMenu = () => {
     const errores = useSelector(state => state.admin.errores);
     const msj_error = useSelector(state => state.admin.mensaje);
     const menu_editar_store = useSelector(state => state.admin.menu_editar);
+
+    var handleChange_imagen = (e) => {
+        setimageFile({
+            ...imageFile,
+            [e.target.name]: e.target.files[0],
+        });
+    };
+
 
     const cerrar_modal = e => {
         e.preventDefault();
@@ -69,7 +79,7 @@ const CreateMenu = () => {
                 cerrar_modal();
             }
         } else {
-            agregar_nuevo_menu_action({ description, finished_time, price, category })
+            agregar_nuevo_menu_action({ description, finished_time, price, category }, imageFile)
 
             if (errores === [] && msj_error === null) {
                 cerrar_modal();
@@ -165,6 +175,14 @@ const CreateMenu = () => {
                                     name="price"
                                     value={price}
                                     onChange={handleChange}
+                                />
+                            </div>
+                            <div className="form-row">
+                                <label>Imagen</label>
+                                <input
+                                    type="file"
+                                    name="img"
+                                    onChange={handleChange_imagen}
                                 />
                             </div>
                             <div className="form-row">

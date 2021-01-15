@@ -717,20 +717,30 @@ const descargarMenusError = errores => ({
 });
 
 /**********************  para crear una nuevo menu ********************************/
-export function crearNuevoMenuAction(datosNuevoMenu) {
+export function crearNuevoMenuAction(datosNuevoMenu, imageFile) {
     return async (dispatch) => {
         dispatch(agregarMenu());
 
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
+
+            const formData = new FormData();
+            formData.append('file', imageFile.img);
+
             await clienteAxios.post('/api/menu', datosNuevoMenu, header)
                 .then(response => {
                     if (!response.data.menuStored) {
                         const { menu } = response.data;
+
+                        clienteAxios.put(`/api/upload/menus/${menu._id}`, formData, header)
+
                         dispatch(agregarMenuExito(menu));
                     } else {
                         const { menuStored } = response.data;   // menus con status=false a status=true
+
+                        clienteAxios.put(`/api/upload/menus/${menuStored._id}`, formData, header)
+
                         dispatch(agregarMenuExito(menuStored));
                         console.log(response.data.msg);
                     }

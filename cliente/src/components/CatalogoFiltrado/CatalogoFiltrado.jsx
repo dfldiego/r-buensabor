@@ -100,8 +100,8 @@ const CatalogoFiltrado = ({ name }) => {
                                 key={menu._id}
                             >
                                 <img
-                                    src={require('../../assets/img/pizza.jpg')}
-                                    alt="pizza1"
+                                    src={`http://localhost:4000/api/image/menus/${menu.img}`}
+                                    alt={menu.description}
                                     onClick={() => handleClickAbrirModalDetalle(menu._id)}
                                 />
                                 <div className="titulos">
