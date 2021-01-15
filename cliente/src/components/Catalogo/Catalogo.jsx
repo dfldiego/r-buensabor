@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import '../../assets/css/styles.css';
 import './Catalogo.css';
 import { Link } from 'react-router-dom';
@@ -50,7 +50,7 @@ const Catalogo = () => {
                                 <Link to={`/catalogo/${categoria.name}`}>
                                     <img
                                         src={`http://localhost:4000/api/image/menu-categories/${categoria.img}`}
-                                        alt="pizza"
+                                        alt={categoria.name}
                                         onClick={onClickEntrarMenuesFiltrados}
                                     />
                                 </Link>

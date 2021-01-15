@@ -31,7 +31,7 @@ const CreateCategoria = () => {
     const dispatch = useDispatch();
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarCategoriaAction(nuevo_estado));
     const agregar_categoria_action = (datosNuevaCategoria, imageFile) => dispatch(crearNuevaCategoriaAction(datosNuevaCategoria, imageFile));
-    const categoria_editar_action = (datoscategoria) => dispatch(editarCategoriaAction(datoscategoria));
+    const categoria_editar_action = (datoscategoria, imageFile) => dispatch(editarCategoriaAction(datoscategoria, imageFile));
     const cargarcategorias = () => dispatch(obtenerCategoriaAction());
 
     /*************USAR USE SELECTOR: capturo el valor de state del store  *******************/
@@ -50,10 +50,6 @@ const CreateCategoria = () => {
     }
 
     var handleChange_imagen = (e) => {
-        /* setPerfil({
-            ...perfil,
-            [e.target.name]: e.target.files[0].name,
-        }); */
         setimageFile({
             ...imageFile,
             [e.target.name]: e.target.files[0],
@@ -75,7 +71,7 @@ const CreateCategoria = () => {
             // le pasamos al categoriaEditado el id del categoria original
             categoria._id = categoria_editar_store._id;
             // pasamos los datos del categoria editado al action
-            categoria_editar_action(categoria);
+            categoria_editar_action(categoria, imageFile);
             //cargamos los categorias en la tabla
             cargarcategorias();
             //finalmente, cerramos modal

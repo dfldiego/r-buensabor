@@ -797,7 +797,7 @@ export function obtenerCategoriaAction(datos_categoria) {
     }
 }
 
-export function editarCategoriaAction(datos_categoria) {
+export function editarCategoriaAction(datos_categoria, imageFile) {
     return async (dispatch) => {
         const { name } = datos_categoria;
         // validar campos vacios
@@ -809,8 +809,15 @@ export function editarCategoriaAction(datos_categoria) {
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            await clienteAxios.put(`/api/menu-categories/${datos_categoria._id}`, datos_categoria, header);
-            dispatch(editarCategoriaExito(datos_categoria));
+            const formData = new FormData();
+            formData.append('file', imageFile.img);
+            await clienteAxios.put(`/api/upload//menu-categories/${datos_categoria._id}`, formData, header)
+                .then((response) => {
+                    clienteAxios.put(`/api/menu-categories/${response.data.category._id}`, datos_categoria, header);
+                })
+                .then(res => {
+                    dispatch(editarCategoriaExito(datos_categoria));
+                })
         } catch (error) {
             console.log(error);
             dispatch(editarCategoriaError('Error al editar la categoria'));
