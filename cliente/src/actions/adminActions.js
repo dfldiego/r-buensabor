@@ -600,18 +600,21 @@ export function obtenerUnMenuAction(datos_menu) {
     }
 }
 
-export function editarMenuAction(datos_menu) {
+export function editarMenuAction(datos_menu, imageFile) {
     return async (dispatch) => {
 
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            await clienteAxios.put(`/api/menu/${datos_menu._id}`, datos_menu, header)
-                .then(response => {
-                    const { menu } = response.data;
-                    dispatch(editarMenuExito(menu));
-                })
 
+            const formData = new FormData();
+            formData.append('file', imageFile.img);
+
+            clienteAxios.put(`/api/upload/menus/${datos_menu._id}`, formData, header)
+                .then(response => {
+                    clienteAxios.put(`/api/menu/${response.data.result._id}`, datos_menu, header);
+                    dispatch(editarMenuExito(response.data.result));
+                })
         } catch (err) {
             if (err.response.data.msg !== undefined) {
                 dispatch(editarMenuError(err.response.data.msg));
@@ -826,7 +829,8 @@ export function editarCategoriaAction(datos_categoria, imageFile) {
                     clienteAxios.put(`/api/menu-categories/${response.data.category._id}`, datos_categoria, header);
                 })
                 .then(res => {
-                    dispatch(editarCategoriaExito(datos_categoria));
+                    const { category } = res.data;
+                    dispatch(editarCategoriaExito(category));
                 })
         } catch (error) {
             console.log(error);
