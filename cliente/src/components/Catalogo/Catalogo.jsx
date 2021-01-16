@@ -22,6 +22,7 @@ const Catalogo = () => {
     const entradaMenuesFiltrados = estado => dispatch(paginaMenuesFiltradosAction(estado));
 
     const categorias = useSelector(state => state.admin.categorias);
+    const categoriasInsumo = useSelector(state => state.admin.categorias_insumo);
 
     useEffect(() => {
         consultar_categorias();
@@ -56,6 +57,25 @@ const Catalogo = () => {
                                 </Link>
                                 <Link to={`/catalogo/${categoria.name}`}>
                                     <h4 onClick={onClickEntrarMenuesFiltrados}>{categoria.name}</h4>
+                                </Link>
+                            </div>
+                        ))
+                    }
+                    {
+                        categoriasInsumo.map(categoriaInsumo => (
+                            <div
+                                className="col_2_catalogo"
+                                key={categoriaInsumo._id}
+                            >
+                                <Link to={`/catalogo/${categoriaInsumo.description}`}>
+                                    <img
+                                        src={`http://localhost:4000/api/image/product-categories/${categoriaInsumo.img}`}
+                                        alt={categoriaInsumo.description}
+                                        onClick={onClickEntrarMenuesFiltrados}
+                                    />
+                                </Link>
+                                <Link to={`/catalogo/${categoriaInsumo.description}`}>
+                                    <h4 onClick={onClickEntrarMenuesFiltrados}>{categoriaInsumo.description}</h4>
                                 </Link>
                             </div>
                         ))

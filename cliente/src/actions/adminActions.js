@@ -518,21 +518,30 @@ const descargarCategoriasInsumoError = errores => ({
 });
 
 /**********************  para crear una nueva categoria-insumo ********************************/
-export function crearNuevaCategoriaInsumoAction(datosNuevoCategoriaInsumo) {
+export function crearNuevaCategoriaInsumoAction(datosNuevoCategoriaInsumo, imageFile) {
     return async (dispatch) => {
         dispatch(agregarCategoriaInsumo());
 
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            console.log(datosNuevoCategoriaInsumo);
+
+            const formData = new FormData();
+            formData.append('file', imageFile.img);
+
             await clienteAxios.post('/api/product-categories', datosNuevoCategoriaInsumo, header)
                 .then(response => {
                     if (!response.data.productCategoryStored) {
                         const { productCategory } = response.data;
+
+                        clienteAxios.put(`/api/upload/product-categories/${productCategory._id}`, formData, header)
+
                         dispatch(agregarCategoriaInsumoExito(productCategory));
                     } else {
                         const { productCategoryStored } = response.data;
+
+                        clienteAxios.put(`/api/upload/product-categories/${productCategoryStored._id}`, formData, header)
+
                         dispatch(agregarCategoriaInsumoExito(productCategoryStored));
                     }
                 })

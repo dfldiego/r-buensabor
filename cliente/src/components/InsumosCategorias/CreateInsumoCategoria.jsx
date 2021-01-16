@@ -14,12 +14,13 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const CreateInsumoCategoria = () => {
 
+    const [imageFile, setimageFile] = useState({});
+
     const [insumoCategoria, setInsumoCategoria] = useState({
         description: '',
         parent: undefined,
         img: undefined,
     });
-
 
     const { description, parent, img } = insumoCategoria;
 
@@ -33,7 +34,7 @@ const CreateInsumoCategoria = () => {
     const dispatch = useDispatch();
 
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarCategoriaInsumoAction(nuevo_estado));
-    const agregar_nuevo_Categoria_action = (datosNuevoCategoriaInsumo) => dispatch(crearNuevaCategoriaInsumoAction(datosNuevoCategoriaInsumo));
+    const agregar_nuevo_Categoria_action = (datosNuevoCategoriaInsumo, imageFile) => dispatch(crearNuevaCategoriaInsumoAction(datosNuevoCategoriaInsumo, imageFile));
     const cargarCategoriaInsumo = () => dispatch(obtenerCategoriaInsumoAction());
     const categoria_insumo_editar_action = (datos_categoria_insumos) => dispatch(editarCategoriaInsumoAction(datos_categoria_insumos));
 
@@ -62,13 +63,12 @@ const CreateInsumoCategoria = () => {
 
         if (categoria_insumo_editar) {
             insumoCategoria._id = categoria_insumo_editar._id;
-            console.log(insumoCategoria);
             categoria_insumo_editar_action(insumoCategoria);
             if (errores === [] && msj_error === null) {
                 cerrar_modal();
             }
         } else {
-            agregar_nuevo_Categoria_action({ description, parent, img });
+            agregar_nuevo_Categoria_action({ description, parent, img }, imageFile);
 
             if (errores === [] && msj_error === null) {
                 cerrar_modal();
@@ -89,6 +89,13 @@ const CreateInsumoCategoria = () => {
 
         // eslint-disable-next-line
     }, [categoria_insumo_editar])
+
+    var handleChange_imagen = (e) => {
+        setimageFile({
+            ...imageFile,
+            [e.target.name]: e.target.files[0],
+        });
+    };
 
     return (
         <Fragment>
@@ -125,7 +132,7 @@ const CreateInsumoCategoria = () => {
                                 <input
                                     type="file"
                                     name="img"
-                                    onChange={handleChange}
+                                    onChange={handleChange_imagen}
                                 />
                             </div>
                             <div className="form-row">

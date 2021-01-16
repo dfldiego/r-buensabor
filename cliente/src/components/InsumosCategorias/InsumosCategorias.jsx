@@ -39,7 +39,7 @@ const InsumosCategorias = () => {
         cargarCategoriasInsumo(0, limite_state, paginaCorriente_state);
 
         // eslint-disable-next-line
-    }, [recargarTablaCategoriaInsumo, recargarTablaCategoriaInsumoAlEditar]);
+    }, [recargarTablaCategoriaInsumo, recargarTablaCategoriaInsumoAlEditar, modalAgregarCategoriaInsumo]);
 
     const handleClick_abrir_agregar_categoriaInsumo = e => {
         e.preventDefault();
