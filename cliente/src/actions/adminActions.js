@@ -827,10 +827,7 @@ export function editarCategoriaAction(datos_categoria, imageFile) {
             await clienteAxios.put(`/api/upload//menu-categories/${datos_categoria._id}`, formData, header)
                 .then((response) => {
                     clienteAxios.put(`/api/menu-categories/${response.data.category._id}`, datos_categoria, header);
-                })
-                .then(res => {
-                    const { category } = res.data;
-                    dispatch(editarCategoriaExito(category));
+                    dispatch(editarCategoriaExito(response.data.category));
                 })
         } catch (error) {
             console.log(error);
