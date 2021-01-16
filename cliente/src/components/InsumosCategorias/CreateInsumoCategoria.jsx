@@ -36,7 +36,7 @@ const CreateInsumoCategoria = () => {
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarCategoriaInsumoAction(nuevo_estado));
     const agregar_nuevo_Categoria_action = (datosNuevoCategoriaInsumo, imageFile) => dispatch(crearNuevaCategoriaInsumoAction(datosNuevoCategoriaInsumo, imageFile));
     const cargarCategoriaInsumo = () => dispatch(obtenerCategoriaInsumoAction());
-    const categoria_insumo_editar_action = (datos_categoria_insumos) => dispatch(editarCategoriaInsumoAction(datos_categoria_insumos));
+    const categoria_insumo_editar_action = (datos_categoria_insumos, imageFile) => dispatch(editarCategoriaInsumoAction(datos_categoria_insumos, imageFile));
 
     let cerrar_modal_state_store = useSelector(state => state.admin.abrir_agregar_categoria_insumo);
     const errores = useSelector(state => state.admin.errores);
@@ -63,7 +63,7 @@ const CreateInsumoCategoria = () => {
 
         if (categoria_insumo_editar) {
             insumoCategoria._id = categoria_insumo_editar._id;
-            categoria_insumo_editar_action(insumoCategoria);
+            categoria_insumo_editar_action(insumoCategoria, imageFile);
             if (errores === [] && msj_error === null) {
                 cerrar_modal();
             }

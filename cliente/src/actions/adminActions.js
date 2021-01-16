@@ -399,17 +399,26 @@ export function obtenerUnaCategoriaInsumoAction(datos_categoria_insumos) {
     }
 }
 
-export function editarCategoriaInsumoAction(datos_categoria_insumos) {
+export function editarCategoriaInsumoAction(datos_categoria_insumos, imageFile) {
     return async (dispatch) => {
 
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            await clienteAxios.put(`/api/product-categories/${datos_categoria_insumos._id}`, datos_categoria_insumos, header)
+
+            const formData = new FormData();
+            formData.append('file', imageFile.img);
+
+            await clienteAxios.put(`/api/upload/product-categories/${datos_categoria_insumos._id}`, formData, header)
+
+
                 .then(response => {
                     console.log(response.data);
-                    const { productCategory } = response.data;
-                    dispatch(editarCategoriaInsumoExito(productCategory));
+                    const { result } = response.data;
+
+                    clienteAxios.put(`/api/product-categories/${result._id}`, datos_categoria_insumos, header)
+
+                    dispatch(editarCategoriaInsumoExito(result));
                 })
 
         } catch (err) {
