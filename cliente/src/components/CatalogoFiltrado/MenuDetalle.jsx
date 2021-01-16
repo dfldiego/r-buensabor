@@ -27,8 +27,6 @@ const MenuDetalle = () => {
         return;
     }
 
-    console.log(menuPorId);
-
     return (
         <Fragment>
             <div className="modal_menu">
@@ -42,8 +40,8 @@ const MenuDetalle = () => {
                     <div className="row_menu_detalle">
                         <h3 className="fw-300 menu_detalle_descripcion">{menuPorId.description}</h3>
                         <img
-                            src={require('../../assets/img/pizza.jpg')}
-                            alt="pizza1"
+                            src={`http://localhost:4000/api/image/menus/${menuPorId.img}`}
+                            alt={menuPorId.description}
                         />
                     </div>
 
