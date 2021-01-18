@@ -1,7 +1,7 @@
 const { response } = require('express');
 const MenuCategory = require('../models/menu-categories.model');
 
-const list = async (req, res = response) => {
+/* const list = async (req, res = response) => {
 
     let from = Number(req.query.from) || 0;
     let limit = Number(req.query.limit) || 5;
@@ -27,7 +27,7 @@ const list = async (req, res = response) => {
             msg: error
         });
     }
-}
+} */
 
 const create = async (req, res = response) => {
     const { name } = req.body;
@@ -166,31 +166,50 @@ const remove = async (req, res = response) => {
 };
 
 const search = async (req, res) => {
+
+    let from = Number(req.query.from) || 0;
+    let limit = Number(req.query.limit) || 5;
+
     let search = req.params.words;
     let regExWords = new RegExp(search, 'i');
 
-    MenuCategory.find({ $and: [{ name: regExWords }, { status: true }] })
-        .exec((err, menuCategories) => {
-            if (err) {
-                return res.status(500).json({
-                    ok: false,
-                    err
-                });
-            }
+    let conditionSearch = {
+        status: true
+    }
 
-            MenuCategory.countDocuments({ status: true }, (err, size) => {
-                res.json({
-                    ok: true,
-                    menuCategories,
-                    size
-                });
-            });
+    if (search != 'undefined') {
+        conditionSearch = {
+            name: regExWords,
+            status: true
+        }
+    }
+
+    try {
+        const [menuCategories, total] = await Promise.all([
+            MenuCategory.find(conditionSearch)
+                .skip(from)
+                .limit(limit),
+            MenuCategory.countDocuments(conditionSearch)
+        ]);
+
+        res.json({
+            ok: true,
+            menuCategories,
+            total,
+            limit,
         });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: error
+        });
+    }
 }
 
 
 module.exports = {
-    list,
+    /*  list, */
     create,
     update,
     remove,

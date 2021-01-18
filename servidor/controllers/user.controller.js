@@ -233,15 +233,11 @@ const getById = async (req, res = response) => {
 
 const search = async (req, res) => {
 
-    console.log("entra al metodo search");
-
     let from = Number(req.query.from) || 0;
     let limit = Number(req.query.limit) || 5;
 
     let search = req.params.words;
     let regExWords = new RegExp(search, 'i');
-
-    console.log("search: " + search);
 
     let conditionSearch = {
         status: true
@@ -253,8 +249,6 @@ const search = async (req, res) => {
             status: true
         }
     }
-
-    console.log("conditionSearch:" + conditionSearch);
 
     try {
         const [users, total] = await Promise.all([
