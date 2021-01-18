@@ -280,11 +280,13 @@ export default function (state = initialState, action) {
                 error: null,
                 mensaje: null,
                 errores: [],
-                categorias: action.payload.categories,
+                categorias: action.payload.menuCategories,
                 mostrarCategorias: true,
                 totalElementos: action.payload.total,
                 limite: action.payload.limit,
-                paginaCorriente: action.payload.paginaCorriente,
+                palabraBuscar: action.payload.datosPaginacion.busqueda,
+                desde: Number(action.payload.datosPaginacion.indexPrimerUsuario),
+                paginaCorriente: action.payload.datosPaginacion.pagina
             }
         case OBTENER_USUARIO_ELIMINAR:
             return {

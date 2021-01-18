@@ -164,30 +164,61 @@ export function obtenerMenusBuscadorAction(palabraBusqueda) {
 }
 
 /**********************  para buscar una categoria de la BBDD ********************************/
-export function obtenerCategoriasBuscadorAction(palabraBusqueda) {
+export function obtenerCategoriasBuscadorAction(indexPrimerUsuario, limit, pagina, palabraBusqueda) {
     return async (dispatch) => {
+
         dispatch(descargarCategorias());
-        console.log(palabraBusqueda.busqueda);
+
+        console.log("indexPrimerUsuario:" + indexPrimerUsuario);
+        console.log("limit:" + limit);
+        console.log("pagina:" + pagina);
+        console.log("busqueda:" + palabraBusqueda);
+
+        if (palabraBusqueda === null || palabraBusqueda === '') {
+            palabraBusqueda = undefined
+        }
 
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            if (!palabraBusqueda.busqueda) {
-                const respuesta = await clienteAxios.get('/api/menu-categories', header);
-                dispatch(descargarCategoriasExito(respuesta.data.categories));
-            } else {
-                await clienteAxios.get(`/api/menu-categories/search/${String(palabraBusqueda.busqueda)}`, header)
-                    .then(response => {
-                        const { menuCategories } = response.data;
-                        dispatch(descargarCategoriasExito(menuCategories));
-                    })
-            }
+
+            await clienteAxios.get(`/api/menu-categories/search/${palabraBusqueda}?from=${indexPrimerUsuario}&limit=${limit}`, header)
+                .then(response => {
+
+                    const datosPaginacion = {
+                        indexPrimerUsuario,
+                        limit,
+                        busqueda: palabraBusqueda,
+                        pagina,
+                    }
+
+                    response.data.datosPaginacion = datosPaginacion;
+                    console.log(response.data);
+
+                    dispatch(descargarCategoriasExito(response.data));
+                })
+
         } catch (error) {
             console.log(error);
             dispatch(descargarCategoriasError('Error al buscar las categorias'));
         }
     }
 }
+
+const descargarCategoriasError = mensaje => ({
+    type: DESCARGA_CATEGORIA_ERROR,
+    payload: mensaje,
+});
+
+const descargarCategoriasExito = respuesta => ({
+    type: DESCARGA_CATEGORIA_EXITO,
+    payload: respuesta,
+});
+
+const descargarCategorias = () => ({
+    type: COMENZAR_DESCARGA_CATEGORIA,
+    payload: true
+});
 
 /**********************  para buscar un usuario de la BBDD ********************************/
 export function obtenerUsuariosBuscadorAction(indexPrimerUsuario, limit, pagina, palabraBusqueda) {
@@ -961,39 +992,6 @@ const obtenerCategoriaEliminar = idcategoria => ({
     payload: idcategoria
 })
 
-/**********************  para obtener los categorias de la BBDD ********************************/
-export function obtenerCategoriasAction(indexPrimerUsuario, limit, paginaCorriente) {
-    return async (dispatch) => {
-        dispatch(descargarCategorias());
-
-        try {
-            const token = localStorage.getItem('token');
-            const header = authorizationHeader(token);
-            const respuesta = await clienteAxios.get(`/api/menu-categories?from=${indexPrimerUsuario}&limit=${limit}`, header);
-            respuesta.data.paginaCorriente = paginaCorriente;
-            dispatch(descargarCategoriasExito(respuesta.data));
-        } catch (error) {
-            console.log(error);
-            dispatch(descargarCategoriasError('Error al descargar los categoria'));
-        }
-
-    }
-}
-const descargarCategoriasError = mensaje => ({
-    type: DESCARGA_CATEGORIA_ERROR,
-    payload: mensaje,
-});
-
-const descargarCategoriasExito = respuesta => ({
-    type: DESCARGA_CATEGORIA_EXITO,
-    payload: respuesta,
-});
-
-const descargarCategorias = () => ({
-    type: COMENZAR_DESCARGA_CATEGORIA,
-    payload: true
-});
-
 /**********************  para crear una nueva categoria ********************************/
 export function crearNuevaCategoriaAction(datosNuevaCategoria, imageFile) {
     return async (dispatch) => {
@@ -1213,28 +1211,6 @@ const obtenerUsuarioEliminar = idUsuario => ({
     type: OBTENER_USUARIO_ELIMINAR,
     payload: idUsuario
 })
-
-/**********************  para obtener los usuarios de la BBDD ********************************/
-/* export function obtenerUsuariosAction(indexPrimerUsuario, limit, paginaCorriente) {
-    return async (dispatch) => {
-        dispatch(descargarUsuarios());
-        try {
-            const token = localStorage.getItem('token');
-            const header = {
-                headers: {
-                    'Authorization': `${token}`
-                }
-            }
-            const respuesta = await clienteAxios.get(`/api/users?from=${indexPrimerUsuario}&limit=${limit}`, header);
-            respuesta.data.paginaCorriente = paginaCorriente;
-            dispatch(descargarUsuariosExito(respuesta.data));
-        } catch (error) {
-            console.log(error);
-            dispatch(descargarUsuariosError('Error al descargar los usuarios'));
-        }
-
-    }
-} */
 
 /**********************  para crear un nuevo usuario ********************************/
 export function crearNuevoUsuarioAction(datosNuevoUsuario) {

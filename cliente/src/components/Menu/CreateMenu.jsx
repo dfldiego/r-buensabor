@@ -6,7 +6,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     abrirCerrarAgregarMenuAction,
-    obtenerCategoriasAction,
+    obtenerCategoriasBuscadorAction,
     crearNuevoMenuAction,
     editarMenuAction,
 } from '../../actions/adminActions';
@@ -35,7 +35,7 @@ const CreateMenu = () => {
 
     const dispatch = useDispatch();
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarMenuAction(nuevo_estado));
-    const obtenerCategorias_callAction = () => dispatch(obtenerCategoriasAction());
+    const obtenerCategorias_callAction = () => dispatch(obtenerCategoriasBuscadorAction());
     const agregar_nuevo_menu_action = (datosNuevoMenu, imageFile) => dispatch(crearNuevoMenuAction(datosNuevoMenu, imageFile));
     const menu_editar_action = (datosmenu, imageFile) => dispatch(editarMenuAction(datosmenu, imageFile));
 

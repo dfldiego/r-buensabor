@@ -2,17 +2,19 @@ import React, { Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import '../Usuario/Paginacion.css';
 import {
-    obtenerCategoriasAction,
+    obtenerCategoriasBuscadorAction,
 } from '../../actions/adminActions';
 const PaginacionCategoria = () => {
 
     const dispatch = useDispatch();
 
-    const cargarCategoria = (indexPrimerUsuario, limit, paginaCorriente) => dispatch(obtenerCategoriasAction(indexPrimerUsuario, limit, paginaCorriente));
+    const cargarCategoria = (indexPrimerElemento, limite_state, paginaCorriente_state, palabraBuscar_state) => dispatch(obtenerCategoriasBuscadorAction(indexPrimerElemento, limite_state, paginaCorriente_state, palabraBuscar_state));
 
     const total_elementos_state = useSelector(state => state.admin.totalElementos);
+    let desde_state = useSelector(state => state.admin.desde);
     const limite_state = useSelector(state => state.admin.limite);
     let paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
+    let palabraBuscar_state = useSelector(state => state.admin.palabraBuscar);
 
     //cambiar pagina
     const handlePage = (numero) => {
@@ -21,7 +23,7 @@ const PaginacionCategoria = () => {
         } else {
             paginaCorriente_state = numero;
             const indexPrimerElemento = numero;
-            cargarCategoria(indexPrimerElemento, limite_state, paginaCorriente_state);
+            cargarCategoria(indexPrimerElemento, limite_state, paginaCorriente_state, palabraBuscar_state);
         }
     }
 
@@ -35,8 +37,8 @@ const PaginacionCategoria = () => {
             return;
         } else {
             paginaCorriente_state = numero;
-            const indexPrimerElemento = numero * limite_state;
-            cargarCategoria(indexPrimerElemento, limite_state, paginaCorriente_state);
+            desde_state = numero * limite_state;
+            cargarCategoria(desde_state, limite_state, paginaCorriente_state, palabraBuscar_state);
         }
 
     }
@@ -48,7 +50,7 @@ const PaginacionCategoria = () => {
         } else {
             paginaCorriente_state = Math.floor(total_elementos_state / limite_state);
             const indexPrimerElemento = paginaCorriente_state * limite_state;
-            cargarCategoria(indexPrimerElemento, limite_state, paginaCorriente_state);
+            cargarCategoria(indexPrimerElemento, limite_state, paginaCorriente_state, palabraBuscar_state);
         }
     }
 

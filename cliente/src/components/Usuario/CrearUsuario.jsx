@@ -39,13 +39,16 @@ function CrearUsuario() {
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarUsuarioAction(nuevo_estado));
     const agregar_usuario_action = (datosNuevoUsuario) => dispatch(crearNuevoUsuarioAction(datosNuevoUsuario));
     const usuario_editar_action = (datosUsuario) => dispatch(editarUsuarioAction(datosUsuario));
-    const cargarUsuarios = () => dispatch(obtenerUsuariosBuscadorAction());
+    const cargarUsuarios = (indexPrimerElemento, limite_state, paginaCorriente_state, palabraBuscar_state) => dispatch(obtenerUsuariosBuscadorAction(indexPrimerElemento, limite_state, paginaCorriente_state, palabraBuscar_state));
 
     /*************USAR USE SELECTOR: capturo el valor de state del store  *******************/
     let cerrar_modal_state_store = useSelector(state => state.admin.abrir_agregar_usuario);
     let error_admin = useSelector(state => state.admin.error);
     let mensaje_admin = useSelector(state => state.admin.mensaje);
     let usuario_editar_store = useSelector(state => state.admin.usuario_editar);
+    const limite_state = useSelector(state => state.admin.limite);
+    let paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
+    let palabraBuscar_state = useSelector(state => state.admin.palabraBuscar);
 
     /***********METODO QUE CIERRA MODAL: modifico el state *************/
     const cerrar_modal = e => {
@@ -67,7 +70,7 @@ function CrearUsuario() {
             // pasamos los datos del usuario editado al action
             usuario_editar_action(usuario);
             //cargamos los usuarios en la tabla
-            cargarUsuarios();
+            cargarUsuarios(0, limite_state, paginaCorriente_state, palabraBuscar_state);
             //finalmente, cerramos modal
             cerrar_modal_state_store = false;
             cerrar_modal_callAction(cerrar_modal_state_store);

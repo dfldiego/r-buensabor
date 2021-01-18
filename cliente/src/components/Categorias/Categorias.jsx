@@ -11,36 +11,32 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
     abrirCerrarAgregarCategoriaAction,
     obtenerCategoriasBuscadorAction,
-    obtenerCategoriasAction,
 } from '../../actions/adminActions';
 
 const Categorias = () => {
 
     //useState locales
     const [openModal, setOpenModal] = useState(false);
-    const [buscador, setBuscador] = useState({
-        busqueda: '',
-    });
-
-    const { busqueda } = buscador;
+    const [buscador, setBuscador] = useState('');
 
     const dispatch = useDispatch();
 
     // enviar a store
     const abrir_cerrar_agregarCategoria = estadoAgregarCategoria => dispatch(abrirCerrarAgregarCategoriaAction(estadoAgregarCategoria));
-    const busqueda_categorias = palabraBusqueda => dispatch(obtenerCategoriasBuscadorAction(palabraBusqueda));
-    const cargarcategorias = (indexPrimerUsuario, limite_state, paginaCorriente_state) => dispatch(obtenerCategoriasAction(indexPrimerUsuario, limite_state, paginaCorriente_state));
+    const busqueda_categorias = (indexPrimerUsuario, limit, paginaCorriente_state, palabraBusqueda) => dispatch(obtenerCategoriasBuscadorAction(indexPrimerUsuario, limit, paginaCorriente_state, palabraBusqueda));
+    const cargarcategorias = (indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda) => dispatch(obtenerCategoriasBuscadorAction(indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda));
 
     // recibir de store
     const modalAgregarCategoria = useSelector(state => state.admin.abrir_agregar_categoria);
     const recargarTablaCategorias = useSelector(state => state.admin.categoria_eliminar);
     const limite_state = useSelector(state => state.admin.limite);
-    const paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
+    let paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
+    let palabraBuscar_state = useSelector(state => state.admin.palabraBuscar);
 
     /** USE EFFECT: cada vez que se modifica categorias */
     useEffect(() => {
         //llamar la funcion
-        cargarcategorias(0, limite_state, paginaCorriente_state);
+        cargarcategorias(0, limite_state, paginaCorriente_state, palabraBuscar_state);
         // eslint-disable-next-line
     }, [recargarTablaCategorias]);
 
@@ -67,15 +63,13 @@ const Categorias = () => {
     }, [modalAgregarCategoria])
 
     const handleChangeBuscador = e => {
-        setBuscador({
-            ...buscador,
-            [e.target.name]: e.target.value
-        });
+        setBuscador(e.target.value);
     }
 
     const handleClick_buscador = e => {
         e.preventDefault();
-        busqueda_categorias(buscador);
+        paginaCorriente_state = 0;
+        busqueda_categorias(0, limite_state, paginaCorriente_state, buscador);
     }
 
     return (
@@ -91,10 +85,10 @@ const Categorias = () => {
                     <div className="buscador">
                         <input
                             type="text"
-                            name="busqueda"
+                            name="buscador"
                             className="input_buscador"
                             onChange={handleChangeBuscador}
-                            value={busqueda}
+                            value={buscador}
                         />
 
                         <button

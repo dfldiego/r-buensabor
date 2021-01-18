@@ -9,7 +9,7 @@ import {
     abrirCerrarAgregarCategoriaAction,
     crearNuevaCategoriaAction,
     editarCategoriaAction,
-    obtenerCategoriaAction,
+    obtenerCategoriasBuscadorAction,
 } from '../../actions/adminActions';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -32,12 +32,15 @@ const CreateCategoria = () => {
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarCategoriaAction(nuevo_estado));
     const agregar_categoria_action = (datosNuevaCategoria, imageFile) => dispatch(crearNuevaCategoriaAction(datosNuevaCategoria, imageFile));
     const categoria_editar_action = (datoscategoria, imageFile) => dispatch(editarCategoriaAction(datoscategoria, imageFile));
-    const cargarcategorias = () => dispatch(obtenerCategoriaAction());
+    const cargarcategorias = (indexPrimerElemento, limite_state, paginaCorriente_state, palabraBuscar_state) => dispatch(obtenerCategoriasBuscadorAction(indexPrimerElemento, limite_state, paginaCorriente_state, palabraBuscar_state));
 
     /*************USAR USE SELECTOR: capturo el valor de state del store  *******************/
     let cerrar_modal_state_store = useSelector(state => state.admin.abrir_agregar_categoria);
     let error_store = useSelector(state => state.admin.mensaje);
     let categoria_editar_store = useSelector(state => state.admin.categoria_editar);
+    const limite_state = useSelector(state => state.admin.limite);
+    let paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
+    let palabraBuscar_state = useSelector(state => state.admin.palabraBuscar);
 
     /***********METODO QUE CIERRA MODAL: modifico el state *************/
     const cerrar_modal = e => {
@@ -73,7 +76,7 @@ const CreateCategoria = () => {
             // pasamos los datos del categoria editado al action
             categoria_editar_action(categoria, imageFile);
             //cargamos los categorias en la tabla
-            cargarcategorias();
+            cargarcategorias(0, limite_state, paginaCorriente_state, palabraBuscar_state);
             //finalmente, cerramos modal
             cerrar_modal_state_store = false;
             cerrar_modal_callAction(cerrar_modal_state_store);
