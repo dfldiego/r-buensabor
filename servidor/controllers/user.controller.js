@@ -4,7 +4,7 @@ const Address = require('../models/address.model');
 const bcrypt = require('bcryptjs');
 
 
-const list = async (req, res = response) => {
+/* const list = async (req, res = response) => {
 
     let from = Number(req.query.from) || 0;
     let limit = Number(req.query.limit) || 5;
@@ -31,7 +31,7 @@ const list = async (req, res = response) => {
             msg: error
         });
     }
-}
+} */
 
 const create = async (req, res = response) => {
 
@@ -232,33 +232,59 @@ const getById = async (req, res = response) => {
 };
 
 const search = async (req, res) => {
+
+    console.log("entra al metodo search");
+
+    let from = Number(req.query.from) || 0;
+    let limit = Number(req.query.limit) || 5;
+
     let search = req.params.words;
     let regExWords = new RegExp(search, 'i');
 
-    User.find({ $or: [{ name: regExWords }, { email: regExWords }, { role: regExWords }] })
-        .exec((err, users) => {
-            if (err) {
-                return res.status(500).json({
-                    ok: false,
-                    err
-                });
-            }
+    console.log("search: " + search);
 
-            User.countDocuments({ status: true }, (err, size) => {
-                res.json({
-                    ok: true,
-                    users,
-                    size
-                });
-            });
+    let conditionSearch = {
+        status: true
+    }
+
+    if (search != 'undefined') {
+        conditionSearch = {
+            $or: [{ name: regExWords }, { email: regExWords }, { role: regExWords }],
+            status: true
+        }
+    }
+
+    console.log("conditionSearch:" + conditionSearch);
+
+    try {
+        const [users, total] = await Promise.all([
+            User.find(conditionSearch)
+                .populate('address', 'nameStreet numberStreet location')
+                .skip(from)
+                .limit(limit),
+            User.countDocuments(conditionSearch)
+        ]);
+
+        res.json({
+            ok: true,
+            users,
+            total,
+            limit,
         });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: error
+        });
+    }
 };
 
 module.exports = {
-    list,
+    /* list, */
     create,
     getById,
     update,
     remove,
-    search,
+    search
 }

@@ -9,7 +9,7 @@ import {
     abrirCerrarAgregarUsuarioAction,
     crearNuevoUsuarioAction,
     editarUsuarioAction,
-    obtenerUsuariosAction,
+    obtenerUsuariosBuscadorAction,
 } from '../../actions/adminActions';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -39,7 +39,7 @@ function CrearUsuario() {
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarUsuarioAction(nuevo_estado));
     const agregar_usuario_action = (datosNuevoUsuario) => dispatch(crearNuevoUsuarioAction(datosNuevoUsuario));
     const usuario_editar_action = (datosUsuario) => dispatch(editarUsuarioAction(datosUsuario));
-    const cargarUsuarios = () => dispatch(obtenerUsuariosAction());
+    const cargarUsuarios = () => dispatch(obtenerUsuariosBuscadorAction());
 
     /*************USAR USE SELECTOR: capturo el valor de state del store  *******************/
     let cerrar_modal_state_store = useSelector(state => state.admin.abrir_agregar_usuario);

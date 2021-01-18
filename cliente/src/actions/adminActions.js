@@ -189,6 +189,59 @@ export function obtenerCategoriasBuscadorAction(palabraBusqueda) {
     }
 }
 
+/**********************  para buscar un usuario de la BBDD ********************************/
+export function obtenerUsuariosBuscadorAction(indexPrimerUsuario, limit, pagina, palabraBusqueda) {
+    return async (dispatch) => {
+        dispatch(descargarUsuarios());
+        console.log("indexPrimerUsuario:" + indexPrimerUsuario);
+        console.log("limit:" + limit);
+        console.log("pagina:" + pagina);
+        console.log("busqueda:" + palabraBusqueda);
+        if (palabraBusqueda === null || palabraBusqueda === '') {
+            palabraBusqueda = undefined
+        }
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            await clienteAxios.get(`/api/users/search/${palabraBusqueda}?from=${indexPrimerUsuario}&limit=${limit}`, header)
+                .then(response => {
+
+                    const datosPaginacion = {
+                        indexPrimerUsuario,
+                        limit,
+                        busqueda: palabraBusqueda,
+                        pagina,
+                    }
+
+                    response.data.datosPaginacion = datosPaginacion;
+                    console.log(response.data);
+
+                    dispatch(descargarUsuariosExito(response.data));
+
+                })
+        } catch (error) {
+            console.log(error);
+            dispatch(descargarUsuariosError('Error al buscar los usuarios'));
+        }
+    }
+}
+
+
+const descargarUsuariosError = mensaje => ({
+    type: DESCARGA_USUARIOS_ERROR,
+    payload: mensaje,
+});
+
+const descargarUsuariosExito = respuesta => ({
+    type: DESCARGA_USUARIOS_EXITO,
+    payload: respuesta,
+});
+
+const descargarUsuarios = () => ({
+    type: COMENZAR_DESCARGA_USUARIOS,
+    payload: true
+});
+
 /**********************  para editar un insumo de la BBDD ********************************/
 export function obtenerUnInsumoAction(datos_insumos) {
     return async (dispatch) => {
@@ -1074,28 +1127,6 @@ const pantallaCategoriaInsumo = estado => ({
     payload: estado
 })
 
-/**********************  para buscar un usuario de la BBDD ********************************/
-export function obtenerUsuariosBuscadorAction(palabraBusqueda) {
-    return async (dispatch) => {
-        dispatch(descargarUsuarios());
-        console.log(palabraBusqueda.busqueda);
-
-        try {
-            const token = localStorage.getItem('token');
-            const header = authorizationHeader(token);
-            await clienteAxios.get(`/api/users/search/${String(palabraBusqueda.busqueda)}`, header)
-                .then(response => {
-                    /*  const { users } = response.data; */
-                    console.log(response.data);
-                    dispatch(descargarUsuariosExito(response.data));
-                })
-        } catch (error) {
-            console.log(error);
-            dispatch(descargarUsuariosError('Error al buscar los usuarios'));
-        }
-    }
-}
-
 /**********************  para editar un usuario de la BBDD ********************************/
 export function obtenerUsuarioAction(datos_usuario) {
     return async (dispatch) => {
@@ -1184,7 +1215,7 @@ const obtenerUsuarioEliminar = idUsuario => ({
 })
 
 /**********************  para obtener los usuarios de la BBDD ********************************/
-export function obtenerUsuariosAction(indexPrimerUsuario, limit, paginaCorriente) {
+/* export function obtenerUsuariosAction(indexPrimerUsuario, limit, paginaCorriente) {
     return async (dispatch) => {
         dispatch(descargarUsuarios());
         try {
@@ -1203,21 +1234,7 @@ export function obtenerUsuariosAction(indexPrimerUsuario, limit, paginaCorriente
         }
 
     }
-}
-const descargarUsuariosError = mensaje => ({
-    type: DESCARGA_USUARIOS_ERROR,
-    payload: mensaje,
-});
-
-const descargarUsuariosExito = respuesta => ({
-    type: DESCARGA_USUARIOS_EXITO,
-    payload: respuesta,
-});
-
-const descargarUsuarios = () => ({
-    type: COMENZAR_DESCARGA_USUARIOS,
-    payload: true
-});
+} */
 
 /**********************  para crear un nuevo usuario ********************************/
 export function crearNuevoUsuarioAction(datosNuevoUsuario) {

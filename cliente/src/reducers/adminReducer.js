@@ -120,8 +120,10 @@ const initialState = {
     mostrarMenus: false,
     mostrarCategoriasInsumo: false,
     mostrarInsumo: false,
+    palabraBuscar: null,
     totalElementos: 0,
     paginaCorriente: 0,
+    desde: 0,
     limite: 5,
 }
 
@@ -196,9 +198,6 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 loading: action.payload,
-                totalElementos: 0,
-                paginaCorriente: 0,
-                limite: 5,
             }
         case AGREGAR_USUARIO:
         case AGREGAR_CATEGORIA:
@@ -270,7 +269,9 @@ export default function (state = initialState, action) {
                 mostrarUsuarios: true,
                 totalElementos: action.payload.total,
                 limite: action.payload.limit,
-                paginaCorriente: action.payload.paginaCorriente,
+                palabraBuscar: action.payload.datosPaginacion.busqueda,
+                desde: Number(action.payload.datosPaginacion.indexPrimerUsuario),
+                paginaCorriente: action.payload.datosPaginacion.pagina
             }
         case DESCARGA_CATEGORIA_EXITO:
             return {

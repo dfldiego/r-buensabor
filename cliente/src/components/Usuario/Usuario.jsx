@@ -12,36 +12,32 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
     abrirCerrarAgregarUsuarioAction,
     obtenerUsuariosBuscadorAction,
-    obtenerUsuariosAction,
 } from '../../actions/adminActions';
 
 function Usuario() {
 
     //useState locales
     const [openModal, setOpenModal] = useState(false);
-    const [buscador, setBuscador] = useState({
-        busqueda: '',
-    });
-
-    const { busqueda } = buscador;
+    const [buscador, setBuscador] = useState('');
 
     const dispatch = useDispatch();
 
     // enviar a store
     const abrir_cerrar_agregarUsuario = estadoAgregarUsuario => dispatch(abrirCerrarAgregarUsuarioAction(estadoAgregarUsuario));
-    const busqueda_usuario = palabraBusqueda => dispatch(obtenerUsuariosBuscadorAction(palabraBusqueda));
-    const cargarUsuarios = (indexPrimerUsuario, limite_state, paginaCorriente_state) => dispatch(obtenerUsuariosAction(indexPrimerUsuario, limite_state, paginaCorriente_state))
+    const busqueda_usuario = (indexPrimerUsuario, limit, paginaCorriente_state, palabraBusqueda) => dispatch(obtenerUsuariosBuscadorAction(indexPrimerUsuario, limit, paginaCorriente_state, palabraBusqueda));
+    const cargarUsuarios = (indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda) => dispatch(obtenerUsuariosBuscadorAction(indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda))
 
     // recibir de store
     const modalAgregarUsuario = useSelector(state => state.admin.abrir_agregar_usuario);
     const recargarTablaUsuarios = useSelector(state => state.admin.usuario_eliminar);
     const limite_state = useSelector(state => state.admin.limite);
-    const paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
+    let paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
+    let palabraBuscar_state = useSelector(state => state.admin.palabraBuscar);
 
     useEffect(() => {
 
         //llamar la funcion
-        cargarUsuarios(0, limite_state, paginaCorriente_state);
+        cargarUsuarios(0, limite_state, paginaCorriente_state, palabraBuscar_state);
 
         // eslint-disable-next-line
     }, [recargarTablaUsuarios]);
@@ -69,15 +65,13 @@ function Usuario() {
     }, [modalAgregarUsuario])
 
     const handleChangeBuscador = e => {
-        setBuscador({
-            ...buscador,
-            [e.target.name]: e.target.value
-        });
+        setBuscador(e.target.value);
     }
 
     const handleClick_buscador = e => {
         e.preventDefault();
-        busqueda_usuario(buscador);
+        paginaCorriente_state = 0;
+        busqueda_usuario(0, limite_state, paginaCorriente_state, buscador);
     }
 
     return (
@@ -93,10 +87,10 @@ function Usuario() {
                     <div className="buscador">
                         <input
                             type="text"
-                            name="busqueda"
+                            name="buscador"
                             className="input_buscador"
                             onChange={handleChangeBuscador}
-                            value={busqueda}
+                            value={buscador}
                         />
 
                         <button
