@@ -2,18 +2,20 @@ import React, { Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import '../Usuario/Paginacion.css';
 import {
-    obtenerCategoriaInsumoAction,
+    obtenerCategoriasInsumoBuscadorAction,
 } from '../../actions/adminActions';
 
 const PaginacionInsumoCategoria = () => {
 
     const dispatch = useDispatch();
 
-    const cargarInsumoCategoria = (indexPrimerUsuario, limit, paginaCorriente) => dispatch(obtenerCategoriaInsumoAction(indexPrimerUsuario, limit, paginaCorriente));
+    const cargarInsumoCategoria = (indexPrimerElemento, limite_state, paginaCorriente_state, palabraBuscar_state) => dispatch(obtenerCategoriasInsumoBuscadorAction(indexPrimerElemento, limite_state, paginaCorriente_state, palabraBuscar_state));
 
     const total_elementos_state = useSelector(state => state.admin.totalElementos);
+    let desde_state = useSelector(state => state.admin.desde);
     const limite_state = useSelector(state => state.admin.limite);
     let paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
+    let palabraBuscar_state = useSelector(state => state.admin.palabraBuscar);
 
     //cambiar pagina
     const handlePage = (numero) => {
@@ -22,7 +24,7 @@ const PaginacionInsumoCategoria = () => {
         } else {
             paginaCorriente_state = numero;
             const indexPrimerElemento = numero;
-            cargarInsumoCategoria(indexPrimerElemento, limite_state, paginaCorriente_state);
+            cargarInsumoCategoria(indexPrimerElemento, limite_state, paginaCorriente_state, palabraBuscar_state);
         }
     }
 
@@ -36,8 +38,8 @@ const PaginacionInsumoCategoria = () => {
             return;
         } else {
             paginaCorriente_state = numero;
-            const indexPrimerElemento = numero * limite_state;
-            cargarInsumoCategoria(indexPrimerElemento, limite_state, paginaCorriente_state);
+            desde_state = numero * limite_state;
+            cargarInsumoCategoria(desde_state, limite_state, paginaCorriente_state, palabraBuscar_state);
         }
 
     }
@@ -49,7 +51,7 @@ const PaginacionInsumoCategoria = () => {
         } else {
             paginaCorriente_state = Math.floor(total_elementos_state / limite_state);
             const indexPrimerElemento = paginaCorriente_state * limite_state;
-            cargarInsumoCategoria(indexPrimerElemento, limite_state, paginaCorriente_state);
+            cargarInsumoCategoria(indexPrimerElemento, limite_state, paginaCorriente_state, palabraBuscar_state);
         }
     }
 

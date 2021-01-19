@@ -469,7 +469,9 @@ export default function (state = initialState, action) {
                 mostrarCategoriasInsumo: true,
                 totalElementos: action.payload.total,
                 limite: action.payload.limit,
-                paginaCorriente: action.payload.paginaCorriente,
+                palabraBuscar: action.payload.datosPaginacion.busqueda,
+                desde: Number(action.payload.datosPaginacion.indexPrimerUsuario),
+                paginaCorriente: action.payload.datosPaginacion.pagina
             }
         case OBTENER_CATEGORIA_INSUMO_ELIMINAR:
             return {

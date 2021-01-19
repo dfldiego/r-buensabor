@@ -112,29 +112,61 @@ export function obtenerInsumoBuscadorAction(palabraBusqueda) {
 }
 
 /**********************  para buscar una categoria-insumo de la BBDD ********************************/
-export function obtenerCategoriasInsumoBuscadorAction(palabraBusqueda) {
+export function obtenerCategoriasInsumoBuscadorAction(indexPrimerUsuario, limit, pagina, palabraBusqueda) {
     return async (dispatch) => {
         dispatch(descargarCategoriasInsumo());
+
+        console.log("indexPrimerUsuario:" + indexPrimerUsuario);
+        console.log("limit:" + limit);
+        console.log("pagina:" + pagina);
+        console.log("busqueda:" + palabraBusqueda);
+
+        if (palabraBusqueda === null || palabraBusqueda === '') {
+            palabraBusqueda = undefined
+        }
+
+        console.log("busqueda:" + palabraBusqueda);
 
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            if (!palabraBusqueda.busqueda) {
-                const respuesta = await clienteAxios.get('/api/product-categories', header);
-                dispatch(descargarCategoriasInsumoExito(respuesta.data.productCategories));
-            } else {
-                await clienteAxios.get(`/api/product-categories/search/${String(palabraBusqueda.busqueda)}`, header)
-                    .then(response => {
-                        const { productCategories } = response.data;
-                        dispatch(descargarCategoriasInsumoExito(productCategories));
-                    })
-            }
+
+            await clienteAxios.get(`/api/product-categories/search/${palabraBusqueda}?from=${indexPrimerUsuario}&limit=${limit}`, header)
+                .then(response => {
+
+                    const datosPaginacion = {
+                        indexPrimerUsuario,
+                        limit,
+                        busqueda: palabraBusqueda,
+                        pagina,
+                    }
+
+                    response.data.datosPaginacion = datosPaginacion;
+                    console.log(response.data);
+
+                    dispatch(descargarCategoriasInsumoExito(response.data));
+                })
         } catch (error) {
             console.log(error);
             dispatch(descargarCategoriasInsumoError('Error al buscar las categorias de insumo'));
         }
     }
 }
+
+const descargarCategoriasInsumo = () => ({
+    type: COMENZAR_DESCARGA_CATEGORIA_INSUMO,
+    payload: true
+});
+
+const descargarCategoriasInsumoExito = respuesta => ({
+    type: DESCARGA_CATEGORIA_INSUMO_EXITO,
+    payload: respuesta,
+});
+
+const descargarCategoriasInsumoError = errores => ({
+    type: DESCARGA_CATEGORIA_INSUMO_ERROR,
+    payload: errores,
+});
 
 /**********************  para buscar un menu de la BBDD ********************************/
 export function obtenerMenusBuscadorAction(indexPrimerUsuario, limit, pagina, palabraBusqueda) {
@@ -603,7 +635,7 @@ const categoriaInsumoEliminadoError = msj => ({
 })
 
 /**********************  para obtener las categoria insumos de la BBDD ********************************/
-export function obtenerCategoriaInsumoAction(indexPrimerInsumoCategoria, limit, paginaCorriente) {
+/* export function obtenerCategoriaInsumoAction(indexPrimerInsumoCategoria, limit, paginaCorriente) {
     return async (dispatch) => {
         dispatch(descargarCategoriasInsumo());
 
@@ -621,22 +653,7 @@ export function obtenerCategoriaInsumoAction(indexPrimerInsumoCategoria, limit, 
         }
 
     }
-}
-
-const descargarCategoriasInsumo = () => ({
-    type: COMENZAR_DESCARGA_CATEGORIA_INSUMO,
-    payload: true
-});
-
-const descargarCategoriasInsumoExito = respuesta => ({
-    type: DESCARGA_CATEGORIA_INSUMO_EXITO,
-    payload: respuesta,
-});
-
-const descargarCategoriasInsumoError = errores => ({
-    type: DESCARGA_CATEGORIA_INSUMO_ERROR,
-    payload: errores,
-});
+} */
 
 /**********************  para crear una nueva categoria-insumo ********************************/
 export function crearNuevaCategoriaInsumoAction(datosNuevoCategoriaInsumo, imageFile) {

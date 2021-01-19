@@ -8,7 +8,7 @@ import {
     abrirCerrarAgregarInsumoAction,
     crearNuevaInsumoAction,
     editarInsumoAction,
-    obtenerCategoriaInsumoAction,
+    obtenerCategoriasInsumoBuscadorAction,
     obtenerInsumosAction,
 } from '../../actions/adminActions';
 import { useDispatch, useSelector } from 'react-redux';
@@ -40,7 +40,7 @@ const CreateInsumos = () => {
 
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarInsumoAction(nuevo_estado));
     const agregar_nuevo_insumo_action = (datosNuevoInsumo) => dispatch(crearNuevaInsumoAction(datosNuevoInsumo));
-    const obtenerCategoriasInsumo_callAction = () => dispatch(obtenerCategoriaInsumoAction());
+    const obtenerCategoriasInsumo_callAction = () => dispatch(obtenerCategoriasInsumoBuscadorAction());
     const insumo_editar_action = (datos_insumos) => dispatch(editarInsumoAction(datos_insumos));
     const cargarInsumos = () => dispatch(obtenerInsumosAction());
 

@@ -8,7 +8,7 @@ import Navbar from '../Navbar/Navbar';
 import { useSelector, useDispatch } from 'react-redux'
 import {
     obtenerCategoriasBuscadorAction,
-    obtenerCategoriaInsumoAction,
+    obtenerCategoriasInsumoBuscadorAction,
 } from '../../actions/adminActions';
 
 import {
@@ -20,7 +20,7 @@ const Catalogo = () => {
     const dispatch = useDispatch();
 
     const consultar_categorias = () => dispatch(obtenerCategoriasBuscadorAction());
-    const consultar_categoriasInsumo = () => dispatch(obtenerCategoriaInsumoAction());
+    const consultar_categoriasInsumo = () => dispatch(obtenerCategoriasInsumoBuscadorAction());
     const entradaMenuesFiltrados = estado => dispatch(paginaMenuesFiltradosAction(estado));
 
     const categorias = useSelector(state => state.admin.categorias);

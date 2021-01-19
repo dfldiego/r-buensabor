@@ -7,7 +7,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import {
     abrirCerrarAgregarCategoriaInsumoAction,
     crearNuevaCategoriaInsumoAction,
-    obtenerCategoriaInsumoAction,
+    obtenerCategoriasInsumoBuscadorAction,
     editarCategoriaInsumoAction,
 } from '../../actions/adminActions';
 import { useDispatch, useSelector } from 'react-redux';
@@ -35,7 +35,7 @@ const CreateInsumoCategoria = () => {
 
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarCategoriaInsumoAction(nuevo_estado));
     const agregar_nuevo_Categoria_action = (datosNuevoCategoriaInsumo, imageFile) => dispatch(crearNuevaCategoriaInsumoAction(datosNuevoCategoriaInsumo, imageFile));
-    const cargarCategoriaInsumo = () => dispatch(obtenerCategoriaInsumoAction());
+    const cargarCategoriaInsumo = (indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda) => dispatch(obtenerCategoriasInsumoBuscadorAction(indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda));
     const categoria_insumo_editar_action = (datos_categoria_insumos, imageFile) => dispatch(editarCategoriaInsumoAction(datos_categoria_insumos, imageFile));
 
     let cerrar_modal_state_store = useSelector(state => state.admin.abrir_agregar_categoria_insumo);
@@ -43,6 +43,9 @@ const CreateInsumoCategoria = () => {
     const msj_error = useSelector(state => state.admin.mensaje);
     const categorias_insumo = useSelector(state => state.admin.categorias_insumo);
     const categoria_insumo_editar = useSelector(state => state.admin.categoria_insumo_editar);
+    const limite_state = useSelector(state => state.admin.limite);
+    let paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
+    let palabraBuscar_state = useSelector(state => state.admin.palabraBuscar);
 
     const cerrar_modal = () => {
         if (cerrar_modal_state_store) {
@@ -53,7 +56,7 @@ const CreateInsumoCategoria = () => {
     }
 
     useEffect(() => {
-        cargarCategoriaInsumo();
+        cargarCategoriaInsumo(0, limite_state, paginaCorriente_state, palabraBuscar_state);
 
         // eslint-disable-next-line
     }, []);

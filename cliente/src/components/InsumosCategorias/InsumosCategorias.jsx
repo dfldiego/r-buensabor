@@ -10,33 +10,29 @@ import GetInsumoCategoria from '../InsumosCategorias/GetInsumoCategoria';
 import { useSelector, useDispatch } from 'react-redux'
 import {
     abrirCerrarAgregarCategoriaInsumoAction,
-    obtenerCategoriaInsumoAction,
     obtenerCategoriasInsumoBuscadorAction,
 } from '../../actions/adminActions';
 
 const InsumosCategorias = () => {
 
     const [openModal, setOpenModal] = useState(false);
-    const [buscador, setBuscador] = useState({
-        busqueda: '',
-    });
-
-    const { busqueda } = buscador;
+    const [buscador, setBuscador] = useState('');
 
     const dispatch = useDispatch();
 
     const abrir_cerrar_agregarCategoriaInsumo = estadoAgregarCategoriaInsumo => dispatch(abrirCerrarAgregarCategoriaInsumoAction(estadoAgregarCategoriaInsumo));
-    const cargarCategoriasInsumo = (indexPrimerInsumoCategoria, limit, paginaCorriente) => dispatch(obtenerCategoriaInsumoAction(indexPrimerInsumoCategoria, limit, paginaCorriente));
-    const busquedaCategoriasInsumo = palabraBusqueda => dispatch(obtenerCategoriasInsumoBuscadorAction(palabraBusqueda));
+    const cargarCategoriasInsumo = (indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda) => dispatch(obtenerCategoriasInsumoBuscadorAction(indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda));
+    const busquedaCategoriasInsumo = (indexPrimerUsuario, limit, paginaCorriente_state, palabraBusqueda) => dispatch(obtenerCategoriasInsumoBuscadorAction(indexPrimerUsuario, limit, paginaCorriente_state, palabraBusqueda));
 
     const modalAgregarCategoriaInsumo = useSelector(state => state.admin.abrir_agregar_categoria_insumo);
     const recargarTablaCategoriaInsumo = useSelector(state => state.admin.categoria_insumo_eliminar);
     const recargarTablaCategoriaInsumoAlEditar = useSelector(state => state.admin.categoria_insumo_editar);
     const limite_state = useSelector(state => state.admin.limite);
-    const paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
+    let paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
+    let palabraBuscar_state = useSelector(state => state.admin.palabraBuscar);
 
     useEffect(() => {
-        cargarCategoriasInsumo(0, limite_state, paginaCorriente_state);
+        cargarCategoriasInsumo(0, limite_state, paginaCorriente_state, palabraBuscar_state);
 
         // eslint-disable-next-line
     }, [recargarTablaCategoriaInsumo, recargarTablaCategoriaInsumoAlEditar, modalAgregarCategoriaInsumo]);
@@ -65,15 +61,13 @@ const InsumosCategorias = () => {
     }, [modalAgregarCategoriaInsumo])
 
     const handleChangeBuscador = e => {
-        setBuscador({
-            ...buscador,
-            [e.target.name]: e.target.value
-        });
+        setBuscador(e.target.value);
     }
 
     const handleClick_buscador = e => {
         e.preventDefault();
-        busquedaCategoriasInsumo(buscador);
+        paginaCorriente_state = 0;
+        busquedaCategoriasInsumo(0, limite_state, paginaCorriente_state, buscador);
     }
 
     return (
@@ -89,10 +83,10 @@ const InsumosCategorias = () => {
                     <div className="buscador">
                         <input
                             type="text"
-                            name="busqueda"
+                            name="buscador"
                             className="input_buscador"
                             onChange={handleChangeBuscador}
-                            value={busqueda}
+                            value={buscador}
                         />
 
                         <button
