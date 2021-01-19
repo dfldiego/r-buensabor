@@ -2,15 +2,11 @@ const { response } = require('express');
 const ProductCategory = require('../models/product-categories.model');
 
 const list = async (req, res = response) => {
-    let from = Number(req.query.from) || 0;
-    let limit = Number(req.query.limit) || 5;
 
     try {
         const [productCategories, total] = await Promise.all([
             ProductCategory.find({ status: true })
-                .populate('parent', 'description')
-                .skip(from)
-                .limit(limit),
+                .populate('parent', 'description'),
             ProductCategory.countDocuments({ status: true })
         ]);
 
@@ -18,7 +14,6 @@ const list = async (req, res = response) => {
             ok: true,
             productCategories,
             total,
-            limit,
         });
     } catch (error) {
         console.log(error);

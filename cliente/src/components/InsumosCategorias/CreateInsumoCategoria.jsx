@@ -7,7 +7,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 import {
     abrirCerrarAgregarCategoriaInsumoAction,
     crearNuevaCategoriaInsumoAction,
-    obtenerCategoriasInsumoBuscadorAction,
+    obtenerCategoriaInsumoAction,
     editarCategoriaInsumoAction,
 } from '../../actions/adminActions';
 import { useDispatch, useSelector } from 'react-redux';
@@ -35,17 +35,15 @@ const CreateInsumoCategoria = () => {
 
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarCategoriaInsumoAction(nuevo_estado));
     const agregar_nuevo_Categoria_action = (datosNuevoCategoriaInsumo, imageFile) => dispatch(crearNuevaCategoriaInsumoAction(datosNuevoCategoriaInsumo, imageFile));
-    const cargarCategoriaInsumo = (indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda) => dispatch(obtenerCategoriasInsumoBuscadorAction(indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda));
+    const cargarCategoriaInsumo = () => dispatch(obtenerCategoriaInsumoAction());
     const categoria_insumo_editar_action = (datos_categoria_insumos, imageFile) => dispatch(editarCategoriaInsumoAction(datos_categoria_insumos, imageFile));
 
     let cerrar_modal_state_store = useSelector(state => state.admin.abrir_agregar_categoria_insumo);
     const errores = useSelector(state => state.admin.errores);
     const msj_error = useSelector(state => state.admin.mensaje);
-    const categorias_insumo = useSelector(state => state.admin.categorias_insumo);
+    const categoriasInsumoSelect = useSelector(state => state.admin.categoriasInsumoSelect);
     const categoria_insumo_editar = useSelector(state => state.admin.categoria_insumo_editar);
-    const limite_state = useSelector(state => state.admin.limite);
-    let paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
-    let palabraBuscar_state = useSelector(state => state.admin.palabraBuscar);
+
 
     const cerrar_modal = () => {
         if (cerrar_modal_state_store) {
@@ -56,7 +54,7 @@ const CreateInsumoCategoria = () => {
     }
 
     useEffect(() => {
-        cargarCategoriaInsumo(0, limite_state, paginaCorriente_state, palabraBuscar_state);
+        cargarCategoriaInsumo();
 
         // eslint-disable-next-line
     }, []);
@@ -156,7 +154,7 @@ const CreateInsumoCategoria = () => {
                                             <option value="">-- Seleccione una categoria --</option>
                                     }
                                     {
-                                        categorias_insumo.map(categoria => (
+                                        categoriasInsumoSelect.map(categoria => (
                                             <option
                                                 key={categoria._id}
                                                 value={categoria._id}

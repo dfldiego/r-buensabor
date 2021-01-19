@@ -84,6 +84,7 @@ import {
     INSUMO_EDITADO_ERROR,
     INSUMO_EDITADO_ERRORES,
     DESCARGA_LISTADO_CATEGORIA,
+    DESCARGA_LISTADO_CATEGORIA_INSUMO,
 } from '../types';
 
 const initialState = {
@@ -103,6 +104,7 @@ const initialState = {
     categoriasSelect: [],
     menus: [],
     categorias_insumo: [],
+    categoriasInsumoSelect: [],
     insumos: [],
     error: null,
     errores: [],
@@ -460,6 +462,7 @@ export default function (state = initialState, action) {
                 mensaje: null,
                 error: null,
                 categoria_insumo_editar: null,
+                categoriasInsumoSelect: [],
             }
         case AGREGAR_CATEGORIA_INSUMO_EXITO:
             return {
@@ -485,6 +488,17 @@ export default function (state = initialState, action) {
                 palabraBuscar: action.payload.datosPaginacion.busqueda,
                 desde: Number(action.payload.datosPaginacion.indexPrimerUsuario),
                 paginaCorriente: action.payload.datosPaginacion.pagina
+            }
+        case DESCARGA_LISTADO_CATEGORIA_INSUMO:
+            return {
+                ...state,
+                loading: false,
+                mensaje: null,
+                error: null,
+                errores: [],
+                categoriasInsumoSelect: action.payload.productCategories,
+                mostrarCategoriasInsumo: true,
+                totalElementos: action.payload.total,
             }
         case OBTENER_CATEGORIA_INSUMO_ELIMINAR:
             return {

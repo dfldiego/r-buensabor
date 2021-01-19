@@ -82,6 +82,7 @@ import {
     INSUMO_EDITADO_ERROR,
     INSUMO_EDITADO_ERRORES,
     DESCARGA_LISTADO_CATEGORIA,
+    DESCARGA_LISTADO_CATEGORIA_INSUMO,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
@@ -662,15 +663,19 @@ export function obtenerCategoriaInsumoAction() {
             await clienteAxios.get(`/api/product-categories`, header)
                 .then(response => {
                     console.log(response.data);
-                    dispatch(descargarCategoriasInsumoExito(response.data));
+                    dispatch(obtenerListadoCategoriasInsumo(response.data));
                 })
         } catch (err) {
             console.log(err);
-            dispatch(descargarCategoriasInsumoError('Error al descargar los menus'));
+            dispatch(descargarCategoriasInsumoError('Error al descargar las categorias insumo'));
         }
-
     }
 }
+
+const obtenerListadoCategoriasInsumo = categoriasInsumo => ({
+    type: DESCARGA_LISTADO_CATEGORIA_INSUMO,
+    payload: categoriasInsumo
+})
 
 /**********************  para crear una nueva categoria-insumo ********************************/
 export function crearNuevaCategoriaInsumoAction(datosNuevoCategoriaInsumo, imageFile) {
