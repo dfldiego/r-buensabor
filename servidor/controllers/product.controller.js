@@ -124,27 +124,45 @@ const remove = async (req, res = response) => {
 
 const search = async (req, res) => {
 
+    let from = Number(req.query.from) || 0;
+    let limit = Number(req.query.limit) || 5;
+
     let search = req.params.words;
     let regExWords = new RegExp(search, 'i');
 
-    Product.find({ $and: [{ description: regExWords }, { status: true }] })
-        .populate('category', 'description')
-        .exec((err, products) => {
-            if (err) {
-                return res.status(500).json({
-                    ok: false,
-                    err
-                });
-            }
+    let conditionSearch = {
+        status: true
+    }
 
-            Product.countDocuments({ status: true }, (err, size) => {
-                res.json({
-                    ok: true,
-                    products,
-                    size
-                });
-            });
+    if (search != 'undefined') {
+        conditionSearch = {
+            description: regExWords,
+            status: true
+        }
+    }
+
+    try {
+        const [products, total] = await Promise.all([
+            Product.find(conditionSearch)
+                .populate('category', 'description')
+                .skip(from)
+                .limit(limit),
+            Product.countDocuments(conditionSearch)
+        ]);
+
+        res.json({
+            ok: true,
+            products,
+            total,
+            limit,
         });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: error
+        });
+    }
 }
 
 module.exports = {

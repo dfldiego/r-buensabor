@@ -9,31 +9,27 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
     abrirCerrarAgregarInsumoAction,
     obtenerInsumoBuscadorAction,
-    obtenerInsumosAction,
 } from '../../actions/adminActions';
 
 const Insumos = () => {
 
     const [openModal, setOpenModal] = useState(false);
-    const [buscador, setBuscador] = useState({
-        busqueda: '',
-    });
-
-    const { busqueda } = buscador;
+    const [buscador, setBuscador] = useState('');
 
     const dispatch = useDispatch();
 
     const abrir_cerrar_agregarInsumo = estadoAgregarInsumo => dispatch(abrirCerrarAgregarInsumoAction(estadoAgregarInsumo));
-    const cargarInsumo = (indexPrimerInsumo, limit, paginaCorriente) => dispatch(obtenerInsumosAction(indexPrimerInsumo, limit, paginaCorriente));
-    const busquedaInsumo = palabraBusqueda => dispatch(obtenerInsumoBuscadorAction(palabraBusqueda));
+    const cargarInsumo = (indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda) => dispatch(obtenerInsumoBuscadorAction(indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda));
+    const busquedaInsumo = (indexPrimerUsuario, limit, paginaCorriente_state, palabraBusqueda) => dispatch(obtenerInsumoBuscadorAction(indexPrimerUsuario, limit, paginaCorriente_state, palabraBusqueda));
 
     const modalAgregarInsumo = useSelector(state => state.admin.abrir_agregar_insumo);
     const recargarTablaInsumo = useSelector(state => state.admin.insumo_eliminar);
     const limite_state = useSelector(state => state.admin.limite);
-    const paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
+    let paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
+    let palabraBuscar_state = useSelector(state => state.admin.palabraBuscar);
 
     useEffect(() => {
-        cargarInsumo(0, limite_state, paginaCorriente_state);
+        cargarInsumo(0, limite_state, paginaCorriente_state, palabraBuscar_state);
 
         // eslint-disable-next-line
     }, [recargarTablaInsumo]);
@@ -62,15 +58,13 @@ const Insumos = () => {
     }, [modalAgregarInsumo])
 
     const handleChangeBuscador = e => {
-        setBuscador({
-            ...buscador,
-            [e.target.name]: e.target.value
-        });
+        setBuscador(e.target.value);
     }
 
     const handleClick_buscador = e => {
         e.preventDefault();
-        busquedaInsumo(buscador);
+        paginaCorriente_state = 0;
+        busquedaInsumo(0, limite_state, paginaCorriente_state, buscador);
     }
 
     return (
@@ -86,10 +80,10 @@ const Insumos = () => {
                     <div className="buscador">
                         <input
                             type="text"
-                            name="busqueda"
+                            name="buscador"
                             className="input_buscador"
                             onChange={handleChangeBuscador}
-                            value={busqueda}
+                            value={buscador}
                         />
 
                         <button

@@ -87,29 +87,60 @@ import Swal from 'sweetalert2';
 import { authorizationHeader } from '../helpers/authorization_header';
 
 /**********************  para buscar una insumo de la BBDD ********************************/
-export function obtenerInsumoBuscadorAction(palabraBusqueda) {
+export function obtenerInsumoBuscadorAction(indexPrimerUsuario, limit, pagina, palabraBusqueda) {
     return async (dispatch) => {
         dispatch(descargarInsumos());
+
+        console.log("indexPrimerUsuario:" + indexPrimerUsuario);
+        console.log("limit:" + limit);
+        console.log("pagina:" + pagina);
+        console.log("busqueda:" + palabraBusqueda);
+
+        if (palabraBusqueda === null || palabraBusqueda === '') {
+            palabraBusqueda = undefined
+        }
 
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            if (!palabraBusqueda.busqueda) {
-                const respuesta = await clienteAxios.get('/api/product', header);
-                dispatch(descargarInsumosExito(respuesta.data.products));
-            } else {
-                await clienteAxios.get(`/api/product/search/${String(palabraBusqueda.busqueda)}`, header)
-                    .then(response => {
-                        const { products } = response.data;
-                        dispatch(descargarInsumosExito(products));
-                    })
-            }
+
+            await clienteAxios.get(`/api/product/search/${palabraBusqueda}?from=${indexPrimerUsuario}&limit=${limit}`, header)
+                .then(response => {
+
+                    const datosPaginacion = {
+                        indexPrimerUsuario,
+                        limit,
+                        busqueda: palabraBusqueda,
+                        pagina,
+                    }
+
+                    response.data.datosPaginacion = datosPaginacion;
+                    console.log(response.data);
+
+                    dispatch(descargarInsumosExito(response.data));
+                })
         } catch (error) {
             console.log(error);
             dispatch(descargarInsumosError('Error al buscar los insumos'));
         }
     }
 }
+
+
+const descargarInsumos = () => ({
+    type: COMENZAR_DESCARGA_INSUMO,
+    payload: true
+});
+
+const descargarInsumosExito = respuesta => ({
+    type: DESCARGA_INSUMO_EXITO,
+    payload: respuesta,
+});
+
+const descargarInsumosError = errores => ({
+    type: DESCARGA_INSUMO_ERROR,
+    payload: errores,
+});
 
 /**********************  para buscar una categoria-insumo de la BBDD ********************************/
 export function obtenerCategoriasInsumoBuscadorAction(indexPrimerUsuario, limit, pagina, palabraBusqueda) {
@@ -423,7 +454,7 @@ const insumoEliminadoError = msj => ({
 })
 
 /**********************  para obtener los insumos de la BBDD ********************************/
-export function obtenerInsumosAction(indexPrimerInsumo, limit, paginaCorriente) {
+/* export function obtenerInsumosAction(indexPrimerInsumo, limit, paginaCorriente) {
     return async (dispatch) => {
         dispatch(descargarInsumos());
 
@@ -441,22 +472,7 @@ export function obtenerInsumosAction(indexPrimerInsumo, limit, paginaCorriente) 
         }
 
     }
-}
-
-const descargarInsumos = () => ({
-    type: COMENZAR_DESCARGA_INSUMO,
-    payload: true
-});
-
-const descargarInsumosExito = respuesta => ({
-    type: DESCARGA_INSUMO_EXITO,
-    payload: respuesta,
-});
-
-const descargarInsumosError = errores => ({
-    type: DESCARGA_INSUMO_ERROR,
-    payload: errores,
-});
+} */
 
 /**********************  para crear una nueva insumo ********************************/
 export function crearNuevaInsumoAction(datosNuevoInsumo) {
@@ -635,16 +651,16 @@ const categoriaInsumoEliminadoError = msj => ({
 })
 
 /**********************  para obtener las categoria insumos de la BBDD ********************************/
-/* export function obtenerCategoriaInsumoAction(indexPrimerInsumoCategoria, limit, paginaCorriente) {
+export function obtenerCategoriaInsumoAction() {
     return async (dispatch) => {
         dispatch(descargarCategoriasInsumo());
 
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            await clienteAxios.get(`/api/product-categories?from=${indexPrimerInsumoCategoria}&limit=${limit}`, header)
+            await clienteAxios.get(`/api/product-categories`, header)
                 .then(response => {
-                    response.data.paginaCorriente = paginaCorriente;
+                    console.log(response.data);
                     dispatch(descargarCategoriasInsumoExito(response.data));
                 })
         } catch (err) {
@@ -653,7 +669,7 @@ const categoriaInsumoEliminadoError = msj => ({
         }
 
     }
-} */
+}
 
 /**********************  para crear una nueva categoria-insumo ********************************/
 export function crearNuevaCategoriaInsumoAction(datosNuevoCategoriaInsumo, imageFile) {
