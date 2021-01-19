@@ -8,34 +8,30 @@ import GetMenu from '../Menu/GetMenu';
 import { useSelector, useDispatch } from 'react-redux'
 import {
     abrirCerrarAgregarMenuAction,
-    obtenerMenuAction,
     obtenerMenusBuscadorAction,
 } from '../../actions/adminActions';
 
 const Menu = () => {
 
     const [openModal, setOpenModal] = useState(false);
-    const [buscador, setBuscador] = useState({
-        busqueda: '',
-    });
-
-    const { busqueda } = buscador;
+    const [buscador, setBuscador] = useState('');
 
     const dispatch = useDispatch();
 
     const abrir_cerrar_btn_agregar = estadoAgregarMenu => dispatch(abrirCerrarAgregarMenuAction(estadoAgregarMenu));
-    const cargarmenus = (indexPrimerUsuario, limite_state, paginaCorriente_state) => dispatch(obtenerMenuAction(indexPrimerUsuario, limite_state, paginaCorriente_state));
-    const busqueda_menus = palabraBusqueda => dispatch(obtenerMenusBuscadorAction(palabraBusqueda));
+    const cargarmenus = (indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda) => dispatch(obtenerMenusBuscadorAction(indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda));
+    const busqueda_menus = (indexPrimerUsuario, limit, paginaCorriente_state, palabraBusqueda) => dispatch(obtenerMenusBuscadorAction(indexPrimerUsuario, limit, paginaCorriente_state, palabraBusqueda));
 
     const modalAgregarMenu = useSelector(state => state.admin.abrir_agregar_menu);
     const recargarTablaMenu = useSelector(state => state.admin.menu_eliminar);
     const recargarTablaMenuAlEditar = useSelector(state => state.admin.menu_editar);
     const limite_state = useSelector(state => state.admin.limite);
-    const paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
+    let paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
+    let palabraBuscar_state = useSelector(state => state.admin.palabraBuscar);
 
     // modalAgregarMenu -> para que al agregar un menu se actualice en la tabla la categoria.
     useEffect(() => {
-        cargarmenus(0, limite_state, paginaCorriente_state);
+        cargarmenus(0, limite_state, paginaCorriente_state, palabraBuscar_state);
 
         // eslint-disable-next-line
     }, [recargarTablaMenu, recargarTablaMenuAlEditar, modalAgregarMenu]);
@@ -63,15 +59,13 @@ const Menu = () => {
     }, [modalAgregarMenu])
 
     const handleChangeBuscador = e => {
-        setBuscador({
-            ...buscador,
-            [e.target.name]: e.target.value
-        });
+        setBuscador(e.target.value);
     }
 
     const handleClick_buscador = e => {
         e.preventDefault();
-        busqueda_menus(buscador);
+        paginaCorriente_state = 0;
+        busqueda_menus(0, limite_state, paginaCorriente_state, buscador);
     }
 
     return (
@@ -87,10 +81,10 @@ const Menu = () => {
                     <div className="buscador">
                         <input
                             type="text"
-                            name="busqueda"
+                            name="buscador"
                             className="input_buscador"
                             onChange={handleChangeBuscador}
-                            value={busqueda}
+                            value={buscador}
                         />
 
                         <button

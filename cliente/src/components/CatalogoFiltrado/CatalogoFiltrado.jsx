@@ -10,7 +10,7 @@ import MenuDetalle from '../CatalogoFiltrado/MenuDetalle';
 import { useSelector, useDispatch } from 'react-redux'
 import {
     obtenerCategoriasBuscadorAction,
-    obtenerMenuAction,
+    obtenerMenusBuscadorAction,
 } from '../../actions/adminActions';
 import {
     abrirCerrarDetalleMenuAction,
@@ -26,7 +26,7 @@ const CatalogoFiltrado = ({ name }) => {
     const dispatch = useDispatch();
 
     const consultarCategorias = () => dispatch(obtenerCategoriasBuscadorAction());
-    const consultarMenus = () => dispatch(obtenerMenuAction());
+    const consultarMenus = () => dispatch(obtenerMenusBuscadorAction());
     const abrirModalMenuDetalle = (estadoDetalleMenu) => dispatch(abrirCerrarDetalleMenuAction(estadoDetalleMenu));
     const consultarMenuPorId = idMenu => dispatch(obtenerMenuPorIdAction(idMenu));
 

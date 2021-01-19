@@ -9,6 +9,7 @@ import {
     obtenerCategoriasBuscadorAction,
     crearNuevoMenuAction,
     editarMenuAction,
+    obtenerMenusBuscadorAction,
 } from '../../actions/adminActions';
 
 
@@ -38,12 +39,16 @@ const CreateMenu = () => {
     const obtenerCategorias_callAction = () => dispatch(obtenerCategoriasBuscadorAction());
     const agregar_nuevo_menu_action = (datosNuevoMenu, imageFile) => dispatch(crearNuevoMenuAction(datosNuevoMenu, imageFile));
     const menu_editar_action = (datosmenu, imageFile) => dispatch(editarMenuAction(datosmenu, imageFile));
+    const cargarmenus = (indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda) => dispatch(obtenerMenusBuscadorAction(indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda));
 
     let cerrar_modal_state_store = useSelector(state => state.admin.abrir_agregar_menu);
     const categorias = useSelector(state => state.admin.categorias);
     const errores = useSelector(state => state.admin.errores);
     const msj_error = useSelector(state => state.admin.mensaje);
     const menu_editar_store = useSelector(state => state.admin.menu_editar);
+    const limite_state = useSelector(state => state.admin.limite);
+    let paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
+    let palabraBuscar_state = useSelector(state => state.admin.palabraBuscar);
 
     var handleChange_imagen = (e) => {
         setimageFile({
@@ -74,6 +79,8 @@ const CreateMenu = () => {
         if (menu_editar_store) {
             menu._id = menu_editar_store._id;
             menu_editar_action(menu, imageFile);
+
+            cargarmenus(0, limite_state, paginaCorriente_state, palabraBuscar_state);
 
             if (errores === [] && msj_error === null) {
                 cerrar_modal();

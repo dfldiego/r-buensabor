@@ -210,28 +210,46 @@ const remove = async (req, res = response) => {
 }
 
 const search = async (req, res) => {
+
+    let from = Number(req.query.from) || 0;
+    let limit = Number(req.query.limit) || 5;
+
     let search = req.params.words;
     let regExWords = new RegExp(search, 'i');
 
-    Menu.find(
-        { $and: [{ description: regExWords }, { status: true }] })
-        .populate('category', 'name')
-        .exec((err, menus) => {
-            if (err) {
-                return res.status(500).json({
-                    ok: false,
-                    err
-                });
-            }
+    let conditionSearch = {
+        status: true
+    }
 
-            Menu.countDocuments({ status: true }, (err, size) => {
-                res.json({
-                    ok: true,
-                    menus,
-                    size
-                });
-            });
+    if (search != 'undefined') {
+        conditionSearch = {
+            description: regExWords,
+            status: true
+        }
+    }
+
+    try {
+        const [menus, total] = await Promise.all([
+            Menu.find(conditionSearch)
+                .populate('category', 'name')
+                .skip(from)
+                .limit(limit),
+            Menu.countDocuments(conditionSearch)
+        ]);
+
+        res.json({
+            ok: true,
+            menus,
+            total,
+            limit,
         });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: error
+        });
+    }
 }
 
 module.exports = {

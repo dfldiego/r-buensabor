@@ -137,31 +137,59 @@ export function obtenerCategoriasInsumoBuscadorAction(palabraBusqueda) {
 }
 
 /**********************  para buscar un menu de la BBDD ********************************/
-export function obtenerMenusBuscadorAction(palabraBusqueda) {
+export function obtenerMenusBuscadorAction(indexPrimerUsuario, limit, pagina, palabraBusqueda) {
     return async (dispatch) => {
         dispatch(descargarMenus());
-        console.log(palabraBusqueda.busqueda);
+
+        console.log("indexPrimerUsuario:" + indexPrimerUsuario);
+        console.log("limit:" + limit);
+        console.log("pagina:" + pagina);
+        console.log("busqueda:" + palabraBusqueda);
+
+        if (palabraBusqueda === null || palabraBusqueda === '') {
+            palabraBusqueda = undefined
+        }
 
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            if (!palabraBusqueda.busqueda) {
-                const respuesta = await clienteAxios.get('/api/menu', header);
-                dispatch(descargarMenusExito(respuesta.data.menus));
-            } else {
-                await clienteAxios.get(`/api/menu/search/${String(palabraBusqueda.busqueda)}`, header)
-                    .then(response => {
-                        console.log(response.data);
-                        const { menus } = response.data;
-                        dispatch(descargarMenusExito(menus));
-                    })
-            }
+
+            await clienteAxios.get(`/api/menu/search/${palabraBusqueda}?from=${indexPrimerUsuario}&limit=${limit}`, header)
+                .then(response => {
+
+                    const datosPaginacion = {
+                        indexPrimerUsuario,
+                        limit,
+                        busqueda: palabraBusqueda,
+                        pagina,
+                    }
+
+                    response.data.datosPaginacion = datosPaginacion;
+                    console.log(response.data);
+
+                    dispatch(descargarMenusExito(response.data));
+                })
         } catch (error) {
             console.log(error);
             dispatch(descargarMenusError('Error al buscar los menus'));
         }
     }
 }
+
+const descargarMenus = () => ({
+    type: COMENZAR_DESCARGA_MENU,
+    payload: true
+});
+
+const descargarMenusExito = respuesta => ({
+    type: DESCARGA_MENU_EXITO,
+    payload: respuesta,
+});
+
+const descargarMenusError = errores => ({
+    type: DESCARGA_MENU_ERROR,
+    payload: errores,
+});
 
 /**********************  para buscar una categoria de la BBDD ********************************/
 export function obtenerCategoriasBuscadorAction(indexPrimerUsuario, limit, pagina, palabraBusqueda) {
@@ -787,7 +815,7 @@ const menuEliminadoError = msj => ({
 })
 
 /**********************  para obtener los menus de la BBDD ********************************/
-export function obtenerMenuAction(indexPrimerUsuario, limit, paginaCorriente) {
+/* export function obtenerMenuAction(indexPrimerUsuario, limit, paginaCorriente) {
     return async (dispatch) => {
         dispatch(descargarMenus());
 
@@ -804,22 +832,7 @@ export function obtenerMenuAction(indexPrimerUsuario, limit, paginaCorriente) {
             dispatch(descargarMenusError('Error al descargar los menus'));
         }
     }
-}
-
-const descargarMenus = () => ({
-    type: COMENZAR_DESCARGA_MENU,
-    payload: true
-});
-
-const descargarMenusExito = respuesta => ({
-    type: DESCARGA_MENU_EXITO,
-    payload: respuesta,
-});
-
-const descargarMenusError = errores => ({
-    type: DESCARGA_MENU_ERROR,
-    payload: errores,
-});
+} */
 
 /**********************  para crear una nuevo menu ********************************/
 export function crearNuevoMenuAction(datosNuevoMenu, imageFile) {
@@ -991,6 +1004,25 @@ const obtenerCategoriaEliminar = idcategoria => ({
     type: OBTENER_CATEGORIA_ELIMINAR,
     payload: idcategoria
 })
+
+/**********************  para obtener los categorias de la BBDD ********************************/
+/* export function obtenerCategoriasAction(indexPrimerUsuario, limit, paginaCorriente) {
+    return async (dispatch) => {
+        dispatch(descargarCategorias());
+
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            const respuesta = await clienteAxios.get(`/api/menu-categories?from=${indexPrimerUsuario}&limit=${limit}`, header);
+            respuesta.data.paginaCorriente = paginaCorriente;
+            dispatch(descargarCategoriasExito(respuesta.data));
+        } catch (error) {
+            console.log(error);
+            dispatch(descargarCategoriasError('Error al descargar los categoria'));
+        }
+
+    }
+} */
 
 /**********************  para crear una nueva categoria ********************************/
 export function crearNuevaCategoriaAction(datosNuevaCategoria, imageFile) {
@@ -1211,6 +1243,27 @@ const obtenerUsuarioEliminar = idUsuario => ({
     type: OBTENER_USUARIO_ELIMINAR,
     payload: idUsuario
 })
+
+/**********************  para obtener los usuarios de la BBDD ********************************/
+/* export function obtenerUsuariosAction(indexPrimerUsuario, limit, paginaCorriente) {
+    return async (dispatch) => {
+        dispatch(descargarUsuarios());
+        try {
+            const token = localStorage.getItem('token');
+            const header = {
+                headers: {
+                    'Authorization': `${token}`
+                }
+            }
+            const respuesta = await clienteAxios.get(`/api/users?from=${indexPrimerUsuario}&limit=${limit}`, header);
+            respuesta.data.paginaCorriente = paginaCorriente;
+            dispatch(descargarUsuariosExito(respuesta.data));
+        } catch (error) {
+            console.log(error);
+            dispatch(descargarUsuariosError('Error al descargar los usuarios'));
+        }
+    }
+} */
 
 /**********************  para crear un nuevo usuario ********************************/
 export function crearNuevoUsuarioAction(datosNuevoUsuario) {

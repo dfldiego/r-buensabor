@@ -2,18 +2,20 @@ import React, { Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import '../Usuario/Paginacion.css';
 import {
-    obtenerMenuAction,
+    obtenerMenusBuscadorAction,
 } from '../../actions/adminActions';
 
 const PaginacionMenu = () => {
 
     const dispatch = useDispatch();
 
-    const cargarMenu = (indexPrimerUsuario, limit, paginaCorriente) => dispatch(obtenerMenuAction(indexPrimerUsuario, limit, paginaCorriente));
+    const cargarMenu = (indexPrimerElemento, limite_state, paginaCorriente_state, palabraBuscar_state) => dispatch(obtenerMenusBuscadorAction(indexPrimerElemento, limite_state, paginaCorriente_state, palabraBuscar_state));
 
     const total_elementos_state = useSelector(state => state.admin.totalElementos);
+    let desde_state = useSelector(state => state.admin.desde);
     const limite_state = useSelector(state => state.admin.limite);
     let paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
+    let palabraBuscar_state = useSelector(state => state.admin.palabraBuscar);
 
     //cambiar pagina
     const handlePage = (numero) => {
@@ -22,7 +24,7 @@ const PaginacionMenu = () => {
         } else {
             paginaCorriente_state = numero;
             const indexPrimerElemento = numero;
-            cargarMenu(indexPrimerElemento, limite_state, paginaCorriente_state);
+            cargarMenu(indexPrimerElemento, limite_state, paginaCorriente_state, palabraBuscar_state);
         }
     }
 
@@ -36,8 +38,8 @@ const PaginacionMenu = () => {
             return;
         } else {
             paginaCorriente_state = numero;
-            const indexPrimerElemento = numero * limite_state;
-            cargarMenu(indexPrimerElemento, limite_state, paginaCorriente_state);
+            desde_state = numero * limite_state;
+            cargarMenu(desde_state, limite_state, paginaCorriente_state, palabraBuscar_state);
         }
 
     }
@@ -49,7 +51,7 @@ const PaginacionMenu = () => {
         } else {
             paginaCorriente_state = Math.floor(total_elementos_state / limite_state);
             const indexPrimerElemento = paginaCorriente_state * limite_state;
-            cargarMenu(indexPrimerElemento, limite_state, paginaCorriente_state);
+            cargarMenu(indexPrimerElemento, limite_state, paginaCorriente_state, palabraBuscar_state);
         }
     }
 
