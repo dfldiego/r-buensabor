@@ -8,7 +8,7 @@ import {
     abrirCerrarAgregarInsumoAction,
     crearNuevaInsumoAction,
     editarInsumoAction,
-    obtenerCategoriasInsumoBuscadorAction,
+    obtenerCategoriaInsumoAction,
     obtenerInsumoBuscadorAction,
 } from '../../actions/adminActions';
 import { useDispatch, useSelector } from 'react-redux';
@@ -39,7 +39,7 @@ const CreateInsumos = () => {
     const dispatch = useDispatch();
 
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarInsumoAction(nuevo_estado));
-    const obtenerCategoriasInsumo_callAction = () => dispatch(obtenerCategoriasInsumoBuscadorAction());
+    const obtenerCategoriasInsumo_callAction = () => dispatch(obtenerCategoriaInsumoAction());
     const agregar_nuevo_insumo_action = (datosNuevoInsumo) => dispatch(crearNuevaInsumoAction(datosNuevoInsumo));
 
     const insumo_editar_action = (datos_insumos) => dispatch(editarInsumoAction(datos_insumos));
@@ -50,7 +50,7 @@ const CreateInsumos = () => {
     let error = useSelector(state => state.admin.error);
     let msj_error = useSelector(state => state.admin.mensaje);
     let insumo_editar = useSelector(state => state.admin.insumo_editar);
-    let categoriasInsumo = useSelector(state => state.admin.categorias_insumo);
+    let categoriasInsumoSelect = useSelector(state => state.admin.categoriasInsumoSelect);
     const limite_state = useSelector(state => state.admin.limite);
     let paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
     let palabraBuscar_state = useSelector(state => state.admin.palabraBuscar);
@@ -255,7 +255,7 @@ const CreateInsumos = () => {
                                             <option value="">-- Seleccione una categoria --</option>
                                     }
                                     {
-                                        categoriasInsumo.map(categoria => (
+                                        categoriasInsumoSelect.map(categoria => (
                                             <option
                                                 key={categoria._id}
                                                 value={categoria._id}
