@@ -81,6 +81,7 @@ import {
     INSUMO_EDITADO_EXITO,
     INSUMO_EDITADO_ERROR,
     INSUMO_EDITADO_ERRORES,
+    DESCARGA_LISTADO_CATEGORIA,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
@@ -972,7 +973,7 @@ export function editarCategoriaAction(datos_categoria, imageFile) {
             const header = authorizationHeader(token);
             const formData = new FormData();
             formData.append('file', imageFile.img);
-            await clienteAxios.put(`/api/upload//menu-categories/${datos_categoria._id}`, formData, header)
+            await clienteAxios.put(`/api/upload/menu-categories/${datos_categoria._id}`, formData, header)
                 .then((response) => {
                     clienteAxios.put(`/api/menu-categories/${response.data.category._id}`, datos_categoria, header);
                     dispatch(editarCategoriaExito(response.data.category));
@@ -1039,23 +1040,32 @@ const obtenerCategoriaEliminar = idcategoria => ({
 })
 
 /**********************  para obtener los categorias de la BBDD ********************************/
-/* export function obtenerCategoriasAction(indexPrimerUsuario, limit, paginaCorriente) {
+export function obtenerCategoriasAction() {
     return async (dispatch) => {
         dispatch(descargarCategorias());
 
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            const respuesta = await clienteAxios.get(`/api/menu-categories?from=${indexPrimerUsuario}&limit=${limit}`, header);
-            respuesta.data.paginaCorriente = paginaCorriente;
-            dispatch(descargarCategoriasExito(respuesta.data));
-        } catch (error) {
-            console.log(error);
-            dispatch(descargarCategoriasError('Error al descargar los categoria'));
+
+            await clienteAxios.get(`/api/menu-categories`, header)
+                .then(response => {
+                    console.log(response.data);
+                    dispatch(obtenerListadoCategoria(response.data));
+                })
+
+        } catch (err) {
+            console.log(err);
+            dispatch(descargarCategoriasError("Error al obtener las categorias"));
         }
 
     }
-} */
+}
+
+const obtenerListadoCategoria = categorias => ({
+    type: DESCARGA_LISTADO_CATEGORIA,
+    payload: categorias
+})
 
 /**********************  para crear una nueva categoria ********************************/
 export function crearNuevaCategoriaAction(datosNuevaCategoria, imageFile) {

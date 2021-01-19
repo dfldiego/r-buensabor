@@ -83,6 +83,7 @@ import {
     INSUMO_EDITADO_EXITO,
     INSUMO_EDITADO_ERROR,
     INSUMO_EDITADO_ERRORES,
+    DESCARGA_LISTADO_CATEGORIA,
 } from '../types';
 
 const initialState = {
@@ -99,6 +100,7 @@ const initialState = {
     abrir_agregar_insumo: false,
     usuarios: [],
     categorias: [],
+    categoriasSelect: [],
     menus: [],
     categorias_insumo: [],
     insumos: [],
@@ -288,6 +290,16 @@ export default function (state = initialState, action) {
                 desde: Number(action.payload.datosPaginacion.indexPrimerUsuario),
                 paginaCorriente: action.payload.datosPaginacion.pagina
             }
+        case DESCARGA_LISTADO_CATEGORIA:
+            return {
+                ...state,
+                loading: false,
+                error: null,
+                mensaje: null,
+                errores: [],
+                categoriasSelect: action.payload.categories,
+                mostrarCategorias: true,
+            }
         case OBTENER_USUARIO_ELIMINAR:
             return {
                 ...state,
@@ -371,6 +383,7 @@ export default function (state = initialState, action) {
                 mensaje: null,
                 error: null,
                 menu_editar: null,
+                categoriasSelect: [],
             }
         case AGREGAR_MENU_EXITO:
             return {

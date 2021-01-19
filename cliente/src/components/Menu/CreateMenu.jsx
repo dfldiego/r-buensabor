@@ -7,8 +7,8 @@ import {
     abrirCerrarAgregarMenuAction,
     crearNuevoMenuAction,
     editarMenuAction,
-    obtenerCategoriasBuscadorAction,
     obtenerMenusBuscadorAction,
+    obtenerCategoriasAction,
 } from '../../actions/adminActions';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -36,13 +36,13 @@ const CreateMenu = () => {
     const dispatch = useDispatch();
 
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarMenuAction(nuevo_estado));
-    const obtenerCategorias_callAction = () => dispatch(obtenerCategoriasBuscadorAction());
+    const obtenerCategorias_callAction = () => dispatch(obtenerCategoriasAction());
     const agregar_nuevo_menu_action = (datosNuevoMenu, imageFile) => dispatch(crearNuevoMenuAction(datosNuevoMenu, imageFile));
     const menu_editar_action = (datosmenu, imageFile) => dispatch(editarMenuAction(datosmenu, imageFile));
     const cargarmenus = (indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda) => dispatch(obtenerMenusBuscadorAction(indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda));
 
     let cerrar_modal_state_store = useSelector(state => state.admin.abrir_agregar_menu);
-    const categorias = useSelector(state => state.admin.categorias);
+    const categoriasSelect = useSelector(state => state.admin.categoriasSelect);
     const errores = useSelector(state => state.admin.errores);
     const msj_error = useSelector(state => state.admin.mensaje);
     const menu_editar_store = useSelector(state => state.admin.menu_editar);
@@ -86,6 +86,7 @@ const CreateMenu = () => {
                 cerrar_modal();
             }
         } else {
+            console.log("entra al else del submit agregar menu");
             agregar_nuevo_menu_action({ description, finished_time, price, category }, imageFile)
 
             if (errores === [] && msj_error === null) {
@@ -210,7 +211,7 @@ const CreateMenu = () => {
                                             <option value="">-- Seleccione una categoria --</option>
                                     }
                                     {
-                                        categorias.map(categoria => (
+                                        categoriasSelect.map(categoria => (
                                             <option
                                                 key={categoria._id}
                                                 value={categoria._id}

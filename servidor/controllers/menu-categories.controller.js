@@ -1,24 +1,18 @@
 const { response } = require('express');
 const MenuCategory = require('../models/menu-categories.model');
 
-/* const list = async (req, res = response) => {
-
-    let from = Number(req.query.from) || 0;
-    let limit = Number(req.query.limit) || 5;
+const list = async (req, res = response) => {
 
     try {
         const [categories, total] = await Promise.all([
-            MenuCategory.find({ status: true })
-                .skip(from)
-                .limit(limit),
+            MenuCategory.find({ status: true }),
             MenuCategory.countDocuments({ status: true })
         ]);
-
+        console.log(categories);
         res.json({
             ok: true,
             categories,
             total,
-            limit,
         });
     } catch (error) {
         console.log(error);
@@ -27,7 +21,7 @@ const MenuCategory = require('../models/menu-categories.model');
             msg: error
         });
     }
-} */
+}
 
 const create = async (req, res = response) => {
     const { name } = req.body;
@@ -209,7 +203,7 @@ const search = async (req, res) => {
 
 
 module.exports = {
-    /*  list, */
+    list,
     create,
     update,
     remove,
