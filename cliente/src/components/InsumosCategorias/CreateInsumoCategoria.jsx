@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const CreateInsumoCategoria = () => {
 
-    const [imageFile, setimageFile] = useState({});
+    const [imageFile, setimageFile] = useState(null);
 
     const [insumoCategoria, setInsumoCategoria] = useState({
         description: '',
@@ -97,8 +97,6 @@ const CreateInsumoCategoria = () => {
             [e.target.name]: e.target.files[0],
         });
     };
-
-    console.log(categoria_insumo_editar);
 
     return (
         <Fragment>

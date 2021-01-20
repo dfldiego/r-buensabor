@@ -568,20 +568,30 @@ export function editarCategoriaInsumoAction(datos_categoria_insumos, imageFile) 
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
 
-            const formData = new FormData();
-            formData.append('file', imageFile.img);
+            console.log(imageFile);
 
-            await clienteAxios.put(`/api/upload/product-categories/${datos_categoria_insumos._id}`, formData, header)
+            if (imageFile !== null) {
+                console.log("entra");
+                const formData = new FormData();
+                formData.append('file', imageFile.img);
+                await clienteAxios.put(`/api/upload/product-categories/${datos_categoria_insumos._id}`, formData, header)
+                    .then(response => {
+                        console.log(response.data);
+                        const { result } = response.data;
 
+                        clienteAxios.put(`/api/product-categories/${result._id}`, datos_categoria_insumos, header)
 
-                .then(response => {
-                    console.log(response.data);
-                    const { result } = response.data;
+                        dispatch(editarCategoriaInsumoExito(result));
+                    })
+            } else {
+                clienteAxios.put(`/api/product-categories/${datos_categoria_insumos._id}`, datos_categoria_insumos, header)
+                    .then(response => {
+                        console.log(response.data);
+                        const { productCategory } = response.data;
+                        dispatch(editarCategoriaInsumoExito(productCategory));
+                    })
+            }
 
-                    clienteAxios.put(`/api/product-categories/${result._id}`, datos_categoria_insumos, header)
-
-                    dispatch(editarCategoriaInsumoExito(result));
-                })
 
         } catch (err) {
             if (err.response.data.msg !== undefined) {
