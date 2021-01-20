@@ -564,14 +564,20 @@ export function obtenerUnaCategoriaInsumoAction(datos_categoria_insumos) {
 export function editarCategoriaInsumoAction(datos_categoria_insumos, imageFile) {
     return async (dispatch) => {
 
+        const { description } = datos_categoria_insumos;
+
+        if (description === '') {
+            dispatch(agregarUsuarioError('La descripcion es obligatoria'));
+            return;
+        }
+
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
 
-            console.log(imageFile);
+            console.log(datos_categoria_insumos);
 
             if (imageFile !== null) {
-                console.log("entra");
                 const formData = new FormData();
                 formData.append('file', imageFile.img);
                 await clienteAxios.put(`/api/upload/product-categories/${datos_categoria_insumos._id}`, formData, header)
@@ -591,8 +597,6 @@ export function editarCategoriaInsumoAction(datos_categoria_insumos, imageFile) 
                         dispatch(editarCategoriaInsumoExito(productCategory));
                     })
             }
-
-
         } catch (err) {
             if (err.response.data.msg !== undefined) {
                 dispatch(editarCategoriaInsumoError(err.response.data.msg));
@@ -693,28 +697,43 @@ export function crearNuevaCategoriaInsumoAction(datosNuevoCategoriaInsumo, image
         dispatch(agregarCategoriaInsumo());
 
         try {
+
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
+            if (imageFile !== null) {
+                await clienteAxios.post('/api/product-categories', datosNuevoCategoriaInsumo, header)
+                    .then(response => {
+                        console.log(response.data);
+                        const formData = new FormData();
+                        formData.append('file', imageFile.img);
+                        if (!response.data.productCategoryStored) {
+                            const { productCategory } = response.data;
 
-            const formData = new FormData();
-            formData.append('file', imageFile.img);
+                            clienteAxios.put(`/api/upload/product-categories/${productCategory._id}`, formData, header)
 
-            await clienteAxios.post('/api/product-categories', datosNuevoCategoriaInsumo, header)
-                .then(response => {
-                    if (!response.data.productCategoryStored) {
-                        const { productCategory } = response.data;
+                            dispatch(agregarCategoriaInsumoExito(productCategory));
+                        } else {
+                            const { productCategoryStored } = response.data;
 
-                        clienteAxios.put(`/api/upload/product-categories/${productCategory._id}`, formData, header)
+                            clienteAxios.put(`/api/upload/product-categories/${productCategoryStored._id}`, formData, header)
 
-                        dispatch(agregarCategoriaInsumoExito(productCategory));
-                    } else {
-                        const { productCategoryStored } = response.data;
+                            dispatch(agregarCategoriaInsumoExito(productCategoryStored));
+                        }
+                    })
+            } else {
+                await clienteAxios.post('/api/product-categories', datosNuevoCategoriaInsumo, header)
+                    .then(response => {
+                        if (!response.data.productCategoryStored) {
+                            const { productCategory } = response.data;
 
-                        clienteAxios.put(`/api/upload/product-categories/${productCategoryStored._id}`, formData, header)
+                            dispatch(agregarCategoriaInsumoExito(productCategory));
+                        } else {
+                            const { productCategoryStored } = response.data;
 
-                        dispatch(agregarCategoriaInsumoExito(productCategoryStored));
-                    }
-                })
+                            dispatch(agregarCategoriaInsumoExito(productCategoryStored));
+                        }
+                    })
+            }
         } catch (err) {
             if (err.response.data.msg !== undefined) {
                 dispatch(agregarCategoriaInsumoError(err.response.data.msg));
@@ -786,15 +805,25 @@ export function editarMenuAction(datos_menu, imageFile) {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
 
-            const formData = new FormData();
-            formData.append('file', imageFile.img);
+            if (imageFile !== null) {
+                const formData = new FormData();
+                formData.append('file', imageFile.img);
 
-            clienteAxios.put(`/api/upload/menus/${datos_menu._id}`, formData, header)
-                .then(response => {
-                    clienteAxios.put(`/api/menu/${response.data.result._id}`, datos_menu, header);
-                    dispatch(editarMenuExito(response.data.result));
-                })
+                await clienteAxios.put(`/api/upload/menus/${datos_menu._id}`, formData, header)
+                    .then(response => {
+                        clienteAxios.put(`/api/menu/${response.data.result._id}`, datos_menu, header);
+                        dispatch(editarMenuExito(response.data.result));
+                    })
+            } else {
+                clienteAxios.put(`/api/menu/${datos_menu._id}`, datos_menu, header)
+                    .then(response => {
+                        console.log(response.data);
+                        const { menu } = response.data;
+                        dispatch(editarMenuExito(menu));
+                    })
+            }
         } catch (err) {
+            console.log(err.response);
             if (err.response.data.msg !== undefined) {
                 dispatch(editarMenuError(err.response.data.msg));
             } else {

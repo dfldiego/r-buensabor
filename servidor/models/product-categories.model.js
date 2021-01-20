@@ -14,6 +14,10 @@ let ProductCategoriesSchema = new Schema({
         type: String,
         required: [false]
     },
+    category: {
+        type: Boolean,
+        required: [false]
+    },
     status: {
         type: Boolean,
         default: true

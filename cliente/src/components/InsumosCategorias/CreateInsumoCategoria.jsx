@@ -145,11 +145,15 @@ const CreateInsumoCategoria = () => {
                                     onChange={handleChange}
                                 >
                                     {
-                                        categoria_insumo_editar.parent ?
-                                            <option
-                                                key={categoria_insumo_editar._id}
-                                                value={categoria_insumo_editar._id}
-                                            >{categoria_insumo_editar.parent.description}</option>
+                                        categoria_insumo_editar ?
+                                            categoria_insumo_editar.parent ?
+                                                <option
+                                                    key={categoria_insumo_editar._id}
+                                                    value={categoria_insumo_editar._id}
+                                                >{categoria_insumo_editar.parent.description}
+                                                </option>
+                                                :
+                                                <option value="">-- Seleccione una categoria --</option>
                                             :
                                             <option value="">-- Seleccione una categoria --</option>
                                     }

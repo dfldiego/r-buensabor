@@ -1,3 +1,4 @@
+const { response } = require('express');
 const User = require('../models/user.model');
 const Menu = require('../models/menu.model');
 const MenuCategories = require('../models/menu-categories.model');
@@ -5,16 +6,14 @@ const ProductCategories = require('../models/product-categories.model');
 const fs = require('fs');
 const path = require('path');
 
-const upload = async (req, res) => {
+const upload = async (req, res = response) => {
 
     // req.files contiene cada uno de los file que subamos.
     // Object.keys es para validar si el objeto esta vacio.
     if (!req.files || Object.keys(req.files).length === 0) {
         return res.status(400).json({
             ok: false,
-            err: {
-                message: "No se ha seleccionado ningún archivo"
-            }
+            msg: "No se ha seleccionado ningún archivo",
         });
     }
 
@@ -26,9 +25,7 @@ const upload = async (req, res) => {
     if (validTypes.indexOf(type) < 0) {
         return res.json({
             ok: true,
-            err: {
-                message: 'Los tipos permitidos son ' + validTypes.join(', ')
-            }
+            msg: 'Los tipos permitidos son ' + validTypes.join(', '),
         });
     }
 
@@ -43,9 +40,7 @@ const upload = async (req, res) => {
     if (validExtensions.indexOf(fileExtension) < 0) {
         return res.json({
             ok: true,
-            err: {
-                message: 'Las extensiones permitidas son ' + validExtensions.join(', ')
-            }
+            msg: 'Las extensiones permitidas son ' + validExtensions.join(', '),
         });
     }
 
@@ -108,9 +103,7 @@ function addImageToObject(upload) {
             deleteImg(upload.folder, upload.fileNameToSave);
             return upload.res.status(400).json({
                 ok: false,
-                err: {
-                    message: 'Objeto no existe con ese id: ' + upload.id
-                }
+                msg: 'Objeto no existe con ese id: ' + upload.id,
             });
         }
         deleteImg(upload.folder, objectDB.img);

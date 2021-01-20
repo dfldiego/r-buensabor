@@ -199,7 +199,7 @@ const remove = async (req, res = response) => {
             return res.status(400).json({
                 ok: false,
                 err: {
-                    message: 'Usuario no encontrado'
+                    msg: 'Usuario no encontrado'
                 }
             });
         }

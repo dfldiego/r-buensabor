@@ -109,6 +109,12 @@ const update = async (req, res = response) => {
                     msg: 'Ya existe una categoria con esa descripcion'
                 });
             }
+            if (description === '') {
+                return res.status(400).json({
+                    ok: false,
+                    msg: "Todos los campos son obligatorios"
+                });
+            }
         }
         // debemos colocar la description que queremos actualizar
         campos.description = description;
@@ -204,6 +210,7 @@ const search = async (req, res) => {
 }
 
 module.exports = {
+    listGrandParent,
     list,
     create,
     update,

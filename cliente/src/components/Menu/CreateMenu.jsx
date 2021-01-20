@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const CreateMenu = () => {
 
-    const [imageFile, setimageFile] = useState({});
+    const [imageFile, setimageFile] = useState(null);
 
     const [menu, setMenu] = useState({
         description: '',
