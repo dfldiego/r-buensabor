@@ -98,6 +98,8 @@ const CreateInsumoCategoria = () => {
         });
     };
 
+    console.log(categoria_insumo_editar);
+
     return (
         <Fragment>
             <div className="modal-categoria">
@@ -145,7 +147,7 @@ const CreateInsumoCategoria = () => {
                                     onChange={handleChange}
                                 >
                                     {
-                                        categoria_insumo_editar ?
+                                        categoria_insumo_editar.parent ?
                                             <option
                                                 key={categoria_insumo_editar._id}
                                                 value={categoria_insumo_editar._id}

@@ -110,6 +110,8 @@ const CreateInsumos = () => {
         // eslint-disable-next-line
     }, [insumo_editar]);
 
+    console.log(insumo_editar);
+
     return (
         <Fragment>
             <div className="modal-insumo">
@@ -246,7 +248,7 @@ const CreateInsumos = () => {
                                     onChange={handleChange}
                                 >
                                     {
-                                        insumo_editar ?
+                                        insumo_editar.category ?
                                             <option
                                                 key={insumo_editar.category._id}
                                                 value={insumo_editar.category._id}
