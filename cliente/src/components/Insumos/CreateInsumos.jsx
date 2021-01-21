@@ -7,9 +7,8 @@ import ClearIcon from '@material-ui/icons/Clear';
 import {
     abrirCerrarAgregarInsumoAction,
     crearNuevaInsumoAction,
-    editarInsumoAction,
     obtenerCategoriaInsumoAction,
-    obtenerInsumoBuscadorAction,
+    editarInsumoAction,
 } from '../../actions/adminActions';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -39,21 +38,15 @@ const CreateInsumos = () => {
     const dispatch = useDispatch();
 
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarInsumoAction(nuevo_estado));
-    const obtenerCategoriasInsumo_callAction = () => dispatch(obtenerCategoriaInsumoAction());
     const agregar_nuevo_insumo_action = (datosNuevoInsumo) => dispatch(crearNuevaInsumoAction(datosNuevoInsumo));
-
+    const obtenerCategoriasInsumo = () => dispatch(obtenerCategoriaInsumoAction());
     const insumo_editar_action = (datos_insumos) => dispatch(editarInsumoAction(datos_insumos));
-    const cargarInsumos = (indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda) => dispatch(obtenerInsumoBuscadorAction(indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda));
 
     let cerrar_modal_state_store = useSelector(state => state.admin.abrir_agregar_insumo);
-    let errores = useSelector(state => state.admin.errores);
-    let error = useSelector(state => state.admin.error);
-    let msj_error = useSelector(state => state.admin.mensaje);
-    let insumo_editar = useSelector(state => state.admin.insumo_editar);
-    let categoriasInsumoSelect = useSelector(state => state.admin.categoriasInsumoSelect);
-    const limite_state = useSelector(state => state.admin.limite);
-    let paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
-    let palabraBuscar_state = useSelector(state => state.admin.palabraBuscar);
+    const errores = useSelector(state => state.admin.errores);
+    const msj_error = useSelector(state => state.admin.mensaje);
+    const categoriasInsumoSelect = useSelector(state => state.admin.categoriasInsumoSelect);
+    const insumo_editar = useSelector(state => state.admin.insumo_editar);
 
     const cerrar_modal = e => {
         e.preventDefault();
@@ -65,7 +58,7 @@ const CreateInsumos = () => {
     }
 
     useEffect(() => {
-        obtenerCategoriasInsumo_callAction();
+        obtenerCategoriasInsumo();
 
         // eslint-disable-next-line
     }, []);
@@ -77,8 +70,6 @@ const CreateInsumos = () => {
             insumo._id = insumo_editar._id;
             insumo_editar_action(insumo);
 
-            cargarInsumos(0, limite_state, paginaCorriente_state, palabraBuscar_state);
-
             if (errores === [] && msj_error === null) {
                 cerrar_modal();
             }
@@ -89,7 +80,6 @@ const CreateInsumos = () => {
                 cerrar_modal();
             }
         }
-
     }
 
     useEffect(() => {
@@ -110,8 +100,6 @@ const CreateInsumos = () => {
         // eslint-disable-next-line
     }, [insumo_editar]);
 
-    console.log(insumo_editar);
-
     return (
         <Fragment>
             <div className="modal-insumo">
@@ -122,7 +110,7 @@ const CreateInsumos = () => {
                             onClick={cerrar_modal}
                         />
 
-                        {error ? <p className="error">{msj_error}</p> : null}
+                        {msj_error ? <p className="error">{msj_error}</p> : null}
 
                         {errores[0] ?
                             <div>
@@ -248,11 +236,14 @@ const CreateInsumos = () => {
                                     onChange={handleChange}
                                 >
                                     {
-                                        insumo_editar.category ?
-                                            <option
-                                                key={insumo_editar.category._id}
-                                                value={insumo_editar.category._id}
-                                            >{insumo_editar.category.description}</option>
+                                        insumo_editar ?
+                                            insumo_editar.category ?
+                                                <option
+                                                    key={insumo_editar._id}
+                                                    value={insumo_editar._id}
+                                                >{insumo_editar.category.description}</option>
+                                                :
+                                                <option value="">-- Seleccione una categoria --</option>
                                             :
                                             <option value="">-- Seleccione una categoria --</option>
                                     }

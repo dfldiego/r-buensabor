@@ -22,7 +22,6 @@ const InsumosCategorias = () => {
 
     const abrir_cerrar_agregarCategoriaInsumo = estadoAgregarCategoriaInsumo => dispatch(abrirCerrarAgregarCategoriaInsumoAction(estadoAgregarCategoriaInsumo));
     const cargarCategoriasInsumo = (indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda) => dispatch(obtenerCategoriasInsumoBuscadorAction(indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda));
-    const busquedaCategoriasInsumo = (indexPrimerUsuario, limit, paginaCorriente_state, palabraBusqueda) => dispatch(obtenerCategoriasInsumoBuscadorAction(indexPrimerUsuario, limit, paginaCorriente_state, palabraBusqueda));
 
     const modalAgregarCategoriaInsumo = useSelector(state => state.admin.abrir_agregar_categoria_insumo);
     const recargarTablaCategoriaInsumo = useSelector(state => state.admin.categoria_insumo_eliminar);
@@ -74,7 +73,7 @@ const InsumosCategorias = () => {
     const handleClick_buscador = e => {
         e.preventDefault();
         paginaCorriente_state = 0;
-        busquedaCategoriasInsumo(0, limite_state, paginaCorriente_state, buscador);
+        cargarCategoriasInsumo(0, limite_state, paginaCorriente_state, buscador);
     }
 
     return (

@@ -35,7 +35,7 @@ const CreateMenu = () => {
 
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarMenuAction(nuevo_estado));
     const agregar_nuevo_menu_action = (datosNuevoMenu, imageFile) => dispatch(crearNuevoMenuAction(datosNuevoMenu, imageFile));
-    const cargarmenus = () => dispatch(obtenerCategoriasAction());
+    const obtenerCategorias = () => dispatch(obtenerCategoriasAction());
     const menu_editar_action = (datosmenu, imageFile) => dispatch(editarMenuAction(datosmenu, imageFile));
 
     let cerrar_modal_state_store = useSelector(state => state.admin.abrir_agregar_menu);
@@ -53,7 +53,7 @@ const CreateMenu = () => {
     }
 
     useEffect(() => {
-        cargarmenus();
+        obtenerCategorias();
 
         // eslint-disable-next-line
     }, []);
@@ -75,7 +75,6 @@ const CreateMenu = () => {
                 cerrar_modal();
             }
         }
-
     }
 
     useEffect(() => {

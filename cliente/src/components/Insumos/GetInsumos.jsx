@@ -9,8 +9,6 @@ import { useSelector } from 'react-redux';
 const GetInsumos = () => {
 
     const insumos_state = useSelector(state => state.admin.insumos);
-    const error = useSelector(state => state.admin.error);
-    const mensaje_error = useSelector(state => state.admin.mensaje);
 
     if (!insumos_state) {
         return;
@@ -19,9 +17,6 @@ const GetInsumos = () => {
     return (
         <Fragment>
             <h2 className="titulo">Listado de Insumos</h2>
-            {
-                error ? <p className="error">{mensaje_error}</p> : null
-            }
             <table>
                 <thead>
                     <tr>

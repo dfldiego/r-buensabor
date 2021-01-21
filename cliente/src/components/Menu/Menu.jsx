@@ -20,7 +20,6 @@ const Menu = () => {
 
     const abrir_cerrar_btn_agregar = estadoAgregarMenu => dispatch(abrirCerrarAgregarMenuAction(estadoAgregarMenu));
     const cargarmenus = (indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda) => dispatch(obtenerMenusBuscadorAction(indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda));
-    const busqueda_menus = (indexPrimerUsuario, limit, paginaCorriente_state, palabraBusqueda) => dispatch(obtenerMenusBuscadorAction(indexPrimerUsuario, limit, paginaCorriente_state, palabraBusqueda));
 
     const modalAgregarMenu = useSelector(state => state.admin.abrir_agregar_menu);
     const recargarTablaMenu = useSelector(state => state.admin.menu_eliminar);
@@ -71,7 +70,7 @@ const Menu = () => {
     const handleClick_buscador = e => {
         e.preventDefault();
         paginaCorriente_state = 0;
-        busqueda_menus(0, limite_state, paginaCorriente_state, buscador);
+        cargarmenus(0, limite_state, paginaCorriente_state, buscador);
     }
 
     return (

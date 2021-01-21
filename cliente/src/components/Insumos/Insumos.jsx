@@ -20,13 +20,20 @@ const Insumos = () => {
 
     const abrir_cerrar_agregarInsumo = estadoAgregarInsumo => dispatch(abrirCerrarAgregarInsumoAction(estadoAgregarInsumo));
     const cargarInsumo = (indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda) => dispatch(obtenerInsumoBuscadorAction(indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda));
-    const busquedaInsumo = (indexPrimerUsuario, limit, paginaCorriente_state, palabraBusqueda) => dispatch(obtenerInsumoBuscadorAction(indexPrimerUsuario, limit, paginaCorriente_state, palabraBusqueda));
 
     const modalAgregarInsumo = useSelector(state => state.admin.abrir_agregar_insumo);
     const recargarTablaInsumo = useSelector(state => state.admin.insumo_eliminar);
+    const recargarTablaInsumoAlEditar = useSelector(state => state.admin.insumo_editar);
     const limite_state = useSelector(state => state.admin.limite);
     let paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
     let palabraBuscar_state = useSelector(state => state.admin.palabraBuscar);
+    let desde_state = useSelector(state => state.admin.desde);
+
+    useEffect(() => {
+        cargarInsumo(desde_state, limite_state, paginaCorriente_state, palabraBuscar_state);
+
+        // eslint-disable-next-line
+    }, [recargarTablaInsumoAlEditar, modalAgregarInsumo]);
 
     useEffect(() => {
         cargarInsumo(0, limite_state, paginaCorriente_state, palabraBuscar_state);
@@ -64,7 +71,7 @@ const Insumos = () => {
     const handleClick_buscador = e => {
         e.preventDefault();
         paginaCorriente_state = 0;
-        busquedaInsumo(0, limite_state, paginaCorriente_state, buscador);
+        cargarInsumo(0, limite_state, paginaCorriente_state, buscador);
     }
 
     return (

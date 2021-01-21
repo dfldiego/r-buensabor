@@ -457,16 +457,15 @@ const insumoEliminadoError = msj => ({
 })
 
 /**********************  para obtener los insumos de la BBDD ********************************/
-/* export function obtenerInsumosAction(indexPrimerInsumo, limit, paginaCorriente) {
+export function obtenerInsumosAction() {
     return async (dispatch) => {
         dispatch(descargarInsumos());
 
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            await clienteAxios.get(`/api/product?from=${indexPrimerInsumo}&limit=${limit}`, header)
+            await clienteAxios.get(`/api/product?`, header)
                 .then(response => {
-                    response.data.paginaCorriente = paginaCorriente;
                     dispatch(descargarInsumosExito(response.data));
                 })
         } catch (err) {
@@ -475,7 +474,7 @@ const insumoEliminadoError = msj => ({
         }
 
     }
-} */
+}
 
 /**********************  para crear una nueva insumo ********************************/
 export function crearNuevaInsumoAction(datosNuevoInsumo) {
