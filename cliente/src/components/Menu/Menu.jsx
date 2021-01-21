@@ -28,13 +28,19 @@ const Menu = () => {
     const limite_state = useSelector(state => state.admin.limite);
     let paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
     let palabraBuscar_state = useSelector(state => state.admin.palabraBuscar);
+    let desde_state = useSelector(state => state.admin.desde);
 
-    // modalAgregarMenu -> para que al agregar un menu se actualice en la tabla la categoria.
+    useEffect(() => {
+        cargarmenus(desde_state, limite_state, paginaCorriente_state, palabraBuscar_state);
+
+        // eslint-disable-next-line
+    }, [recargarTablaMenuAlEditar, modalAgregarMenu]);
+
     useEffect(() => {
         cargarmenus(0, limite_state, paginaCorriente_state, palabraBuscar_state);
 
         // eslint-disable-next-line
-    }, [recargarTablaMenu, recargarTablaMenuAlEditar, modalAgregarMenu]);
+    }, [recargarTablaMenu]);
 
     const handleClick_abrir_agregar_menu = e => {
         e.preventDefault();

@@ -85,7 +85,7 @@ const getById = async (req, res) => {
         if (err) {
             return res.status(500).json({
                 ok: false,
-                err
+                msg: err
             });
         }
 
@@ -99,7 +99,7 @@ const getById = async (req, res) => {
                 if (errr) {
                     return res.status(500).json({
                         ok: false,
-                        errr
+                        msg: errr
                     });
                 }
 

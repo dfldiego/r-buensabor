@@ -6,9 +6,8 @@ import ClearIcon from '@material-ui/icons/Clear';
 import {
     abrirCerrarAgregarMenuAction,
     crearNuevoMenuAction,
-    editarMenuAction,
-    obtenerMenusBuscadorAction,
     obtenerCategoriasAction,
+    editarMenuAction,
 } from '../../actions/adminActions';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -23,7 +22,6 @@ const CreateMenu = () => {
         category: undefined
     });
 
-
     const { description, finished_time, price, category } = menu;
 
     const handleChange = e => {
@@ -36,29 +34,17 @@ const CreateMenu = () => {
     const dispatch = useDispatch();
 
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarMenuAction(nuevo_estado));
-    const obtenerCategorias_callAction = () => dispatch(obtenerCategoriasAction());
     const agregar_nuevo_menu_action = (datosNuevoMenu, imageFile) => dispatch(crearNuevoMenuAction(datosNuevoMenu, imageFile));
+    const cargarmenus = () => dispatch(obtenerCategoriasAction());
     const menu_editar_action = (datosmenu, imageFile) => dispatch(editarMenuAction(datosmenu, imageFile));
-    const cargarmenus = (indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda) => dispatch(obtenerMenusBuscadorAction(indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda));
 
     let cerrar_modal_state_store = useSelector(state => state.admin.abrir_agregar_menu);
-    const categoriasSelect = useSelector(state => state.admin.categoriasSelect);
     const errores = useSelector(state => state.admin.errores);
     const msj_error = useSelector(state => state.admin.mensaje);
+    const categoriasSelect = useSelector(state => state.admin.categoriasSelect);
     const menu_editar_store = useSelector(state => state.admin.menu_editar);
-    const limite_state = useSelector(state => state.admin.limite);
-    let paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
-    let palabraBuscar_state = useSelector(state => state.admin.palabraBuscar);
 
-    var handleChange_imagen = (e) => {
-        setimageFile({
-            ...imageFile,
-            [e.target.name]: e.target.files[0],
-        });
-    };
-
-    const cerrar_modal = e => {
-        e.preventDefault();
+    const cerrar_modal = () => {
         if (cerrar_modal_state_store) {
             cerrar_modal_state_store = false;
             cerrar_modal_callAction(cerrar_modal_state_store);
@@ -67,7 +53,7 @@ const CreateMenu = () => {
     }
 
     useEffect(() => {
-        obtenerCategorias_callAction();
+        cargarmenus();
 
         // eslint-disable-next-line
     }, []);
@@ -79,13 +65,10 @@ const CreateMenu = () => {
             menu._id = menu_editar_store._id;
             menu_editar_action(menu, imageFile);
 
-            cargarmenus(0, limite_state, paginaCorriente_state, palabraBuscar_state);
-
             if (errores === [] && msj_error === null) {
                 cerrar_modal();
             }
         } else {
-            console.log("entra al else del submit agregar menu");
             agregar_nuevo_menu_action({ description, finished_time, price, category }, imageFile)
 
             if (errores === [] && msj_error === null) {
@@ -108,6 +91,13 @@ const CreateMenu = () => {
 
         // eslint-disable-next-line
     }, [menu_editar_store])
+
+    var handleChange_imagen = (e) => {
+        setimageFile({
+            ...imageFile,
+            [e.target.name]: e.target.files[0],
+        });
+    };
 
     return (
         <Fragment>
@@ -202,10 +192,14 @@ const CreateMenu = () => {
                                 >
                                     {
                                         menu_editar_store ?
-                                            <option
-                                                key={menu_editar_store.category._id}
-                                                value={menu_editar_store.category._id}
-                                            >{menu_editar_store.category.name}</option>
+                                            menu_editar_store.category ?
+                                                <option
+                                                    key={menu_editar_store._id}
+                                                    value={menu_editar_store._id}
+                                                >{menu_editar_store.category.name}
+                                                </option>
+                                                :
+                                                <option value="">-- Seleccione una categoria --</option>
                                             :
                                             <option value="">-- Seleccione una categoria --</option>
                                     }

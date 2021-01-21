@@ -9,8 +9,6 @@ import { useSelector } from 'react-redux';
 const GetInsumoCategoria = () => {
 
     const categorias_insumo_state = useSelector(state => state.admin.categorias_insumo);
-    const error = useSelector(state => state.admin.error);
-    const mensaje_error = useSelector(state => state.admin.mensaje);
 
     if (!categorias_insumo_state) {
         return;

@@ -889,7 +889,7 @@ const menuEliminadoError = msj => ({
 })
 
 /**********************  para obtener los menus de la BBDD ********************************/
-/* export function obtenerMenuAction(indexPrimerUsuario, limit, paginaCorriente) {
+export function obtenerMenuAction(indexPrimerUsuario, limit, paginaCorriente) {
     return async (dispatch) => {
         dispatch(descargarMenus());
 
@@ -906,7 +906,7 @@ const menuEliminadoError = msj => ({
             dispatch(descargarMenusError('Error al descargar los menus'));
         }
     }
-} */
+}
 
 /**********************  para crear una nuevo menu ********************************/
 export function crearNuevoMenuAction(datosNuevoMenu, imageFile) {
@@ -917,26 +917,45 @@ export function crearNuevoMenuAction(datosNuevoMenu, imageFile) {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
 
-            const formData = new FormData();
-            formData.append('file', imageFile.img);
+            if (imageFile !== null) {
+                await clienteAxios.post('/api/menu', datosNuevoMenu, header)
+                    .then(response => {
+                        console.log(response.data);
 
-            await clienteAxios.post('/api/menu', datosNuevoMenu, header)
-                .then(response => {
-                    if (!response.data.menuStored) {
-                        const { menu } = response.data;
+                        const formData = new FormData();
+                        formData.append('file', imageFile.img);
 
-                        clienteAxios.put(`/api/upload/menus/${menu._id}`, formData, header)
+                        if (!response.data.menuStored) {
 
-                        dispatch(agregarMenuExito(menu));
-                    } else {
-                        const { menuStored } = response.data;   // menus con status=false a status=true
+                            const { menu } = response.data;
 
-                        clienteAxios.put(`/api/upload/menus/${menuStored._id}`, formData, header)
+                            clienteAxios.put(`/api/upload/menus/${menu._id}`, formData, header)
 
-                        dispatch(agregarMenuExito(menuStored));
-                        console.log(response.data.msg);
-                    }
-                })
+                            dispatch(agregarMenuExito(menu));
+
+                        } else {
+
+                            const { menuStored } = response.data;   // menus con status=false a status=true
+
+                            clienteAxios.put(`/api/upload/menus/${menuStored._id}`, formData, header)
+
+                            dispatch(agregarMenuExito(menuStored));
+                        }
+                    })
+            } else {
+                await clienteAxios.post('/api/menu', datosNuevoMenu, header)
+                    .then(response => {
+                        if (!response.data.menuStored) {
+                            const { menu } = response.data;
+
+                            dispatch(agregarMenuExito(menu));
+                        } else {
+                            const { menuStored } = response.data;
+
+                            dispatch(agregarMenuExito(menuStored));
+                        }
+                    })
+            }
         } catch (err) {
             if (err.response.data.msg !== undefined) {
                 dispatch(agregarMenuError(err.response.data.msg));
