@@ -32,6 +32,7 @@ import {
     OBTENER_CATEGORIA_EDITAR,
     CATEGORIA_EDITADO_EXITO,
     CATEGORIA_EDITADO_ERROR,
+    CATEGORIA_EDITADO_ERRORES,
     ABRIR_AGREGAR_MENU,
     CERRAR_AGREGAR_MENU,
     AGREGAR_MENU,
@@ -564,9 +565,7 @@ export function obtenerUnaCategoriaInsumoAction(datos_categoria_insumos) {
 export function editarCategoriaInsumoAction(datos_categoria_insumos, imageFile) {
     return async (dispatch) => {
 
-        const { description } = datos_categoria_insumos;
-
-        if (description === '') {
+        if (datos_categoria_insumos.description === '') {
             dispatch(agregarUsuarioError('La descripcion es obligatoria'));
             return;
         }
@@ -575,22 +574,18 @@ export function editarCategoriaInsumoAction(datos_categoria_insumos, imageFile) 
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
 
-            console.log(datos_categoria_insumos);
-
             if (imageFile !== null) {
                 const formData = new FormData();
                 formData.append('file', imageFile.img);
+
                 await clienteAxios.put(`/api/upload/product-categories/${datos_categoria_insumos._id}`, formData, header)
                     .then(response => {
                         console.log(response.data);
-                        const { result } = response.data;
-
-                        clienteAxios.put(`/api/product-categories/${result._id}`, datos_categoria_insumos, header)
-
-                        dispatch(editarCategoriaInsumoExito(result));
+                        clienteAxios.put(`/api/product-categories/${response.data.result._id}`, response.data.result, header)
+                        dispatch(editarCategoriaInsumoExito(response.data.result));
                     })
             } else {
-                clienteAxios.put(`/api/product-categories/${datos_categoria_insumos._id}`, datos_categoria_insumos, header)
+                await clienteAxios.put(`/api/product-categories/${datos_categoria_insumos._id}`, datos_categoria_insumos, header)
                     .then(response => {
                         console.log(response.data);
                         const { productCategory } = response.data;
@@ -598,6 +593,7 @@ export function editarCategoriaInsumoAction(datos_categoria_insumos, imageFile) 
                     })
             }
         } catch (err) {
+            console.log(err);
             if (err.response.data.msg !== undefined) {
                 dispatch(editarCategoriaInsumoError(err.response.data.msg));
             } else {
@@ -1006,6 +1002,7 @@ export function obtenerCategoriaAction(datos_categoria) {
 export function editarCategoriaAction(datos_categoria, imageFile) {
     return async (dispatch) => {
         const { name } = datos_categoria;
+
         // validar campos vacios
         if (name === '') {
             dispatch(agregarCategoriaError('Todos los campos son obligatorios'));
@@ -1015,16 +1012,34 @@ export function editarCategoriaAction(datos_categoria, imageFile) {
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            const formData = new FormData();
-            formData.append('file', imageFile.img);
-            await clienteAxios.put(`/api/upload/menu-categories/${datos_categoria._id}`, formData, header)
-                .then((response) => {
-                    clienteAxios.put(`/api/menu-categories/${response.data.category._id}`, datos_categoria, header);
-                    dispatch(editarCategoriaExito(response.data.category));
-                })
-        } catch (error) {
-            console.log(error);
-            dispatch(editarCategoriaError('Error al editar la categoria'));
+
+            if (imageFile !== null) {
+                const formData = new FormData();
+                formData.append('file', imageFile.img);
+
+                await clienteAxios.put(`/api/upload/menu-categories/${datos_categoria._id}`, formData, header)
+                    .then(response => {
+                        console.log(response.data);
+                        clienteAxios.put(`/api/menu-categories/${response.data.result._id}`, response.data.result, header);
+                        dispatch(editarCategoriaExito(response.data.result));
+                    })
+            } else {
+                await clienteAxios.put(`/api/menu-categories/${datos_categoria._id}`, datos_categoria, header)
+                    .then(response => {
+                        console.log(response.data);
+                        const { menuCategory } = response.data;
+                        dispatch(editarCategoriaExito(menuCategory));
+                    })
+            }
+        } catch (err) {
+            console.log(err.response);
+            if (err.response.data.msg !== undefined) {
+                dispatch(editarCategoriaError(err.response.data.msg));
+            } else {
+                if (err.response.data.err.errors) {
+                    dispatch(editarCategoriaErrores(err.response.data.err.errors));
+                }
+            }
         }
     }
 }
@@ -1043,6 +1058,11 @@ const editarCategoriaError = msj => ({
     type: CATEGORIA_EDITADO_ERROR,
     payload: msj
 })
+
+const editarCategoriaErrores = errores => ({
+    type: CATEGORIA_EDITADO_ERRORES,
+    payload: errores,
+});
 
 /**********************  para eliminar un categoria de la BBDD ********************************/
 export function eliminarCategoriaAction(datos_categoria) {
@@ -1125,20 +1145,45 @@ export function crearNuevaCategoriaAction(datosNuevaCategoria, imageFile) {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
 
-            const formData = new FormData();
-            formData.append('file', imageFile.img);
-            await clienteAxios.post('/api/menu-categories', datosNuevaCategoria, header)
-                .then((response) => {
-                    if (!response.data.menuCategoryStored) {
-                        const { category } = response.data;
-                        clienteAxios.put(`/api/upload/menu-categories/${category._id}`, formData, header)
-                        dispatch(agregarCategoriaExito(category));
-                    } else {
-                        const { menuCategoryStored } = response.data;   // menus con status=false a status=true
-                        clienteAxios.put(`/api/upload/menu-categories/${menuCategoryStored._id}`, formData, header)
-                        dispatch(agregarMenuExito(menuCategoryStored));
-                    }
-                })
+            console.log(datosNuevaCategoria);
+
+            if (imageFile !== null) {
+                await clienteAxios.post('/api/menu-categories', datosNuevaCategoria, header)
+                    .then((response) => {
+
+                        console.log(response.data);
+
+                        const formData = new FormData();
+                        formData.append('file', imageFile.img);
+
+                        if (!response.data.menuCategoryStored) {
+                            const { category } = response.data;
+
+                            clienteAxios.put(`/api/upload/menu-categories/${category._id}`, formData, header)
+
+                            dispatch(agregarCategoriaExito(category));
+                        } else {
+                            const { menuCategoryStored } = response.data;   // menus con status=false a status=true
+                            clienteAxios.put(`/api/upload/menu-categories/${menuCategoryStored._id}`, formData, header)
+
+                            dispatch(agregarCategoriaExito(menuCategoryStored));
+                        }
+                    })
+            } else {
+                await clienteAxios.post('/api/menu-categories', datosNuevaCategoria, header)
+                    .then(response => {
+                        console.log(response.data);
+                        if (!response.data.menuCategoryStored) {
+                            const { category } = response.data;
+
+                            dispatch(agregarCategoriaExito(category));
+                        } else {
+                            const { menuCategoryStored } = response.data;
+
+                            dispatch(agregarCategoriaExito(menuCategoryStored));
+                        }
+                    })
+            }
         } catch (err) {
             console.log(err.response);
             if (err.response.data.msg !== undefined) {
@@ -1382,9 +1427,9 @@ export function crearNuevoUsuarioAction(datosNuevoUsuario) {
             // si todo sale bien
             dispatch(agregarUsuarioExito(datosNuevoUsuario));
         } catch (error) {
-            console.log(error);
+            console.log(error.response.data.msg);
             // si hay un error
-            dispatch(agregarUsuarioError('Hubo un error, por favor comuniquese con el administrador'));
+            dispatch(agregarUsuarioError(error.response.data.msg));
         }
     }
 }

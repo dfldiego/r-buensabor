@@ -34,6 +34,7 @@ import {
     OBTENER_CATEGORIA_EDITAR,
     CATEGORIA_EDITADO_EXITO,
     CATEGORIA_EDITADO_ERROR,
+    CATEGORIA_EDITADO_ERRORES,
     ABRIR_AGREGAR_MENU,
     CERRAR_AGREGAR_MENU,
     AGREGAR_MENU,
@@ -142,6 +143,7 @@ export default function (state = initialState, action) {
                 en_insumos: null,
                 en_categoria_insumos: null,
                 paginaCorriente: 0,
+                palabraBuscar: null,
             }
         case ENTRAR_CRUD_MENU:
             return {
@@ -152,6 +154,7 @@ export default function (state = initialState, action) {
                 en_insumos: null,
                 en_categoria_insumos: null,
                 paginaCorriente: 0,
+                palabraBuscar: null,
             }
         case ENTRAR_CRUD_CATEGORIA:
             return {
@@ -162,6 +165,7 @@ export default function (state = initialState, action) {
                 en_insumos: null,
                 en_categoria_insumos: null,
                 paginaCorriente: 0,
+                palabraBuscar: null,
             }
         case ENTRAR_CRUD_INSUMOS:
             return {
@@ -172,6 +176,7 @@ export default function (state = initialState, action) {
                 en_insumos: true,
                 en_categoria_insumos: null,
                 paginaCorriente: 0,
+                palabraBuscar: null,
             }
         case ENTRAR_CRUD_CATEGORIA_INSUMOS:
             return {
@@ -182,6 +187,7 @@ export default function (state = initialState, action) {
                 en_insumos: null,
                 en_categoria_insumos: true,
                 paginaCorriente: 0,
+                palabraBuscar: null,
             }
         case CERRAR_AGREGAR_USUARIOS:
             return {
@@ -231,8 +237,11 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 loading: false,
+                errores: [],
+                error: null,
+                mensaje: null,
+                abrir_agregar_categoria: false,
                 categorias: [...state.categorias, action.payload],
-                abrir_agregar_categoria: null,
             }
         case AGREGAR_USUARIO_ERROR:
         case AGREGAR_CATEGORIA_ERROR:
@@ -295,7 +304,7 @@ export default function (state = initialState, action) {
                 limite: action.payload.limit,
                 palabraBuscar: action.payload.datosPaginacion.busqueda,
                 desde: Number(action.payload.datosPaginacion.indexPrimerUsuario),
-                paginaCorriente: action.payload.datosPaginacion.pagina
+                paginaCorriente: action.payload.datosPaginacion.pagina,
             }
         case DESCARGA_LISTADO_CATEGORIA:
             return {
@@ -363,7 +372,8 @@ export default function (state = initialState, action) {
                         categoria = action.payload
                         :
                         categoria
-                )
+                ),
+                paginaCorriente: 0,
             }
         case OBTENER_CATEGORIA_EDITAR:
             return {
@@ -380,6 +390,7 @@ export default function (state = initialState, action) {
                         categoria
                 ),
                 categoria_editar: null,
+                abrir_agregar_categoria: false,
             }
         case ABRIR_AGREGAR_MENU:
         case CERRAR_AGREGAR_MENU:
@@ -409,6 +420,7 @@ export default function (state = initialState, action) {
         case CATEGORIA_INSUMO_EDITADO_ERRORES:
         case AGREGAR_INSUMO_ERRORES:
         case INSUMO_EDITADO_ERRORES:
+        case CATEGORIA_EDITADO_ERRORES:
             return {
                 ...state,
                 errores: [action.payload],

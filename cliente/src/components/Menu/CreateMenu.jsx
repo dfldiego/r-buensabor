@@ -57,7 +57,6 @@ const CreateMenu = () => {
         });
     };
 
-
     const cerrar_modal = e => {
         e.preventDefault();
         if (cerrar_modal_state_store) {

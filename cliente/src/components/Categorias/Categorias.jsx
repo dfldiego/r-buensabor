@@ -29,14 +29,21 @@ const Categorias = () => {
     // recibir de store
     const modalAgregarCategoria = useSelector(state => state.admin.abrir_agregar_categoria);
     const recargarTablaCategorias = useSelector(state => state.admin.categoria_eliminar);
+    const recargarTablaCategoriasAlEditar = useSelector(state => state.admin.categoria_editar);
     const limite_state = useSelector(state => state.admin.limite);
     let paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
     let palabraBuscar_state = useSelector(state => state.admin.palabraBuscar);
+    let desde_state = useSelector(state => state.admin.desde);
 
-    /** USE EFFECT: cada vez que se modifica categorias */
     useEffect(() => {
-        //llamar la funcion
+        cargarcategorias(desde_state, limite_state, paginaCorriente_state, palabraBuscar_state);
+
+        // eslint-disable-next-line
+    }, [recargarTablaCategoriasAlEditar, modalAgregarCategoria]);
+
+    useEffect(() => {
         cargarcategorias(0, limite_state, paginaCorriente_state, palabraBuscar_state);
+
         // eslint-disable-next-line
     }, [recargarTablaCategorias]);
 

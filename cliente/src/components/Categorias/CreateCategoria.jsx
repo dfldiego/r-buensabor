@@ -9,13 +9,13 @@ import {
     abrirCerrarAgregarCategoriaAction,
     crearNuevaCategoriaAction,
     editarCategoriaAction,
-    obtenerCategoriasBuscadorAction,
+    obtenerCategoriasAction,
 } from '../../actions/adminActions';
 import { useDispatch, useSelector } from 'react-redux';
 
 const CreateCategoria = () => {
 
-    const [imageFile, setimageFile] = useState({});
+    const [imageFile, setimageFile] = useState(null);
 
     const [categoria, setCategoria] = useState({ name: '' });
     const { name } = categoria;
@@ -27,22 +27,29 @@ const CreateCategoria = () => {
         });
     }
 
-    /************USAR DISPATCH: paso el nuevo state al action **********************/
     const dispatch = useDispatch();
+
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarCategoriaAction(nuevo_estado));
     const agregar_categoria_action = (datosNuevaCategoria, imageFile) => dispatch(crearNuevaCategoriaAction(datosNuevaCategoria, imageFile));
     const categoria_editar_action = (datoscategoria, imageFile) => dispatch(editarCategoriaAction(datoscategoria, imageFile));
-    const cargarcategorias = (indexPrimerElemento, limite_state, paginaCorriente_state, palabraBuscar_state) => dispatch(obtenerCategoriasBuscadorAction(indexPrimerElemento, limite_state, paginaCorriente_state, palabraBuscar_state));
+    const cargarcategorias = (indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda) => dispatch(obtenerCategoriasAction(indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda));
 
     /*************USAR USE SELECTOR: capturo el valor de state del store  *******************/
     let cerrar_modal_state_store = useSelector(state => state.admin.abrir_agregar_categoria);
-    let error_store = useSelector(state => state.admin.mensaje);
-    let categoria_editar_store = useSelector(state => state.admin.categoria_editar);
+    const errores = useSelector(state => state.admin.errores);
+    const msj_error = useSelector(state => state.admin.mensaje);
+    const categoria_editar_store = useSelector(state => state.admin.categoria_editar);
     const limite_state = useSelector(state => state.admin.limite);
     let paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
     let palabraBuscar_state = useSelector(state => state.admin.palabraBuscar);
 
-    /***********METODO QUE CIERRA MODAL: modifico el state *************/
+    var handleChange_imagen = (e) => {
+        setimageFile({
+            ...imageFile,
+            [e.target.name]: e.target.files[0],
+        });
+    };
+
     const cerrar_modal = e => {
         e.preventDefault();
         if (cerrar_modal_state_store) {
@@ -52,22 +59,15 @@ const CreateCategoria = () => {
         return;
     }
 
-    var handleChange_imagen = (e) => {
-        setimageFile({
-            ...imageFile,
-            [e.target.name]: e.target.files[0],
-        });
-    };
+    useEffect(() => {
+        cargarcategorias();
+
+        // eslint-disable-next-line
+    }, []);
 
     /*****************METODO SUBMIT ******************/
     const handleSubmitAgregarCategoria = e => {
         e.preventDefault();
-
-        // validar campos vacios
-        if (name === '') {
-            agregar_categoria_action({ name });
-            return;
-        }
 
         // si apretamos boton editar
         if (categoria_editar_store) {
@@ -75,14 +75,17 @@ const CreateCategoria = () => {
             categoria._id = categoria_editar_store._id;
             // pasamos los datos del categoria editado al action
             categoria_editar_action(categoria, imageFile);
-            //cargamos los categorias en la tabla
+
             cargarcategorias(0, limite_state, paginaCorriente_state, palabraBuscar_state);
-            //finalmente, cerramos modal
-            cerrar_modal_state_store = false;
-            cerrar_modal_callAction(cerrar_modal_state_store);
+
+            if (errores === [] && msj_error === null) {
+                cerrar_modal();
+            }
         } else {
             agregar_categoria_action({ name }, imageFile);
-            setCategoria({ name: '' });
+            if (errores === [] && msj_error === null) {
+                cerrar_modal();
+            }
         }
     }
 
@@ -97,6 +100,7 @@ const CreateCategoria = () => {
         // eslint-disable-next-line
     }, [categoria_editar_store])
 
+
     return (
         <Fragment>
             <div className="modal-categoria">
@@ -106,7 +110,15 @@ const CreateCategoria = () => {
                             className="volver"
                             onClick={cerrar_modal}
                         />
-                        {error_store ? <p className="error">{error_store}</p> : null}
+                        {msj_error ? <p className="error">{msj_error}</p> : null}
+
+                        {errores[0] ?
+                            <div>
+                                <p className="error">{errores[0].description.message}</p>
+                            </div>
+                            : null
+                        }
+
                         <form onSubmit={handleSubmitAgregarCategoria}>
                             <div className="form-row">
                                 <label>Nombre</label>
