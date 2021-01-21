@@ -141,6 +141,7 @@ export default function (state = initialState, action) {
                 en_categoria: null,
                 en_insumos: null,
                 en_categoria_insumos: null,
+                paginaCorriente: 0,
             }
         case ENTRAR_CRUD_MENU:
             return {
@@ -150,6 +151,7 @@ export default function (state = initialState, action) {
                 en_categoria: null,
                 en_insumos: null,
                 en_categoria_insumos: null,
+                paginaCorriente: 0,
             }
         case ENTRAR_CRUD_CATEGORIA:
             return {
@@ -159,6 +161,7 @@ export default function (state = initialState, action) {
                 en_categoria: true,
                 en_insumos: null,
                 en_categoria_insumos: null,
+                paginaCorriente: 0,
             }
         case ENTRAR_CRUD_INSUMOS:
             return {
@@ -168,6 +171,7 @@ export default function (state = initialState, action) {
                 en_categoria: null,
                 en_insumos: true,
                 en_categoria_insumos: null,
+                paginaCorriente: 0,
             }
         case ENTRAR_CRUD_CATEGORIA_INSUMOS:
             return {
@@ -177,6 +181,7 @@ export default function (state = initialState, action) {
                 en_categoria: null,
                 en_insumos: null,
                 en_categoria_insumos: true,
+                paginaCorriente: 0,
             }
         case CERRAR_AGREGAR_USUARIOS:
             return {
@@ -186,6 +191,7 @@ export default function (state = initialState, action) {
                 error: null,
                 usuario_eliminar: null,
                 usuario_editar: null,
+                paginaCorriente: 0,
             }
         case ABRIR_AGREGAR_USUARIOS:
             return {
@@ -333,7 +339,6 @@ export default function (state = initialState, action) {
                         usuario
                 ),
                 usuario_editar: null,
-                paginaCorriente: 0,
             }
         case ABRIR_AGREGAR_CATEGORIA:
         case CERRAR_AGREGAR_CATEGORIA:
@@ -376,7 +381,6 @@ export default function (state = initialState, action) {
                         categoria
                 ),
                 categoria_editar: null,
-                paginaCorriente: 0,
             }
         case ABRIR_AGREGAR_MENU:
         case CERRAR_AGREGAR_MENU:
@@ -454,7 +458,6 @@ export default function (state = initialState, action) {
                 ),
                 menu_editar: null,
                 abrir_agregar_menu: false,
-                paginaCorriente: 0,
             }
         case ABRIR_AGREGAR_CATEGORIA_INSUMO:
         case CERRAR_AGREGAR_CATEGORIA_INSUMO:
@@ -530,7 +533,6 @@ export default function (state = initialState, action) {
                 ),
                 categoria_insumo_editar: null,
                 abrir_agregar_categoria_insumo: false,
-                paginaCorriente: 0,
             }
         case ABRIR_AGREGAR_INSUMO:
         case CERRAR_AGREGAR_INSUMO:
@@ -594,7 +596,6 @@ export default function (state = initialState, action) {
                 ),
                 insumo_editar: null,
                 abrir_agregar_insumo: false,
-                paginaCorriente: 0,
             }
         default:
             return state;

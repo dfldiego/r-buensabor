@@ -30,12 +30,19 @@ const InsumosCategorias = () => {
     const limite_state = useSelector(state => state.admin.limite);
     let paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
     let palabraBuscar_state = useSelector(state => state.admin.palabraBuscar);
+    let desde_state = useSelector(state => state.admin.desde);
+
+    useEffect(() => {
+        cargarCategoriasInsumo(desde_state, limite_state, paginaCorriente_state, palabraBuscar_state);
+
+        // eslint-disable-next-line
+    }, [recargarTablaCategoriaInsumoAlEditar, modalAgregarCategoriaInsumo]);
 
     useEffect(() => {
         cargarCategoriasInsumo(0, limite_state, paginaCorriente_state, palabraBuscar_state);
 
         // eslint-disable-next-line
-    }, [recargarTablaCategoriaInsumo, recargarTablaCategoriaInsumoAlEditar, modalAgregarCategoriaInsumo]);
+    }, [recargarTablaCategoriaInsumo]);
 
     const handleClick_abrir_agregar_categoriaInsumo = e => {
         e.preventDefault();

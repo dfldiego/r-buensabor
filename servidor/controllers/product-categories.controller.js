@@ -210,7 +210,6 @@ const search = async (req, res) => {
 }
 
 module.exports = {
-    listGrandParent,
     list,
     create,
     update,
