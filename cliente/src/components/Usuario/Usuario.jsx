@@ -42,10 +42,7 @@ function Usuario() {
         // eslint-disable-next-line
     }, [recargarTablaUsuariosAlEditar, modalAgregarUsuario]);
 
-
     useEffect(() => {
-
-        //llamar la funcion
         cargarUsuarios(0, limite_state, paginaCorriente_state, palabraBuscar_state);
 
         // eslint-disable-next-line
