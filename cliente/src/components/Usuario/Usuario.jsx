@@ -29,10 +29,19 @@ function Usuario() {
 
     // recibir de store
     const modalAgregarUsuario = useSelector(state => state.admin.abrir_agregar_usuario);
+    const recargarTablaUsuariosAlEditar = useSelector(state => state.admin.usuario_editar);
     const recargarTablaUsuarios = useSelector(state => state.admin.usuario_eliminar);
     const limite_state = useSelector(state => state.admin.limite);
     let paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
     let palabraBuscar_state = useSelector(state => state.admin.palabraBuscar);
+    let desde_state = useSelector(state => state.admin.desde);
+
+    useEffect(() => {
+        cargarUsuarios(desde_state, limite_state, paginaCorriente_state, palabraBuscar_state);
+
+        // eslint-disable-next-line
+    }, [recargarTablaUsuariosAlEditar, modalAgregarUsuario]);
+
 
     useEffect(() => {
 

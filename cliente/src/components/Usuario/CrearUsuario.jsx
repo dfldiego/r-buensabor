@@ -169,7 +169,19 @@ function CrearUsuario() {
                                     value={role}
                                     onChange={handleChange}
                                 >
-                                    <option value="">-- Seleccione un rol --</option>
+                                    {
+                                        usuario_editar_store ?
+                                            usuario_editar_store.role ?
+                                                <option
+                                                    key={usuario_editar_store._id}
+                                                    value={usuario_editar_store._id}
+                                                >{usuario_editar_store.role.value}
+                                                </option>
+                                                :
+                                                <option value="">-- Seleccione un Rol --</option>
+                                            :
+                                            <option value="">-- Seleccione un Rol --</option>
+                                    }
                                     <option value="ADMIN_ROLE">Administrativo</option>
                                     <option value="CASHIER_ROLE">Cajero</option>
                                     <option value="CHEF_ROLE">Cocinero</option>

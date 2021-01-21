@@ -191,7 +191,6 @@ export default function (state = initialState, action) {
                 error: null,
                 usuario_eliminar: null,
                 usuario_editar: null,
-                paginaCorriente: 0,
             }
         case ABRIR_AGREGAR_USUARIOS:
             return {
