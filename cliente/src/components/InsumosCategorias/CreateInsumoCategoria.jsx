@@ -16,13 +16,16 @@ const CreateInsumoCategoria = () => {
 
     const [imageFile, setimageFile] = useState(null);
 
+    const [padre, setPadre] = useState(null)
+
     const [insumoCategoria, setInsumoCategoria] = useState({
         description: '',
         parent: undefined,
         img: undefined,
+        category: false,
     });
 
-    const { description, parent, img } = insumoCategoria;
+    const { description, parent, img, category } = insumoCategoria;
 
     const handleChange = e => {
         setInsumoCategoria({
@@ -43,7 +46,8 @@ const CreateInsumoCategoria = () => {
     const msj_error = useSelector(state => state.admin.mensaje);
     const categoriasInsumoSelect = useSelector(state => state.admin.categoriasInsumoSelect);
     const categoria_insumo_editar = useSelector(state => state.admin.categoria_insumo_editar);
-
+    console.log(categoriasInsumoSelect);
+    console.log(categoria_insumo_editar);
 
     const cerrar_modal = () => {
         if (cerrar_modal_state_store) {
@@ -56,20 +60,53 @@ const CreateInsumoCategoria = () => {
     useEffect(() => {
         cargarCategoriaInsumo();
 
+        const datosCategoriaInsumoPadre = categoriasInsumoSelect.map(categoriaInsumo => {
+            categoriaInsumo._id = categoria_insumo_editar.parent;
+        })
+
+        // guardamos la categoriaInsumo que coincida con el id. en un state
+        setPadre(datosCategoriaInsumoPadre);
+
         // eslint-disable-next-line
     }, []);
 
     const handleSubmitAgregarCategoriaInsumo = e => {
         e.preventDefault();
 
+        //si parent tiene parent
+
+
         if (categoria_insumo_editar) {
             insumoCategoria._id = categoria_insumo_editar._id;
+
+            // valido si no hay parent -> es abuelo
+            if (!insumoCategoria.parent) {
+                insumoCategoria.category = false;
+            }
+            //valido si hay parent y si parent no tiene parent -> es padre -> category = true
+            if (insumoCategoria.parent && !padre.parent) {
+                insumoCategoria.category = true;
+            }
+            //sino es hijo. (tiene parent y category= false)
+            if (insumoCategoria.parent && padre.parent) {
+                insumoCategoria.category = false;
+            }
+
             categoria_insumo_editar_action(insumoCategoria, imageFile);
             if (errores === [] && msj_error === null) {
                 cerrar_modal();
             }
         } else {
-            agregar_nuevo_Categoria_action({ description, parent, img }, imageFile);
+            // valido si no hay parent -> es abuelo
+            if (!insumoCategoria.parent) {
+                insumoCategoria.category = false;
+            } else if (insumoCategoria.parent && !padre.parent) {//valido si hay parent y si parent no tiene parent -> es padre -> category = true
+                insumoCategoria.category = true;
+            } else {//sino es hijo. (tiene parent y category= false)(insumoCategoria.parent && padre.parent) 
+                insumoCategoria.category = false;
+            }
+
+            agregar_nuevo_Categoria_action(insumoCategoria, imageFile);
 
             if (errores === [] && msj_error === null) {
                 cerrar_modal();
@@ -85,6 +122,7 @@ const CreateInsumoCategoria = () => {
                 description: categoria_insumo_editar.description,
                 parent: categoria_insumo_editar.parent,
                 img: categoria_insumo_editar.img,
+                category: categoria_insumo_editar.category,
             })
         }
 
@@ -97,6 +135,10 @@ const CreateInsumoCategoria = () => {
             [e.target.name]: e.target.files[0],
         });
     };
+
+    const onClickBuscarPadre = CategoriaInsumo => {
+        setPadre(CategoriaInsumo);
+    }
 
     return (
         <Fragment>
@@ -141,7 +183,6 @@ const CreateInsumoCategoria = () => {
                                 <select
                                     className="form-control"
                                     name="parent"
-                                    value={parent}
                                     onChange={handleChange}
                                 >
                                     {
@@ -162,7 +203,12 @@ const CreateInsumoCategoria = () => {
                                             <option
                                                 key={categoria._id}
                                                 value={categoria._id}
-                                            >{categoria.description}</option>
+                                                onClick={() => onClickBuscarPadre(categoria)}
+                                            >
+                                                {
+                                                    categoria.description
+                                                }
+                                            </option>
                                         ))
                                     }
                                 </select>

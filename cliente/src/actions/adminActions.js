@@ -84,6 +84,9 @@ import {
     INSUMO_EDITADO_ERRORES,
     DESCARGA_LISTADO_CATEGORIA,
     DESCARGA_LISTADO_CATEGORIA_INSUMO,
+    DESCARGA_LISTADO_CATEGORIA_INSUMO_ABUELO,
+    DESCARGA_LISTADO_CATEGORIA_INSUMO_PADRE,
+    DESCARGA_LISTADO_CATEGORIA_INSUMO_HIJO,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
@@ -691,6 +694,8 @@ export function crearNuevaCategoriaInsumoAction(datosNuevoCategoriaInsumo, image
     return async (dispatch) => {
         dispatch(agregarCategoriaInsumo());
 
+        console.log(datosNuevoCategoriaInsumo);
+
         try {
 
             const token = localStorage.getItem('token');
@@ -720,7 +725,6 @@ export function crearNuevaCategoriaInsumoAction(datosNuevoCategoriaInsumo, image
                     .then(response => {
                         if (!response.data.productCategoryStored) {
                             const { productCategory } = response.data;
-
                             dispatch(agregarCategoriaInsumoExito(productCategory));
                         } else {
                             const { productCategoryStored } = response.data;

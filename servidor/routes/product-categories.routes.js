@@ -7,6 +7,12 @@ const { checkToken } = require('../middlewares/authentication');
 const productCategoriesController = require('../controllers/product-categories.controller');
 const router = Router();
 
+router.get('/grandparent', [checkToken], productCategoriesController.listGrandParent);
+
+router.get('/listparent', [checkToken], productCategoriesController.listParent);
+
+router.get('/listson', [checkToken], productCategoriesController.listSon);
+
 router.get('/', [checkToken], productCategoriesController.list);
 
 router.post('/', [checkToken], productCategoriesController.create);

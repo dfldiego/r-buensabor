@@ -1,6 +1,75 @@
 const { response } = require('express');
 const ProductCategory = require('../models/product-categories.model');
 
+const listGrandParent = async (req, res = response) => {
+
+    try {
+        const [productCategories, total] = await Promise.all([
+            ProductCategory.find({ status: true, parent: null })
+                .populate('parent', 'description'),
+            ProductCategory.countDocuments({ status: true, parent: null })
+        ]);
+
+        res.json({
+            ok: true,
+            productCategories,
+            total,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: error
+        });
+    }
+}
+
+const listParent = async (req, res = response) => {
+
+    try {
+        const [productCategories, total] = await Promise.all([
+            ProductCategory.find({ status: true, category: true })
+                .populate('parent', 'description'),
+            ProductCategory.countDocuments({ status: true, category: true })
+        ]);
+
+        res.json({
+            ok: true,
+            productCategories,
+            total,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: error
+        });
+    }
+}
+
+const listSon = async (req, res = response) => {
+
+    try {
+        const [productCategories, total] = await Promise.all([
+            ProductCategory.find({ status: true, category: false, parent: { $ne: null } })
+                .populate('parent', 'description'),
+            ProductCategory.countDocuments({ status: true, category: false })
+        ]);
+
+        res.json({
+            ok: true,
+            productCategories,
+            total,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: error
+        });
+    }
+}
+
 const list = async (req, res = response) => {
 
     try {
@@ -210,6 +279,9 @@ const search = async (req, res) => {
 }
 
 module.exports = {
+    listGrandParent,
+    listParent,
+    listSon,
     list,
     create,
     update,
