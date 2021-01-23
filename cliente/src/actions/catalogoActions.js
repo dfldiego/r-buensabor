@@ -5,6 +5,7 @@ import {
     CERRAR_DETALLE_MENU,
     OBTENER_MENU,
     OBTENER_MENU_ERROR,
+    GUARDAR_CATEGORIA_INSUMO_PADRE,
 } from '../types';
 import clienteAxios from '../config/axios';
 import { authorizationHeader } from '../helpers/authorization_header';
@@ -73,13 +74,20 @@ const entradaPaginaMenuesFiltrados = (estado) => ({
 })
 
 /**********************  para ingresar a pagina de menues filtrados ********************************/
-export function paginaCatalogoInsumoPadreAction(estado) {
+export function paginaCatalogoInsumoPadreAction(estado, categoriaInsumoPadre) {
     return async (dispatch) => {
         dispatch(entradaCatalogoInsumoPadre(estado))
+
+        dispatch(guardarCategoriaInsumoPadreClickeado(categoriaInsumoPadre))
     }
 }
 
 const entradaCatalogoInsumoPadre = (estado) => ({
     type: PAGINA_CATALOGO_INSUMOS_PADRES,
     payload: estado,
+})
+
+const guardarCategoriaInsumoPadreClickeado = (categoriaInsumoPadre) => ({
+    type: GUARDAR_CATEGORIA_INSUMO_PADRE,
+    payload: categoriaInsumoPadre,
 })

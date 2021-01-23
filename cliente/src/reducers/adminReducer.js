@@ -190,6 +190,7 @@ export default function (state = initialState, action) {
                 en_categoria_insumos: true,
                 paginaCorriente: 0,
                 palabraBuscar: null,
+                categoriasInsumoSelect: [],
             }
         case CERRAR_AGREGAR_USUARIOS:
             return {

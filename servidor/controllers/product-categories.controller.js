@@ -1,6 +1,43 @@
 const { response } = require('express');
 const ProductCategory = require('../models/product-categories.model');
 
+const filter = async (req, res = response) => {
+
+    try {
+        const idParent = req.params.idParent;
+
+        let filter = {
+            status: true
+        }
+
+        if (idParent === 'undefined') {
+            filter.parent = null;
+        } else {
+            filter.parent = idParent;
+        }
+
+        console.log(filter);
+        const [productCategories, total] = await Promise.all([
+            ProductCategory.find(filter)
+                .populate('parent', 'description'),
+            ProductCategory.countDocuments(filter)
+        ]);
+
+        res.json({
+            ok: true,
+            productCategories,
+            total,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: error
+        });
+    }
+}
+
+/* 
 const listGrandParent = async (req, res = response) => {
 
     try {
@@ -68,7 +105,7 @@ const listSon = async (req, res = response) => {
             msg: error
         });
     }
-}
+} */
 
 const list = async (req, res = response) => {
 
@@ -279,9 +316,10 @@ const search = async (req, res) => {
 }
 
 module.exports = {
-    listGrandParent,
+    filter,
+    /* listGrandParent,
     listParent,
-    listSon,
+    listSon, */
     list,
     create,
     update,

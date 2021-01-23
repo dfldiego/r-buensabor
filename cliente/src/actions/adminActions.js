@@ -688,54 +688,14 @@ const obtenerListadoCategoriasInsumo = categoriasInsumo => ({
 })
 
 /**********************  para obtener las categoria insumos de la BBDD ********************************/
-export function obtenerCategoriaInsumoAbueloAction() {
+export function obtenerCategoriaInsumoFiltradasPorParentAction(idParent) {
     return async (dispatch) => {
         dispatch(descargarCategoriasInsumo());
 
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            await clienteAxios.get(`/api/product-categories/grandparent`, header)
-                .then(response => {
-                    console.log(response.data);
-                    dispatch(obtenerListadoCategoriasInsumo(response.data));
-                })
-        } catch (err) {
-            console.log(err);
-            dispatch(descargarCategoriasInsumoError('Error al descargar las categorias insumo'));
-        }
-    }
-}
-
-/**********************  para obtener las categoria insumos de la BBDD ********************************/
-export function obtenerCategoriaInsumoPadreAction() {
-    return async (dispatch) => {
-        dispatch(descargarCategoriasInsumo());
-
-        try {
-            const token = localStorage.getItem('token');
-            const header = authorizationHeader(token);
-            await clienteAxios.get(`/api/product-categories/listparent`, header)
-                .then(response => {
-                    console.log(response.data);
-                    dispatch(obtenerListadoCategoriasInsumo(response.data));
-                })
-        } catch (err) {
-            console.log(err);
-            dispatch(descargarCategoriasInsumoError('Error al descargar las categorias insumo'));
-        }
-    }
-}
-
-/**********************  para obtener las categoria insumos de la BBDD ********************************/
-export function obtenerCategoriaInsumoHijoAction() {
-    return async (dispatch) => {
-        dispatch(descargarCategoriasInsumo());
-
-        try {
-            const token = localStorage.getItem('token');
-            const header = authorizationHeader(token);
-            await clienteAxios.get(`/api/product-categories/listson`, header)
+            await clienteAxios.get(`/api/product-categories/filter/${idParent}`, header)
                 .then(response => {
                     console.log(response.data);
                     dispatch(obtenerListadoCategoriasInsumo(response.data));

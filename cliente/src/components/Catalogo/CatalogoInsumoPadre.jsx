@@ -7,7 +7,7 @@ import Navbar from '../Navbar/Navbar';
 
 import { useSelector, useDispatch } from 'react-redux'
 import {
-    obtenerCategoriaInsumoPadreAction,
+    obtenerCategoriaInsumoFiltradasPorParentAction,
 } from '../../actions/adminActions';
 
 import {
@@ -17,13 +17,15 @@ import {
 const CatalogoInsumoPadre = () => {
     const dispatch = useDispatch();
 
-    const consultar_categoriasInsumo = () => dispatch(obtenerCategoriaInsumoPadreAction());
+    const consultar_categoriasInsumo = (idParent) => dispatch(obtenerCategoriaInsumoFiltradasPorParentAction(idParent));
     const entradaMenuesFiltrados = estado => dispatch(paginaMenuesFiltradosAction(estado));
 
     const categoriasInsumo = useSelector(state => state.admin.categoriasInsumoSelect);
+    const categoriaInsumoPadre = useSelector(state => state.catalogo.categoria_insumo_padre);
+    console.log(categoriaInsumoPadre);
 
     useEffect(() => {
-        consultar_categoriasInsumo();
+        consultar_categoriasInsumo(categoriaInsumoPadre._id);
 
         // eslint-disable-next-line
     }, [])

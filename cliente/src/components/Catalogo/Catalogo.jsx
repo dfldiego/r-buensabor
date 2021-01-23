@@ -8,7 +8,7 @@ import Navbar from '../Navbar/Navbar';
 import { useSelector, useDispatch } from 'react-redux'
 import {
     obtenerCategoriasAction,
-    obtenerCategoriaInsumoAbueloAction,
+    obtenerCategoriaInsumoFiltradasPorParentAction,
 } from '../../actions/adminActions';
 
 import {
@@ -21,16 +21,16 @@ const Catalogo = () => {
     const dispatch = useDispatch();
 
     const consultar_categorias = () => dispatch(obtenerCategoriasAction());
-    const consultar_categoriasInsumo = () => dispatch(obtenerCategoriaInsumoAbueloAction());
+    const consultar_categoriasInsumo = (idParent) => dispatch(obtenerCategoriaInsumoFiltradasPorParentAction(idParent));
     const entradaMenuesFiltrados = estado => dispatch(paginaMenuesFiltradosAction(estado));
-    const entradaCatalogoInsumoPadre = estado => dispatch(paginaCatalogoInsumoPadreAction(estado));
+    const entradaCatalogoInsumoPadre = (estado, categoriaInsumoPadre) => dispatch(paginaCatalogoInsumoPadreAction(estado, categoriaInsumoPadre));
 
     const categorias = useSelector(state => state.admin.categoriasSelect);
     const categoriasInsumo = useSelector(state => state.admin.categoriasInsumoSelect);
 
     useEffect(() => {
         consultar_categorias();
-        consultar_categoriasInsumo();
+        consultar_categoriasInsumo("undefined");
 
         // eslint-disable-next-line
     }, [])
@@ -39,8 +39,9 @@ const Catalogo = () => {
         entradaMenuesFiltrados(true);
     }
 
-    const onClickEntrarCatalogoInsumoPadre = () => {
-        entradaCatalogoInsumoPadre(true);
+    const onClickEntrarCatalogoInsumoPadre = (categoriaInsumo) => {
+        console.log(categoriaInsumo);
+        entradaCatalogoInsumoPadre(true, categoriaInsumo);
     }
 
     return (
@@ -80,7 +81,7 @@ const Catalogo = () => {
                                     <img
                                         src={`http://localhost:4000/api/image/product-categories/${categoriaInsumo.img}`}
                                         alt={categoriaInsumo.description}
-                                        onClick={onClickEntrarCatalogoInsumoPadre}
+                                        onClick={() => onClickEntrarCatalogoInsumoPadre(categoriaInsumo)}
                                     />
                                 </Link>
                                 <Link to={`/catalogo/${categoriaInsumo.description}`}>

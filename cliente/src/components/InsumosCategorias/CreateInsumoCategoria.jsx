@@ -95,6 +95,7 @@ const CreateInsumoCategoria = () => {
                 cerrar_modal();
             }
         } else {
+            debugger;
             // valido si no hay parent -> es abuelo
             if (!insumoCategoria.parent) {
                 insumoCategoria.category = false;
@@ -134,7 +135,9 @@ const CreateInsumoCategoria = () => {
         });
     };
 
-    const onClickBuscarPadre = CategoriaInsumo => {
+    const onClickBuscarPadre = (CategoriaInsumo) => {
+
+        console.log(CategoriaInsumo + "asdas");
         setPadre(CategoriaInsumo);
     }
 
@@ -188,7 +191,7 @@ const CreateInsumoCategoria = () => {
                                             categoria_insumo_editar.parent ?
                                                 <option
                                                     key={categoria_insumo_editar._id}
-                                                    value={categoria_insumo_editar._id}
+                                                    value={categoria_insumo_editar}
                                                 >{categoria_insumo_editar.parent.description}
                                                 </option>
                                                 :
@@ -200,8 +203,7 @@ const CreateInsumoCategoria = () => {
                                         categoriasInsumoSelect.map(categoria => (
                                             <option
                                                 key={categoria._id}
-                                                value={categoria._id}
-                                                onClick={() => onClickBuscarPadre(categoria)}
+                                                value={categoria}
                                             >
                                                 {
                                                     categoria.description

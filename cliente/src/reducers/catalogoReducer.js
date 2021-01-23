@@ -5,6 +5,7 @@ import {
     CERRAR_DETALLE_MENU,
     OBTENER_MENU,
     OBTENER_MENU_ERROR,
+    GUARDAR_CATEGORIA_INSUMO_PADRE,
 } from '../types';
 
 const initialState = {
@@ -16,6 +17,7 @@ const initialState = {
     error: false,
     errores: [],
     mensaje: "",
+    categoria_insumo_padre: null,
 }
 
 export default function (state = initialState, action) {
@@ -54,6 +56,11 @@ export default function (state = initialState, action) {
                 error: true,
                 mensaje: action.payload,
                 errores: [],
+            }
+        case GUARDAR_CATEGORIA_INSUMO_PADRE:
+            return {
+                ...state,
+                categoria_insumo_padre: action.payload,
             }
         default:
             return state;
