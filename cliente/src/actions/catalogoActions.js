@@ -1,5 +1,6 @@
 import {
     PAGINA_MENUES_FILTRADOS,
+    PAGINA_CATALOGO_INSUMOS_PADRES,
     ABRIR_DETALLE_MENU,
     CERRAR_DETALLE_MENU,
     OBTENER_MENU,
@@ -68,5 +69,17 @@ export function paginaMenuesFiltradosAction(estado) {
 
 const entradaPaginaMenuesFiltrados = (estado) => ({
     type: PAGINA_MENUES_FILTRADOS,
+    payload: estado,
+})
+
+/**********************  para ingresar a pagina de menues filtrados ********************************/
+export function paginaCatalogoInsumoPadreAction(estado) {
+    return async (dispatch) => {
+        dispatch(entradaCatalogoInsumoPadre(estado))
+    }
+}
+
+const entradaCatalogoInsumoPadre = (estado) => ({
+    type: PAGINA_CATALOGO_INSUMOS_PADRES,
     payload: estado,
 })

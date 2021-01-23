@@ -1,5 +1,6 @@
 import {
     PAGINA_MENUES_FILTRADOS,
+    PAGINA_CATALOGO_INSUMOS_PADRES,
     ABRIR_DETALLE_MENU,
     CERRAR_DETALLE_MENU,
     OBTENER_MENU,
@@ -8,6 +9,7 @@ import {
 
 const initialState = {
     en_pagina_menues_filtrados: false,
+    en_pagina_catalogo_insumo_padres: false,
     abrir_detalle_menu: false,
     menu: {},
     ingredientes: [],
@@ -22,6 +24,11 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 en_pagina_menues_filtrados: action.payload,
+            }
+        case PAGINA_CATALOGO_INSUMOS_PADRES:
+            return {
+                ...state,
+                en_pagina_catalogo_insumo_padres: action.payload,
             }
         case ABRIR_DETALLE_MENU:
             return {

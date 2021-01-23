@@ -32,6 +32,29 @@ const list = async (req, res = response) => {
 
 }
 
+const listAll = async (req, res = response) => {
+    try {
+        const [menus, total] = await Promise.all([
+            Menu.find({ status: true })
+                .populate('category', 'name'),
+            Menu.countDocuments({ status: true })
+        ]);
+
+        res.json({
+            ok: true,
+            menus,
+            total,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: error
+        });
+    }
+
+}
+
 const create = async (req, res = response) => {
     const { description } = req.body;
 
@@ -254,6 +277,7 @@ const search = async (req, res) => {
 
 module.exports = {
     list,
+    listAll,
     create,
     getById,
     update,

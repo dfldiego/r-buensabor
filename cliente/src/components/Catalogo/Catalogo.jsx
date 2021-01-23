@@ -7,24 +7,30 @@ import Navbar from '../Navbar/Navbar';
 
 import { useSelector, useDispatch } from 'react-redux'
 import {
-    obtenerCategoriasBuscadorAction,
-    obtenerCategoriasInsumoBuscadorAction,
+    obtenerCategoriasAction,
+    obtenerCategoriaInsumoAbueloAction,
+    guardarCategoriaInsumoAction,
 } from '../../actions/adminActions';
 
 import {
     paginaMenuesFiltradosAction,
+    paginaCatalogoInsumoPadreAction,
 } from '../../actions/catalogoActions';
 
 const Catalogo = () => {
 
     const dispatch = useDispatch();
 
-    const consultar_categorias = () => dispatch(obtenerCategoriasBuscadorAction());
-    const consultar_categoriasInsumo = () => dispatch(obtenerCategoriasInsumoBuscadorAction());
+    const consultar_categorias = () => dispatch(obtenerCategoriasAction());
+    const consultar_categoriasInsumo = () => dispatch(obtenerCategoriaInsumoAbueloAction());
     const entradaMenuesFiltrados = estado => dispatch(paginaMenuesFiltradosAction(estado));
+    const entradaCatalogoInsumoPadre = estado => dispatch(paginaCatalogoInsumoPadreAction(estado));
 
-    const categorias = useSelector(state => state.admin.categorias);
-    const categoriasInsumo = useSelector(state => state.admin.categorias_insumo);
+    const categorias = useSelector(state => state.admin.categoriasSelect);
+    const categoriasInsumo = useSelector(state => state.admin.categoriasInsumoSelect);
+
+    console.log(categorias);
+    console.log(categoriasInsumo);
 
     useEffect(() => {
         consultar_categorias();
@@ -35,6 +41,10 @@ const Catalogo = () => {
 
     const onClickEntrarMenuesFiltrados = () => {
         entradaMenuesFiltrados(true);
+    }
+
+    const onClickEntrarCatalogoInsumoPadre = () => {
+        entradaCatalogoInsumoPadre(true);
     }
 
     return (
@@ -51,14 +61,14 @@ const Catalogo = () => {
                                 className="col_2_catalogo"
                                 key={categoria._id}
                             >
-                                <Link to={`/catalogo/${categoria.name}`}>
+                                <Link to={`/catalogoFiltrado/${categoria.name}`}>
                                     <img
                                         src={`http://localhost:4000/api/image/menu-categories/${categoria.img}`}
                                         alt={categoria.name}
                                         onClick={onClickEntrarMenuesFiltrados}
                                     />
                                 </Link>
-                                <Link to={`/catalogo/${categoria.name}`}>
+                                <Link to={`/catalogoFiltrado/${categoria.name}`}>
                                     <h4 onClick={onClickEntrarMenuesFiltrados}>{categoria.name}</h4>
                                 </Link>
                             </div>
@@ -74,11 +84,11 @@ const Catalogo = () => {
                                     <img
                                         src={`http://localhost:4000/api/image/product-categories/${categoriaInsumo.img}`}
                                         alt={categoriaInsumo.description}
-                                        onClick={onClickEntrarMenuesFiltrados}
+                                        onClick={onClickEntrarCatalogoInsumoPadre}
                                     />
                                 </Link>
                                 <Link to={`/catalogo/${categoriaInsumo.description}`}>
-                                    <h4 onClick={onClickEntrarMenuesFiltrados}>{categoriaInsumo.description}</h4>
+                                    <h4 onClick={() => onClickEntrarCatalogoInsumoPadre(categoriaInsumo)}>{categoriaInsumo.description}</h4>
                                 </Link>
                             </div>
                         ))

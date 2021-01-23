@@ -9,8 +9,8 @@ import MenuDetalle from '../CatalogoFiltrado/MenuDetalle';
 
 import { useSelector, useDispatch } from 'react-redux'
 import {
-    obtenerCategoriasBuscadorAction,
-    obtenerMenusBuscadorAction,
+    obtenerCategoriasAction,
+    obtenerMenuAction,
 } from '../../actions/adminActions';
 import {
     abrirCerrarDetalleMenuAction,
@@ -25,14 +25,16 @@ const CatalogoFiltrado = ({ name }) => {
 
     const dispatch = useDispatch();
 
-    const consultarCategorias = () => dispatch(obtenerCategoriasBuscadorAction());
-    const consultarMenus = () => dispatch(obtenerMenusBuscadorAction());
+    const consultarCategorias = () => dispatch(obtenerCategoriasAction());
+    const consultarMenus = () => dispatch(obtenerMenuAction());
     const abrirModalMenuDetalle = (estadoDetalleMenu) => dispatch(abrirCerrarDetalleMenuAction(estadoDetalleMenu));
     const consultarMenuPorId = idMenu => dispatch(obtenerMenuPorIdAction(idMenu));
 
-    const categorias = useSelector(state => state.admin.categorias);
-    const menus = useSelector(state => state.admin.menus);
+    const categorias = useSelector(state => state.admin.categoriasSelect);
+    const menus = useSelector(state => state.admin.menusSelect);
     const modalMenuDetalle = useSelector(state => state.catalogo.abrir_detalle_menu);
+
+    console.log(menus);
 
     const filtrarCategoriaPorName = nombreCategoria => {
         const categoriaEncontradaPorName = categorias.filter(categoria => categoria.name === nombreCategoria);

@@ -84,9 +84,7 @@ import {
     INSUMO_EDITADO_ERRORES,
     DESCARGA_LISTADO_CATEGORIA,
     DESCARGA_LISTADO_CATEGORIA_INSUMO,
-    DESCARGA_LISTADO_CATEGORIA_INSUMO_ABUELO,
-    DESCARGA_LISTADO_CATEGORIA_INSUMO_PADRE,
-    DESCARGA_LISTADO_CATEGORIA_INSUMO_HIJO,
+    DESCARGA_LISTADO_MENUS,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
@@ -689,6 +687,66 @@ const obtenerListadoCategoriasInsumo = categoriasInsumo => ({
     payload: categoriasInsumo
 })
 
+/**********************  para obtener las categoria insumos de la BBDD ********************************/
+export function obtenerCategoriaInsumoAbueloAction() {
+    return async (dispatch) => {
+        dispatch(descargarCategoriasInsumo());
+
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            await clienteAxios.get(`/api/product-categories/grandparent`, header)
+                .then(response => {
+                    console.log(response.data);
+                    dispatch(obtenerListadoCategoriasInsumo(response.data));
+                })
+        } catch (err) {
+            console.log(err);
+            dispatch(descargarCategoriasInsumoError('Error al descargar las categorias insumo'));
+        }
+    }
+}
+
+/**********************  para obtener las categoria insumos de la BBDD ********************************/
+export function obtenerCategoriaInsumoPadreAction() {
+    return async (dispatch) => {
+        dispatch(descargarCategoriasInsumo());
+
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            await clienteAxios.get(`/api/product-categories/listparent`, header)
+                .then(response => {
+                    console.log(response.data);
+                    dispatch(obtenerListadoCategoriasInsumo(response.data));
+                })
+        } catch (err) {
+            console.log(err);
+            dispatch(descargarCategoriasInsumoError('Error al descargar las categorias insumo'));
+        }
+    }
+}
+
+/**********************  para obtener las categoria insumos de la BBDD ********************************/
+export function obtenerCategoriaInsumoHijoAction() {
+    return async (dispatch) => {
+        dispatch(descargarCategoriasInsumo());
+
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            await clienteAxios.get(`/api/product-categories/listson`, header)
+                .then(response => {
+                    console.log(response.data);
+                    dispatch(obtenerListadoCategoriasInsumo(response.data));
+                })
+        } catch (err) {
+            console.log(err);
+            dispatch(descargarCategoriasInsumoError('Error al descargar las categorias insumo'));
+        }
+    }
+}
+
 /**********************  para crear una nueva categoria-insumo ********************************/
 export function crearNuevaCategoriaInsumoAction(datosNuevoCategoriaInsumo, imageFile) {
     return async (dispatch) => {
@@ -892,17 +950,17 @@ const menuEliminadoError = msj => ({
 })
 
 /**********************  para obtener los menus de la BBDD ********************************/
-export function obtenerMenuAction(indexPrimerUsuario, limit, paginaCorriente) {
+export function obtenerMenuAction() {
     return async (dispatch) => {
         dispatch(descargarMenus());
 
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            await clienteAxios.get(`/api/menu?from=${indexPrimerUsuario}&limit=${limit}`, header)
+            await clienteAxios.get(`/api/menu/menuAll`, header)
                 .then(response => {
-                    response.data.paginaCorriente = paginaCorriente;
-                    dispatch(descargarMenusExito(response.data));
+                    console.log(response.data);
+                    dispatch(descargarListadoMenusExito(response.data));
                 })
         } catch (err) {
             console.log(err);
@@ -910,6 +968,11 @@ export function obtenerMenuAction(indexPrimerUsuario, limit, paginaCorriente) {
         }
     }
 }
+
+const descargarListadoMenusExito = menus => ({
+    type: DESCARGA_LISTADO_MENUS,
+    payload: menus
+})
 
 /**********************  para crear una nuevo menu ********************************/
 export function crearNuevoMenuAction(datosNuevoMenu, imageFile) {

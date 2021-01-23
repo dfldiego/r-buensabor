@@ -86,9 +86,7 @@ import {
     INSUMO_EDITADO_ERRORES,
     DESCARGA_LISTADO_CATEGORIA,
     DESCARGA_LISTADO_CATEGORIA_INSUMO,
-    DESCARGA_LISTADO_CATEGORIA_INSUMO_ABUELO,
-    DESCARGA_LISTADO_CATEGORIA_INSUMO_PADRE,
-    DESCARGA_LISTADO_CATEGORIA_INSUMO_HIJO,
+    DESCARGA_LISTADO_MENUS,
 } from '../types';
 
 const initialState = {
@@ -107,6 +105,7 @@ const initialState = {
     categorias: [],
     categoriasSelect: [],
     menus: [],
+    menusSelect: [],
     categorias_insumo: [],
     categoriasInsumoSelect: [],
     insumos: [],
@@ -518,6 +517,17 @@ export default function (state = initialState, action) {
                 errores: [],
                 categoriasInsumoSelect: action.payload.productCategories,
                 mostrarCategoriasInsumo: true,
+                totalElementos: action.payload.total,
+            }
+        case DESCARGA_LISTADO_MENUS:
+            return {
+                ...state,
+                loading: false,
+                mensaje: null,
+                error: null,
+                errores: [],
+                menusSelect: action.payload.menus,
+                mostrarMenus: true,
                 totalElementos: action.payload.total,
             }
         case OBTENER_CATEGORIA_INSUMO_ELIMINAR:

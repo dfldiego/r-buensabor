@@ -7,6 +7,8 @@ const { checkToken } = require('../middlewares/authentication');
 const menuController = require('../controllers/menu.controller');
 const router = Router();
 
+router.get('/menuAll', [checkToken], menuController.listAll);
+
 router.get('/', [checkToken], menuController.list);
 
 router.post('/', [checkToken], menuController.create);
