@@ -8,7 +8,7 @@ const list = async (req, res = response) => {
             MenuCategory.find({ status: true }),
             MenuCategory.countDocuments({ status: true })
         ]);
-        console.log(categories);
+
         res.json({
             ok: true,
             categories,
@@ -25,7 +25,7 @@ const list = async (req, res = response) => {
 
 const create = async (req, res = response) => {
     const { name } = req.body;
-    console.log(name);
+
     try {
 
         if (name === '') {

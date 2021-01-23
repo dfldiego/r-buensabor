@@ -9,7 +9,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
     obtenerCategoriasAction,
     obtenerCategoriaInsumoAbueloAction,
-    guardarCategoriaInsumoAction,
 } from '../../actions/adminActions';
 
 import {
@@ -28,9 +27,6 @@ const Catalogo = () => {
 
     const categorias = useSelector(state => state.admin.categoriasSelect);
     const categoriasInsumo = useSelector(state => state.admin.categoriasInsumoSelect);
-
-    console.log(categorias);
-    console.log(categoriasInsumo);
 
     useEffect(() => {
         consultar_categorias();

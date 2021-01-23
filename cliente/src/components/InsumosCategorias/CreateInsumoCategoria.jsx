@@ -25,7 +25,7 @@ const CreateInsumoCategoria = () => {
         category: false,
     });
 
-    const { description, parent, img, category } = insumoCategoria;
+    const { description } = insumoCategoria;
 
     const handleChange = e => {
         setInsumoCategoria({
@@ -60,9 +60,7 @@ const CreateInsumoCategoria = () => {
     useEffect(() => {
         cargarCategoriaInsumo();
 
-        const datosCategoriaInsumoPadre = categoriasInsumoSelect.map(categoriaInsumo => {
-            categoriaInsumo._id = categoria_insumo_editar.parent;
-        })
+        const datosCategoriaInsumoPadre = categoriasInsumoSelect.map(categoriaInsumo => categoriaInsumo._id = categoria_insumo_editar.parent)
 
         // guardamos la categoriaInsumo que coincida con el id. en un state
         setPadre(datosCategoriaInsumoPadre);

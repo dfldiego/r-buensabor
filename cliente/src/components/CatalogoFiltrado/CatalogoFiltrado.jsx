@@ -34,8 +34,6 @@ const CatalogoFiltrado = ({ name }) => {
     const menus = useSelector(state => state.admin.menusSelect);
     const modalMenuDetalle = useSelector(state => state.catalogo.abrir_detalle_menu);
 
-    console.log(menus);
-
     const filtrarCategoriaPorName = nombreCategoria => {
         const categoriaEncontradaPorName = categorias.filter(categoria => categoria.name === nombreCategoria);
         setCategoriaFiltrada(categoriaEncontradaPorName[0]);
