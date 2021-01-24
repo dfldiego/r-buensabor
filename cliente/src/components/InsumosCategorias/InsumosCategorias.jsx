@@ -11,20 +11,19 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
     abrirCerrarAgregarCategoriaInsumoAction,
     obtenerCategoriasInsumoBuscadorAction,
-    obtenerCategoriaInsumoAction,
 } from '../../actions/adminActions';
 
 const InsumosCategorias = () => {
 
     const [openModal, setOpenModal] = useState(false);
     const [buscador, setBuscador] = useState('');
-    const [padre, setPadre] = useState(null);
+    /*  const [padre, setPadre] = useState(null); */
 
     const dispatch = useDispatch();
 
     const abrir_cerrar_agregarCategoriaInsumo = (estadoAgregarCategoriaInsumo, padre) => dispatch(abrirCerrarAgregarCategoriaInsumoAction(estadoAgregarCategoriaInsumo, padre));
     const cargarCategoriasInsumo = (indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda) => dispatch(obtenerCategoriasInsumoBuscadorAction(indexPrimerUsuario, limite_state, paginaCorriente_state, palabraBusqueda));
-    const cargarCategoriaInsumo = () => dispatch(obtenerCategoriaInsumoAction());
+    /*  const cargarCategoriaInsumo = () => dispatch(obtenerCategoriaInsumoAction()); */
 
     const modalAgregarCategoriaInsumo = useSelector(state => state.admin.abrir_agregar_categoria_insumo);
     const recargarTablaCategoriaInsumo = useSelector(state => state.admin.categoria_insumo_eliminar);
@@ -33,14 +32,14 @@ const InsumosCategorias = () => {
     let paginaCorriente_state = useSelector(state => state.admin.paginaCorriente);
     let palabraBuscar_state = useSelector(state => state.admin.palabraBuscar);
     let desde_state = useSelector(state => state.admin.desde);
-    const categoriasInsumoSelect = useSelector(state => state.admin.categoriasInsumoSelect);
+    /* const categoriasInsumoSelect = useSelector(state => state.admin.categoriasInsumoSelect); */
 
-    useEffect(() => {
-        cargarCategoriaInsumo();
-
-        // eslint-disable-next-line
-    }, []);
-
+    /*     useEffect(() => {
+            cargarCategoriaInsumo();
+    
+            // eslint-disable-next-line
+        }, []);
+     */
     useEffect(() => {
         cargarCategoriasInsumo(desde_state, limite_state, paginaCorriente_state, palabraBuscar_state);
 
@@ -54,23 +53,27 @@ const InsumosCategorias = () => {
     }, [recargarTablaCategoriaInsumo]);
 
 
-    useEffect(() => {
+    /* useEffect(() => {
         console.log(categoriasInsumoSelect);
+        buscarPadre();
 
+    }, [categoriasInsumoSelect]) */
+
+    /* const buscarPadre = () => {
         const datosCategoriaInsumoPadre = categoriasInsumoSelect.map(categoriaInsumo => !categoriaInsumo.category && !categoriaInsumo.parent || categoriaInsumo.category && categoriaInsumo.parent ? categoriaInsumo : undefined);
 
         const sinNulls = datosCategoriaInsumoPadre.filter(categoriaInsumo => categoriaInsumo != null)
 
         console.log(sinNulls);
         setPadre(sinNulls);
-    }, [categoriasInsumoSelect])
+    } */
 
     const handleClick_abrir_agregar_categoriaInsumo = e => {
         e.preventDefault();
 
         if (openModal === false) {
             setOpenModal(true);
-            abrir_cerrar_agregarCategoriaInsumo(true, padre);
+            abrir_cerrar_agregarCategoriaInsumo(true);
         } else {
             closeModal();
             abrir_cerrar_agregarCategoriaInsumo(false);

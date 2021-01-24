@@ -521,15 +521,6 @@ export default function (state = initialState, action) {
                 mostrarCategoriasInsumo: true,
                 totalElementos: action.payload.total,
             }
-        case CATEGORIA_INSUMO_SELECT:
-            return {
-                ...state,
-                loading: false,
-                mensaje: null,
-                error: null,
-                errores: [],
-                categoriasInsumoSelect: action.payload,
-            }
         case DESCARGA_LISTADO_MENUS:
             return {
                 ...state,

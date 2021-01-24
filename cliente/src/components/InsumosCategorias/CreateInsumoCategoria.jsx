@@ -58,20 +58,20 @@ const CreateInsumoCategoria = () => {
     }
 
     useEffect(() => {
-        /* cargarCategoriaInsumo(); */
+        cargarCategoriaInsumo();
 
         // eslint-disable-next-line
     }, []);
 
     useEffect(() => {
         console.log(categoriasInsumoSelect);
-        /*
-                const datosCategoriaInsumoPadre = categoriasInsumoSelect.map(categoriaInsumo => !categoriaInsumo.category && !categoriaInsumo.parent || categoriaInsumo.category && categoriaInsumo.parent ? categoriaInsumo : undefined);
-        
-                const sinNulls = datosCategoriaInsumoPadre.filter(categoriaInsumo => categoriaInsumo != null)
-        
-                console.log(sinNulls);
-                setPadre(sinNulls); */
+
+        const datosCategoriaInsumoPadre = categoriasInsumoSelect.map(categoriaInsumo => !categoriaInsumo.category && !categoriaInsumo.parent || categoriaInsumo.category && categoriaInsumo.parent ? categoriaInsumo : undefined);
+
+        const sinNulls = datosCategoriaInsumoPadre.filter(categoriaInsumo => categoriaInsumo != null)
+
+        console.log(sinNulls);
+        setPadre(sinNulls);
         setPadre(categoriasInsumoSelect)
     }, [categoriasInsumoSelect])
 
