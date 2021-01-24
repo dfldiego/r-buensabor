@@ -87,6 +87,7 @@ import {
     DESCARGA_LISTADO_CATEGORIA,
     DESCARGA_LISTADO_CATEGORIA_INSUMO,
     DESCARGA_LISTADO_MENUS,
+    CATEGORIA_INSUMO_SELECT,
 } from '../types';
 
 const initialState = {
@@ -519,6 +520,15 @@ export default function (state = initialState, action) {
                 categoriasInsumoSelect: action.payload.productCategories,
                 mostrarCategoriasInsumo: true,
                 totalElementos: action.payload.total,
+            }
+        case CATEGORIA_INSUMO_SELECT:
+            return {
+                ...state,
+                loading: false,
+                mensaje: null,
+                error: null,
+                errores: [],
+                categoriasInsumoSelect: action.payload,
             }
         case DESCARGA_LISTADO_MENUS:
             return {

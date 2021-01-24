@@ -58,15 +58,22 @@ const CreateInsumoCategoria = () => {
     }
 
     useEffect(() => {
-        cargarCategoriaInsumo();
-
-        const datosCategoriaInsumoPadre = categoriasInsumoSelect.map(categoriaInsumo => categoriaInsumo._id = categoria_insumo_editar.parent)
-
-        // guardamos la categoriaInsumo que coincida con el id. en un state
-        setPadre(datosCategoriaInsumoPadre);
+        /* cargarCategoriaInsumo(); */
 
         // eslint-disable-next-line
     }, []);
+
+    useEffect(() => {
+        console.log(categoriasInsumoSelect);
+        /*
+                const datosCategoriaInsumoPadre = categoriasInsumoSelect.map(categoriaInsumo => !categoriaInsumo.category && !categoriaInsumo.parent || categoriaInsumo.category && categoriaInsumo.parent ? categoriaInsumo : undefined);
+        
+                const sinNulls = datosCategoriaInsumoPadre.filter(categoriaInsumo => categoriaInsumo != null)
+        
+                console.log(sinNulls);
+                setPadre(sinNulls); */
+        setPadre(categoriasInsumoSelect)
+    }, [categoriasInsumoSelect])
 
     const handleSubmitAgregarCategoriaInsumo = e => {
         e.preventDefault();
@@ -75,6 +82,7 @@ const CreateInsumoCategoria = () => {
 
 
         if (categoria_insumo_editar) {
+            debugger;
             insumoCategoria._id = categoria_insumo_editar._id;
 
             // valido si no hay parent -> es abuelo
@@ -96,13 +104,9 @@ const CreateInsumoCategoria = () => {
             }
         } else {
             debugger;
-            // valido si no hay parent -> es abuelo
-            if (!insumoCategoria.parent) {
-                insumoCategoria.category = false;
-            } else if (insumoCategoria.parent && !padre.parent) {//valido si hay parent y si parent no tiene parent -> es padre -> category = true
+            //valido si hay parent y si parent no tiene parent -> es padre -> category = true
+            if (insumoCategoria.parent && !padre.parent) {
                 insumoCategoria.category = true;
-            } else {//sino es hijo. (tiene parent y category= false)(insumoCategoria.parent && padre.parent) 
-                insumoCategoria.category = false;
             }
 
             agregar_nuevo_Categoria_action(insumoCategoria, imageFile);
@@ -135,12 +139,8 @@ const CreateInsumoCategoria = () => {
         });
     };
 
-    const onClickBuscarPadre = (CategoriaInsumo) => {
-
-        console.log(CategoriaInsumo + "asdas");
-        setPadre(CategoriaInsumo);
-    }
-
+    /* console.log(padre); */
+    console.log(categoriasInsumoSelect);
     return (
         <Fragment>
             <div className="modal-categoria">
@@ -191,7 +191,7 @@ const CreateInsumoCategoria = () => {
                                             categoria_insumo_editar.parent ?
                                                 <option
                                                     key={categoria_insumo_editar._id}
-                                                    value={categoria_insumo_editar}
+                                                    value={categoria_insumo_editar._id}
                                                 >{categoria_insumo_editar.parent.description}
                                                 </option>
                                                 :
@@ -200,10 +200,11 @@ const CreateInsumoCategoria = () => {
                                             <option value="">-- Seleccione una categoria --</option>
                                     }
                                     {
+
                                         categoriasInsumoSelect.map(categoria => (
                                             <option
                                                 key={categoria._id}
-                                                value={categoria}
+                                                value={categoria._id}
                                             >
                                                 {
                                                     categoria.description

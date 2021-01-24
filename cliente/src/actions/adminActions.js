@@ -85,6 +85,7 @@ import {
     DESCARGA_LISTADO_CATEGORIA,
     DESCARGA_LISTADO_CATEGORIA_INSUMO,
     DESCARGA_LISTADO_MENUS,
+    CATEGORIA_INSUMO_SELECT,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
@@ -787,15 +788,21 @@ const agregarCategoriaInsumoError = msj => ({
 })
 
 /**********************  para abrir modal agregar categoria-insumo ********************************/
-export function abrirCerrarAgregarCategoriaInsumoAction(estadoAgregarCategoriaInsumo) {
+export function abrirCerrarAgregarCategoriaInsumoAction(estadoAgregarCategoriaInsumo, padre) {
     return (dispatch) => {
         if (estadoAgregarCategoriaInsumo) {
             dispatch(abrirAgregarCategoriaInsumo(estadoAgregarCategoriaInsumo));
+            dispatch(guardarPadre(padre));
         } else {
             dispatch(cerrarAgregarCategoriaInsumo(estadoAgregarCategoriaInsumo));
         }
     }
 }
+
+const guardarPadre = padre => ({
+    type: CATEGORIA_INSUMO_SELECT,
+    payload: padre
+})
 
 const abrirAgregarCategoriaInsumo = estadoAgregarCategoriaInsumo => ({
     type: ABRIR_AGREGAR_CATEGORIA_INSUMO,
