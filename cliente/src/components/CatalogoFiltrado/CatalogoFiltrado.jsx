@@ -95,9 +95,6 @@ const CatalogoFiltrado = ({ name }) => {
         // eslint-disable-next-line
     }, [modalMenuDetalle])
 
-    console.log(insumos);
-    console.log(categoriaInsumoPadre);
-
     return (
         <Fragment>
             <div className="fondo-negro">

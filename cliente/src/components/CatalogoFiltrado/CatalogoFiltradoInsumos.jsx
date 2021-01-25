@@ -13,6 +13,7 @@ import {
 } from '../../actions/adminActions';
 import {
     abrirCerrarDetalleMenuAction,
+    guardarInsumoDetalleAction
 } from '../../actions/catalogoActions';
 
 const CatalogoFiltradoInsumos = ({ name }) => {
@@ -25,6 +26,7 @@ const CatalogoFiltradoInsumos = ({ name }) => {
 
     const abrirModalMenuDetalle = (estadoDetalleMenu) => dispatch(abrirCerrarDetalleMenuAction(estadoDetalleMenu));
     const consultarInsumos = () => dispatch(obtenerInsumosAction());
+    const guardarInsumo = (insumo) => dispatch(guardarInsumoDetalleAction(insumo));
 
     const modalMenuDetalle = useSelector(state => state.catalogo.abrir_detalle_menu);
     const insumos = useSelector(state => state.admin.insumos);
@@ -38,7 +40,6 @@ const CatalogoFiltradoInsumos = ({ name }) => {
 
     const filtrarInsumosPorPadre = categoriaInsumoPadre => {
         const insumosPorPadre = insumos.filter(insumo => insumo.category._id === categoriaInsumoPadre._id);
-        console.log(insumosPorPadre);
         setInsumoFiltrado(insumosPorPadre);
     }
 
@@ -49,8 +50,8 @@ const CatalogoFiltradoInsumos = ({ name }) => {
         // eslint-disable-next-line
     }, [])
 
-    const handleClickAbrirModalDetalle = (insumoId) => {
-        console.log(insumoId);
+    const handleClickAbrirModalDetalle = (insumo) => {
+        guardarInsumo(insumo);
 
         if (openModal === false) {
             setOpenModal(true);
@@ -72,10 +73,6 @@ const CatalogoFiltradoInsumos = ({ name }) => {
         // eslint-disable-next-line
     }, [modalMenuDetalle])
 
-    console.log(insumos);
-    console.log(categoriaInsumoPadre);
-    console.log(insumoFiltrado);
-
     return (
         <Fragment>
             <div className="fondo-negro">
@@ -96,7 +93,7 @@ const CatalogoFiltradoInsumos = ({ name }) => {
                                     <img
                                         src={`http://localhost:4000/api/image/products/${insumo.img}`}
                                         alt={insumo.description}
-                                        onClick={() => handleClickAbrirModalDetalle(insumo._id)}
+                                        onClick={() => handleClickAbrirModalDetalle(insumo)}
                                     />
                                     <div className="titulos">
                                         <h3 className="fw-300">{insumo.description}</h3>
@@ -107,7 +104,7 @@ const CatalogoFiltradoInsumos = ({ name }) => {
                                             type="button"
                                             className="btn_ver_detalle"
                                             value="Ver Detalle"
-                                            onClick={() => handleClickAbrirModalDetalle(insumo._id)}
+                                            onClick={() => handleClickAbrirModalDetalle(insumo)}
                                         />
                                         <input
                                             type="button"
@@ -135,6 +132,3 @@ const CatalogoFiltradoInsumos = ({ name }) => {
 }
 
 export default CatalogoFiltradoInsumos
-/**
- *
- */

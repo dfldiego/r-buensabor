@@ -24,7 +24,6 @@ const CatalogoInsumoPadre = () => {
 
     const categoriasInsumo = useSelector(state => state.admin.categoriasInsumoSelect);
     const categoriaInsumoPadre = useSelector(state => state.catalogo.categoria_insumo_padre);
-    console.log(categoriaInsumoPadre);
 
     useEffect(() => {
         consultar_categoriasInsumo(categoriaInsumoPadre._id);

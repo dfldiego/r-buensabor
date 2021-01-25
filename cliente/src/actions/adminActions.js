@@ -474,7 +474,6 @@ const insumoEliminadoError = msj => ({
 export function obtenerInsumosAction() {
     return async (dispatch) => {
         dispatch(descargarInsumos());
-        console.log("entra a obtenerInsumos");
 
         try {
             const token = localStorage.getItem('token');

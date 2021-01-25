@@ -7,6 +7,7 @@ import {
     OBTENER_MENU_ERROR,
     GUARDAR_CATEGORIA_INSUMO_PADRE,
     PAGINA_MENUES_INSUMO_FILTRADOS,
+    OBTENER_INSUMO,
 } from '../types';
 import clienteAxios from '../config/axios';
 import { authorizationHeader } from '../helpers/authorization_header';
@@ -40,6 +41,19 @@ const descargarMenusError = errores => ({
     type: OBTENER_MENU_ERROR,
     payload: errores,
 });
+
+/**********************  para abrir modal de detalle de menu-insumo con datos del insumo ********************************/
+export function guardarInsumoDetalleAction(insumo) {
+    return (dispatch) => {
+        console.log(insumo);
+        dispatch(guardarInsumo(insumo));
+    }
+}
+
+const guardarInsumo = insumo => ({
+    type: OBTENER_INSUMO,
+    payload: insumo
+})
 
 /**********************  para abrir modal de detalle de menu ********************************/
 export function abrirCerrarDetalleMenuAction(estadoDetalleMenu) {

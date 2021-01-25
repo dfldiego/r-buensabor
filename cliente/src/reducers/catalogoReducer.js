@@ -7,6 +7,7 @@ import {
     OBTENER_MENU_ERROR,
     GUARDAR_CATEGORIA_INSUMO_PADRE,
     PAGINA_MENUES_INSUMO_FILTRADOS,
+    OBTENER_INSUMO,
 } from '../types';
 
 const initialState = {
@@ -14,12 +15,13 @@ const initialState = {
     en_pagina_menues_insumo_filtrados: false,
     en_pagina_catalogo_insumo_padres: false,
     abrir_detalle_menu: false,
-    menu: {},
+    menu: null,
     ingredientes: [],
     error: false,
     errores: [],
     mensaje: "",
     categoria_insumo_padre: null,
+    insumo_detalle: null,
 }
 
 export default function (state = initialState, action) {
@@ -56,6 +58,11 @@ export default function (state = initialState, action) {
                 ...state,
                 menu: action.payload.menu,
                 ingredientes: action.payload.ingredients,
+            }
+        case OBTENER_INSUMO:
+            return {
+                ...state,
+                insumo_detalle: action.payload,
             }
         case OBTENER_MENU_ERROR:
             return {
