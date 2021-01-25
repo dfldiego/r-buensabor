@@ -27,6 +27,9 @@ const MenuDetalle = () => {
         return;
     }
 
+    console.log(menuPorId);
+    console.log(insumo);
+
     return (
         <Fragment>
             <div className="modal_menu">
@@ -70,38 +73,42 @@ const MenuDetalle = () => {
                                 </div>
                             </div>
                             :
-                            <div>
-                                <h3 className="fw-300 menu_detalle_descripcion">{insumo.description}</h3>
-                                <div className="row_menu_detalle">
-                                    <div className="col_2_filtrado">
-                                        <img
-                                            src={`http://localhost:4000/api/image/products/${insumo.img}`}
-                                            alt={insumo.description}
-                                        />
-                                    </div>
-                                    <div className="col_2_filtrado row_2_filtrado">
-                                        <div className="row_menu_detalle">
-                                            <div>
-                                                <h4 className="fw-300">Ingredientes:</h4>
-                                                <div className="flex_menu_detalle">
-                                                    <ul>
-                                                        <li className="fw-300 li_ingredientes">Tomate con Queso y Mondongo</li>
-                                                    </ul>
-                                                </div>
+                            null
+                    }
+
+                    {insumo ?
+                        <div>
+                            <h3 className="fw-300 menu_detalle_descripcion">{insumo.description}</h3>
+                            <div className="row_menu_detalle">
+                                <div className="col_2_filtrado">
+                                    <img
+                                        src={`http://localhost:4000/api/image/products/${insumo.img}`}
+                                        alt={insumo.description}
+                                    />
+                                </div>
+                                <div className="col_2_filtrado row_2_filtrado">
+                                    <div className="row_menu_detalle">
+                                        <div>
+                                            <h4 className="fw-300">Ingredientes:</h4>
+                                            <div className="flex_menu_detalle">
+                                                <ul>
+                                                    <li className="fw-300 li_ingredientes">Tomate con Queso y Mondongo</li>
+                                                </ul>
                                             </div>
-                                            <h4 className="price">${insumo.sale_price}</h4>
                                         </div>
-                                        <div className="botones">
-                                            <input
-                                                type="button"
-                                                className="btn_agregar_carrito"
-                                                value="Agregar al Carrito"
-                                            />
-                                        </div>
+                                        <h4 className="price">${insumo.sale_price}</h4>
+                                    </div>
+                                    <div className="botones">
+                                        <input
+                                            type="button"
+                                            className="btn_agregar_carrito"
+                                            value="Agregar al Carrito"
+                                        />
                                     </div>
                                 </div>
                             </div>
-
+                        </div>
+                        : null
                     }
                 </div>
             </div>

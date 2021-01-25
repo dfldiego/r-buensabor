@@ -11,7 +11,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
     obtenerCategoriasAction,
     obtenerMenuAction,
-    obtenerInsumosAction,
 } from '../../actions/adminActions';
 import {
     abrirCerrarDetalleMenuAction,
@@ -35,8 +34,6 @@ const CatalogoFiltrado = ({ name }) => {
     const categorias = useSelector(state => state.admin.categoriasSelect);
     const menus = useSelector(state => state.admin.menusSelect);
     const modalMenuDetalle = useSelector(state => state.catalogo.abrir_detalle_menu);
-    const categoriaInsumoPadre = useSelector(state => state.catalogo.categoria_insumo_padre);
-    const insumos = useSelector(state => state.admin.insumos);
 
     /**
      * 
@@ -56,10 +53,13 @@ const CatalogoFiltrado = ({ name }) => {
     }
 
     useEffect(() => {
-        consultarCategorias();
-        filtrarCategoriaPorName(name);
-        consultarMenus();
-        /* consultarInsumos(); */
+        consultarCategorias()
+            .then(() => {
+                filtrarCategoriaPorName(name);
+            })
+            .then(() => {
+                consultarMenus();
+            })
 
         // eslint-disable-next-line
     }, []);
@@ -73,6 +73,7 @@ const CatalogoFiltrado = ({ name }) => {
     }, [menus])
 
     const handleClickAbrirModalDetalle = id_menu => {
+        console.log(id_menu);
         consultarMenuPorId(id_menu);
 
         if (openModal === false) {

@@ -40,6 +40,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 en_pagina_catalogo_insumo_padres: action.payload,
+                menu: null,
             }
         case ABRIR_DETALLE_MENU:
             return {
@@ -50,7 +51,8 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 abrir_detalle_menu: action.payload,
-                menu: {},
+                menu: null,
+                insumo_detalle: null,
                 ingredientes: [],
             }
         case OBTENER_MENU:
@@ -70,6 +72,7 @@ export default function (state = initialState, action) {
                 error: true,
                 mensaje: action.payload,
                 errores: [],
+                menu: null,
             }
         case GUARDAR_CATEGORIA_INSUMO_PADRE:
             return {

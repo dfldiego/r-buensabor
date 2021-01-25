@@ -117,3 +117,7 @@
     flex-direction: column;
     justify-content: space-between;
 }
+
+.price {
+    align-items: center;
+}
