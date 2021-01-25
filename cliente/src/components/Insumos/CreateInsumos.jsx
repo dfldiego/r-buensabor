@@ -14,6 +14,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const CreateInsumos = () => {
 
+    const [imageFile, setimageFile] = useState(null);
+
     const [insumo, setInsumo] = useState({
         description: '',
         purchase_price: 0,
@@ -38,9 +40,9 @@ const CreateInsumos = () => {
     const dispatch = useDispatch();
 
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarInsumoAction(nuevo_estado));
-    const agregar_nuevo_insumo_action = (datosNuevoInsumo) => dispatch(crearNuevaInsumoAction(datosNuevoInsumo));
+    const agregar_nuevo_insumo_action = (datosNuevoInsumo, imageFile) => dispatch(crearNuevaInsumoAction(datosNuevoInsumo, imageFile));
     const obtenerCategoriasInsumo = () => dispatch(obtenerCategoriaInsumoAction());
-    const insumo_editar_action = (datos_insumos) => dispatch(editarInsumoAction(datos_insumos));
+    const insumo_editar_action = (datos_insumos, imageFile) => dispatch(editarInsumoAction(datos_insumos, imageFile));
 
     let cerrar_modal_state_store = useSelector(state => state.admin.abrir_agregar_insumo);
     const errores = useSelector(state => state.admin.errores);
@@ -68,13 +70,13 @@ const CreateInsumos = () => {
 
         if (insumo_editar) {
             insumo._id = insumo_editar._id;
-            insumo_editar_action(insumo);
+            insumo_editar_action(insumo, imageFile);
 
             if (errores === [] && msj_error === null) {
                 cerrar_modal();
             }
         } else {
-            agregar_nuevo_insumo_action({ description, purchase_price, sale_price, current_stock, min_stock, unit_measurement, is_supplies, category });
+            agregar_nuevo_insumo_action({ description, purchase_price, sale_price, current_stock, min_stock, unit_measurement, is_supplies, category }, imageFile);
 
             if (errores === [] && msj_error === null) {
                 cerrar_modal();
@@ -99,6 +101,14 @@ const CreateInsumos = () => {
 
         // eslint-disable-next-line
     }, [insumo_editar]);
+
+    var handleChange_imagen = (e) => {
+        setimageFile({
+            ...imageFile,
+            [e.target.name]: e.target.files[0],
+        });
+    };
+
 
     return (
         <Fragment>
@@ -226,6 +236,14 @@ const CreateInsumos = () => {
                                     <option value="true">Verdadero</option>
                                     <option value="false">Falso</option>
                                 </select>
+                            </div>
+                            <div className="form-row">
+                                <label>Imagen</label>
+                                <input
+                                    type="file"
+                                    name="img"
+                                    onChange={handleChange_imagen}
+                                />
                             </div>
                             <div className="form-row">
                                 <label>Categoria</label>

@@ -3,6 +3,7 @@ const User = require('../models/user.model');
 const Menu = require('../models/menu.model');
 const MenuCategories = require('../models/menu-categories.model');
 const ProductCategories = require('../models/product-categories.model');
+const Products = require('../models/product.model');
 const fs = require('fs');
 const path = require('path');
 
@@ -21,7 +22,7 @@ const upload = async (req, res = response) => {
     //estas serán carpetas dentro de la carpeta upload
     let type = req.params.type;
     let id = req.params.id;
-    const validTypes = ['users', 'menus', 'menu-categories', 'product-categories'];
+    const validTypes = ['users', 'menus', 'menu-categories', 'product-categories', 'products'];
     if (validTypes.indexOf(type) < 0) {
         return res.json({
             ok: true,
@@ -71,6 +72,9 @@ const upload = async (req, res = response) => {
                 break;
             case 'product-categories':
                 collection = ProductCategories;
+                break;
+            case 'products':
+                collection = Products;
                 break;
             default:
                 break;

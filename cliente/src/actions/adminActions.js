@@ -376,19 +376,31 @@ export function obtenerUnInsumoAction(datos_insumos) {
     }
 }
 
-export function editarInsumoAction(datos_insumos) {
+export function editarInsumoAction(datos_insumos, imageFile) {
     return async (dispatch) => {
 
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            await clienteAxios.put(`/api/product/${datos_insumos._id}`, datos_insumos, header)
-                .then(response => {
-                    console.log(response.data);
-                    const { product } = response.data;
-                    dispatch(editarInsumoExito(product));
-                })
 
+            if (imageFile !== null) {
+                const formData = new FormData();
+                formData.append('file', imageFile.img);
+
+                await clienteAxios.put(`/api/upload/products/${datos_insumos._id}`, formData, header)
+                    .then(response => {
+                        console.log(response.data);
+                        clienteAxios.put(`/api/product-categories/${response.data.result._id}`, response.data.result, header)
+                        dispatch(editarInsumoExito(response.data.result));
+                    })
+            } else {
+                await clienteAxios.put(`/api/product/${datos_insumos._id}`, datos_insumos, header)
+                    .then(response => {
+                        console.log(response.data);
+                        const { product } = response.data;
+                        dispatch(editarInsumoExito(product));
+                    })
+            }
         } catch (err) {
             if (err.response.data.msg !== undefined) {
                 dispatch(editarInsumoError(err.response.data.msg));
@@ -485,7 +497,7 @@ const descargarListadoInsumosExito = lista_insumos => ({
 })
 
 /**********************  para crear una nueva insumo ********************************/
-export function crearNuevaInsumoAction(datosNuevoInsumo) {
+export function crearNuevaInsumoAction(datosNuevoInsumo, imageFile) {
     return async (dispatch) => {
         dispatch(agregarInsumo());
 
@@ -493,14 +505,24 @@ export function crearNuevaInsumoAction(datosNuevoInsumo) {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
             console.log(datosNuevoInsumo);
+
+            const formData = new FormData();
+            formData.append('file', imageFile.img);
+
             await clienteAxios.post('/api/product', datosNuevoInsumo, header)
                 .then(response => {
                     console.log(response);
                     if (!response.data.productStored) {
                         const { product } = response.data;
+
+                        clienteAxios.put(`/api/upload/products/${product._id}`, formData, header)
+
                         dispatch(agregarInsumoExito(product));
                     } else {
                         const { productStored } = response.data;
+
+                        clienteAxios.put(`/api/upload/products/${productStored._id}`, formData, header)
+
                         dispatch(agregarInsumoExito(productStored));
                         console.log(response.data.msg);
                     }

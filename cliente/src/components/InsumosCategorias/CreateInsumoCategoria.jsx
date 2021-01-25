@@ -46,8 +46,6 @@ const CreateInsumoCategoria = () => {
     const msj_error = useSelector(state => state.admin.mensaje);
     const categoriasInsumoSelect = useSelector(state => state.admin.categoriasInsumoSelect);
     const categoria_insumo_editar = useSelector(state => state.admin.categoria_insumo_editar);
-    console.log(categoriasInsumoSelect);
-    console.log(categoria_insumo_editar);
 
     const cerrar_modal = () => {
         if (cerrar_modal_state_store) {
@@ -64,7 +62,6 @@ const CreateInsumoCategoria = () => {
     }, []);
 
     useEffect(() => {
-        console.log(categoriasInsumoSelect);
 
         const datosCategoriaInsumoPadre = categoriasInsumoSelect.map(categoriaInsumo => !categoriaInsumo.category && !categoriaInsumo.parent || categoriaInsumo.category && categoriaInsumo.parent ? categoriaInsumo : undefined);
 
@@ -78,11 +75,7 @@ const CreateInsumoCategoria = () => {
     const handleSubmitAgregarCategoriaInsumo = e => {
         e.preventDefault();
 
-        //si parent tiene parent
-
-
         if (categoria_insumo_editar) {
-            debugger;
             insumoCategoria._id = categoria_insumo_editar._id;
 
             // valido si no hay parent -> es abuelo
@@ -103,7 +96,6 @@ const CreateInsumoCategoria = () => {
                 cerrar_modal();
             }
         } else {
-            debugger;
             //valido si hay parent y si parent no tiene parent -> es padre -> category = true
             if (insumoCategoria.parent && !padre.parent) {
                 insumoCategoria.category = true;
