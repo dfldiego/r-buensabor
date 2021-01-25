@@ -118,6 +118,7 @@ const CatalogoFiltrado = ({ name }) => {
                                     <img
                                         src={`http://localhost:4000/api/image/menus/${menu.img}`}
                                         alt={menu.description}
+                                        className="imagen_detalle"
                                         onClick={() => handleClickAbrirModalDetalle(menu._id)}
                                     />
                                     <div className="titulos">

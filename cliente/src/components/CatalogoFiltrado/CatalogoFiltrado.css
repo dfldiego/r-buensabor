@@ -81,31 +81,39 @@
     border-radius: 10px;
     position: relative;
     overflow: scroll;
-    width: 580px;
-    max-width: 100%;
-    max-height: 590px;
+    width: 1000px;
+    max-width: 600% !important;
+    max-height: 600px !important;
 }
 
 .row_menu_detalle {
+    display: flex;
+    justify-content: space-between;
     padding: 0 1rem;
 }
 
-.row_menu_detalle .menu_detalle_descripcion {
+.menu_detalle_descripcion {
     text-transform: uppercase;
-    text-align: center;
+    text-align: center !important;
 }
 
-.row_menu_detalle img {
+.row_menu_detalle .col_2_filtrado {
     border-radius: 1rem;
+    flex-basis: calc(50% - 2rem);
 }
 
 .li_ingredientes {
     color: #000000;
     width: 100%;
-    list-style-type: circle;
 }
 
 .flex_menu_detalle {
     display: flex;
+    justify-content: space-between;
+}
+
+.row_2_filtrado {
+    display: flex;
+    flex-direction: column;
     justify-content: space-between;
 }

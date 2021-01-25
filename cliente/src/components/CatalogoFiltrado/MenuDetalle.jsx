@@ -39,6 +39,49 @@ const MenuDetalle = () => {
                     {
                         menuPorId ?
                             <div>
+                                <h3 className="fw-300 menu_detalle_descripcion">{menuPorId.description}</h3>
+                                <div className="row_menu_detalle">
+                                    <div className="col_2_filtrado">
+                                        <img
+                                            src={`http://localhost:4000/api/image/menus/${menuPorId.img}`}
+                                            alt={menuPorId.description}
+                                        />
+                                    </div>
+                                    <div className="col_2_filtrado row_2_filtrado">
+                                        <div className="row_menu_detalle">
+                                            <div>
+                                                <h4 className="fw-300">Ingredientes:</h4>
+                                                <div className="flex_menu_detalle">
+                                                    <ul>
+                                                        <li className="fw-300 li_ingredientes">Tomate con Queso y Mondongo</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <h4 className="price">${menuPorId.price}</h4>
+                                        </div>
+                                        <div className="botones">
+                                            <input
+                                                type="button"
+                                                className="btn_agregar_carrito"
+                                                value="Agregar al Carrito"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            : null
+                    }
+                </div>
+            </div>
+        </Fragment>
+    )
+}
+
+export default MenuDetalle
+/**
+ * {
+                        menuPorId ?
+                            <div>
                                 <div className="row_menu_detalle">
                                     <h3 className="fw-300 menu_detalle_descripcion">{menuPorId.description}</h3>
                                     <img
@@ -60,21 +103,4 @@ const MenuDetalle = () => {
                             </div>
                             : null
                     }
-
-
-                    <div className="row_menu_detalle">
-                        <div className="botones">
-                            <input
-                                type="button"
-                                className="btn_agregar_carrito"
-                                value="Agregar al Carrito"
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </Fragment>
-    )
-}
-
-export default MenuDetalle
+ */
