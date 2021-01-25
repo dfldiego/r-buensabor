@@ -36,25 +36,31 @@ const MenuDetalle = () => {
                         className="volver"
                         onClick={cerrar_modal}
                     />
+                    {
+                        menuPorId ?
+                            <div>
+                                <div className="row_menu_detalle">
+                                    <h3 className="fw-300 menu_detalle_descripcion">{menuPorId.description}</h3>
+                                    <img
+                                        src={`http://localhost:4000/api/image/menus/${menuPorId.img}`}
+                                        alt={menuPorId.description}
+                                    />
+                                </div>
 
-                    <div className="row_menu_detalle">
-                        <h3 className="fw-300 menu_detalle_descripcion">{menuPorId.description}</h3>
-                        <img
-                            src={`http://localhost:4000/api/image/menus/${menuPorId.img}`}
-                            alt={menuPorId.description}
-                        />
-                    </div>
+                                <div className="row_menu_detalle">
+                                    <h4 className="fw-300">Ingredientes:</h4>
+                                </div>
 
-                    <div className="row_menu_detalle">
-                        <h4 className="fw-300">Ingredientes:</h4>
-                    </div>
+                                <div className="row_menu_detalle flex_menu_detalle">
+                                    <ul>
+                                        <li className="fw-300 li_ingredientes">Tomate con Queso y Mondongo</li>
+                                    </ul>
+                                    <h4 className="price">${menuPorId.price}</h4>
+                                </div>
+                            </div>
+                            : null
+                    }
 
-                    <div className="row_menu_detalle flex_menu_detalle">
-                        <ul>
-                            <li className="fw-300 li_ingredientes">Tomate con Queso y Mondongo</li>
-                        </ul>
-                        <h4 className="price">${menuPorId.price}</h4>
-                    </div>
 
                     <div className="row_menu_detalle">
                         <div className="botones">

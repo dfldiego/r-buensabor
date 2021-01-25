@@ -474,6 +474,7 @@ const insumoEliminadoError = msj => ({
 export function obtenerInsumosAction() {
     return async (dispatch) => {
         dispatch(descargarInsumos());
+        console.log("entra a obtenerInsumos");
 
         try {
             const token = localStorage.getItem('token');
@@ -942,7 +943,7 @@ const menuEliminadoError = msj => ({
 export function obtenerMenuAction() {
     return async (dispatch) => {
         dispatch(descargarMenus());
-
+        console.log("entra a menu");
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);

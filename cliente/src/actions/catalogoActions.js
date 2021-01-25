@@ -6,6 +6,7 @@ import {
     OBTENER_MENU,
     OBTENER_MENU_ERROR,
     GUARDAR_CATEGORIA_INSUMO_PADRE,
+    PAGINA_MENUES_INSUMO_FILTRADOS,
 } from '../types';
 import clienteAxios from '../config/axios';
 import { authorizationHeader } from '../helpers/authorization_header';
@@ -60,6 +61,19 @@ const cerrarDetalleMenu = estadoDetalleMenu => ({
     type: CERRAR_DETALLE_MENU,
     payload: estadoDetalleMenu
 })
+
+/**********************  para ingresar a pagina de menues insumos filtrados ********************************/
+export function paginaMenuesInsumosFiltradosAction(estado) {
+    return async (dispatch) => {
+        dispatch(entradaPaginaMenuesInsumoFiltrados(estado))
+    }
+}
+
+const entradaPaginaMenuesInsumoFiltrados = (estado) => ({
+    type: PAGINA_MENUES_INSUMO_FILTRADOS,
+    payload: estado,
+})
+
 
 /**********************  para ingresar a pagina de menues filtrados ********************************/
 export function paginaMenuesFiltradosAction(estado) {

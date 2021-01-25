@@ -9,35 +9,26 @@ import MenuDetalle from '../CatalogoFiltrado/MenuDetalle';
 
 import { useSelector, useDispatch } from 'react-redux'
 import {
-    obtenerCategoriasAction,
-    obtenerMenuAction,
     obtenerInsumosAction,
 } from '../../actions/adminActions';
 import {
     abrirCerrarDetalleMenuAction,
-    obtenerMenuPorIdAction,
 } from '../../actions/catalogoActions';
 
-const CatalogoFiltrado = ({ name }) => {
+const CatalogoFiltradoInsumos = ({ name }) => {
 
-    const [categoriaFiltrada, setCategoriaFiltrada] = useState(null);
-    const [menusFiltradosPorCategoria, setMenusFiltradosPorCategoria] = useState([]);
+    const [insumoFiltrado, setInsumoFiltrado] = useState(null);
+
     const [openModal, setOpenModal] = useState(false);
 
     const dispatch = useDispatch();
 
-    const consultarCategorias = () => dispatch(obtenerCategoriasAction());
-    const consultarMenus = () => dispatch(obtenerMenuAction());
     const abrirModalMenuDetalle = (estadoDetalleMenu) => dispatch(abrirCerrarDetalleMenuAction(estadoDetalleMenu));
-    const consultarMenuPorId = idMenu => dispatch(obtenerMenuPorIdAction(idMenu));
-    /* const consultarInsumos = () => dispatch(obtenerInsumosAction()); */
+    const consultarInsumos = () => dispatch(obtenerInsumosAction());
 
-    const categorias = useSelector(state => state.admin.categoriasSelect);
-    const menus = useSelector(state => state.admin.menusSelect);
     const modalMenuDetalle = useSelector(state => state.catalogo.abrir_detalle_menu);
-    const categoriaInsumoPadre = useSelector(state => state.catalogo.categoria_insumo_padre);
     const insumos = useSelector(state => state.admin.insumos);
-
+    const categoriaInsumoPadre = useSelector(state => state.catalogo.categoria_insumo_padre);
     /**
      * 
      * 1) tengo la categoriaInsumo del padre.
@@ -45,35 +36,21 @@ const CatalogoFiltrado = ({ name }) => {
      * 3) mostrar todos los insumos con ese padre.
      */
 
-    const filtrarCategoriaPorName = nombreCategoria => {
-        const categoriaEncontradaPorName = categorias.filter(categoria => categoria.name === nombreCategoria);
-        setCategoriaFiltrada(categoriaEncontradaPorName[0]);
-    }
-
-    const filtrarMenusPorCategoria = (menus, categoria) => {
-        const menusFiltrados = menus.filter(menu => menu.category._id === categoria._id);
-        setMenusFiltradosPorCategoria(menusFiltrados);
+    const filtrarInsumosPorPadre = categoriaInsumoPadre => {
+        const insumosPorPadre = insumos.filter(insumo => insumo.category._id === categoriaInsumoPadre._id);
+        console.log(insumosPorPadre);
+        setInsumoFiltrado(insumosPorPadre);
     }
 
     useEffect(() => {
-        consultarCategorias();
-        filtrarCategoriaPorName(name);
-        consultarMenus();
-        /* consultarInsumos(); */
+        consultarInsumos()
+            .then(() => filtrarInsumosPorPadre(categoriaInsumoPadre))
 
         // eslint-disable-next-line
-    }, []);
+    }, [])
 
-    useEffect(() => {
-        if (categoriaFiltrada !== null) {
-            filtrarMenusPorCategoria(menus, categoriaFiltrada);
-        }
-
-        // eslint-disable-next-line
-    }, [menus])
-
-    const handleClickAbrirModalDetalle = id_menu => {
-        consultarMenuPorId(id_menu);
+    const handleClickAbrirModalDetalle = (insumoId) => {
+        console.log(insumoId);
 
         if (openModal === false) {
             setOpenModal(true);
@@ -97,6 +74,7 @@ const CatalogoFiltrado = ({ name }) => {
 
     console.log(insumos);
     console.log(categoriaInsumoPadre);
+    console.log(insumoFiltrado);
 
     return (
         <Fragment>
@@ -109,27 +87,27 @@ const CatalogoFiltrado = ({ name }) => {
 
                 <div className="row">
                     {
-                        menusFiltradosPorCategoria ?
-                            menusFiltradosPorCategoria.map(menu => (
+                        insumoFiltrado ?
+                            insumos.map(insumo => (
                                 <div
                                     className="col_3"
-                                    key={menu._id}
+                                    key={insumo._id}
                                 >
                                     <img
-                                        src={`http://localhost:4000/api/image/menus/${menu.img}`}
-                                        alt={menu.description}
-                                        onClick={() => handleClickAbrirModalDetalle(menu._id)}
+                                        src={`http://localhost:4000/api/image/products/${insumo.img}`}
+                                        alt={insumo.description}
+                                        onClick={() => handleClickAbrirModalDetalle(insumo._id)}
                                     />
                                     <div className="titulos">
-                                        <h3 className="fw-300">{menu.description}</h3>
-                                        <h4 className="price">${menu.price}</h4>
+                                        <h3 className="fw-300">{insumo.description}</h3>
+                                        <h4 className="price">${insumo.sale_price}</h4>
                                     </div>
                                     <div className="botones">
                                         <input
                                             type="button"
                                             className="btn_ver_detalle"
                                             value="Ver Detalle"
-                                            onClick={() => handleClickAbrirModalDetalle(menu._id)}
+                                            onClick={() => handleClickAbrirModalDetalle(insumo._id)}
                                         />
                                         <input
                                             type="button"
@@ -141,7 +119,6 @@ const CatalogoFiltrado = ({ name }) => {
                             ))
                             : null
                     }
-
                 </div>
             </div>
             { modalMenuDetalle ?
@@ -157,4 +134,7 @@ const CatalogoFiltrado = ({ name }) => {
     )
 }
 
-export default CatalogoFiltrado
+export default CatalogoFiltradoInsumos
+/**
+ *
+ */

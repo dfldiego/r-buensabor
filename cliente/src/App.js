@@ -7,6 +7,7 @@ import Admin from './components/Administracion/Admin';
 import NoPermitido from './components/NoPermitido/NoPermitido';
 import CatalogoFiltrado from './components/CatalogoFiltrado/CatalogoFiltrado';
 import CatalogoInsumoPadre from './components/Catalogo/CatalogoInsumoPadre';
+import CatalogoFiltradoInsumo from './components/CatalogoFiltrado/CatalogoFiltradoInsumos';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route exact path="/catalogo" component={Catalogo}></Route>
           <Route exact path="/catalogo/:name" render={({ match }) => <CatalogoInsumoPadre name={match.params.name}></CatalogoInsumoPadre>}></Route>
           <Route exact path="/catalogoFiltrado/:name" render={({ match }) => <CatalogoFiltrado name={match.params.name}></CatalogoFiltrado>}></Route>
+          <Route exact path="/catalogoFiltradoInsumo/:name" render={({ match }) => <CatalogoFiltradoInsumo name={match.params.name}></CatalogoFiltradoInsumo>}></Route>
           <Route exact path="/error404" component={NoPermitido}></Route>
         </Switch>
       </Router>

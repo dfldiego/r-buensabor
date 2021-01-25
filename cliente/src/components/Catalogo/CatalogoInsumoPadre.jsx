@@ -11,7 +11,7 @@ import {
 } from '../../actions/adminActions';
 
 import {
-    paginaMenuesFiltradosAction,
+    paginaMenuesInsumosFiltradosAction,
     guardarCategoriaInsumoPadreAction,
 } from '../../actions/catalogoActions';
 
@@ -19,7 +19,7 @@ const CatalogoInsumoPadre = () => {
     const dispatch = useDispatch();
 
     const consultar_categoriasInsumo = (idParent) => dispatch(obtenerCategoriaInsumoFiltradasPorParentAction(idParent));
-    const entradaMenuesFiltrados = estado => dispatch(paginaMenuesFiltradosAction(estado));
+    const entradaMenusInsumosFiltrados = estado => dispatch(paginaMenuesInsumosFiltradosAction(estado));
     const guardarCategoriaInsumoPadre = categoriaInsumoPadre => dispatch(guardarCategoriaInsumoPadreAction(categoriaInsumoPadre));
 
     const categoriasInsumo = useSelector(state => state.admin.categoriasInsumoSelect);
@@ -32,9 +32,9 @@ const CatalogoInsumoPadre = () => {
         // eslint-disable-next-line
     }, [])
 
-    const onClickEntrarMenuesFiltrados = (categoriaInsumo) => {
+    const onClickEntrarMenuesInsumoFiltrados = (categoriaInsumo) => {
         guardarCategoriaInsumoPadre(categoriaInsumo);
-        entradaMenuesFiltrados(true);
+        entradaMenusInsumosFiltrados(true);
     }
 
     return (
@@ -52,15 +52,15 @@ const CatalogoInsumoPadre = () => {
                                 key={categoriaInsumo._id}
                             >
 
-                                <Link to={`/catalogoFiltrado/${categoriaInsumo.description}`}>
+                                <Link to={`/catalogoFiltradoInsumo/${categoriaInsumo.description}`}>
                                     <img
                                         src={`http://localhost:4000/api/image/product-categories/${categoriaInsumo.img}`}
                                         alt={categoriaInsumo.description}
-                                        onClick={() => onClickEntrarMenuesFiltrados(categoriaInsumo)}
+                                        onClick={() => onClickEntrarMenuesInsumoFiltrados(categoriaInsumo)}
                                     />
                                 </Link>
-                                <Link to={`/catalogoFiltrado/${categoriaInsumo.description}`}>
-                                    <h4 onClick={() => onClickEntrarMenuesFiltrados(categoriaInsumo)}>{categoriaInsumo.description}</h4>
+                                <Link to={`/catalogoFiltradoInsumo/${categoriaInsumo.description}`}>
+                                    <h4 onClick={() => onClickEntrarMenuesInsumoFiltrados(categoriaInsumo)}>{categoriaInsumo.description}</h4>
                                 </Link>
                             </div>
                         ))

@@ -6,10 +6,12 @@ import {
     OBTENER_MENU,
     OBTENER_MENU_ERROR,
     GUARDAR_CATEGORIA_INSUMO_PADRE,
+    PAGINA_MENUES_INSUMO_FILTRADOS,
 } from '../types';
 
 const initialState = {
     en_pagina_menues_filtrados: false,
+    en_pagina_menues_insumo_filtrados: false,
     en_pagina_catalogo_insumo_padres: false,
     abrir_detalle_menu: false,
     menu: {},
@@ -26,6 +28,11 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 en_pagina_menues_filtrados: action.payload,
+            }
+        case PAGINA_MENUES_INSUMO_FILTRADOS:
+            return {
+                ...state,
+                en_pagina_menues_insumo_filtrados: action.payload,
             }
         case PAGINA_CATALOGO_INSUMOS_PADRES:
             return {
