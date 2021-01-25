@@ -12,6 +12,7 @@ import {
 
 import {
     paginaMenuesFiltradosAction,
+    guardarCategoriaInsumoPadreAction,
 } from '../../actions/catalogoActions';
 
 const CatalogoInsumoPadre = () => {
@@ -19,6 +20,7 @@ const CatalogoInsumoPadre = () => {
 
     const consultar_categoriasInsumo = (idParent) => dispatch(obtenerCategoriaInsumoFiltradasPorParentAction(idParent));
     const entradaMenuesFiltrados = estado => dispatch(paginaMenuesFiltradosAction(estado));
+    const guardarCategoriaInsumoPadre = categoriaInsumoPadre => dispatch(guardarCategoriaInsumoPadreAction(categoriaInsumoPadre));
 
     const categoriasInsumo = useSelector(state => state.admin.categoriasInsumoSelect);
     const categoriaInsumoPadre = useSelector(state => state.catalogo.categoria_insumo_padre);
@@ -30,7 +32,8 @@ const CatalogoInsumoPadre = () => {
         // eslint-disable-next-line
     }, [])
 
-    const onClickEntrarMenuesFiltrados = () => {
+    const onClickEntrarMenuesFiltrados = (categoriaInsumo) => {
+        guardarCategoriaInsumoPadre(categoriaInsumo);
         entradaMenuesFiltrados(true);
     }
 
@@ -53,11 +56,11 @@ const CatalogoInsumoPadre = () => {
                                     <img
                                         src={`http://localhost:4000/api/image/product-categories/${categoriaInsumo.img}`}
                                         alt={categoriaInsumo.description}
-                                        onClick={onClickEntrarMenuesFiltrados}
+                                        onClick={() => onClickEntrarMenuesFiltrados(categoriaInsumo)}
                                     />
                                 </Link>
                                 <Link to={`/catalogoFiltrado/${categoriaInsumo.description}`}>
-                                    <h4 onClick={onClickEntrarMenuesFiltrados}>{categoriaInsumo.description}</h4>
+                                    <h4 onClick={() => onClickEntrarMenuesFiltrados(categoriaInsumo)}>{categoriaInsumo.description}</h4>
                                 </Link>
                             </div>
                         ))

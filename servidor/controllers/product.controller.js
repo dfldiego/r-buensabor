@@ -3,22 +3,16 @@ const Product = require('../models/product.model');
 
 const list = async (req, res = response) => {
 
-    let from = Number(req.query.from) || 0;
-    let limit = Number(req.query.limit) || 5;
-
     try {
         const [products, total] = await Promise.all([
             Product.find({ status: true })
-                .populate('category', 'description')
-                .skip(from)
-                .limit(limit),
+                .populate('category', 'description'),
             Product.countDocuments({ status: true })
         ]);
         res.json({
             ok: true,
             products,
             total,
-            limit,
         });
     } catch (err) {
         console.log(err);

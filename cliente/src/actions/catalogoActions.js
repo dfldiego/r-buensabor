@@ -73,6 +73,12 @@ const entradaPaginaMenuesFiltrados = (estado) => ({
     payload: estado,
 })
 
+export function guardarCategoriaInsumoPadreAction(categoriaInsumoPadre) {
+    return async (dispatch) => {
+        dispatch(guardarCategoriaInsumoPadreClickeado(categoriaInsumoPadre))
+    }
+}
+
 /**********************  para ingresar a pagina de menues filtrados ********************************/
 export function paginaCatalogoInsumoPadreAction(estado, categoriaInsumoPadre) {
     return async (dispatch) => {

@@ -87,7 +87,7 @@ import {
     DESCARGA_LISTADO_CATEGORIA,
     DESCARGA_LISTADO_CATEGORIA_INSUMO,
     DESCARGA_LISTADO_MENUS,
-    CATEGORIA_INSUMO_SELECT,
+    DESCARGA_LISTADO_INSUMOS,
 } from '../types';
 
 const initialState = {
@@ -594,6 +594,15 @@ export default function (state = initialState, action) {
                 palabraBuscar: action.payload.datosPaginacion.busqueda,
                 desde: Number(action.payload.datosPaginacion.indexPrimerUsuario),
                 paginaCorriente: action.payload.datosPaginacion.pagina
+            }
+        case DESCARGA_LISTADO_INSUMOS:
+            return {
+                ...state,
+                loading: false,
+                error: null,
+                mensaje: null,
+                errores: [],
+                insumos: action.payload.products,
             }
         case OBTENER_INSUMO_ELIMINAR:
             return {

@@ -85,6 +85,7 @@ import {
     DESCARGA_LISTADO_CATEGORIA,
     DESCARGA_LISTADO_CATEGORIA_INSUMO,
     DESCARGA_LISTADO_MENUS,
+    DESCARGA_LISTADO_INSUMOS,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
@@ -465,9 +466,10 @@ export function obtenerInsumosAction() {
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            await clienteAxios.get(`/api/product?`, header)
+            await clienteAxios.get(`/api/product`, header)
                 .then(response => {
-                    dispatch(descargarInsumosExito(response.data));
+                    console.log(response.data);
+                    dispatch(descargarListadoInsumosExito(response.data));
                 })
         } catch (err) {
             console.log(err);
@@ -476,6 +478,11 @@ export function obtenerInsumosAction() {
 
     }
 }
+
+const descargarListadoInsumosExito = lista_insumos => ({
+    type: DESCARGA_LISTADO_INSUMOS,
+    payload: lista_insumos
+})
 
 /**********************  para crear una nueva insumo ********************************/
 export function crearNuevaInsumoAction(datosNuevoInsumo) {
