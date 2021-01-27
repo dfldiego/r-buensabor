@@ -96,6 +96,10 @@ const CatalogoFiltrado = ({ name }) => {
         // eslint-disable-next-line
     }, [modalMenuDetalle])
 
+    const handleClickAgregarAlCarrito = idMenu => {
+        const menu = menusFiltradosPorCategoria.filter(menu => menu._id === idMenu);
+    }
+
     return (
         <Fragment>
             <div className="fondo-negro">
@@ -134,6 +138,7 @@ const CatalogoFiltrado = ({ name }) => {
                                             type="button"
                                             className="btn_agregar_carrito"
                                             value="Agregar al Carrito"
+                                            onClick={() => handleClickAgregarAlCarrito(menu._id)}
                                         />
                                     </div>
                                 </div>

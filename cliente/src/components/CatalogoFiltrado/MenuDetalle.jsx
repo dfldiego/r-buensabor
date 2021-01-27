@@ -89,10 +89,10 @@ const MenuDetalle = () => {
                                 <div className="col_2_filtrado row_2_filtrado">
                                     <div className="row_menu_detalle">
                                         <div>
-                                            <h4 className="fw-300">Ingredientes:</h4>
+                                            <h4 className="fw-300">Detalles:</h4>
                                             <div className="flex_menu_detalle">
                                                 <ul>
-                                                    <li className="fw-300 li_ingredientes">Tomate con Queso y Mondongo</li>
+                                                    <li className="fw-300 li_ingredientes"></li>
                                                 </ul>
                                             </div>
                                         </div>

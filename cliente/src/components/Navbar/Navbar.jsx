@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import '../../assets/css/styles.css';
 import BuenSaborLogo from "../../assets/img/logoBuenSabor.png";
 import nouser from "../../assets/img/sinuser.png";
+import cart from "../../assets/img/anadir-al-carrito.svg";
 import './Navbar.css';
 import { Link } from 'react-router-dom';
 //importamos componentes
@@ -9,6 +10,7 @@ import ModalContainer from '../ModalContainer/ModalContainer';
 import Login from '../auth/Login';
 import Register from '../auth/Register';
 import Perfil from '../Perfil/Perfil';
+import Carrito from '../Carrito/Carrito';
 import { validarRol } from "../../helpers/helpers";
 import { useHistory } from "react-router-dom";
 // Redux
@@ -20,6 +22,7 @@ import {
     estaLogueadoAction,
     cerrarSesionAction,
     perfilAction,
+    abrirModalCarritoAction,
 } from '../../actions/homeActions';
 
 const Navbar = () => {
@@ -28,6 +31,7 @@ const Navbar = () => {
     const [openModal, setOpenModal] = useState(false);
     const [openModalPerfil, setOpenModalPerfil] = useState(null);
     const [openDropDown, setOpenDropDown] = useState(false);
+    const [openModalCarrito, setOpenModalCarrito] = useState(false);
 
     // utilizar useDispatch y te crea una funcion
     const dispatch = useDispatch();
@@ -37,6 +41,7 @@ const Navbar = () => {
     const abrir_cerrar_Modal = estado_modal => dispatch(abrirCerrarModalAction(estado_modal));
     const cerrar_sesion_callAction = () => dispatch(cerrarSesionAction());
     const perfil_callAction = estadoPerfil => dispatch(perfilAction(estadoPerfil));
+    const carrito_action = estadoCarrito => dispatch(abrirModalCarritoAction(estadoCarrito));
 
     /*************USAR USE SELECTOR: capturo el valor de state del store  *******************/
     const abrir_modal_state_store = useSelector(state => state.home.abrir_modal);
@@ -44,7 +49,7 @@ const Navbar = () => {
     const esta_logueado_state_store = useSelector(state => state.home.esta_logueado);
     const estaLogueado_token = useSelector(state => state.home.token);
     const estaLogueado_estado = useSelector(state => state.home.esta_logueado);
-    /* const rol_store = useSelector(state => state.home.rol); */
+    const AbrirModalCarrito = useSelector(state => state.home.abrir_modal_carrito);
     const abrir_modal_perfil_store = useSelector(state => state.home.abrir_modal_perfil);
 
     useEffect(() => {
@@ -120,6 +125,28 @@ const Navbar = () => {
         setIsAdmin(isAdmin);
     };
     validateRol();
+
+    const handleClickAbrirCarrito = () => {
+        // si se hizo click, cambiar a true openModal
+        if (!openModalCarrito) {
+            setOpenModalCarrito(true);
+            carrito_action(true);
+        } else {
+            closeModalCarrito();
+            carrito_action(false);
+        }
+
+    }
+
+    const closeModalCarrito = () => {
+        setOpenModalCarrito(false);
+    }
+
+    useEffect(() => {
+        setOpenModalCarrito(AbrirModalCarrito);
+        // eslint-disable-next-line
+    }, [AbrirModalCarrito])
+
     return (
         <Fragment>
             <div className="navbar contenedor">
@@ -127,7 +154,7 @@ const Navbar = () => {
                     <img src={BuenSaborLogo} alt="Logotipo Buen Sabor" />
                 </Link>
                 <nav className="nav">
-                    <ul>
+                    <ul className="barra__div">
                         {
                             isAdmin ?
                                 <li><Link to={"/admin"}>Admin</Link></li>
@@ -143,14 +170,16 @@ const Navbar = () => {
                         {
                             esta_logueado_state_store ?
                                 <div>
-                                    <li><Link to={'#'}>
-                                        <img
-                                            src={nouser}
-                                            alt="imagen sin usuario"
-                                            className="tamañoImagen"
-                                            onClick={handleclick_openDropDown}
-                                        />
-                                    </Link></li>
+                                    <li>
+                                        <Link to={'#'}>
+                                            <img
+                                                src={nouser}
+                                                alt="imagen sin usuario"
+                                                className="tamañoImagen"
+                                                onClick={handleclick_openDropDown}
+                                            />
+                                        </Link>
+                                    </li>
                                     {
                                         openDropDown ?
                                             <div className="sub-menu">
@@ -181,6 +210,29 @@ const Navbar = () => {
                                     onClick={e => handleClick_abrir_modal()}
                                 >Ingresar</Link></li>
                         }
+                        {
+                            esta_logueado_state_store ?
+                                <li>
+                                    <p className="cart__count">{/* cart.length */}</p>
+                                </li>
+                                :
+                                null
+                        }
+                        {
+                            esta_logueado_state_store ?
+                                <li>
+                                    <Link to={'#'}>
+                                        <img
+                                            src={cart}
+                                            alt="imagen carrito"
+                                            className="tamañoImagen"
+                                            onClick={e => handleClickAbrirCarrito()}
+                                        />
+                                    </Link>
+                                </li>
+                                :
+                                null
+                        }
                     </ul>
                 </nav>
             </div>
@@ -197,6 +249,16 @@ const Navbar = () => {
                                 <Login />
                         }
 
+                    </ModalContainer>
+                    : null
+            }
+            {
+                AbrirModalCarrito ?
+                    <ModalContainer
+                        openModal={openModalCarrito}
+                        closeModal={closeModalCarrito}
+                    >
+                        <Carrito />
                     </ModalContainer>
                     : null
             }

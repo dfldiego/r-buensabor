@@ -15,12 +15,15 @@ import {
     CERRAR_PERFIL,
     ACTUALIZADO_PERFIL,
     ACTUALIZADO_PERFIL_ERROR,
+    ABRIR_CARRITO,
+    CERRAR_CARRITO,
 } from '../types';
 
 const initialState = {
     abrir_modal: false,
     abrir_registrarse: false,
     esta_logueado: false,
+    abrir_modal_carrito: false,
     alerta: null,
     mensaje: '',
     token: null,
@@ -31,6 +34,12 @@ const initialState = {
 
 export default function (state = initialState, action) {
     switch (action.type) {
+        case ABRIR_CARRITO:
+        case CERRAR_CARRITO:
+            return {
+                ...state,
+                abrir_modal_carrito: action.payload,
+            }
         case ABRIR_MODAL:
         case CERRAR_MODAL:
             return {

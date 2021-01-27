@@ -19,20 +19,18 @@
 
 
 /**NAVEGACION: NAV**/
+
 .nav a:hover,
 .usercircle:hover {
     color: #ff6161;
 }
 
-ul {
-    display: inline-flex;
-    list-style: none;
-    color: #fff;
+.sub-menu li input:hover {
+    color: #ff6161;
 }
 
-li {
-    width: 9rem;
-    text-align: center;
+nav {
+    width: 30%;
 }
 
 nav ul li a {
@@ -50,16 +48,6 @@ nav ul li a {
     position: absolute;
 }
 
-div li,
-.sub-menu li {
-    margin: 0;
-    padding: 0;
-}
-
-.sub-menu li a {
-    font-size: 1.5rem !important;
-}
-
 .sub-menu li input {
     color: #fff;
     width: 11.5rem;
@@ -68,6 +56,28 @@ div li,
     margin-bottom: 0.1rem !important;
 }
 
-.sub-menu li input:hover {
-    color: #ff6161;
+.barraNavegacion li {
+    max-height: 50px;
+    max-width: 70px;
+}
+
+.barra__div {
+    display: flex;
+    flex-flow: row;
+    align-content: center;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 50px;
+    padding-right: 5px;
+}
+
+.cart__count {
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    border-radius: 100%;
+    cursor: default;
+    background-color: red;
+    vertical-align: center;
+    color: #fff;
 }

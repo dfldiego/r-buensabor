@@ -15,10 +15,35 @@ import {
     CERRAR_PERFIL,
     ACTUALIZADO_PERFIL,
     ACTUALIZADO_PERFIL_ERROR,
+    ABRIR_CARRITO,
+    CERRAR_CARRITO,
 } from '../types';
 import clienteAxios from '../config/axios';
 import { desencriptarToken } from '../helpers/desencriptar_token';
 import { authorizationHeader } from '../helpers/authorization_header';
+
+// aca es donde indicamos que debe abrir/cerrar modal de carrito
+export function abrirModalCarritoAction(estadoCarrito) {
+    return (dispatch) => {
+        console.log(estadoCarrito);
+        if (estadoCarrito) {
+            dispatch(abrirModalCarrito(estadoCarrito));
+        } else {
+            dispatch(cerrarModalCarrito(estadoCarrito));
+        }
+    }
+}
+
+const abrirModalCarrito = estadoCarrito => ({
+    type: ABRIR_CARRITO,
+    payload: estadoCarrito
+})
+
+const cerrarModalCarrito = estadoCarrito => ({
+    type: CERRAR_CARRITO,
+    payload: estadoCarrito
+})
+
 /************ ACTUALIZAR PERFIL DE USUARIO  ********/
 export function actualizarPerfilAction(perfil, imageFile) {
     return async (dispatch) => {
