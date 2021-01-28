@@ -16,6 +16,9 @@ import {
     abrirCerrarDetalleMenuAction,
     obtenerMenuPorIdAction,
 } from '../../actions/catalogoActions';
+import {
+    agregarMenuACarritoAction,
+} from '../../actions/homeActions';
 
 const CatalogoFiltrado = ({ name }) => {
 
@@ -29,18 +32,11 @@ const CatalogoFiltrado = ({ name }) => {
     const consultarMenus = () => dispatch(obtenerMenuAction());
     const abrirModalMenuDetalle = (estadoDetalleMenu) => dispatch(abrirCerrarDetalleMenuAction(estadoDetalleMenu));
     const consultarMenuPorId = idMenu => dispatch(obtenerMenuPorIdAction(idMenu));
-    /* const consultarInsumos = () => dispatch(obtenerInsumosAction()); */
+    const agregarMenuACarrito = menu => dispatch(agregarMenuACarritoAction(menu));
 
     const categorias = useSelector(state => state.admin.categoriasSelect);
     const menus = useSelector(state => state.admin.menusSelect);
     const modalMenuDetalle = useSelector(state => state.catalogo.abrir_detalle_menu);
-
-    /**
-     * 
-     * 1) tengo la categoriaInsumo del padre.
-     * 2) cuando cargue la pagina debo ejecutar un metodo que me traiga todos los productos(insumos) con categoria insumo padre.
-     * 3) mostrar todos los insumos con ese padre.
-     */
 
     const filtrarCategoriaPorName = nombreCategoria => {
         const categoriaEncontradaPorName = categorias.filter(categoria => categoria.name === nombreCategoria);
@@ -96,8 +92,8 @@ const CatalogoFiltrado = ({ name }) => {
         // eslint-disable-next-line
     }, [modalMenuDetalle])
 
-    const handleClickAgregarAlCarrito = idMenu => {
-        const menu = menusFiltradosPorCategoria.filter(menu => menu._id === idMenu);
+    const handleClickAgregarAlCarrito = menu => {
+        agregarMenuACarrito(menu);
     }
 
     return (
@@ -138,14 +134,13 @@ const CatalogoFiltrado = ({ name }) => {
                                             type="button"
                                             className="btn_agregar_carrito"
                                             value="Agregar al Carrito"
-                                            onClick={() => handleClickAgregarAlCarrito(menu._id)}
+                                            onClick={() => handleClickAgregarAlCarrito(menu)}
                                         />
                                     </div>
                                 </div>
                             ))
                             : null
                     }
-
                 </div>
             </div>
             { modalMenuDetalle ?

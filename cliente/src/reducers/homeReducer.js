@@ -17,6 +17,9 @@ import {
     ACTUALIZADO_PERFIL_ERROR,
     ABRIR_CARRITO,
     CERRAR_CARRITO,
+    AGREGAR_CARRITO,
+    AGREGAR_CARRITO_EXITO,
+    AGREGAR_CARRITO_ERROR,
 } from '../types';
 
 const initialState = {
@@ -26,14 +29,26 @@ const initialState = {
     abrir_modal_carrito: false,
     alerta: null,
     mensaje: '',
+    loading: false,
     token: null,
     rol: null,
     abrir_modal_perfil: false,
     perfil: null,
+    carrito: [],
 }
 
 export default function (state = initialState, action) {
     switch (action.type) {
+        case AGREGAR_CARRITO_EXITO:
+            return {
+                ...state,
+                carrito: [...state.carrito, action.payload],
+            }
+        case AGREGAR_CARRITO:
+            return {
+                ...state,
+                loading: action.payload,
+            }
         case ABRIR_CARRITO:
         case CERRAR_CARRITO:
             return {
@@ -64,6 +79,7 @@ export default function (state = initialState, action) {
         case LOGIN_ERROR:
         case REGISTRO_ERROR:
         case ACTUALIZADO_PERFIL_ERROR:
+        case AGREGAR_CARRITO_ERROR:
             return {
                 ...state,
                 mensaje: action.payload,

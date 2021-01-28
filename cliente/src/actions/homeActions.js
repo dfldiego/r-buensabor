@@ -17,10 +17,43 @@ import {
     ACTUALIZADO_PERFIL_ERROR,
     ABRIR_CARRITO,
     CERRAR_CARRITO,
+    AGREGAR_CARRITO,
+    AGREGAR_CARRITO_EXITO,
+    AGREGAR_CARRITO_ERROR,
 } from '../types';
 import clienteAxios from '../config/axios';
 import { desencriptarToken } from '../helpers/desencriptar_token';
 import { authorizationHeader } from '../helpers/authorization_header';
+
+// aca agregamos un menu al carrito
+export function agregarMenuACarritoAction(menu) {
+    return (dispatch) => {
+        dispatch(agregarMenuACarrito());
+        console.log(menu);
+
+        if (menu === null) {
+            dispatch(agregarCarritoError('Menu no puede ser vacio'));
+            return;
+        }
+
+        dispatch(agregarMenuACarritoExito(menu));
+    }
+}
+
+const agregarMenuACarrito = () => ({
+    type: AGREGAR_CARRITO,
+    payload: true
+})
+
+const agregarMenuACarritoExito = menu => ({
+    type: AGREGAR_CARRITO_EXITO,
+    payload: menu
+})
+
+const agregarCarritoError = msj => ({
+    type: AGREGAR_CARRITO_ERROR,
+    payload: msj
+})
 
 // aca es donde indicamos que debe abrir/cerrar modal de carrito
 export function abrirModalCarritoAction(estadoCarrito) {

@@ -51,6 +51,7 @@ const Navbar = () => {
     const estaLogueado_estado = useSelector(state => state.home.esta_logueado);
     const AbrirModalCarrito = useSelector(state => state.home.abrir_modal_carrito);
     const abrir_modal_perfil_store = useSelector(state => state.home.abrir_modal_perfil);
+    const MenusDeCarrito = useSelector(state => state.home.carrito);
 
     useEffect(() => {
         setOpenDropDown(false);
@@ -213,7 +214,7 @@ const Navbar = () => {
                         {
                             esta_logueado_state_store ?
                                 <li>
-                                    <p className="cart__count">{/* cart.length */}</p>
+                                    <p className="cart__count">{MenusDeCarrito.length}</p>
                                 </li>
                                 :
                                 null
