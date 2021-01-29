@@ -20,6 +20,9 @@ import {
     AGREGAR_CARRITO,
     AGREGAR_CARRITO_EXITO,
     AGREGAR_CARRITO_ERROR,
+    OBTENER_PRODUCTO_CARRITO_ELIMINAR,
+    PRODUCTO_CARRITO_ELIMINADO_EXITO,
+    ELIMINAR_PRODUCTO_CARRITO_ERROR,
 } from '../types';
 
 const initialState = {
@@ -35,10 +38,22 @@ const initialState = {
     abrir_modal_perfil: false,
     perfil: null,
     carrito: [],
+    producto_carrito_eliminar: null,
 }
 
 export default function (state = initialState, action) {
     switch (action.type) {
+        case PRODUCTO_CARRITO_ELIMINADO_EXITO:
+            return {
+                ...state,
+                producto_carrito_eliminar: null,
+                carrito: state.carrito.filter(producto => producto._id !== action.payload._id)
+            }
+        case OBTENER_PRODUCTO_CARRITO_ELIMINAR:
+            return {
+                ...state,
+                producto_carrito_eliminar: action.payload
+            }
         case AGREGAR_CARRITO_EXITO:
             return {
                 ...state,
@@ -80,6 +95,7 @@ export default function (state = initialState, action) {
         case REGISTRO_ERROR:
         case ACTUALIZADO_PERFIL_ERROR:
         case AGREGAR_CARRITO_ERROR:
+        case ELIMINAR_PRODUCTO_CARRITO_ERROR:
             return {
                 ...state,
                 mensaje: action.payload,

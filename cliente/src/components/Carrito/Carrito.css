@@ -13,7 +13,7 @@
     border-radius: 10px;
     position: relative;
     overflow: scroll;
-    width: 580px;
+    width: 800px;
     max-width: 100%;
     max-height: 590px !important;
 }
@@ -59,5 +59,74 @@ select {
 }
 
 .form-control {
+    text-align: center;
+}
+
+/******* CARRITO ******/
+.cart-page {
+    margin: 80px auto;
+}
+
+.tablaCarrito table,
+.tablaCarrito td,
+.tablaCarrito th,
+.total-price table,
+.total-price td,
+.total-price th {
+    border: none;
+}
+
+.cart-info {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.tablaCarrito th {
+    text-align: center;
+    padding: 5px;
+    color: #ffffff;
+    background: #ca4560;
+    font-weight: normal;
+}
+
+.tablaCarrito td {
+    padding: 10px 5px;
+}
+
+.tablaCarrito td input {
+    padding: 5px;
+    text-align: center;
+}
+
+.tablaCarrito td a {
+    color: #ff0033;
+    font-size: 12px;
+}
+
+.tablaCarrito td img {
+    width: 80px;
+    height: 80px;
+    margin-right: 10px;
+}
+
+.total-price {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.tablaCarrito .total-price table {
+    border-top: 3px solid coral !important;
+    width: 100%;
+    max-width: 350px !important;
+}
+
+/*****CARRITO - RESPONSIVE***/
+@media (max-width:600px) {
+    .cart-info p {
+        display: none;
+    }
+}
+
+.tituloCarrito {
     text-align: center;
 }

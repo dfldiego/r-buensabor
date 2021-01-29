@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 
 import ClearIcon from '@material-ui/icons/Clear';
 import './Carrito.css';
@@ -6,15 +6,19 @@ import './Carrito.css';
 //Actions de Redux
 import {
     abrirModalCarritoAction,
-
+    eliminarProductoCarritoAction,
 } from '../../actions/homeActions';
 import { useDispatch, useSelector } from 'react-redux';
 
 const Carrito = () => {
 
+    const [total, setTotal] = useState(0);
+    const [cantidad, setCantidad] = useState(1);
+
     const dispatch = useDispatch();
 
     const cerrar_modal_carrito = estadoCarrito => dispatch(abrirModalCarritoAction(estadoCarrito));
+    const eliminarProductoCarrito = datosProductoCarrito => dispatch(eliminarProductoCarritoAction(datosProductoCarrito));
 
     let CerrarModalCarrito = useSelector(state => state.home.abrir_modal_carrito);
     const MenusDeCarrito = useSelector(state => state.home.carrito);
@@ -27,6 +31,25 @@ const Carrito = () => {
         return;
     }
 
+    useEffect(() => {
+        let total = 0;
+
+        MenusDeCarrito.map(menu => {
+            total += Number(menu.price)
+        })
+        setTotal(total);
+
+        // eslint-disable-next-line
+    }, [MenusDeCarrito])
+
+    const handleChangeCantidad = e => {
+        setCantidad(e.target.value)
+    }
+
+    const handleClickQuitarDelCarrito = datosProductoCarrito => {
+        eliminarProductoCarrito(datosProductoCarrito);
+    }
+
     return (
         <Fragment>
             <div className="modal-carrito">
@@ -37,13 +60,65 @@ const Carrito = () => {
                             onClick={cerrar_modal}
                         />
                         {
-                            MenusDeCarrito.map(menu => (
-                                <div
-                                    key={menu._id}
-                                >
-                                    <p>{menu.description}</p>
+                            MenusDeCarrito.length === 0 ?
+                                <h1 className="tituloCarrito">No hay productos en el carrito</h1>
+                                :
+                                <div>
+                                    <div className="tablaCarrito">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <th>Producto</th>
+                                                    <th>Cantidad</th>
+                                                    <th>Sub-Total</th>
+                                                    <th>Acciones</th>
+                                                </tr>
+                                                {
+                                                    MenusDeCarrito.map(menu => (
+                                                        <tr key={menu._id}>
+                                                            <td className="cart_info">
+                                                                <img
+                                                                    src={`http://localhost:4000/api/image/menus/${menu.img}`}
+                                                                    alt="imagen producto"
+                                                                    width="150px"
+                                                                />
+                                                                <p>{menu.description}</p>
+                                                                <small>{menu.category.description}</small>
+                                                            </td>
+                                                            <td>
+                                                                <input
+                                                                    type="number"
+                                                                    name="cantidad"
+                                                                    value={cantidad}
+                                                                    onChange={handleChangeCantidad}
+                                                                />
+                                                            </td>
+                                                            <td>{menu.price}</td>
+                                                            <td>
+                                                                <a
+                                                                    href="#"
+                                                                    onClick={() => handleClickQuitarDelCarrito(menu)}
+                                                                >Quitar</a>
+                                                            </td>
+                                                        </tr>
+                                                    ))
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div className="total-price">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>Total</td>
+                                                    <td>{total}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                            ))
                         }
                     </div>
                 </div>

@@ -20,10 +20,42 @@ import {
     AGREGAR_CARRITO,
     AGREGAR_CARRITO_EXITO,
     AGREGAR_CARRITO_ERROR,
+    OBTENER_PRODUCTO_CARRITO_ELIMINAR,
+    PRODUCTO_CARRITO_ELIMINADO_EXITO,
+    ELIMINAR_PRODUCTO_CARRITO_ERROR,
 } from '../types';
 import clienteAxios from '../config/axios';
 import { desencriptarToken } from '../helpers/desencriptar_token';
 import { authorizationHeader } from '../helpers/authorization_header';
+
+/**********************  para eliminar los producto del carrito ********************************/
+export function eliminarProductoCarritoAction(productoCarrito) {
+    return async (dispatch) => {
+        dispatch(obtenerProductoCarritoEliminar(productoCarrito._id));
+        console.log(productoCarrito);
+
+        if (productoCarrito) {
+            dispatch(ProductoCarritoEliminadoExito(productoCarrito));
+        } else {
+            dispatch(ProductoCarritoEliminadoError('Error al eliminar el producto del carrito'));
+        }
+    }
+}
+
+const obtenerProductoCarritoEliminar = idInsumo => ({
+    type: OBTENER_PRODUCTO_CARRITO_ELIMINAR,
+    payload: idInsumo
+})
+
+const ProductoCarritoEliminadoExito = datos_insumos => ({
+    type: PRODUCTO_CARRITO_ELIMINADO_EXITO,
+    payload: datos_insumos
+})
+
+const ProductoCarritoEliminadoError = msj => ({
+    type: ELIMINAR_PRODUCTO_CARRITO_ERROR,
+    payload: msj
+})
 
 // aca agregamos un menu al carrito
 export function agregarMenuACarritoAction(menu) {
