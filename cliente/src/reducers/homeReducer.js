@@ -23,6 +23,7 @@ import {
     OBTENER_PRODUCTO_CARRITO_ELIMINAR,
     PRODUCTO_CARRITO_ELIMINADO_EXITO,
     ELIMINAR_PRODUCTO_CARRITO_ERROR,
+    OBTENER_PRODUCTO_CARRITO,
 } from '../types';
 
 const initialState = {
@@ -43,16 +44,21 @@ const initialState = {
 
 export default function (state = initialState, action) {
     switch (action.type) {
+        case OBTENER_PRODUCTO_CARRITO:
+            return {
+                ...state,
+                carrito: action.payload,
+            }
         case PRODUCTO_CARRITO_ELIMINADO_EXITO:
             return {
                 ...state,
                 producto_carrito_eliminar: null,
-                carrito: state.carrito.filter(producto => producto._id !== action.payload._id)
+                carrito: state.carrito.filter(producto => producto.uuid !== action.payload.uuid),
             }
         case OBTENER_PRODUCTO_CARRITO_ELIMINAR:
             return {
                 ...state,
-                producto_carrito_eliminar: action.payload
+                producto_carrito_eliminar: action.payload,
             }
         case AGREGAR_CARRITO_EXITO:
             return {
@@ -123,6 +129,7 @@ export default function (state = initialState, action) {
                 esta_logueado: false,
                 rol: null,
                 perfil: null,
+                carrito: [],
             }
         case ROL_USUARIO:
             return {

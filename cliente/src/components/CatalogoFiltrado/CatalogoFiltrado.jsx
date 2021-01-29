@@ -6,6 +6,7 @@ import './CatalogoFiltrado.css';
 import Navbar from '../Navbar/Navbar';
 import ModalContainer from '../ModalContainer/ModalContainer';
 import MenuDetalle from '../CatalogoFiltrado/MenuDetalle';
+import { v4 as uuidv4 } from 'uuid';
 
 import { useSelector, useDispatch } from 'react-redux'
 import {
@@ -93,6 +94,7 @@ const CatalogoFiltrado = ({ name }) => {
     }, [modalMenuDetalle])
 
     const handleClickAgregarAlCarrito = menu => {
+        menu.uuid = uuidv4();
         agregarMenuACarrito(menu);
     }
 

@@ -11,6 +11,7 @@ import {
     abrirRegistrarseAction,
     loginAction,
     loginGoogleAction,
+    obtenerProductoCarritoAction,
 } from '../../actions/homeActions';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -33,6 +34,7 @@ const Login = () => {
     const abrir_registrarse_callAction = nuevo_estado => dispatch(abrirRegistrarseAction(nuevo_estado));
     const loginAction_callAction = datos => dispatch(loginAction(datos));
     const loginGoogle_callAction = datos => dispatch(loginGoogleAction(datos));
+    const obtenerProductoCarrito = () => dispatch(obtenerProductoCarritoAction());
 
     /*************USAR USE SELECTOR: capturo el valor de state del store  *******************/
     let cerrar_modal_state_store = useSelector(state => state.home.abrir_modal);
@@ -69,6 +71,7 @@ const Login = () => {
     const submitLogin = async (e) => {
         e.preventDefault();
         loginAction_callAction(login);
+        obtenerProductoCarrito();
     }
 
     /**LOGIN CON GOOGLE **/

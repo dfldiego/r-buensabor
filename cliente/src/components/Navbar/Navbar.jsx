@@ -23,6 +23,7 @@ import {
     cerrarSesionAction,
     perfilAction,
     abrirModalCarritoAction,
+    obtenerProductoCarritoAction,
 } from '../../actions/homeActions';
 
 const Navbar = () => {
@@ -55,7 +56,7 @@ const Navbar = () => {
 
     useEffect(() => {
         setOpenDropDown(false);
-        estaLogueado_callAction()
+        estaLogueado_callAction();
         // eslint-disable-next-line
     }, [estaLogueado_token, estaLogueado_estado]);
 

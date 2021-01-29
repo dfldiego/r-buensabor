@@ -13,7 +13,6 @@ import { useDispatch, useSelector } from 'react-redux';
 const Carrito = () => {
 
     const [total, setTotal] = useState(0);
-    const [cantidad, setCantidad] = useState(1);
 
     const dispatch = useDispatch();
 
@@ -42,10 +41,6 @@ const Carrito = () => {
         // eslint-disable-next-line
     }, [MenusDeCarrito])
 
-    const handleChangeCantidad = e => {
-        setCantidad(e.target.value)
-    }
-
     const handleClickQuitarDelCarrito = datosProductoCarrito => {
         eliminarProductoCarrito(datosProductoCarrito);
     }
@@ -69,13 +64,12 @@ const Carrito = () => {
                                             <tbody>
                                                 <tr>
                                                     <th>Producto</th>
-                                                    <th>Cantidad</th>
                                                     <th>Sub-Total</th>
                                                     <th>Acciones</th>
                                                 </tr>
                                                 {
                                                     MenusDeCarrito.map(menu => (
-                                                        <tr key={menu._id}>
+                                                        <tr key={menu.uuid}>
                                                             <td className="cart_info">
                                                                 <img
                                                                     src={`http://localhost:4000/api/image/menus/${menu.img}`}
@@ -84,14 +78,6 @@ const Carrito = () => {
                                                                 />
                                                                 <p>{menu.description}</p>
                                                                 <small>{menu.category.description}</small>
-                                                            </td>
-                                                            <td>
-                                                                <input
-                                                                    type="number"
-                                                                    name="cantidad"
-                                                                    value={cantidad}
-                                                                    onChange={handleChangeCantidad}
-                                                                />
                                                             </td>
                                                             <td>{menu.price}</td>
                                                             <td>
@@ -111,7 +97,6 @@ const Carrito = () => {
                                             <tbody>
                                                 <tr>
                                                     <td></td>
-                                                    <td></td>
                                                     <td>Total</td>
                                                     <td>{total}</td>
                                                 </tr>
@@ -128,3 +113,16 @@ const Carrito = () => {
 }
 
 export default Carrito
+
+/**
+ *
+                                                    <th>Cantidad</th>
+ * <td>
+                                                                <input
+                                                                    type="number"
+                                                                    name="cantidad"
+                                                                    value={cantidad}
+                                                                    onChange={handleChangeCantidad}
+                                                                />
+                                                            </td>
+ */

@@ -19,23 +19,53 @@ import {
     CERRAR_CARRITO,
     AGREGAR_CARRITO,
     AGREGAR_CARRITO_EXITO,
-    AGREGAR_CARRITO_ERROR,
     OBTENER_PRODUCTO_CARRITO_ELIMINAR,
     PRODUCTO_CARRITO_ELIMINADO_EXITO,
     ELIMINAR_PRODUCTO_CARRITO_ERROR,
+    OBTENER_PRODUCTO_CARRITO,
 } from '../types';
 import clienteAxios from '../config/axios';
 import { desencriptarToken } from '../helpers/desencriptar_token';
 import { authorizationHeader } from '../helpers/authorization_header';
 
+/**********************  para obtener los producto del carrito ********************************/
+export function obtenerProductoCarritoAction() {
+    return async (dispatch) => {
+
+        if (localStorage.getItem('carrito')) {
+            var carrito = JSON.parse(localStorage.getItem('carrito'));
+            console.log(carrito);
+            dispatch(obtenerProductoCarrito(carrito));
+        } else {
+            return;
+        }
+    }
+}
+
+const obtenerProductoCarrito = productoCarrito => ({
+    type: OBTENER_PRODUCTO_CARRITO,
+    payload: productoCarrito
+})
+
 /**********************  para eliminar los producto del carrito ********************************/
 export function eliminarProductoCarritoAction(productoCarrito) {
     return async (dispatch) => {
-        dispatch(obtenerProductoCarritoEliminar(productoCarrito._id));
-        console.log(productoCarrito);
+        dispatch(obtenerProductoCarritoEliminar(productoCarrito.uuid));
+        if (localStorage.getItem('carrito')) {
+            var carrito = JSON.parse(localStorage.getItem('carrito'));
+            console.log(carrito);
+            console.log(productoCarrito);
 
-        if (productoCarrito) {
-            dispatch(ProductoCarritoEliminadoExito(productoCarrito));
+            // busco el producto donde coincidan el uuid
+            // obtengo el indice donde coinciden los uuid
+            const nuevoCarrito = carrito.filter(producto => producto.uuid !== productoCarrito.uuid);
+
+            console.log(nuevoCarrito);
+            // vuelvo a setear un nuevo carrito.
+            localStorage.setItem('carrito', JSON.stringify(nuevoCarrito))
+            //envio el producto a eliminar al reducer.
+            dispatch(ProductoCarritoEliminadoExito(productoCarrito))
+
         } else {
             dispatch(ProductoCarritoEliminadoError('Error al eliminar el producto del carrito'));
         }
@@ -61,14 +91,18 @@ const ProductoCarritoEliminadoError = msj => ({
 export function agregarMenuACarritoAction(menu) {
     return (dispatch) => {
         dispatch(agregarMenuACarrito());
+
         console.log(menu);
 
-        if (menu === null) {
-            dispatch(agregarCarritoError('Menu no puede ser vacio'));
-            return;
-        }
+        let carritoLocal = JSON.parse(localStorage.getItem("carrito"));
+        console.log(carritoLocal);
 
-        dispatch(agregarMenuACarritoExito(menu));
+        if (carritoLocal) {
+            carritoLocal = [...carritoLocal, menu];
+            console.log(carritoLocal);
+            localStorage.setItem("carrito", JSON.stringify(carritoLocal));
+            dispatch(agregarMenuACarritoExito(menu));
+        }
     }
 }
 
@@ -82,15 +116,9 @@ const agregarMenuACarritoExito = menu => ({
     payload: menu
 })
 
-const agregarCarritoError = msj => ({
-    type: AGREGAR_CARRITO_ERROR,
-    payload: msj
-})
-
 // aca es donde indicamos que debe abrir/cerrar modal de carrito
 export function abrirModalCarritoAction(estadoCarrito) {
     return (dispatch) => {
-        console.log(estadoCarrito);
         if (estadoCarrito) {
             dispatch(abrirModalCarrito(estadoCarrito));
         } else {
@@ -260,6 +288,12 @@ export function estaLogueadoAction() {
             dispatch(noestalogueado(null))
         } else {
             dispatch(estaloguado(token));
+            // si no hay carrito en localstorage
+            if (!localStorage.getItem('carrito')) {
+                localStorage.setItem('carrito', '[]');
+            } else {
+                dispatch(obtenerProductoCarrito(JSON.parse(localStorage.getItem('carrito'))));
+            }
         }
     }
 }
@@ -300,6 +334,13 @@ export function loginAction(datos) {
 
             // SI TODO SALE BIEN
             dispatch(loginUsuario(datos));
+
+            // si no hay carrito en localstorage
+            if (!localStorage.getItem('carrito')) {
+                localStorage.setItem('carrito', '[]');
+            } else {
+                dispatch(obtenerProductoCarrito(localStorage.getItem('carrito')));
+            }
 
         } catch (error) {
             console.log(error.response.data.err.msg);
