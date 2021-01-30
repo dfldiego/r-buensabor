@@ -11,7 +11,7 @@ import Swal from 'sweetalert2';
 
 const InsumoDB = ({ insumo }) => {
 
-    const { description, purchase_price, sale_price, current_stock, min_stock, unit_measurement, is_supplies, category } = insumo;
+    const { description, purchase_price, price, current_stock, min_stock, unit_measurement, is_supplies, category } = insumo;
 
     const dispatch = useDispatch();
 
@@ -49,7 +49,7 @@ const InsumoDB = ({ insumo }) => {
             <tr>
                 <td>{description}</td>
                 <td>{purchase_price}</td>
-                <td>{sale_price}</td>
+                <td>{price}</td>
                 <td>{current_stock}</td>
                 <td>{min_stock}</td>
                 <td>{unit_measurement}</td>

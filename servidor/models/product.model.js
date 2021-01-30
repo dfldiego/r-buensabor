@@ -10,7 +10,7 @@ let productSchema = new Schema({
         type: Number,
         required: [true, 'El precio de compra es requerido'],
     },
-    sale_price: {
+    price: {
         type: Number,
         required: [true, 'El precio de venta es requerido']
     },

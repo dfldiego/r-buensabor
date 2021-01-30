@@ -96,7 +96,7 @@ const MenuDetalle = () => {
                                                 </ul>
                                             </div>
                                         </div>
-                                        <h4 className="price">${insumo.sale_price}</h4>
+                                        <h4 className="price">${insumo.price}</h4>
                                     </div>
                                     <div className="botones">
                                         <input

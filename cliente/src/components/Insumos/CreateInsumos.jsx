@@ -19,7 +19,7 @@ const CreateInsumos = () => {
     const [insumo, setInsumo] = useState({
         description: '',
         purchase_price: 0,
-        sale_price: 0,
+        price: 0,
         current_stock: 0,
         min_stock: 0,
         unit_measurement: '',
@@ -28,7 +28,7 @@ const CreateInsumos = () => {
     });
 
 
-    const { description, purchase_price, sale_price, current_stock, min_stock, unit_measurement, is_supplies, category } = insumo;
+    const { description, purchase_price, price, current_stock, min_stock, unit_measurement, is_supplies, category } = insumo;
 
     const handleChange = e => {
         setInsumo({
@@ -76,7 +76,7 @@ const CreateInsumos = () => {
                 cerrar_modal();
             }
         } else {
-            agregar_nuevo_insumo_action({ description, purchase_price, sale_price, current_stock, min_stock, unit_measurement, is_supplies, category }, imageFile);
+            agregar_nuevo_insumo_action({ description, purchase_price, price, current_stock, min_stock, unit_measurement, is_supplies, category }, imageFile);
 
             if (errores === [] && msj_error === null) {
                 cerrar_modal();
@@ -90,7 +90,7 @@ const CreateInsumos = () => {
                 ...insumo,
                 description: insumo_editar.description,
                 purchase_price: insumo_editar.purchase_price,
-                sale_price: insumo_editar.sale_price,
+                price: insumo_editar.price,
                 current_stock: insumo_editar.current_stock,
                 min_stock: insumo_editar.min_stock,
                 unit_measurement: insumo_editar.unit_measurement,
@@ -186,8 +186,8 @@ const CreateInsumos = () => {
                                     type="number"
                                     className="form-control"
                                     placeholder="Precio de Venta"
-                                    name="sale_price"
-                                    value={sale_price}
+                                    name="price"
+                                    value={price}
                                     onChange={handleChange}
                                 />
                             </div>

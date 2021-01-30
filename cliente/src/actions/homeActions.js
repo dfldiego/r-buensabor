@@ -328,6 +328,7 @@ export function loginAction(datos) {
                     const { token, user } = response.data;
                     // guardamos token en el localStorage
                     localStorage.setItem('token', token);
+                    localStorage.setItem('user', JSON.stringify(user));
                     dispatch(guardarToken(token));
                     dispatch(guardarRolusuario(user.role));
                 })

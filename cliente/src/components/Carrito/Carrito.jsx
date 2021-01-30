@@ -45,6 +45,56 @@ const Carrito = () => {
         eliminarProductoCarrito(datosProductoCarrito);
     }
 
+    const handleClickConfirmar = (MenusDeCarrito) => {
+        let foods = [];
+        let drinks = [];
+
+        const groups = MenusDeCarrito.reduce((groups, item) => ({
+            ...groups,
+            [item._id]: [...(groups[item._id] || []), item]
+        }), {});
+
+        for (let orderID in groups) {
+            for (const order of groups[orderID]) {
+                if (order.current_stock != undefined) { // esto es para bebidas
+                    if (foods.findIndex(item => item.id === orderID) < 0) {
+                        foods.push({
+                            id: orderID,
+                            quantity: groups[orderID].length,
+                            subtotal: order.price * groups[orderID].length
+                        });
+                    }
+                } else {
+                    if (drinks.findIndex(item => item.id === orderID) < 0) {
+                        drinks.push({
+                            id: orderID,
+                            quantity: groups[orderID].length,
+                            subtotal: order.price * groups[orderID].length
+                        });
+                    }
+                }
+            }
+        }
+
+        console.log(foods);
+        console.log(drinks);
+
+        /* for (let order of groups) {
+
+            let itemOrder
+
+            if (order.current_stock != undefined) {
+                foods.push(order);
+            } else {
+                drinks.push({
+                    id: order._id,
+                    quantity: });
+            }
+
+        } */
+
+    }
+
     return (
         <Fragment>
             <div className="modal-carrito">
@@ -68,11 +118,14 @@ const Carrito = () => {
                                                     <th>Acciones</th>
                                                 </tr>
                                                 {
-                                                    MenusDeCarrito.map(menu => (
-                                                        <tr key={menu.uuid}>
+
+                                                    MenusDeCarrito.map((menu, index) => (
+                                                        <tr key={index}>
                                                             <td className="cart_info">
                                                                 <img
-                                                                    src={`http://localhost:4000/api/image/menus/${menu.img}`}
+                                                                    src={menu.current_stock != undefined ?
+                                                                        `http://localhost:4000/api/image/products/${menu.img}` :
+                                                                        `http://localhost:4000/api/image/menus/${menu.img}`}
                                                                     alt="imagen producto"
                                                                     width="150px"
                                                                 />
@@ -107,6 +160,7 @@ const Carrito = () => {
                                         <button
                                             type="submit"
                                             className="btn_carrito"
+                                            onClick={() => handleClickConfirmar(MenusDeCarrito)}
                                         >Confirmar</button>
                                         <button
                                             type="submit"

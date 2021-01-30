@@ -15,6 +15,9 @@ import {
     abrirCerrarDetalleMenuAction,
     guardarInsumoDetalleAction
 } from '../../actions/catalogoActions';
+import {
+    agregarMenuACarritoAction,
+} from '../../actions/homeActions';
 
 const CatalogoFiltradoInsumos = ({ name }) => {
 
@@ -27,6 +30,7 @@ const CatalogoFiltradoInsumos = ({ name }) => {
     const abrirModalMenuDetalle = (estadoDetalleMenu) => dispatch(abrirCerrarDetalleMenuAction(estadoDetalleMenu));
     const consultarInsumos = () => dispatch(obtenerInsumosAction());
     const guardarInsumo = (insumo) => dispatch(guardarInsumoDetalleAction(insumo));
+    const agregarInsumoACarrito = orden => dispatch(agregarMenuACarritoAction(orden));
 
     const modalMenuDetalle = useSelector(state => state.catalogo.abrir_detalle_menu);
     const insumos = useSelector(state => state.admin.insumos);
@@ -73,6 +77,10 @@ const CatalogoFiltradoInsumos = ({ name }) => {
         // eslint-disable-next-line
     }, [modalMenuDetalle])
 
+    const handleClickAgregarAlCarrito = menu => {
+        agregarInsumoACarrito(menu);
+    }
+
     return (
         <Fragment>
             <div className="fondo-negro">
@@ -97,7 +105,7 @@ const CatalogoFiltradoInsumos = ({ name }) => {
                                     />
                                     <div className="titulos">
                                         <h3 className="fw-300">{insumo.description}</h3>
-                                        <h4 className="price">${insumo.sale_price}</h4>
+                                        <h4 className="price">${insumo.price}</h4>
                                     </div>
                                     <div className="botones">
                                         <input
@@ -109,6 +117,7 @@ const CatalogoFiltradoInsumos = ({ name }) => {
                                         <input
                                             type="button"
                                             className="btn_agregar_carrito"
+                                            onClick={() => handleClickAgregarAlCarrito(insumo)}
                                             value="Agregar al Carrito"
                                         />
                                     </div>
