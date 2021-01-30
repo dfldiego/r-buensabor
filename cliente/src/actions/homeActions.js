@@ -338,9 +338,9 @@ export function loginAction(datos) {
             // si no hay carrito en localstorage
             if (!localStorage.getItem('carrito')) {
                 localStorage.setItem('carrito', '[]');
-            } else {
+            }/*  else {
                 dispatch(obtenerProductoCarrito(localStorage.getItem('carrito')));
-            }
+            } */
 
         } catch (error) {
             console.log(error.response.data.err.msg);

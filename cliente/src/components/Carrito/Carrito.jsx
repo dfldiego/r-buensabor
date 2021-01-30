@@ -97,11 +97,22 @@ const Carrito = () => {
                                             <tbody>
                                                 <tr>
                                                     <td></td>
-                                                    <td>Total</td>
-                                                    <td>{total}</td>
+                                                    <td className="total">Total</td>
+                                                    <td className="total">{total}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
+                                    </div>
+                                    <div className="btns_carrito">
+                                        <button
+                                            type="submit"
+                                            className="btn_carrito"
+                                        >Confirmar</button>
+                                        <button
+                                            type="submit"
+                                            onClick={cerrar_modal}
+                                            className="btn_carrito"
+                                        >Cancelar</button>
                                     </div>
                                 </div>
                         }

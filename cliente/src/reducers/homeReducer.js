@@ -114,6 +114,7 @@ export default function (state = initialState, action) {
                 mensaje: '',
                 esta_logueado: true,
                 abrir_modal: false,
+                carrito: [],
             }
         case ESTA_LOGUEADO:
             return {

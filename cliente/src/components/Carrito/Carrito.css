@@ -114,6 +114,10 @@ select {
     justify-content: flex-end;
 }
 
+.total {
+    font-weight: bold;
+}
+
 .tablaCarrito .total-price table {
     border-top: 3px solid coral !important;
     width: 100%;
@@ -129,4 +133,12 @@ select {
 
 .tituloCarrito {
     text-align: center;
+}
+
+.btns_carrito {
+    margin: 2rem;
+}
+
+.btn_carrito {
+    margin: 0 5rem 5rem 5rem;
 }
