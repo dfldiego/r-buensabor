@@ -130,7 +130,6 @@ const Carrito = () => {
                                                                     width="150px"
                                                                 />
                                                                 <p>{menu.description}</p>
-                                                                <small>{menu.category.description}</small>
                                                             </td>
                                                             <td>{menu.price}</td>
                                                             <td>
