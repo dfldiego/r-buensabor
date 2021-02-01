@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import '../../assets/css/styles.css';
 import '../Catalogo/Catalogo.css';
 import './CatalogoFiltrado.css';
+import { v4 as uuidv4 } from 'uuid';
 
 import Navbar from '../Navbar/Navbar';
 import ModalContainer from '../ModalContainer/ModalContainer';
@@ -78,6 +79,7 @@ const CatalogoFiltradoInsumos = ({ name }) => {
     }, [modalMenuDetalle])
 
     const handleClickAgregarAlCarrito = menu => {
+        menu.uuid = uuidv4();
         agregarInsumoACarrito(menu);
     }
 

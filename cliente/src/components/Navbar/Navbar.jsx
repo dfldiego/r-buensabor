@@ -23,7 +23,6 @@ import {
     cerrarSesionAction,
     perfilAction,
     abrirModalCarritoAction,
-    obtenerProductoCarritoAction,
 } from '../../actions/homeActions';
 
 const Navbar = () => {

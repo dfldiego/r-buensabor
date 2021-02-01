@@ -12,7 +12,20 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const Carrito = () => {
 
-    const [total, setTotal] = useState(0);
+    const [totales, setTotales] = useState({
+        subtotal: "0",
+        total: "0",
+    });
+    const { subtotal, total } = totales;
+
+
+    const [pedido, setPedido] = useState({
+        shippingType: "0",
+        paymentType: null,
+    });
+    const { shippingType, paymentType } = pedido;
+
+    const [error, setError] = useState(null);
 
     const dispatch = useDispatch();
 
@@ -20,7 +33,7 @@ const Carrito = () => {
     const eliminarProductoCarrito = datosProductoCarrito => dispatch(eliminarProductoCarritoAction(datosProductoCarrito));
 
     let CerrarModalCarrito = useSelector(state => state.home.abrir_modal_carrito);
-    const MenusDeCarrito = useSelector(state => state.home.carrito);
+    let MenusDeCarrito = useSelector(state => state.home.carrito);
 
     const cerrar_modal = () => {
         if (CerrarModalCarrito) {
@@ -31,42 +44,81 @@ const Carrito = () => {
     }
 
     useEffect(() => {
-        let total = 0;
+        let subtotalCarrito = 0;
+        let totalCarrito = 0;
 
         MenusDeCarrito.map(menu => {
-            total += Number(menu.price)
+            subtotalCarrito += Number(menu.price);
         })
-        setTotal(total);
+
+        if (shippingType === "1") {
+            totalCarrito = subtotalCarrito - (subtotalCarrito * 0.1);
+        } else {
+            totalCarrito = subtotalCarrito;
+
+            setPedido({
+                ...pedido,
+                paymentType: null,
+            })
+        }
+
+        setTotales({
+            ...totales,
+            total: String(totalCarrito),
+            subtotal: String(subtotalCarrito),
+        });
 
         // eslint-disable-next-line
-    }, [MenusDeCarrito])
+    }, [MenusDeCarrito, pedido.shippingType])
 
     const handleClickQuitarDelCarrito = datosProductoCarrito => {
         eliminarProductoCarrito(datosProductoCarrito);
     }
 
+    const handleChangePedido = e => {
+        setPedido({
+            ...pedido,
+            [e.target.name]: e.target.value
+        })
+    }
+
     const handleClickConfirmar = (MenusDeCarrito) => {
+        console.log(MenusDeCarrito);
         let foods = [];
         let drinks = [];
+
+        if (shippingType !== "0" && shippingType !== "1") {
+            setError("Debe ingresar una forma de envío correcta");
+        } else {
+            setError(null);
+        }
+
+        if (shippingType !== "0" && paymentType === null) {
+            setError("Debe ingresar una forma de pago correcta");
+        } else {
+            setError(null);
+        }
 
         const groups = MenusDeCarrito.reduce((groups, item) => ({
             ...groups,
             [item._id]: [...(groups[item._id] || []), item]
         }), {});
 
+        console.log(groups);
+
         for (let orderID in groups) {
             for (const order of groups[orderID]) {
-                if (order.current_stock != undefined) { // esto es para bebidas
-                    if (foods.findIndex(item => item.id === orderID) < 0) {
-                        foods.push({
+                if (order.current_stock !== undefined) { // esto es para bebidas
+                    if (drinks.findIndex(item => item.id === orderID) < 0) {
+                        drinks.push({
                             id: orderID,
                             quantity: groups[orderID].length,
                             subtotal: order.price * groups[orderID].length
                         });
                     }
                 } else {
-                    if (drinks.findIndex(item => item.id === orderID) < 0) {
-                        drinks.push({
+                    if (foods.findIndex(item => item.id === orderID) < 0) {
+                        foods.push({
                             id: orderID,
                             quantity: groups[orderID].length,
                             subtotal: order.price * groups[orderID].length
@@ -79,20 +131,14 @@ const Carrito = () => {
         console.log(foods);
         console.log(drinks);
 
-        /* for (let order of groups) {
+        let orderDate = new Date().toISOString();
+        let number = Math.floor(Math.random() * 10000000000);
 
-            let itemOrder
+        console.log(orderDate);
+        console.log(number);
 
-            if (order.current_stock != undefined) {
-                foods.push(order);
-            } else {
-                drinks.push({
-                    id: order._id,
-                    quantity: });
-            }
-
-        } */
-
+        console.log(shippingType);
+        console.log(paymentType);
     }
 
     return (
@@ -123,7 +169,7 @@ const Carrito = () => {
                                                         <tr key={index}>
                                                             <td className="cart_info">
                                                                 <img
-                                                                    src={menu.current_stock != undefined ?
+                                                                    src={menu.current_stock !== undefined ?
                                                                         `http://localhost:4000/api/image/products/${menu.img}` :
                                                                         `http://localhost:4000/api/image/menus/${menu.img}`}
                                                                     alt="imagen producto"
@@ -133,10 +179,10 @@ const Carrito = () => {
                                                             </td>
                                                             <td>{menu.price}</td>
                                                             <td>
-                                                                <a
+                                                                <button
                                                                     href="#"
                                                                     onClick={() => handleClickQuitarDelCarrito(menu)}
-                                                                >Quitar</a>
+                                                                >Quitar</button>
                                                             </td>
                                                         </tr>
                                                     ))
@@ -149,13 +195,94 @@ const Carrito = () => {
                                             <tbody>
                                                 <tr>
                                                     <td></td>
-                                                    <td className="total">Total</td>
-                                                    <td className="total">{total}</td>
+                                                    <td className="total">Sub-Total</td>
+                                                    <td className="total">${subtotal}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div className="btns_carrito">
+                                    <div className="tablaCarrito">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Forma de Envio:</td>
+                                                    <td>
+                                                        <input
+                                                            type="radio"
+                                                            name="shippingType"
+                                                            value="0"
+                                                            checked={shippingType === "0"}
+                                                            onChange={handleChangePedido}
+                                                        />Delivery
+                                                    </td>
+                                                    <td>
+                                                        <input
+                                                            type="radio"
+                                                            name="shippingType"
+                                                            value="1"
+                                                            checked={shippingType === "1"}
+                                                            onChange={handleChangePedido}
+                                                        />Busqueda a Local
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    {
+                                        shippingType === "1" ?
+                                            <div className="tablaCarrito">
+                                                <table>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>Forma de Pago:</td>
+                                                            <td>
+                                                                <input
+                                                                    type="radio"
+                                                                    name="paymentType"
+                                                                    value="0"
+                                                                    checked={paymentType === "0"}
+                                                                    onChange={handleChangePedido}
+                                                                />Tarjeta de Débito
+                                                            </td>
+                                                            <td>
+                                                                <input
+                                                                    type="radio"
+                                                                    name="paymentType"
+                                                                    value="1"
+                                                                    checked={paymentType === "1"}
+                                                                    onChange={handleChangePedido}
+                                                                />Tarjeta de Crédito
+                                                            </td>
+                                                            <td>
+                                                                <input
+                                                                    type="radio"
+                                                                    name="paymentType"
+                                                                    value="2"
+                                                                    checked={paymentType === "2"}
+                                                                    onChange={handleChangePedido}
+                                                                />Efectivo
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            : null
+                                    }
+                                    <div className="total-price">
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td></td>
+                                                    <td className="total">Total</td>
+                                                    <td className="total">${total}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    {
+                                        error ? <p className="error">{error}</p> : null
+                                    }
+                                    <div>
                                         <button
                                             type="submit"
                                             className="btn_carrito"
@@ -167,6 +294,7 @@ const Carrito = () => {
                                             className="btn_carrito"
                                         >Cancelar</button>
                                     </div>
+
                                 </div>
                         }
                     </div>
@@ -177,16 +305,3 @@ const Carrito = () => {
 }
 
 export default Carrito
-
-/**
- *
-                                                    <th>Cantidad</th>
- * <td>
-                                                                <input
-                                                                    type="number"
-                                                                    name="cantidad"
-                                                                    value={cantidad}
-                                                                    onChange={handleChangeCantidad}
-                                                                />
-                                                            </td>
- */
