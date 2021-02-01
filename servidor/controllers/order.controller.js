@@ -14,6 +14,7 @@ const list = async (req, res = response) => {
     }
 
     try {
+
         // buscar ordenes por estados.
         let orders = await Order.find(filterStatus);
 
@@ -29,7 +30,7 @@ const list = async (req, res = response) => {
             order.details = orderDetails;
         }
 
-        Order.countDocuments({ status }).exec((err, size) => {
+        Order.countDocuments({ status: true }).exec((err, size) => {
             res.json({
                 ok: true,
                 orders,
@@ -46,6 +47,8 @@ const list = async (req, res = response) => {
 
 const create = async (req, res = response) => {
     let body = req.body;
+    console.log("req.body");
+    console.log(body);
 
     try {
         // recorre todas las camidas del pedido

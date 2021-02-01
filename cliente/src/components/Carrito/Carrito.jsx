@@ -7,6 +7,7 @@ import './Carrito.css';
 import {
     abrirModalCarritoAction,
     eliminarProductoCarritoAction,
+    crearNuevaOrdenAction,
 } from '../../actions/homeActions';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -16,7 +17,7 @@ const Carrito = () => {
         subtotal: "0",
         total: "0",
     });
-    const { subtotal, total } = totales;
+    const { subTotal, total } = totales;
 
 
     const [pedido, setPedido] = useState({
@@ -31,6 +32,7 @@ const Carrito = () => {
 
     const cerrar_modal_carrito = estadoCarrito => dispatch(abrirModalCarritoAction(estadoCarrito));
     const eliminarProductoCarrito = datosProductoCarrito => dispatch(eliminarProductoCarritoAction(datosProductoCarrito));
+    const crearNuevaOrdenDePedido = datosOrden => dispatch(crearNuevaOrdenAction(datosOrden));
 
     let CerrarModalCarrito = useSelector(state => state.home.abrir_modal_carrito);
     let MenusDeCarrito = useSelector(state => state.home.carrito);
@@ -65,7 +67,7 @@ const Carrito = () => {
         setTotales({
             ...totales,
             total: String(totalCarrito),
-            subtotal: String(subtotalCarrito),
+            subTotal: String(subtotalCarrito),
         });
 
         // eslint-disable-next-line
@@ -113,7 +115,7 @@ const Carrito = () => {
                         drinks.push({
                             id: orderID,
                             quantity: groups[orderID].length,
-                            subtotal: order.price * groups[orderID].length
+                            subTotal: order.price * groups[orderID].length
                         });
                     }
                 } else {
@@ -121,7 +123,7 @@ const Carrito = () => {
                         foods.push({
                             id: orderID,
                             quantity: groups[orderID].length,
-                            subtotal: order.price * groups[orderID].length
+                            subTotal: order.price * groups[orderID].length
                         });
                     }
                 }
@@ -137,8 +139,24 @@ const Carrito = () => {
         console.log(orderDate);
         console.log(number);
 
-        console.log(shippingType);
-        console.log(paymentType);
+        console.log(Number.parseInt(shippingType));
+        console.log(Number.parseInt(paymentType));
+
+        // traer user
+        const user = JSON.parse(localStorage.getItem("user"));
+        console.log(user._id);
+
+        const order = {
+            orderDate,
+            number,
+            shippingType: Number.parseInt(shippingType),
+            user: user._id,
+            foods,
+            drinks,
+        }
+
+        crearNuevaOrdenDePedido(order);
+
     }
 
     return (
@@ -196,7 +214,7 @@ const Carrito = () => {
                                                 <tr>
                                                     <td></td>
                                                     <td className="total">Sub-Total</td>
-                                                    <td className="total">${subtotal}</td>
+                                                    <td className="total">${subTotal}</td>
                                                 </tr>
                                             </tbody>
                                         </table>

@@ -24,6 +24,9 @@ import {
     PRODUCTO_CARRITO_ELIMINADO_EXITO,
     ELIMINAR_PRODUCTO_CARRITO_ERROR,
     OBTENER_PRODUCTO_CARRITO,
+    AGREGAR_ORDEN,
+    AGREGAR_ORDEN_EXITO,
+    AGREGAR_ORDEN_ERROR,
 } from '../types';
 
 const initialState = {
@@ -33,17 +36,37 @@ const initialState = {
     abrir_modal_carrito: false,
     alerta: null,
     mensaje: '',
+    mensaje: null,
+    error: null,
     loading: false,
     token: null,
     rol: null,
     abrir_modal_perfil: false,
     perfil: null,
     carrito: [],
+    ordenes: [],
     producto_carrito_eliminar: null,
 }
 
 export default function (state = initialState, action) {
     switch (action.type) {
+        case AGREGAR_ORDEN_EXITO:
+            return {
+                ...state,
+                loading: false,
+                ordenes: [...state.ordenes, action.payload],
+                errores: [],
+                mensaje: null,
+                alerta: null,
+                error: null,
+                carrito: [],
+                abrir_modal_carrito: false,
+            }
+        case AGREGAR_ORDEN:
+            return {
+                ...state,
+                loading: action.payload,
+            }
         case OBTENER_PRODUCTO_CARRITO:
             return {
                 ...state,
@@ -102,6 +125,7 @@ export default function (state = initialState, action) {
         case ACTUALIZADO_PERFIL_ERROR:
         case AGREGAR_CARRITO_ERROR:
         case ELIMINAR_PRODUCTO_CARRITO_ERROR:
+        case AGREGAR_ORDEN_ERROR:
             return {
                 ...state,
                 mensaje: action.payload,

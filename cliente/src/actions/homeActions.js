@@ -23,10 +23,53 @@ import {
     PRODUCTO_CARRITO_ELIMINADO_EXITO,
     ELIMINAR_PRODUCTO_CARRITO_ERROR,
     OBTENER_PRODUCTO_CARRITO,
+    AGREGAR_ORDEN,
+    AGREGAR_ORDEN_EXITO,
+    AGREGAR_ORDEN_ERROR,
 } from '../types';
 import clienteAxios from '../config/axios';
 import { desencriptarToken } from '../helpers/desencriptar_token';
 import { authorizationHeader } from '../helpers/authorization_header';
+
+/**********************  para crear una nueva orden ********************************/
+export function crearNuevaOrdenAction(datosOrden) {
+    return async (dispatch) => {
+        dispatch(agregarOrden());
+
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            console.log(datosOrden);
+
+            await clienteAxios.post('/api/order', datosOrden, header)
+                .then(response => {
+                    console.log(response.data.order);
+                    dispatch(agregarOrdenExito(response.data.order));
+                    localStorage.setItem("carrito", "[]");
+                })
+        } catch (err) {
+            console.log(err);
+            dispatch(agregarOrdenError(err.response.data.msg));
+        }
+    }
+}
+
+const agregarOrden = () => ({
+    type: AGREGAR_ORDEN,
+    payload: true
+})
+
+// si el producto se guarda en la BBDD
+const agregarOrdenExito = datosOrden => ({
+    type: AGREGAR_ORDEN_EXITO,
+    payload: datosOrden
+});
+
+// si hubo un error
+const agregarOrdenError = error => ({
+    type: AGREGAR_ORDEN_ERROR,
+    payload: error
+})
 
 /**********************  para obtener los producto del carrito ********************************/
 export function obtenerProductoCarritoAction() {
