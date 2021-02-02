@@ -4,17 +4,12 @@ const Address = require('../models/address.model');
 const bcrypt = require('bcryptjs');
 
 
-/* const list = async (req, res = response) => {
-
-    let from = Number(req.query.from) || 0;
-    let limit = Number(req.query.limit) || 5;
+const list = async (req, res = response) => {
 
     try {
         const [users, total] = await Promise.all([
             User.find({ status: true })
-                .populate('address', 'nameStreet numberStreet location')
-                .skip(from)
-                .limit(limit),
+                .populate('address', 'nameStreet numberStreet location'),
             User.countDocuments({ status: true })
         ]);
 
@@ -22,7 +17,6 @@ const bcrypt = require('bcryptjs');
             ok: true,
             users,
             total,
-            limit,
         });
     } catch (error) {
         console.log(error);
@@ -31,7 +25,7 @@ const bcrypt = require('bcryptjs');
             msg: error
         });
     }
-} */
+}
 
 const create = async (req, res = response) => {
 
@@ -275,7 +269,7 @@ const search = async (req, res) => {
 };
 
 module.exports = {
-    /* list, */
+    list,
     create,
     getById,
     update,

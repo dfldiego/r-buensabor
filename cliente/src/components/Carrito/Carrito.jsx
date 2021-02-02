@@ -231,7 +231,7 @@ const Carrito = () => {
                                                             value="0"
                                                             checked={shippingType === "0"}
                                                             onChange={handleChangePedido}
-                                                        />Delivery
+                                                        />Por Delivery
                                                     </td>
                                                     <td>
                                                         <input
@@ -240,7 +240,7 @@ const Carrito = () => {
                                                             value="1"
                                                             checked={shippingType === "1"}
                                                             onChange={handleChangePedido}
-                                                        />Busqueda a Local
+                                                        />Por Local
                                                     </td>
                                                 </tr>
                                             </tbody>

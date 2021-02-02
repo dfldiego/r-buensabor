@@ -89,6 +89,10 @@ import {
     DESCARGA_LISTADO_MENUS,
     DESCARGA_LISTADO_INSUMOS,
     ENTRAR_CRUD_PEDIDOS,
+    COMENZAR_DESCARGA_PEDIDOS,
+    DESCARGA_PEDIDOS_EXITO,
+    DESCARGA_PEDIDOS_ERROR,
+    DESCARGA_USER_ID,
 } from '../types';
 
 const initialState = {
@@ -105,12 +109,14 @@ const initialState = {
     abrir_agregar_categoria_insumo: false,
     abrir_agregar_insumo: false,
     usuarios: [],
+    usuariosPedidos: [],
     categorias: [],
     categoriasSelect: [],
     menus: [],
     menusSelect: [],
     categorias_insumo: [],
     categoriasInsumoSelect: [],
+    pedidos: [],
     insumos: [],
     error: null,
     errores: [],
@@ -130,6 +136,7 @@ const initialState = {
     mostrarMenus: false,
     mostrarCategoriasInsumo: false,
     mostrarInsumo: false,
+    mostrarPedidos: false,
     palabraBuscar: null,
     totalElementos: 0,
     paginaCorriente: 0,
@@ -233,6 +240,7 @@ export default function (state = initialState, action) {
         case COMENZAR_DESCARGA_MENU:
         case COMENZAR_DESCARGA_CATEGORIA_INSUMO:
         case COMENZAR_DESCARGA_INSUMO:
+        case COMENZAR_DESCARGA_PEDIDOS:
             return {
                 ...state,
                 loading: action.payload,
@@ -254,7 +262,7 @@ export default function (state = initialState, action) {
                 usuarios: [...state.usuarios, action.payload],
                 mensaje: null,
                 error: false,
-                abrir_agregar_usuario: null,
+                abrir_agregar_usuario: false,
             }
         case AGREGAR_CATEGORIA_EXITO:
             return {
@@ -287,6 +295,7 @@ export default function (state = initialState, action) {
         case DESCARGA_INSUMO_ERROR:
         case INSUMO_ELIMINADO_ERROR:
         case INSUMO_EDITADO_ERROR:
+        case DESCARGA_PEDIDOS_ERROR:
             return {
                 ...state,
                 loading: false,
@@ -313,6 +322,15 @@ export default function (state = initialState, action) {
                 palabraBuscar: action.payload.datosPaginacion.busqueda,
                 desde: Number(action.payload.datosPaginacion.indexPrimerUsuario),
                 paginaCorriente: action.payload.datosPaginacion.pagina
+            }
+        case DESCARGA_USER_ID:
+            return {
+                ...state,
+                loading: false,
+                error: null,
+                mensaje: null,
+                errores: [],
+                usuariosPedidos: action.payload.users,
             }
         case DESCARGA_CATEGORIA_EXITO:
             return {
@@ -650,6 +668,17 @@ export default function (state = initialState, action) {
                 ),
                 insumo_editar: null,
                 abrir_agregar_insumo: false,
+            }
+        case DESCARGA_PEDIDOS_EXITO:
+            return {
+                ...state,
+                loading: false,
+                error: null,
+                errores: [],
+                mensaje: null,
+                pedidos: action.payload,
+                mostrarPedidos: true,
+                totalElementos: action.payload.total,
             }
         default:
             return state;

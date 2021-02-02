@@ -87,10 +87,53 @@ import {
     DESCARGA_LISTADO_MENUS,
     DESCARGA_LISTADO_INSUMOS,
     ENTRAR_CRUD_PEDIDOS,
+    COMENZAR_DESCARGA_PEDIDOS,
+    DESCARGA_PEDIDOS_EXITO,
+    DESCARGA_PEDIDOS_ERROR,
+    DESCARGA_USER_ID,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
 import { authorizationHeader } from '../helpers/authorization_header';
+
+/**********************  para obtener los pedidos de la BBDD ********************************/
+export function obtenerPedidosAction() {
+    return async (dispatch) => {
+        dispatch(descargarPedidos());
+
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            await clienteAxios.get('/api/order', header)
+                .then(response => {
+                    console.log(response.data);
+                    // obtenemos datos del response
+                    const { orders } = response.data;
+                    // si todo sale bien
+                    dispatch(descargarPedidosExito(orders));
+                })
+        } catch (err) {
+            console.log(err);
+            dispatch(descargarPedidosError(err.response.data.msg));
+        }
+
+    }
+}
+
+const descargarPedidos = () => ({
+    type: COMENZAR_DESCARGA_PEDIDOS,
+    payload: true
+});
+
+const descargarPedidosExito = respuesta => ({
+    type: DESCARGA_PEDIDOS_EXITO,
+    payload: respuesta,
+});
+
+const descargarPedidosError = errores => ({
+    type: DESCARGA_PEDIDOS_ERROR,
+    payload: errores,
+});
 
 /********************** Entrar a CRUD PEDIDOS ***********************/
 export function pantallaPedidosAction(estadoPedido) {
@@ -1473,26 +1516,30 @@ const obtenerUsuarioEliminar = idUsuario => ({
     payload: idUsuario
 })
 
-/**********************  para obtener los usuarios de la BBDD ********************************/
-/* export function obtenerUsuariosAction(indexPrimerUsuario, limit, paginaCorriente) {
+/**********************  para obtener usuarios por id de la BBDD ********************************/
+export function obtenerUsuariosAction() {
     return async (dispatch) => {
         dispatch(descargarUsuarios());
         try {
             const token = localStorage.getItem('token');
-            const header = {
-                headers: {
-                    'Authorization': `${token}`
-                }
-            }
-            const respuesta = await clienteAxios.get(`/api/users?from=${indexPrimerUsuario}&limit=${limit}`, header);
-            respuesta.data.paginaCorriente = paginaCorriente;
-            dispatch(descargarUsuariosExito(respuesta.data));
+            const header = authorizationHeader(token);
+
+            await clienteAxios.get(`/api/users`, header)
+                .then(response => {
+                    console.log(response.data);
+                    dispatch(descargarUsuarioExito(response.data));
+                })
         } catch (error) {
             console.log(error);
-            dispatch(descargarUsuariosError('Error al descargar los usuarios'));
+            dispatch(descargarUsuariosError('Error al descargar el id del usuario'));
         }
     }
-} */
+}
+
+const descargarUsuarioExito = users => ({
+    type: DESCARGA_USER_ID,
+    payload: users
+})
 
 /**********************  para crear un nuevo usuario ********************************/
 export function crearNuevoUsuarioAction(datosNuevoUsuario) {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Sidebar.css';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,8 +13,6 @@ import {
 
 const Sidebar = () => {
 
-    const [enUsuarios, setEnUsuarios] = useState(false);
-
     const dispatch = useDispatch();
 
     // ENVIAR ESTADOS AL ACTION -> ADMINACTION.
@@ -26,6 +24,7 @@ const Sidebar = () => {
     const entrar_pedidos_crud = estadoPedidos => dispatch(pantallaPedidosAction(estadoPedidos));
 
     // OBTENEMOS DATOS DESDE STORE
+    const entrar_usuario_store = useSelector(state => state.admin.en_usuario);
     const entrar_categoria_store = useSelector(state => state.admin.en_categoria);
     const entrar_menu_store = useSelector(state => state.admin.en_menu);
     const entrar_insumos_store = useSelector(state => state.admin.en_insumos);
@@ -36,10 +35,10 @@ const Sidebar = () => {
     const entra_usuarios = e => {
         e.preventDefault();
 
-        if (enUsuarios) {
-            entrar_usuarios_crud(setEnUsuarios(false));
+        if (entrar_usuario_store) {
+            entrar_usuarios_crud(false);
         } else {
-            entrar_usuarios_crud(setEnUsuarios(true));
+            entrar_usuarios_crud(true);
         }
     }
 

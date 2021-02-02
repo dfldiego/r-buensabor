@@ -9,7 +9,7 @@ const userController = require('../controllers/user.controller');
 /* const router = Router(); */
 
 
-/* app.get('/', [checkToken], userController.list); */
+app.get('/', [checkToken], userController.list);
 app.post('/', [checkToken], userController.create);
 app.get('/:id', [checkToken], userController.getById);
 app.put('/:id', [checkToken], userController.update);
