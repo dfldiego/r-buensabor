@@ -57,7 +57,6 @@ const create = async (req, res = response) => {
             const menuDetailData = await MenuDetail.find({ menu: food.id })
                 .populate('menu', 'description')
                 .populate('product', ['description', 'current_stock']);
-
             // recorro los detalles de la comida del pedido
             for (const menuDetail of menuDetailData) {
                 //cantidad = cantidad de producto en el menu * cantidad de la misma comida pedida.

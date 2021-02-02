@@ -500,33 +500,43 @@ const descargarListadoInsumosExito = lista_insumos => ({
 export function crearNuevaInsumoAction(datosNuevoInsumo, imageFile) {
     return async (dispatch) => {
         dispatch(agregarInsumo());
-
+        console.log(datosNuevoInsumo);
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            console.log(datosNuevoInsumo);
 
-            const formData = new FormData();
-            formData.append('file', imageFile.img);
+            if (imageFile !== null) {
+                await clienteAxios.post('/api/product', datosNuevoInsumo, header)
+                    .then(response => {
+                        console.log(response.data);
+                        const formData = new FormData();
+                        formData.append('file', imageFile.img);
+                        if (!response.data.productStored) {
+                            const { product } = response.data;
 
-            await clienteAxios.post('/api/product', datosNuevoInsumo, header)
-                .then(response => {
-                    console.log(response);
-                    if (!response.data.productStored) {
-                        const { product } = response.data;
+                            clienteAxios.put(`/api/upload/products/${product._id}`, formData, header)
 
-                        clienteAxios.put(`/api/upload/products/${product._id}`, formData, header)
+                            dispatch(agregarInsumoExito(product));
+                        } else {
+                            const { productStored } = response.data;
 
-                        dispatch(agregarInsumoExito(product));
-                    } else {
-                        const { productStored } = response.data;
+                            clienteAxios.put(`/api/upload/products/${productStored._id}`, formData, header)
 
-                        clienteAxios.put(`/api/upload/products/${productStored._id}`, formData, header)
-
-                        dispatch(agregarInsumoExito(productStored));
-                        console.log(response.data.msg);
-                    }
-                })
+                            dispatch(agregarInsumoExito(productStored));
+                        }
+                    })
+            } else {
+                await clienteAxios.post('/api/product', datosNuevoInsumo, header)
+                    .then(response => {
+                        if (!response.data.productStored) {
+                            const { product } = response.data;
+                            dispatch(agregarInsumoExito(product));
+                        } else {
+                            const { productStored } = response.data;
+                            dispatch(agregarInsumoExito(productStored));
+                        }
+                    })
+            }
         } catch (err) {
             console.log(err);
             if (err.response.data.msg !== undefined) {
