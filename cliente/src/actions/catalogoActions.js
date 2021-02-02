@@ -21,10 +21,8 @@ export function obtenerMenuPorIdAction(idMenu) {
             const header = authorizationHeader(token);
             await clienteAxios.get(`/api/menu/${idMenu}`, header)
                 .then(response => {
-                    console.log(response.data);
                     const { menu, ingredients } = response.data;
                     const datos = { menu, ingredients }
-                    console.log(datos);
                     dispatch(descargarMenuExito(datos));
                 })
         } catch (err) {
@@ -47,7 +45,6 @@ const descargarMenusError = errores => ({
 /**********************  para abrir modal de detalle de menu-insumo con datos del insumo ********************************/
 export function guardarInsumoDetalleAction(insumo) {
     return (dispatch) => {
-        console.log(insumo);
         dispatch(guardarInsumo(insumo));
     }
 }

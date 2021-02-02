@@ -106,7 +106,6 @@ export function obtenerPedidosAction() {
             const header = authorizationHeader(token);
             await clienteAxios.get('/api/order', header)
                 .then(response => {
-                    console.log(response.data);
                     // obtenemos datos del response
                     const { orders } = response.data;
                     // si todo sale bien
@@ -152,11 +151,6 @@ export function obtenerInsumoBuscadorAction(indexPrimerUsuario, limit, pagina, p
     return async (dispatch) => {
         dispatch(descargarInsumos());
 
-        console.log("indexPrimerUsuario:" + indexPrimerUsuario);
-        console.log("limit:" + limit);
-        console.log("pagina:" + pagina);
-        console.log("busqueda:" + palabraBusqueda);
-
         if (palabraBusqueda === null || palabraBusqueda === '') {
             palabraBusqueda = undefined
         }
@@ -176,7 +170,6 @@ export function obtenerInsumoBuscadorAction(indexPrimerUsuario, limit, pagina, p
                     }
 
                     response.data.datosPaginacion = datosPaginacion;
-                    console.log(response.data);
 
                     dispatch(descargarInsumosExito(response.data));
                 })
@@ -208,16 +201,9 @@ export function obtenerCategoriasInsumoBuscadorAction(indexPrimerUsuario, limit,
     return async (dispatch) => {
         dispatch(descargarCategoriasInsumo());
 
-        console.log("indexPrimerUsuario:" + indexPrimerUsuario);
-        console.log("limit:" + limit);
-        console.log("pagina:" + pagina);
-        console.log("busqueda:" + palabraBusqueda);
-
         if (palabraBusqueda === null || palabraBusqueda === '') {
             palabraBusqueda = undefined
         }
-
-        console.log("busqueda:" + palabraBusqueda);
 
         try {
             const token = localStorage.getItem('token');
@@ -234,8 +220,6 @@ export function obtenerCategoriasInsumoBuscadorAction(indexPrimerUsuario, limit,
                     }
 
                     response.data.datosPaginacion = datosPaginacion;
-                    console.log(response.data);
-
                     dispatch(descargarCategoriasInsumoExito(response.data));
                 })
         } catch (error) {
@@ -265,11 +249,6 @@ export function obtenerMenusBuscadorAction(indexPrimerUsuario, limit, pagina, pa
     return async (dispatch) => {
         dispatch(descargarMenus());
 
-        console.log("indexPrimerUsuario:" + indexPrimerUsuario);
-        console.log("limit:" + limit);
-        console.log("pagina:" + pagina);
-        console.log("busqueda:" + palabraBusqueda);
-
         if (palabraBusqueda === null || palabraBusqueda === '') {
             palabraBusqueda = undefined
         }
@@ -289,7 +268,6 @@ export function obtenerMenusBuscadorAction(indexPrimerUsuario, limit, pagina, pa
                     }
 
                     response.data.datosPaginacion = datosPaginacion;
-                    console.log(response.data);
 
                     dispatch(descargarMenusExito(response.data));
                 })
@@ -321,11 +299,6 @@ export function obtenerCategoriasBuscadorAction(indexPrimerUsuario, limit, pagin
 
         dispatch(descargarCategorias());
 
-        console.log("indexPrimerUsuario:" + indexPrimerUsuario);
-        console.log("limit:" + limit);
-        console.log("pagina:" + pagina);
-        console.log("busqueda:" + palabraBusqueda);
-
         if (palabraBusqueda === null || palabraBusqueda === '') {
             palabraBusqueda = undefined
         }
@@ -345,7 +318,6 @@ export function obtenerCategoriasBuscadorAction(indexPrimerUsuario, limit, pagin
                     }
 
                     response.data.datosPaginacion = datosPaginacion;
-                    console.log(response.data);
 
                     dispatch(descargarCategoriasExito(response.data));
                 })
@@ -376,10 +348,7 @@ const descargarCategorias = () => ({
 export function obtenerUsuariosBuscadorAction(indexPrimerUsuario, limit, pagina, palabraBusqueda) {
     return async (dispatch) => {
         dispatch(descargarUsuarios());
-        console.log("indexPrimerUsuario:" + indexPrimerUsuario);
-        console.log("limit:" + limit);
-        console.log("pagina:" + pagina);
-        console.log("busqueda:" + palabraBusqueda);
+
         if (palabraBusqueda === null || palabraBusqueda === '') {
             palabraBusqueda = undefined
         }
@@ -397,7 +366,6 @@ export function obtenerUsuariosBuscadorAction(indexPrimerUsuario, limit, pagina,
                     }
 
                     response.data.datosPaginacion = datosPaginacion;
-                    console.log(response.data);
 
                     dispatch(descargarUsuariosExito(response.data));
 
@@ -445,14 +413,12 @@ export function editarInsumoAction(datos_insumos, imageFile) {
 
                 await clienteAxios.put(`/api/upload/products/${datos_insumos._id}`, formData, header)
                     .then(response => {
-                        console.log(response.data);
                         clienteAxios.put(`/api/product-categories/${response.data.result._id}`, response.data.result, header)
                         dispatch(editarInsumoExito(response.data.result));
                     })
             } else {
                 await clienteAxios.put(`/api/product/${datos_insumos._id}`, datos_insumos, header)
                     .then(response => {
-                        console.log(response.data);
                         const { product } = response.data;
                         dispatch(editarInsumoExito(product));
                     })
@@ -536,7 +502,6 @@ export function obtenerInsumosAction() {
             const header = authorizationHeader(token);
             await clienteAxios.get(`/api/product`, header)
                 .then(response => {
-                    console.log(response.data);
                     dispatch(descargarListadoInsumosExito(response.data));
                 })
         } catch (err) {
@@ -556,7 +521,7 @@ const descargarListadoInsumosExito = lista_insumos => ({
 export function crearNuevaInsumoAction(datosNuevoInsumo, imageFile) {
     return async (dispatch) => {
         dispatch(agregarInsumo());
-        console.log(datosNuevoInsumo);
+
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
@@ -564,7 +529,6 @@ export function crearNuevaInsumoAction(datosNuevoInsumo, imageFile) {
             if (imageFile !== null) {
                 await clienteAxios.post('/api/product', datosNuevoInsumo, header)
                     .then(response => {
-                        console.log(response.data);
                         const formData = new FormData();
                         formData.append('file', imageFile.img);
                         if (!response.data.productStored) {
@@ -675,14 +639,12 @@ export function editarCategoriaInsumoAction(datos_categoria_insumos, imageFile) 
 
                 await clienteAxios.put(`/api/upload/product-categories/${datos_categoria_insumos._id}`, formData, header)
                     .then(response => {
-                        console.log(response.data);
                         clienteAxios.put(`/api/product-categories/${response.data.result._id}`, response.data.result, header)
                         dispatch(editarCategoriaInsumoExito(response.data.result));
                     })
             } else {
                 await clienteAxios.put(`/api/product-categories/${datos_categoria_insumos._id}`, datos_categoria_insumos, header)
                     .then(response => {
-                        console.log(response.data);
                         const { productCategory } = response.data;
                         dispatch(editarCategoriaInsumoExito(productCategory));
                     })
@@ -724,7 +686,6 @@ const editarCategoriaInsumoError = msj => ({
 export function eliminarCategoriaInsumoAction(datos_categoria_insumos) {
     return async (dispatch) => {
         dispatch(obtenerCategoriaInsumoEliminar(datos_categoria_insumos._id));
-        console.log(datos_categoria_insumos);
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
@@ -767,7 +728,6 @@ export function obtenerCategoriaInsumoAction() {
             const header = authorizationHeader(token);
             await clienteAxios.get(`/api/product-categories`, header)
                 .then(response => {
-                    console.log(response.data);
                     dispatch(obtenerListadoCategoriasInsumo(response.data));
                 })
         } catch (err) {
@@ -792,7 +752,6 @@ export function obtenerCategoriaInsumoFiltradasPorParentAction(idParent) {
             const header = authorizationHeader(token);
             await clienteAxios.get(`/api/product-categories/filter/${idParent}`, header)
                 .then(response => {
-                    console.log(response.data);
                     dispatch(obtenerListadoCategoriasInsumo(response.data));
                 })
         } catch (err) {
@@ -807,8 +766,6 @@ export function crearNuevaCategoriaInsumoAction(datosNuevoCategoriaInsumo, image
     return async (dispatch) => {
         dispatch(agregarCategoriaInsumo());
 
-        console.log(datosNuevoCategoriaInsumo);
-
         try {
 
             const token = localStorage.getItem('token');
@@ -816,7 +773,6 @@ export function crearNuevaCategoriaInsumoAction(datosNuevoCategoriaInsumo, image
             if (imageFile !== null) {
                 await clienteAxios.post('/api/product-categories', datosNuevoCategoriaInsumo, header)
                     .then(response => {
-                        console.log(response.data);
                         const formData = new FormData();
                         formData.append('file', imageFile.img);
                         if (!response.data.productCategoryStored) {
@@ -929,7 +885,6 @@ export function editarMenuAction(datos_menu, imageFile) {
             } else {
                 clienteAxios.put(`/api/menu/${datos_menu._id}`, datos_menu, header)
                     .then(response => {
-                        console.log(response.data);
                         const { menu } = response.data;
                         dispatch(editarMenuExito(menu));
                     })
@@ -971,7 +926,6 @@ const editarMenuError = msj => ({
 export function eliminarMenuAction(datos_menu) {
     return async (dispatch) => {
         dispatch(obtenerMenuEliminar(datos_menu._id));
-        console.log(datos_menu);
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
@@ -1008,13 +962,11 @@ const menuEliminadoError = msj => ({
 export function obtenerMenuAction() {
     return async (dispatch) => {
         dispatch(descargarMenus());
-        console.log("entra a menu");
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
             await clienteAxios.get(`/api/menu/menuAll`, header)
                 .then(response => {
-                    console.log(response.data);
                     dispatch(descargarListadoMenusExito(response.data));
                 })
         } catch (err) {
@@ -1041,7 +993,6 @@ export function crearNuevoMenuAction(datosNuevoMenu, imageFile) {
             if (imageFile !== null) {
                 await clienteAxios.post('/api/menu', datosNuevoMenu, header)
                     .then(response => {
-                        console.log(response.data);
 
                         const formData = new FormData();
                         formData.append('file', imageFile.img);
@@ -1159,14 +1110,12 @@ export function editarCategoriaAction(datos_categoria, imageFile) {
 
                 await clienteAxios.put(`/api/upload/menu-categories/${datos_categoria._id}`, formData, header)
                     .then(response => {
-                        console.log(response.data);
                         clienteAxios.put(`/api/menu-categories/${response.data.result._id}`, response.data.result, header);
                         dispatch(editarCategoriaExito(response.data.result));
                     })
             } else {
                 await clienteAxios.put(`/api/menu-categories/${datos_categoria._id}`, datos_categoria, header)
                     .then(response => {
-                        console.log(response.data);
                         const { menuCategory } = response.data;
                         dispatch(editarCategoriaExito(menuCategory));
                     })
@@ -1254,7 +1203,6 @@ export function obtenerCategoriasAction() {
 
             await clienteAxios.get(`/api/menu-categories`, header)
                 .then(response => {
-                    console.log(response.data);
                     dispatch(obtenerListadoCategoria(response.data));
                 })
 
@@ -1285,13 +1233,9 @@ export function crearNuevaCategoriaAction(datosNuevaCategoria, imageFile) {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
 
-            console.log(datosNuevaCategoria);
-
             if (imageFile !== null) {
                 await clienteAxios.post('/api/menu-categories', datosNuevaCategoria, header)
                     .then((response) => {
-
-                        console.log(response.data);
 
                         const formData = new FormData();
                         formData.append('file', imageFile.img);
@@ -1312,7 +1256,7 @@ export function crearNuevaCategoriaAction(datosNuevaCategoria, imageFile) {
             } else {
                 await clienteAxios.post('/api/menu-categories', datosNuevaCategoria, header)
                     .then(response => {
-                        console.log(response.data);
+
                         if (!response.data.menuCategoryStored) {
                             const { category } = response.data;
 
@@ -1526,7 +1470,6 @@ export function obtenerUsuariosAction() {
 
             await clienteAxios.get(`/api/users`, header)
                 .then(response => {
-                    console.log(response.data);
                     dispatch(descargarUsuarioExito(response.data));
                 })
         } catch (error) {
@@ -1550,7 +1493,6 @@ export function crearNuevoUsuarioAction(datosNuevoUsuario) {
 
         // validar campos vacios
         if (name === '' || email === '' || password === '' || role === '') {
-            console.log(datosNuevoUsuario);
             dispatch(agregarUsuarioError('Todos los campos son obligatorios'));
             return;
         }

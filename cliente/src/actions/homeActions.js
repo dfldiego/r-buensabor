@@ -39,11 +39,9 @@ export function crearNuevaOrdenAction(datosOrden) {
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            console.log(datosOrden);
 
             await clienteAxios.post('/api/order', datosOrden, header)
                 .then(response => {
-                    console.log(response.data.order);
                     dispatch(agregarOrdenExito(response.data.order));
                     localStorage.setItem("carrito", "[]");
                 })
@@ -77,7 +75,6 @@ export function obtenerProductoCarritoAction() {
 
         if (localStorage.getItem('carrito')) {
             var carrito = JSON.parse(localStorage.getItem('carrito'));
-            console.log(carrito);
             dispatch(obtenerProductoCarrito(carrito));
         } else {
             return;
@@ -96,14 +93,11 @@ export function eliminarProductoCarritoAction(productoCarrito) {
         dispatch(obtenerProductoCarritoEliminar(productoCarrito.uuid));
         if (localStorage.getItem('carrito')) {
             var carrito = JSON.parse(localStorage.getItem('carrito'));
-            console.log(carrito);
-            console.log(productoCarrito);
 
             // busco el producto donde coincidan el uuid
             // obtengo el indice donde coinciden los uuid
             const nuevoCarrito = carrito.filter(producto => producto.uuid !== productoCarrito.uuid);
 
-            console.log(nuevoCarrito);
             // vuelvo a setear un nuevo carrito.
             localStorage.setItem('carrito', JSON.stringify(nuevoCarrito))
             //envio el producto a eliminar al reducer.
@@ -135,14 +129,10 @@ export function agregarMenuACarritoAction(menu) {
     return (dispatch) => {
         dispatch(agregarMenuACarrito());
 
-        console.log(menu);
-
         let carritoLocal = JSON.parse(localStorage.getItem("carrito"));
-        console.log(carritoLocal);
 
         if (carritoLocal) {
             carritoLocal = [...carritoLocal, menu];
-            console.log(carritoLocal);
             localStorage.setItem("carrito", JSON.stringify(carritoLocal));
             dispatch(agregarMenuACarritoExito(menu));
         }
@@ -191,7 +181,6 @@ export function actualizarPerfilAction(perfil, imageFile) {
             formData.append('file', imageFile.img);
             await clienteAxios.put(`/api/upload/users/${response.user._id}`, formData, header)
                 .then(responses => {
-                    console.log(responses.data);
                     clienteAxios.put(`/api/users/${response.user._id}`, perfil, header)
 
                 })
@@ -267,11 +256,9 @@ export function loginGoogleAction(datos) {
             // buscar usuarios en la BD
             await clienteAxios.post('/login-google', datos)
                 .then(response => {
-                    console.log("entra a then");
-                    console.log(response);
                     // obtenemos datos del response
                     const { token, user } = response.data;
-                    console.log(token);
+
                     // guardamos token en el localStorage
                     localStorage.setItem('token', token);
                     dispatch(guardarTokenGoogle(token));

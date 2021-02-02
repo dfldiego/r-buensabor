@@ -9,6 +9,9 @@ const PedidosDB = ({ orden }) => {
 
     const usuariosDB = useSelector(state => state.admin.usuariosPedidos);
 
+    const cortadohoraEntrada = orderDate.slice(11);
+    const horaEntrada = cortadohoraEntrada.slice(0, 5);
+
     return (
         <Fragment>
             {
@@ -19,7 +22,7 @@ const PedidosDB = ({ orden }) => {
                             <td>{usuarioDB.name}</td>
                             <td>{usuarioDB.email}</td>
                             <td>{usuarioDB.telephoneNumber}</td>
-                            <td>{orderDate}</td>
+                            <td>{horaEntrada}</td>
                             <td>{endDate}</td>
                             <td>{
                                 shippingType === 0 ?
