@@ -88,6 +88,7 @@ import {
     DESCARGA_LISTADO_CATEGORIA_INSUMO,
     DESCARGA_LISTADO_MENUS,
     DESCARGA_LISTADO_INSUMOS,
+    ENTRAR_CRUD_PEDIDOS,
 } from '../types';
 
 const initialState = {
@@ -96,6 +97,7 @@ const initialState = {
     en_categoria: null,
     en_insumos: null,
     en_categoria_insumos: null,
+    en_pedidos: null,
     loading: false,
     abrir_agregar_usuario: false,
     abrir_agregar_categoria: false,
@@ -147,6 +149,7 @@ export default function (state = initialState, action) {
                 en_categoria_insumos: null,
                 paginaCorriente: 0,
                 palabraBuscar: null,
+                en_pedidos: null,
             }
         case ENTRAR_CRUD_MENU:
             return {
@@ -158,6 +161,7 @@ export default function (state = initialState, action) {
                 en_categoria_insumos: null,
                 paginaCorriente: 0,
                 palabraBuscar: null,
+                en_pedidos: null,
             }
         case ENTRAR_CRUD_CATEGORIA:
             return {
@@ -169,6 +173,7 @@ export default function (state = initialState, action) {
                 en_categoria_insumos: null,
                 paginaCorriente: 0,
                 palabraBuscar: null,
+                en_pedidos: null,
             }
         case ENTRAR_CRUD_INSUMOS:
             return {
@@ -180,6 +185,7 @@ export default function (state = initialState, action) {
                 en_categoria_insumos: null,
                 paginaCorriente: 0,
                 palabraBuscar: null,
+                en_pedidos: null,
             }
         case ENTRAR_CRUD_CATEGORIA_INSUMOS:
             return {
@@ -192,6 +198,19 @@ export default function (state = initialState, action) {
                 paginaCorriente: 0,
                 palabraBuscar: null,
                 categoriasInsumoSelect: [],
+                en_pedidos: null,
+            }
+        case ENTRAR_CRUD_PEDIDOS:
+            return {
+                ...state,
+                en_usuario: null,
+                en_menu: null,
+                en_categoria: null,
+                en_insumos: null,
+                en_categoria_insumos: null,
+                paginaCorriente: 0,
+                palabraBuscar: null,
+                en_pedidos: true,
             }
         case CERRAR_AGREGAR_USUARIOS:
             return {

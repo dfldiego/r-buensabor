@@ -6,6 +6,7 @@ import Menu from '../Menu/Menu';
 import Categorias from '../Categorias/Categorias';
 import Insumos from '../Insumos/Insumos';
 import InsumosCategoria from '../InsumosCategorias/InsumosCategorias';
+import Pedidos from '../Pedidos/Pedidos';
 import './Admin.css';
 import { validarRol } from "../../helpers/helpers";
 import { Redirect } from 'react-router';
@@ -20,6 +21,7 @@ const Admin = () => {
     const en_menu_state_store = useSelector(state => state.admin.en_menu);
     const en_insumos_state_store = useSelector(state => state.admin.en_insumos);
     const entrar_categoria_insumos_store = useSelector(state => state.admin.en_categoria_insumos);
+    const entrar_pedidos_store = useSelector(state => state.admin.en_pedidos);
 
     const [isValid, setIsValid] = React.useState('loading');
     React.useEffect(() => {
@@ -49,12 +51,13 @@ const Admin = () => {
                     <Sidebar />
                 </div>
                 <div>
-                    {!en_usuario_state_store && !en_menu_state_store && !en_categoria_state_store && !entrar_categoria_insumos_store && !en_insumos_state_store ? <h1>Admin</h1> : null}
+                    {!en_usuario_state_store && !en_menu_state_store && !en_categoria_state_store && !entrar_categoria_insumos_store && !en_insumos_state_store && !entrar_pedidos_store ? <h1>Página de Administración</h1> : null}
                     {en_usuario_state_store ? <Usuario /> : null}
                     {en_categoria_state_store ? <Categorias /> : null}
                     {en_menu_state_store ? <Menu /> : null}
                     {entrar_categoria_insumos_store ? <InsumosCategoria /> : null}
                     {en_insumos_state_store ? <Insumos /> : null}
+                    {entrar_pedidos_store ? <Pedidos /> : null}
                 </div>
             </div>
         </Fragment>

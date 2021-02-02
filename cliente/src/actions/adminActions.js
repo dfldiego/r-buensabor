@@ -86,10 +86,23 @@ import {
     DESCARGA_LISTADO_CATEGORIA_INSUMO,
     DESCARGA_LISTADO_MENUS,
     DESCARGA_LISTADO_INSUMOS,
+    ENTRAR_CRUD_PEDIDOS,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
 import { authorizationHeader } from '../helpers/authorization_header';
+
+/********************** Entrar a CRUD PEDIDOS ***********************/
+export function pantallaPedidosAction(estadoPedido) {
+    return (dispatch) => {
+        dispatch(pantallaPedidos(estadoPedido))
+    }
+}
+
+const pantallaPedidos = estadoPedido => ({
+    type: ENTRAR_CRUD_PEDIDOS,
+    payload: estadoPedido
+})
 
 /**********************  para buscar una insumo de la BBDD ********************************/
 export function obtenerInsumoBuscadorAction(indexPrimerUsuario, limit, pagina, palabraBusqueda) {

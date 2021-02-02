@@ -8,6 +8,7 @@ import {
     pantallaCategoriaAction,
     pantallaInsumosAction,
     pantallaCategoriaInsumoAction,
+    pantallaPedidosAction,
 } from '../../actions/adminActions';
 
 const Sidebar = () => {
@@ -22,11 +23,14 @@ const Sidebar = () => {
     const entrar_categoria_crud = estadoCategoria => dispatch(pantallaCategoriaAction(estadoCategoria));
     const entrar_insumos_crud = estadoInsumos => dispatch(pantallaInsumosAction(estadoInsumos));
     const entrar_categoria_insumos_crud = estadoCategoriaInsumo => dispatch(pantallaCategoriaInsumoAction(estadoCategoriaInsumo));
+    const entrar_pedidos_crud = estadoPedidos => dispatch(pantallaPedidosAction(estadoPedidos));
+
     // OBTENEMOS DATOS DESDE STORE
     const entrar_categoria_store = useSelector(state => state.admin.en_categoria);
     const entrar_menu_store = useSelector(state => state.admin.en_menu);
     const entrar_insumos_store = useSelector(state => state.admin.en_insumos);
     const entrar_categoria_insumos_store = useSelector(state => state.admin.en_categoria_insumos);
+    const entrar_pedidos_store = useSelector(state => state.admin.en_pedidos);
 
     // metodo que corrobora si mostrar CRUD de usuarios.
     const entra_usuarios = e => {
@@ -83,6 +87,17 @@ const Sidebar = () => {
         }
     }
 
+    // metodo que corrobora si mostrar CRUD de pedidos.
+    const entra_pedidos = e => {
+        e.preventDefault();
+
+        if (entrar_pedidos_store) {
+            entrar_pedidos_crud(false);
+        } else {
+            entrar_pedidos_crud(true);
+        }
+    }
+
     return (
         <div id="sidebar">
             <ul>
@@ -91,6 +106,7 @@ const Sidebar = () => {
                 <li onClick={entra_menu}>Menu</li>
                 <li onClick={entra_categoria_insumos}>Categoria Insumo</li>
                 <li onClick={entra_insumos}>Insumos</li>
+                <li onClick={entra_pedidos}>Pedidos</li>
             </ul>
         </div>
     );
