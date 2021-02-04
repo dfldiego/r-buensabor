@@ -62,8 +62,7 @@ const CreateInsumoCategoria = () => {
     }, []);
 
     useEffect(() => {
-
-        const datosCategoriaInsumoPadre = categoriasInsumoSelect.map(categoriaInsumo => !categoriaInsumo.category && !categoriaInsumo.parent || categoriaInsumo.category && categoriaInsumo.parent ? categoriaInsumo : undefined);
+        const datosCategoriaInsumoPadre = categoriasInsumoSelect.map(categoriaInsumo => (!categoriaInsumo.category && !categoriaInsumo.parent) || (categoriaInsumo.category && categoriaInsumo.parent) ? categoriaInsumo : undefined);
 
         const sinNulls = datosCategoriaInsumoPadre.filter(categoriaInsumo => categoriaInsumo != null)
 
@@ -131,8 +130,6 @@ const CreateInsumoCategoria = () => {
         });
     };
 
-    /* console.log(padre); */
-    console.log(categoriasInsumoSelect);
     return (
         <Fragment>
             <div className="modal-categoria">

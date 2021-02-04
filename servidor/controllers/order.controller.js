@@ -16,7 +16,8 @@ const list = async (req, res = response) => {
     try {
 
         // buscar ordenes por estados.
-        let orders = await Order.find(filterStatus);
+        let orders = await Order.find(filterStatus)
+            .populate("user", "name email telephoneNumber");
 
         // recorro las ordenes de un estado en especifico.
         for (let order of orders) {
@@ -30,7 +31,7 @@ const list = async (req, res = response) => {
             order.details = orderDetails;
         }
 
-        Order.countDocuments({ status: true }).exec((err, size) => {
+        Order.countDocuments(filterStatus).exec((err, size) => {
             res.json({
                 ok: true,
                 orders,
@@ -58,6 +59,14 @@ const create = async (req, res = response) => {
                 .populate('menu', 'description')
                 .populate('product', ['description', 'current_stock']);
             // recorro los detalles de la comida del pedido
+            if (menuDetailData.length <= 0) {
+                return res.status(400).json({
+                    ok: false,
+                    err: {
+                        msg: 'No hay ingredientes suficientes'
+                    }
+                });
+            }
             for (const menuDetail of menuDetailData) {
                 //cantidad = cantidad de producto en el menu * cantidad de la misma comida pedida.
                 let quantity = menuDetail.quantity * food.quantity;

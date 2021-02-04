@@ -2,14 +2,10 @@ const response = require('express');
 const MenuDetail = require('../models/menu-details.model');
 
 const list = async (req, res = response) => {
-    let from = req.query.from || 0;
-    let limit = req.query.limit || 10;
 
     MenuDetail.find({ status: true })
         .populate('product', 'description')
         .populate('menu', 'description')
-        .skip(Number(from))
-        .limit(Number(limit))
         .exec((err, menudetails) => {
 
             if (err) {

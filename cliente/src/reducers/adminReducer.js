@@ -93,6 +93,8 @@ import {
     DESCARGA_PEDIDOS_EXITO,
     DESCARGA_PEDIDOS_ERROR,
     DESCARGA_USER_ID,
+    DESCARGA_LISTADO_MENU_DETALLE,
+    DESCARGA_MENU_DETALLE_ERROR,
 } from '../types';
 
 const initialState = {
@@ -118,6 +120,7 @@ const initialState = {
     categoriasInsumoSelect: [],
     pedidos: [],
     insumos: [],
+    ingredientes_menu_detalle: [],
     error: null,
     errores: [],
     mensaje: null,
@@ -296,6 +299,7 @@ export default function (state = initialState, action) {
         case INSUMO_ELIMINADO_ERROR:
         case INSUMO_EDITADO_ERROR:
         case DESCARGA_PEDIDOS_ERROR:
+        case DESCARGA_MENU_DETALLE_ERROR:
             return {
                 ...state,
                 loading: false,
@@ -640,6 +644,15 @@ export default function (state = initialState, action) {
                 mensaje: null,
                 errores: [],
                 insumos: action.payload.products,
+            }
+        case DESCARGA_LISTADO_MENU_DETALLE:
+            return {
+                ...state,
+                loading: false,
+                error: null,
+                mensaje: null,
+                errores: [],
+                ingredientes_menu_detalle: action.payload,
             }
         case OBTENER_INSUMO_ELIMINAR:
             return {

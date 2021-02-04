@@ -81,7 +81,7 @@ const Menu = () => {
                         <button
                             href="#"
                             onClick={handleClick_abrir_agregar_menu}
-                        >Agregar Menu</button>
+                        >Crear Menu</button>
                     </div>
                     <div className="buscador">
                         <input

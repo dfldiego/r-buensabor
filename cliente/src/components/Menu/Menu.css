@@ -73,6 +73,31 @@ select {
     text-align: center;
 }
 
+.borde_arriba {
+    outline-style: 2px solid rgb(238, 162, 48);
+    margin: 2rem;
+}
+
+.borde_arriba h4::after {
+    content: '';
+    display: block;
+    width: 45rem;
+    height: .5rem;
+    background-color: #71b100;
+    margin-top: 1rem;
+}
+
+.tabla_ingredientes {
+    max-width: 70%;
+    margin: 2rem 0 3rem 0;
+}
+
+.btn_x {
+    max-width: 30%;
+    padding-top: 5px;
+    cursor: pointer;
+}
+
 /***********GET MENUS **************/
 .titulo {
     margin: 5px 0;

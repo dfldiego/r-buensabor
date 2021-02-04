@@ -91,10 +91,41 @@ import {
     DESCARGA_PEDIDOS_EXITO,
     DESCARGA_PEDIDOS_ERROR,
     DESCARGA_USER_ID,
+    DESCARGA_LISTADO_MENU_DETALLE,
+    DESCARGA_MENU_DETALLE_ERROR,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
 import { authorizationHeader } from '../helpers/authorization_header';
+
+/**********************  para obtener los ingredientes de la BBDD ********************************/
+export function obtenerIngredientesAction() {
+    return async (dispatch) => {
+
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            await clienteAxios.get(`/api/menudetail`, header)
+                .then(response => {
+                    dispatch(descargarListadoMenuDetalleExito(response.data));
+                })
+        } catch (err) {
+            console.log(err);
+            dispatch(descargarMenuDetalleError('Error al descargar los menu detalle'));
+        }
+
+    }
+}
+
+const descargarListadoMenuDetalleExito = lista_MenuDetalle => ({
+    type: DESCARGA_LISTADO_MENU_DETALLE,
+    payload: lista_MenuDetalle
+})
+
+const descargarMenuDetalleError = errores => ({
+    type: DESCARGA_MENU_DETALLE_ERROR,
+    payload: errores,
+});
 
 /**********************  para obtener los pedidos de la BBDD ********************************/
 export function obtenerPedidosAction() {
@@ -981,11 +1012,11 @@ const descargarListadoMenusExito = menus => ({
     payload: menus
 })
 
-/**********************  para crear una nuevo menu ********************************/
-export function crearNuevoMenuAction(datosNuevoMenu, imageFile) {
+/**********************  para crear una nuevo menu *********************************/
+export function crearNuevoMenuAction(datosNuevoMenu, imageFile, ingredientes) {
     return async (dispatch) => {
         dispatch(agregarMenu());
-
+        console.log(ingredientes);
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
@@ -993,25 +1024,38 @@ export function crearNuevoMenuAction(datosNuevoMenu, imageFile) {
             if (imageFile !== null) {
                 await clienteAxios.post('/api/menu', datosNuevoMenu, header)
                     .then(response => {
+                        console.log(response.data);
 
                         const formData = new FormData();
                         formData.append('file', imageFile.img);
 
                         if (!response.data.menuStored) {
-
                             const { menu } = response.data;
+                            console.log(menu);
 
                             clienteAxios.put(`/api/upload/menus/${menu._id}`, formData, header)
-
                             dispatch(agregarMenuExito(menu));
 
-                        } else {
+                            for (const ingrediente of ingredientes) {
+                                ingrediente.menu = menu._id;
+                                delete ingrediente.description;
+                                clienteAxios.post(`/api/menudetail`, ingrediente, header);
+                            }
 
+                        } else {
                             const { menuStored } = response.data;   // menus con status=false a status=true
+                            console.log(menuStored);
 
                             clienteAxios.put(`/api/upload/menus/${menuStored._id}`, formData, header)
-
                             dispatch(agregarMenuExito(menuStored));
+
+                            for (const ingrediente of ingredientes) {
+                                ingrediente.menu = menuStored._id;
+                                delete ingrediente.description;
+                                console.log(ingrediente);
+                                clienteAxios.post(`/api/menudetail`, ingrediente, header);
+                            }
+
                         }
                     })
             } else {
