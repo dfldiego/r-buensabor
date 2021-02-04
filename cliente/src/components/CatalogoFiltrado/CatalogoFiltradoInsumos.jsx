@@ -36,12 +36,6 @@ const CatalogoFiltradoInsumos = ({ name }) => {
     const modalMenuDetalle = useSelector(state => state.catalogo.abrir_detalle_menu);
     const insumos = useSelector(state => state.admin.insumos);
     const categoriaInsumoPadre = useSelector(state => state.catalogo.categoria_insumo_padre);
-    /**
-     * 
-     * 1) tengo la categoriaInsumo del padre.
-     * 2) cuando cargue la pagina debo ejecutar un metodo que me traiga todos los productos(insumos) con categoria insumo padre.
-     * 3) mostrar todos los insumos con ese padre.
-     */
 
     const filtrarInsumosPorPadre = categoriaInsumoPadre => {
         console.log(categoriaInsumoPadre);

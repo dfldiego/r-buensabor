@@ -2,17 +2,22 @@ import React, { Fragment } from 'react';
 import './CatalogoFiltrado.css';
 
 import ClearIcon from '@material-ui/icons/Clear';
+import { v4 as uuidv4 } from 'uuid';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
     abrirCerrarDetalleMenuAction,
 } from '../../actions/catalogoActions';
+import {
+    agregarMenuACarritoAction,
+} from '../../actions/homeActions';
 
 const MenuDetalle = () => {
 
     const dispatch = useDispatch();
 
     const cerrar_modal_callAction = estadoDetalleMenu => dispatch(abrirCerrarDetalleMenuAction(estadoDetalleMenu));
+    const agregarItemACarrito = menu => dispatch(agregarMenuACarritoAction(menu));
 
     let cerrar_modal_state_store = useSelector(state => state.catalogo.abrir_detalle_menu);
     const menuPorId = useSelector(state => state.catalogo.menu);
@@ -29,6 +34,11 @@ const MenuDetalle = () => {
 
     console.log(menuPorId);
     console.log(insumo);
+
+    const handleClickAgregarAlCarrito = item => {
+        item.uuid = uuidv4();
+        agregarItemACarrito(item);
+    }
 
     return (
         <Fragment>
@@ -67,6 +77,7 @@ const MenuDetalle = () => {
                                                 type="button"
                                                 className="btn_agregar_carrito"
                                                 value="Agregar al Carrito"
+                                                onClick={() => handleClickAgregarAlCarrito(menuPorId)}
                                             />
                                         </div>
                                     </div>
@@ -103,6 +114,7 @@ const MenuDetalle = () => {
                                             type="button"
                                             className="btn_agregar_carrito"
                                             value="Agregar al Carrito"
+                                            onClick={() => handleClickAgregarAlCarrito(insumo)}
                                         />
                                     </div>
                                 </div>
