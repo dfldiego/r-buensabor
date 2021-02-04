@@ -44,7 +44,14 @@ const CatalogoFiltradoInsumos = ({ name }) => {
      */
 
     const filtrarInsumosPorPadre = categoriaInsumoPadre => {
-        const insumosPorPadre = insumos.filter(insumo => insumo.category._id === categoriaInsumoPadre._id);
+        console.log(categoriaInsumoPadre);
+        console.log(insumos);
+        const insumosPorPadre = insumos.filter(insumo => (
+            insumo.is_supplies ?
+                null
+                :
+                insumo.category._id === categoriaInsumoPadre._id
+        ));
         setInsumoFiltrado(insumosPorPadre);
     }
 

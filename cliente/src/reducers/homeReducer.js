@@ -35,7 +35,6 @@ const initialState = {
     esta_logueado: false,
     abrir_modal_carrito: false,
     alerta: null,
-    mensaje: '',
     mensaje: null,
     error: null,
     loading: false,
@@ -98,13 +97,16 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 abrir_modal_carrito: action.payload,
+                mensaje: null,
+                alerta: null,
             }
         case ABRIR_MODAL:
         case CERRAR_MODAL:
             return {
                 ...state,
                 abrir_modal: action.payload,
-                mensaje: '',
+                mensaje: null,
+                alerta: null,
             }
         case ABRIR_REGISTRARSE:
         case CERRAR_REGISTRARSE:

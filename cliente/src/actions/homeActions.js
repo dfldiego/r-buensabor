@@ -35,7 +35,7 @@ import { authorizationHeader } from '../helpers/authorization_header';
 export function crearNuevaOrdenAction(datosOrden) {
     return async (dispatch) => {
         dispatch(agregarOrden());
-
+        console.log(datosOrden);
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
@@ -46,8 +46,8 @@ export function crearNuevaOrdenAction(datosOrden) {
                     localStorage.setItem("carrito", "[]");
                 })
         } catch (err) {
-            console.log(err);
-            dispatch(agregarOrdenError(err.response.data.msg));
+            console.log(err.response.data);
+            dispatch(agregarOrdenError(err.response.data.err.msg));
         }
     }
 }

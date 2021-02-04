@@ -1572,6 +1572,7 @@ const obtenerUsuarioEliminar = idUsuario => ({
 export function obtenerUsuariosAction() {
     return async (dispatch) => {
         dispatch(descargarUsuarios());
+
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);

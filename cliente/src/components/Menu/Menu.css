@@ -98,6 +98,12 @@ select {
     cursor: pointer;
 }
 
+.boton_eliminar {
+    background-color: #fff;
+    border: none;
+    border-radius: none;
+}
+
 /***********GET MENUS **************/
 .titulo {
     margin: 5px 0;

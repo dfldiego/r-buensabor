@@ -36,6 +36,8 @@ const Carrito = () => {
 
     let CerrarModalCarrito = useSelector(state => state.home.abrir_modal_carrito);
     let MenusDeCarrito = useSelector(state => state.home.carrito);
+    let mensaje = useSelector(state => state.home.mensaje);
+    let alerta = useSelector(state => state.home.alerta);
 
     const cerrar_modal = () => {
         if (CerrarModalCarrito) {
@@ -299,6 +301,9 @@ const Carrito = () => {
                                     </div>
                                     {
                                         error ? <p className="error">{error}</p> : null
+                                    }
+                                    {
+                                        alerta ? <p className="error">{mensaje}</p> : null
                                     }
                                     <div>
                                         <button

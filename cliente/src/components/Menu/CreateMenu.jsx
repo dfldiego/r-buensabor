@@ -378,9 +378,9 @@ const CreateMenu = () => {
                                                     <td>{ingrediente.quantity}</td>
                                                     <td>{ingrediente.unit_measurement}</td>
                                                     <td>
-                                                        <a>
+                                                        <button className="boton_eliminar">
                                                             <img src={btn_x} alt="tacho" className="btn_x" onClick={e => handleClickELiminarIngrediente(e, ingrediente)} />
-                                                        </a>
+                                                        </button>
                                                     </td>
                                                 </tr>
                                             ))
