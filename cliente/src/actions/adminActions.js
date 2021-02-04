@@ -93,6 +93,7 @@ import {
     DESCARGA_USER_ID,
     DESCARGA_LISTADO_MENU_DETALLE,
     DESCARGA_MENU_DETALLE_ERROR,
+    OBTENER_MENU_DETALLE_EDITAR,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
@@ -107,7 +108,8 @@ export function obtenerIngredientesAction() {
             const header = authorizationHeader(token);
             await clienteAxios.get(`/api/menudetail`, header)
                 .then(response => {
-                    dispatch(descargarListadoMenuDetalleExito(response.data));
+                    console.log(response.data.menudetails);
+                    dispatch(descargarListadoMenuDetalleExito(response.data.menudetails));
                 })
         } catch (err) {
             console.log(err);
@@ -891,14 +893,28 @@ const cerrarAgregarCategoriaInsumo = estadoAgregarCategoriaInsumo => ({
 
 
 /**********************  para editar un menu de la BBDD ********************************/
-export function obtenerUnMenuAction(datos_menu) {
+export function obtenerUnMenuAction(datos_menu, IngredientesDB) {
     return async (dispatch) => {
-        dispatch(editarMenu(datos_menu))
+        console.log(IngredientesDB);
+        dispatch(editarMenu(datos_menu));
+        for (const ingrediente of IngredientesDB) {
+            if (ingrediente.menu._id === datos_menu._id) {
+                console.log(ingrediente);
+                dispatch(editarMenuIngredientes(ingrediente));
+            }
+        }
     }
 }
 
-export function editarMenuAction(datos_menu, imageFile) {
+const editarMenuIngredientes = ingrediente => ({
+    type: OBTENER_MENU_DETALLE_EDITAR,
+    payload: ingrediente
+})
+
+export function editarMenuAction(datos_menu, imageFile, ingredientesIniciales, ingredientesFinales) {
     return async (dispatch) => {
+        console.log(ingredientesIniciales);
+        console.log(ingredientesFinales);
 
         try {
             const token = localStorage.getItem('token');
@@ -912,12 +928,42 @@ export function editarMenuAction(datos_menu, imageFile) {
                     .then(response => {
                         clienteAxios.put(`/api/menu/${response.data.result._id}`, datos_menu, header);
                         dispatch(editarMenuExito(response.data.result));
+
+                        // Debemos eliminar los ingredientes iniciales del menu.
+                        for (const ingrediente of ingredientesIniciales) {
+                            if (ingrediente.menu._id === datos_menu._id) {
+                                clienteAxios.delete(`/api/menudetail/${ingrediente._id}`, header);
+                            }
+                        }
+
+                        // Agregamos todos los ingredientes nuevamente
+                        for (const ingrediente of ingredientesFinales) {
+                            ingrediente.menu = response.data.result._id;
+                            delete ingrediente.description;
+                            clienteAxios.post(`/api/menudetail`, ingrediente, header);
+                        }
+
                     })
             } else {
                 clienteAxios.put(`/api/menu/${datos_menu._id}`, datos_menu, header)
                     .then(response => {
                         const { menu } = response.data;
                         dispatch(editarMenuExito(menu));
+
+                        // Debemos eliminar los ingredientes iniciales del menu.
+                        for (const ingrediente of ingredientesIniciales) {
+                            if (ingrediente.menu._id === datos_menu._id) {
+                                clienteAxios.delete(`/api/menudetail/${ingrediente._id}`, header);
+                            }
+                        }
+
+                        // Agregamos todos los ingredientes nuevamente
+                        for (const ingrediente of ingredientesFinales) {
+                            ingrediente.menu = menu._id;
+                            delete ingrediente.description;
+                            clienteAxios.post(`/api/menudetail`, ingrediente, header);
+                        }
+
                     })
             }
         } catch (err) {

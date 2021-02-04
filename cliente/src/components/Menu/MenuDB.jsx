@@ -17,7 +17,7 @@ const MenuDB = ({ menu, IngredientesDB }) => {
 
     const baja_menu = (datos_menu, IngredientesDB) => dispatch(eliminarMenuAction(datos_menu, IngredientesDB));
     const abrir_cerrar_menu = estadoEditarMenu => dispatch(abrirCerrarAgregarMenuAction(estadoEditarMenu));
-    const obtener_menu_editar = datos_menu => dispatch(obtenerUnMenuAction(datos_menu));
+    const obtener_menu_editar = (datos_menu, IngredientesDB) => dispatch(obtenerUnMenuAction(datos_menu, IngredientesDB));
 
     const handleClick_eliminar_menu = async datos_menu => {
 
@@ -33,7 +33,7 @@ const MenuDB = ({ menu, IngredientesDB }) => {
         }).then((result) => {
             if (result.isConfirmed) {
                 // pasarlo al action
-                baja_menu(datos_menu, IngredientesDB.menudetails);
+                baja_menu(datos_menu, IngredientesDB);
             }
         });
 
@@ -41,7 +41,7 @@ const MenuDB = ({ menu, IngredientesDB }) => {
 
     const handleClick_editar_menu = menu => {
         abrir_cerrar_menu(true);
-        obtener_menu_editar(menu);
+        obtener_menu_editar(menu, IngredientesDB);
     }
 
     return (

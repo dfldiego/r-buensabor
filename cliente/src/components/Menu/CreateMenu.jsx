@@ -62,7 +62,7 @@ const CreateMenu = () => {
     const cerrar_modal_callAction = nuevo_estado => dispatch(abrirCerrarAgregarMenuAction(nuevo_estado));
     const agregar_nuevo_menu_action = (datosNuevoMenu, imageFile, ingredientes) => dispatch(crearNuevoMenuAction(datosNuevoMenu, imageFile, ingredientes));
     const obtenerCategorias = () => dispatch(obtenerCategoriasAction());
-    const menu_editar_action = (datosmenu, imageFile) => dispatch(editarMenuAction(datosmenu, imageFile));
+    const menu_editar_action = (datosmenu, imageFile, IngredientesDB, ingredientes) => dispatch(editarMenuAction(datosmenu, imageFile, IngredientesDB, ingredientes));
     const obtenerInsumos = () => dispatch(obtenerInsumosAction());
     const obtenerIngredientes = () => dispatch(obtenerIngredientesAction());
 
@@ -73,6 +73,7 @@ const CreateMenu = () => {
     const menu_editar_store = useSelector(state => state.admin.menu_editar);
     const insumos = useSelector(state => state.admin.insumos);
     const IngredientesDB = useSelector(state => state.admin.ingredientes_menu_detalle);
+    const IngredientesEdit = useSelector(state => state.admin.menu_detalle_editar);
 
     const cerrar_modal = () => {
         if (cerrar_modal_state_store) {
@@ -83,9 +84,14 @@ const CreateMenu = () => {
     }
 
     useEffect(() => {
+        console.log(IngredientesDB);
         obtenerCategorias();
         obtenerInsumos();
         obtenerIngredientes();
+        if (IngredientesEdit) {
+            setIngredientes(IngredientesEdit);
+        }
+
         // eslint-disable-next-line
     }, []);
 
@@ -97,7 +103,7 @@ const CreateMenu = () => {
                 finished_time: menu_editar_store.finished_time,
                 price: menu_editar_store.price,
                 category: menu_editar_store.category
-            })
+            });
         }
 
         // eslint-disable-next-line
@@ -150,9 +156,10 @@ const CreateMenu = () => {
     const handleSubmitAgregarMenu = e => {
         e.preventDefault();
         console.log(ingredientes);
+        console.log(IngredientesDB);
         if (menu_editar_store) {
             menu._id = menu_editar_store._id;
-            menu_editar_action(menu, imageFile);
+            menu_editar_action(menu, imageFile, IngredientesDB, ingredientes);
 
             if (errores === [] && msj_error === null) {
                 cerrar_modal();
@@ -362,7 +369,12 @@ const CreateMenu = () => {
                                         ingredientes ?
                                             ingredientes.map((ingrediente, index) => (
                                                 <tr key={index}>
-                                                    <td>{ingrediente.description}</td>
+                                                    {
+                                                        IngredientesEdit.length !== 0 ?
+                                                            <td>{ingrediente.product.description}</td>
+                                                            :
+                                                            <td>{ingrediente.description}</td>
+                                                    }
                                                     <td>{ingrediente.quantity}</td>
                                                     <td>{ingrediente.unit_measurement}</td>
                                                     <td>

@@ -95,6 +95,7 @@ import {
     DESCARGA_USER_ID,
     DESCARGA_LISTADO_MENU_DETALLE,
     DESCARGA_MENU_DETALLE_ERROR,
+    OBTENER_MENU_DETALLE_EDITAR,
 } from '../types';
 
 const initialState = {
@@ -132,6 +133,7 @@ const initialState = {
     usuario_editar: null,
     categoria_editar: null,
     menu_editar: null,
+    menu_detalle_editar: [],
     categoria_insumo_editar: null,
     insumo_editar: null,
     mostrarUsuarios: false,
@@ -447,6 +449,8 @@ export default function (state = initialState, action) {
                 error: null,
                 menu_editar: null,
                 categoriasSelect: [],
+                menu_detalle_editar: [],
+                ingredientes_menu_detalle: [],
             }
         case AGREGAR_MENU_EXITO:
             return {
@@ -692,6 +696,11 @@ export default function (state = initialState, action) {
                 pedidos: action.payload,
                 mostrarPedidos: true,
                 totalElementos: action.payload.total,
+            }
+        case OBTENER_MENU_DETALLE_EDITAR:
+            return {
+                ...state,
+                menu_detalle_editar: [...state.menu_detalle_editar, action.payload],
             }
         default:
             return state;
