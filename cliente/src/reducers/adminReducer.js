@@ -382,7 +382,8 @@ export default function (state = initialState, action) {
                         usuario = action.payload
                         :
                         usuario
-                )
+                ),
+                paginaCorriente: 0,
             }
         case USUARIO_EDITADO_EXITO:
             return {
@@ -501,6 +502,7 @@ export default function (state = initialState, action) {
                 ...state,
                 menus: state.menus.filter(menu => menu._id !== state.menu_eliminar),
                 menu_eliminar: null,
+                paginaCorriente: 0,
             }
         case OBTENER_MENU_EDITAR:
             return {
@@ -587,6 +589,7 @@ export default function (state = initialState, action) {
                 ...state,
                 categorias_insumo: state.categorias_insumo.filter(categoria => categoria._id !== state.categoria_insumo_eliminar),
                 categoria_insumo_eliminar: null,
+                paginaCorriente: 0,
             }
         case OBTENER_CATEGORIA_INSUMO_EDITAR:
             return {
@@ -668,6 +671,7 @@ export default function (state = initialState, action) {
                 ...state,
                 insumos: state.insumos.filter(insumo => insumo._id !== state.insumo_eliminar),
                 insumo_eliminar: null,
+                paginaCorriente: 0,
             }
         case OBTENER_INSUMO_EDITAR:
             return {
