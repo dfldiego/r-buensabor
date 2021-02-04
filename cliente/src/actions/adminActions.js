@@ -954,19 +954,29 @@ const editarMenuError = msj => ({
 })
 
 /**********************  para eliminar un menu de la BBDD ********************************/
-export function eliminarMenuAction(datos_menu) {
+export function eliminarMenuAction(datos_menu, ingredientesDB) {
     return async (dispatch) => {
         dispatch(obtenerMenuEliminar(datos_menu._id));
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
             await clienteAxios.delete(`/api/menu/${datos_menu._id}`, header)
-            dispatch(menuEliminadoExito(datos_menu));
-            Swal.fire(
-                'Eliminado!',
-                'El menu se eliminó correctamente.',
-                'success'
-            )
+                .then(response => {
+
+                    // Debemos eliminar los ingredientes del menu.
+                    for (const ingrediente of ingredientesDB) {
+                        if (ingrediente.menu._id === datos_menu._id) {
+                            clienteAxios.delete(`/api/menudetail/${ingrediente._id}`, header);
+                        }
+                    }
+
+                    dispatch(menuEliminadoExito(datos_menu));
+                    Swal.fire(
+                        'Eliminado!',
+                        'El menu se eliminó correctamente.',
+                        'success'
+                    )
+                })
         } catch (err) {
             console.log(err);
             dispatch(menuEliminadoError('Error al eliminar el menu'));

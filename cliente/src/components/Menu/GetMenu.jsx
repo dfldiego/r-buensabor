@@ -1,14 +1,27 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import './Menu.css';
 
 import MenuDB from '../Menu/MenuDB';
 import PaginacionMenu from './PaginacionMenu';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    obtenerIngredientesAction,
+} from '../../actions/adminActions';
 
 const GetMenu = () => {
 
+    const dispatch = useDispatch();
+
+    const obtenerIngredientes = () => dispatch(obtenerIngredientesAction());
+
     const menus_state = useSelector(state => state.admin.menus);
+    const IngredientesDB = useSelector(state => state.admin.ingredientes_menu_detalle);
+    const menus = useSelector(state => state.admin.menus);
+
+    useEffect(() => {
+        obtenerIngredientes();
+    }, [menus])
 
     if (!menus_state) {
         return;
@@ -34,6 +47,7 @@ const GetMenu = () => {
                                 <MenuDB
                                     key={menu._id}
                                     menu={menu}
+                                    IngredientesDB={IngredientesDB}
                                 />
                             ))
                     }

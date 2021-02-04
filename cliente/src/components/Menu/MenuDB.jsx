@@ -9,13 +9,13 @@ import {
 
 import Swal from 'sweetalert2';
 
-const MenuDB = ({ menu }) => {
+const MenuDB = ({ menu, IngredientesDB }) => {
 
     const { description, finished_time, price, category } = menu;
 
     const dispatch = useDispatch();
 
-    const baja_menu = datos_menu => dispatch(eliminarMenuAction(datos_menu));
+    const baja_menu = (datos_menu, IngredientesDB) => dispatch(eliminarMenuAction(datos_menu, IngredientesDB));
     const abrir_cerrar_menu = estadoEditarMenu => dispatch(abrirCerrarAgregarMenuAction(estadoEditarMenu));
     const obtener_menu_editar = datos_menu => dispatch(obtenerUnMenuAction(datos_menu));
 
@@ -33,7 +33,7 @@ const MenuDB = ({ menu }) => {
         }).then((result) => {
             if (result.isConfirmed) {
                 // pasarlo al action
-                baja_menu(datos_menu);
+                baja_menu(datos_menu, IngredientesDB.menudetails);
             }
         });
 
