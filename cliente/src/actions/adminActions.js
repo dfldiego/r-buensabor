@@ -1016,7 +1016,7 @@ const descargarListadoMenusExito = menus => ({
 export function crearNuevoMenuAction(datosNuevoMenu, imageFile, ingredientes) {
     return async (dispatch) => {
         dispatch(agregarMenu());
-        console.log(ingredientes);
+
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
@@ -1024,14 +1024,12 @@ export function crearNuevoMenuAction(datosNuevoMenu, imageFile, ingredientes) {
             if (imageFile !== null) {
                 await clienteAxios.post('/api/menu', datosNuevoMenu, header)
                     .then(response => {
-                        console.log(response.data);
 
                         const formData = new FormData();
                         formData.append('file', imageFile.img);
 
                         if (!response.data.menuStored) {
                             const { menu } = response.data;
-                            console.log(menu);
 
                             clienteAxios.put(`/api/upload/menus/${menu._id}`, formData, header)
                             dispatch(agregarMenuExito(menu));
@@ -1044,7 +1042,6 @@ export function crearNuevoMenuAction(datosNuevoMenu, imageFile, ingredientes) {
 
                         } else {
                             const { menuStored } = response.data;   // menus con status=false a status=true
-                            console.log(menuStored);
 
                             clienteAxios.put(`/api/upload/menus/${menuStored._id}`, formData, header)
                             dispatch(agregarMenuExito(menuStored));
@@ -1052,7 +1049,6 @@ export function crearNuevoMenuAction(datosNuevoMenu, imageFile, ingredientes) {
                             for (const ingrediente of ingredientes) {
                                 ingrediente.menu = menuStored._id;
                                 delete ingrediente.description;
-                                console.log(ingrediente);
                                 clienteAxios.post(`/api/menudetail`, ingrediente, header);
                             }
 
@@ -1063,12 +1059,24 @@ export function crearNuevoMenuAction(datosNuevoMenu, imageFile, ingredientes) {
                     .then(response => {
                         if (!response.data.menuStored) {
                             const { menu } = response.data;
-
                             dispatch(agregarMenuExito(menu));
+
+                            for (const ingrediente of ingredientes) {
+                                ingrediente.menu = menu._id;
+                                delete ingrediente.description;
+                                clienteAxios.post(`/api/menudetail`, ingrediente, header);
+                            }
+
                         } else {
                             const { menuStored } = response.data;
-
                             dispatch(agregarMenuExito(menuStored));
+
+                            for (const ingrediente of ingredientes) {
+                                ingrediente.menu = menuStored._id;
+                                delete ingrediente.description;
+                                console.log(ingrediente);
+                                clienteAxios.post(`/api/menudetail`, ingrediente, header);
+                            }
                         }
                     })
             }
