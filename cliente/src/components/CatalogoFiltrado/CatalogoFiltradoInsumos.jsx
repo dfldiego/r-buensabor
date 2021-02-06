@@ -46,12 +46,14 @@ const CatalogoFiltradoInsumos = ({ name }) => {
                 :
                 insumo.category._id === categoriaInsumoPadre._id
         ));
-        setInsumoFiltrado(insumosPorPadre);
+        setInsumoFiltrado(insumosPorPadre)
     }
 
     useEffect(() => {
         consultarInsumos()
-            .then(() => filtrarInsumosPorPadre(categoriaInsumoPadre))
+        if (insumos.length > 0) {
+            filtrarInsumosPorPadre(categoriaInsumoPadre)
+        }
 
         // eslint-disable-next-line
     }, [])
@@ -96,20 +98,32 @@ const CatalogoFiltradoInsumos = ({ name }) => {
                 <div className="row">
                     {
                         insumoFiltrado ?
-                            insumos.map(insumo => (
+                            insumoFiltrado.map(insumo => (
                                 <div
                                     className="col_3"
                                     key={insumo._id}
                                 >
-                                    <img
-                                        src={`http://localhost:4000/api/image/products/${insumo.img}`}
-                                        alt={insumo.description}
-                                        onClick={() => handleClickAbrirModalDetalle(insumo)}
-                                    />
+                                    {
+                                        insumo.current_stock === 0 ?
+                                            <img
+                                                src={`http://localhost:4000/api/image/products/${insumo.img}`}
+                                                alt={insumo.description}
+                                                onClick={() => handleClickAbrirModalDetalle(insumo)}
+                                                disabled
+                                            />
+                                            :
+                                            <img
+                                                src={`http://localhost:4000/api/image/products/${insumo.img}`}
+                                                alt={insumo.description}
+                                                onClick={() => handleClickAbrirModalDetalle(insumo)}
+                                            />
+                                    }
+
                                     <div className="titulos">
                                         <h3 className="fw-300">{insumo.description}</h3>
                                         <h4 className="price">${insumo.price}</h4>
                                     </div>
+
                                     <div className="botones">
                                         <input
                                             type="button"
@@ -117,16 +131,28 @@ const CatalogoFiltradoInsumos = ({ name }) => {
                                             value="Ver Detalle"
                                             onClick={() => handleClickAbrirModalDetalle(insumo)}
                                         />
-                                        <input
-                                            type="button"
-                                            className="btn_agregar_carrito"
-                                            onClick={() => handleClickAgregarAlCarrito(insumo)}
-                                            value="Agregar al Carrito"
-                                        />
+                                        {
+                                            insumo.current_stock === 0 ?
+                                                <input
+                                                    type="button"
+                                                    className="btn_agregar_carrito"
+                                                    onClick={() => handleClickAgregarAlCarrito(insumo)}
+                                                    value="Agregar al Carrito"
+                                                    disabled
+                                                />
+                                                :
+                                                <input
+                                                    type="button"
+                                                    className="btn_agregar_carrito"
+                                                    onClick={() => handleClickAgregarAlCarrito(insumo)}
+                                                    value="Agregar al Carrito"
+                                                />
+                                        }
                                     </div>
                                 </div>
                             ))
-                            : null
+                            :
+                            null
                     }
                 </div>
             </div>
