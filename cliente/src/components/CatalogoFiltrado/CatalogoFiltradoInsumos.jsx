@@ -107,7 +107,6 @@ const CatalogoFiltradoInsumos = ({ name }) => {
                                         src={`http://localhost:4000/api/image/products/${insumo.img}`}
                                         alt={insumo.description}
                                         onClick={() => handleClickAbrirModalDetalle(insumo)}
-                                        disabled={insumo.current_stock === 0}
                                     />
 
                                     <div className="titulos">

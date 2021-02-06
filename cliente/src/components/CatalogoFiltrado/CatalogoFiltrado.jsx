@@ -11,7 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useSelector, useDispatch } from 'react-redux'
 import {
     abrirCerrarDetalleMenuAction,
-    obtenerMenuPorIdAction,
+    guardarMenuDetalleAction,
 } from '../../actions/catalogoActions';
 import {
     agregarMenuACarritoAction,
@@ -28,7 +28,7 @@ const CatalogoFiltrado = ({ name }) => {
     const dispatch = useDispatch();
 
     const abrirModalMenuDetalle = (estadoDetalleMenu) => dispatch(abrirCerrarDetalleMenuAction(estadoDetalleMenu));
-    const consultarMenuPorId = idMenu => dispatch(obtenerMenuPorIdAction(idMenu));
+    const guardarMenu = menu => dispatch(guardarMenuDetalleAction(menu));
     const agregarMenuACarrito = menu => dispatch(agregarMenuACarritoAction(menu));
 
     const categorias = useSelector(state => state.admin.categoriasSelect);
@@ -47,7 +47,24 @@ const CatalogoFiltrado = ({ name }) => {
     }
 
     const filtrarMenuPorIngrediente = (IngredientesDB, menusCategorizados) => {
-        menusCategorizados.map(menu => IngredientesDB.map(ingredienteDB => (ingredienteDB.menu.description === menu.description) ? menusFiltradosPorIngredientes.push(menu) : null));
+        const menuesIngredientes = [];
+
+        //recorro los ingredientes y guardo en un array el menu del ingrediente
+        IngredientesDB.map(ingrediente => {
+            if (ingrediente.menu.description) {
+                menuesIngredientes.push(ingrediente.menu.description);
+            }
+        })
+
+        //recorro los menus y si el array de menues de los ingredientes contiene al menu devuelvo un true sino false.
+        menusCategorizados.map(menu => {
+            if (menuesIngredientes.includes(menu.description)) {
+                menusFiltradosPorIngredientes.push(menu);
+            } else {
+                menu.mensaje = "NO DISPONIBLE";
+                menusFiltradosPorIngredientes.push(menu);
+            }
+        })
 
         // codigo para eliminar elementos repetidos de un array
         const menusUnicosFiltrados = [...new Set(menusFiltradosPorIngredientes)];
@@ -76,9 +93,9 @@ const CatalogoFiltrado = ({ name }) => {
         // eslint-disable-next-line
     }, [menusFiltradosPorCategoria])
 
-    const handleClickAbrirModalDetalle = id_menu => {
-        console.log(id_menu);
-        consultarMenuPorId(id_menu);
+    const handleClickAbrirModalDetalle = menu => {
+        console.log(menu);
+        guardarMenu(menu);
 
         if (openModal === false) {
             setOpenModal(true);
@@ -126,10 +143,15 @@ const CatalogoFiltrado = ({ name }) => {
                                         src={`http://localhost:4000/api/image/menus/${menu.img}`}
                                         alt={menu.description}
                                         className="imagen_detalle"
-                                        onClick={() => handleClickAbrirModalDetalle(menu._id)}
+                                        onClick={() => handleClickAbrirModalDetalle(menu)}
                                     />
                                     <div className="titulos">
                                         <h3 className="fw-300">{menu.description}</h3>
+                                        {
+                                            menu.mensaje === "NO DISPONIBLE" ?
+                                                <h3 className="color_rojo">No Disponible</h3>
+                                                : null
+                                        }
                                         <h4 className="price">${menu.price}</h4>
                                     </div>
                                     <div className="botones">
@@ -137,13 +159,14 @@ const CatalogoFiltrado = ({ name }) => {
                                             type="button"
                                             className="btn_ver_detalle"
                                             value="Ver Detalle"
-                                            onClick={() => handleClickAbrirModalDetalle(menu._id)}
+                                            onClick={() => handleClickAbrirModalDetalle(menu)}
                                         />
                                         <input
                                             type="button"
                                             className="btn_agregar_carrito"
                                             value="Agregar al Carrito"
                                             onClick={() => handleClickAgregarAlCarrito(menu)}
+                                            disabled={menu.mensaje === "NO DISPONIBLE"}
                                         />
                                     </div>
                                 </div>

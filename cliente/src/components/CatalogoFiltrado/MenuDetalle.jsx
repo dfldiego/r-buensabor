@@ -20,7 +20,7 @@ const MenuDetalle = () => {
     const agregarItemACarrito = menu => dispatch(agregarMenuACarritoAction(menu));
 
     let cerrar_modal_state_store = useSelector(state => state.catalogo.abrir_detalle_menu);
-    const menuPorId = useSelector(state => state.catalogo.menu);
+    const menu = useSelector(state => state.catalogo.menu_detalle);
     const insumo = useSelector(state => state.catalogo.insumo_detalle);
 
     const cerrar_modal = e => {
@@ -32,7 +32,7 @@ const MenuDetalle = () => {
         return;
     }
 
-    console.log(menuPorId);
+    console.log(menu);
     console.log(insumo);
 
     const handleClickAgregarAlCarrito = item => {
@@ -50,14 +50,21 @@ const MenuDetalle = () => {
                         onClick={cerrar_modal}
                     />
                     {
-                        menuPorId ?
+                        menu ?
                             <div>
-                                <h3 className="fw-300 menu_detalle_descripcion">{menuPorId.description}</h3>
+                                <h3 className="fw-300 menu_detalle_descripcion">
+                                    {menu.description}
+                                    {
+                                        menu.mensaje === "NO DISPONIBLE" ?
+                                            <h3 className="color_rojo">No Disponible</h3>
+                                            : null
+                                    }
+                                </h3>
                                 <div className="row_menu_detalle">
                                     <div className="col_2_filtrado">
                                         <img
-                                            src={`http://localhost:4000/api/image/menus/${menuPorId.img}`}
-                                            alt={menuPorId.description}
+                                            src={`http://localhost:4000/api/image/menus/${menu.img}`}
+                                            alt={menu.description}
                                         />
                                     </div>
                                     <div className="col_2_filtrado row_2_filtrado">
@@ -70,14 +77,15 @@ const MenuDetalle = () => {
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <h4 className="price">${menuPorId.price}</h4>
+                                            <h4 className="price">${menu.price}</h4>
                                         </div>
                                         <div className="botones">
                                             <input
                                                 type="button"
                                                 className="btn_agregar_carrito"
                                                 value="Agregar al Carrito"
-                                                onClick={() => handleClickAgregarAlCarrito(menuPorId)}
+                                                onClick={() => handleClickAgregarAlCarrito(menu)}
+                                                disabled={menu.mensaje === "NO DISPONIBLE"}
                                             />
                                         </div>
                                     </div>

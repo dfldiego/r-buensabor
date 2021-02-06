@@ -22,6 +22,7 @@ const initialState = {
     mensaje: "",
     categoria_insumo_padre: null,
     insumo_detalle: null,
+    menu_detalle: null,
 }
 
 export default function (state = initialState, action) {
@@ -58,8 +59,7 @@ export default function (state = initialState, action) {
         case OBTENER_MENU:
             return {
                 ...state,
-                menu: action.payload.menu,
-                ingredientes: action.payload.ingredients,
+                menu_detalle: action.payload,
             }
         case OBTENER_INSUMO:
             return {
