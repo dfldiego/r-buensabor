@@ -535,6 +535,7 @@ export function obtenerInsumosAction() {
             const header = authorizationHeader(token);
             await clienteAxios.get(`/api/product`, header)
                 .then(response => {
+                    console.log(response.data);
                     dispatch(descargarListadoInsumosExito(response.data));
                 })
         } catch (err) {

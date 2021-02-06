@@ -89,7 +89,14 @@ const MenuDetalle = () => {
 
                     {insumo ?
                         <div>
-                            <h3 className="fw-300 menu_detalle_descripcion">{insumo.description}</h3>
+                            <h3 className="fw-300 menu_detalle_descripcion">
+                                {insumo.description}
+                                {
+                                    insumo.current_stock === 0 ?
+                                        <h3 className="color_rojo">No Disponible</h3>
+                                        : null
+                                }
+                            </h3>
                             <div className="row_menu_detalle">
                                 <div className="col_2_filtrado">
                                     <img
@@ -115,6 +122,7 @@ const MenuDetalle = () => {
                                             className="btn_agregar_carrito"
                                             value="Agregar al Carrito"
                                             onClick={() => handleClickAgregarAlCarrito(insumo)}
+                                            disabled={insumo.current_stock === 0}
                                         />
                                     </div>
                                 </div>

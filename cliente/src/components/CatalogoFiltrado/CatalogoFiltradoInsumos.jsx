@@ -56,7 +56,7 @@ const CatalogoFiltradoInsumos = ({ name }) => {
         }
 
         // eslint-disable-next-line
-    }, [])
+    }, [insumos])
 
     const handleClickAbrirModalDetalle = (insumo) => {
         guardarInsumo(insumo);
@@ -103,24 +103,20 @@ const CatalogoFiltradoInsumos = ({ name }) => {
                                     className="col_3"
                                     key={insumo._id}
                                 >
-                                    {
-                                        insumo.current_stock === 0 ?
-                                            <img
-                                                src={`http://localhost:4000/api/image/products/${insumo.img}`}
-                                                alt={insumo.description}
-                                                onClick={() => handleClickAbrirModalDetalle(insumo)}
-                                                disabled
-                                            />
-                                            :
-                                            <img
-                                                src={`http://localhost:4000/api/image/products/${insumo.img}`}
-                                                alt={insumo.description}
-                                                onClick={() => handleClickAbrirModalDetalle(insumo)}
-                                            />
-                                    }
+                                    <img
+                                        src={`http://localhost:4000/api/image/products/${insumo.img}`}
+                                        alt={insumo.description}
+                                        onClick={() => handleClickAbrirModalDetalle(insumo)}
+                                        disabled={insumo.current_stock === 0}
+                                    />
 
                                     <div className="titulos">
                                         <h3 className="fw-300">{insumo.description}</h3>
+                                        {
+                                            insumo.current_stock === 0 ?
+                                                <h3 className="color_rojo">No Disponible</h3>
+                                                : null
+                                        }
                                         <h4 className="price">${insumo.price}</h4>
                                     </div>
 
@@ -131,23 +127,13 @@ const CatalogoFiltradoInsumos = ({ name }) => {
                                             value="Ver Detalle"
                                             onClick={() => handleClickAbrirModalDetalle(insumo)}
                                         />
-                                        {
-                                            insumo.current_stock === 0 ?
-                                                <input
-                                                    type="button"
-                                                    className="btn_agregar_carrito"
-                                                    onClick={() => handleClickAgregarAlCarrito(insumo)}
-                                                    value="Agregar al Carrito"
-                                                    disabled
-                                                />
-                                                :
-                                                <input
-                                                    type="button"
-                                                    className="btn_agregar_carrito"
-                                                    onClick={() => handleClickAgregarAlCarrito(insumo)}
-                                                    value="Agregar al Carrito"
-                                                />
-                                        }
+                                        <input
+                                            type="button"
+                                            className="btn_agregar_carrito"
+                                            onClick={() => handleClickAgregarAlCarrito(insumo)}
+                                            value="Agregar al Carrito"
+                                            disabled={insumo.current_stock === 0}
+                                        />
                                     </div>
                                 </div>
                             ))

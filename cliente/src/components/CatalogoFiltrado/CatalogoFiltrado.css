@@ -121,3 +121,7 @@
 .price {
     align-items: center;
 }
+
+.color_rojo {
+    color: red;
+}
