@@ -108,7 +108,6 @@ export function obtenerIngredientesAction() {
             const header = authorizationHeader(token);
             await clienteAxios.get(`/api/menudetail`, header)
                 .then(response => {
-                    console.log(response.data.menudetails);
                     dispatch(descargarListadoMenuDetalleExito(response.data.menudetails));
                 })
         } catch (err) {

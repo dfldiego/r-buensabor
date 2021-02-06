@@ -90,18 +90,19 @@ const obtenerProductoCarrito = productoCarrito => ({
 /**********************  para eliminar los producto del carrito ********************************/
 export function eliminarProductoCarritoAction(productoCarrito) {
     return async (dispatch) => {
+        console.log(productoCarrito);
         dispatch(obtenerProductoCarritoEliminar(productoCarrito.uuid));
         if (localStorage.getItem('carrito')) {
             var carrito = JSON.parse(localStorage.getItem('carrito'));
-
+            console.log(carrito);
             // busco el producto donde coincidan el uuid
             // obtengo el indice donde coinciden los uuid
             const nuevoCarrito = carrito.filter(producto => producto.uuid !== productoCarrito.uuid);
-
+            console.log(nuevoCarrito);
             // vuelvo a setear un nuevo carrito.
             localStorage.setItem('carrito', JSON.stringify(nuevoCarrito))
             //envio el producto a eliminar al reducer.
-            dispatch(ProductoCarritoEliminadoExito(productoCarrito))
+            dispatch(ProductoCarritoEliminadoExito(nuevoCarrito))
 
         } else {
             dispatch(ProductoCarritoEliminadoError('Error al eliminar el producto del carrito'));

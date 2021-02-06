@@ -75,7 +75,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 producto_carrito_eliminar: null,
-                carrito: state.carrito.filter(producto => producto.uuid !== action.payload.uuid),
+                carrito: action.payload,
             }
         case OBTENER_PRODUCTO_CARRITO_ELIMINAR:
             return {

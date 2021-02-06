@@ -32,9 +32,6 @@ const MenuDetalle = () => {
         return;
     }
 
-    console.log(menu);
-    console.log(insumo);
-
     const handleClickAgregarAlCarrito = item => {
         item.uuid = uuidv4();
         agregarItemACarrito(item);

@@ -76,6 +76,7 @@ const Carrito = () => {
     }, [MenusDeCarrito, pedido.shippingType])
 
     const handleClickQuitarDelCarrito = datosProductoCarrito => {
+        console.log(datosProductoCarrito);
         eliminarProductoCarrito(datosProductoCarrito);
     }
 
@@ -132,21 +133,9 @@ const Carrito = () => {
             }
         }
 
-        console.log(foods);
-        console.log(drinks);
-
         let orderDate = new Date().toISOString();
         let number = Math.floor(Math.random() * 10000000000);
-
-        console.log(orderDate);
-        console.log(number);
-
-        console.log(Number.parseInt(shippingType));
-        console.log(Number.parseInt(paymentType));
-
-        // traer user
         const user = JSON.parse(localStorage.getItem("user"));
-        console.log(user._id);
 
         const order = {
             orderDate,
