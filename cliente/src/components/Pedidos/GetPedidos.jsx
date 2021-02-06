@@ -1,24 +1,13 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import './Pedidos.css';
 
 import PedidosDB from '../Pedidos/PedidosDB';
 
-import {
-    obtenerUsuariosAction,
-} from '../../actions/adminActions';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const GetPedidos = () => {
 
-    const dispatch = useDispatch();
-
-    const traerUsuarios = () => dispatch(obtenerUsuariosAction());
-
     const pedidos_state = useSelector(state => state.admin.pedidos);
-
-    useEffect(() => {
-        traerUsuarios();
-    }, [])
 
     if (!pedidos_state) {
         return;

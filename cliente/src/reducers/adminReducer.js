@@ -112,7 +112,7 @@ const initialState = {
     abrir_agregar_categoria_insumo: false,
     abrir_agregar_insumo: false,
     usuarios: [],
-    usuariosPedidos: [],
+    listausuarios: [],
     categorias: [],
     categoriasSelect: [],
     menus: [],
@@ -336,7 +336,7 @@ export default function (state = initialState, action) {
                 error: null,
                 mensaje: null,
                 errores: [],
-                usuariosPedidos: action.payload.users,
+                listausuarios: action.payload.users,
             }
         case DESCARGA_CATEGORIA_EXITO:
             return {
@@ -699,7 +699,6 @@ export default function (state = initialState, action) {
                 mensaje: null,
                 pedidos: action.payload,
                 mostrarPedidos: true,
-                totalElementos: action.payload.total,
             }
         case OBTENER_MENU_DETALLE_EDITAR:
             return {
