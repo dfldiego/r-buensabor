@@ -9,6 +9,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
     obtenerCategoriasAction,
     obtenerCategoriaInsumoFiltradasPorParentAction,
+    obtenerMenuAction,
+    obtenerIngredientesAction,
 } from '../../actions/adminActions';
 
 import {
@@ -24,6 +26,8 @@ const Catalogo = () => {
     const consultar_categoriasInsumo = (idParent) => dispatch(obtenerCategoriaInsumoFiltradasPorParentAction(idParent));
     const entradaMenuesFiltrados = estado => dispatch(paginaMenuesFiltradosAction(estado));
     const entradaCatalogoInsumoPadre = (estado, categoriaInsumoPadre) => dispatch(paginaCatalogoInsumoPadreAction(estado, categoriaInsumoPadre));
+    const consultarMenus = () => dispatch(obtenerMenuAction());
+    const obtenerIngredientes = () => dispatch(obtenerIngredientesAction());
 
     const categorias = useSelector(state => state.admin.categoriasSelect);
     const categoriasInsumo = useSelector(state => state.admin.categoriasInsumoSelect);
@@ -31,17 +35,17 @@ const Catalogo = () => {
     useEffect(() => {
         consultar_categorias();
         consultar_categoriasInsumo("undefined");
-
+        consultarMenus();
+        obtenerIngredientes();
         // eslint-disable-next-line
     }, [])
 
-    const onClickEntrarMenuesFiltrados = () => {
-        entradaMenuesFiltrados(true);
+    const onClickEntrarCatalogoInsumoPadre = (categoriaInsumo) => {
+        entradaCatalogoInsumoPadre(true, categoriaInsumo);
     }
 
-    const onClickEntrarCatalogoInsumoPadre = (categoriaInsumo) => {
-        console.log(categoriaInsumo);
-        entradaCatalogoInsumoPadre(true, categoriaInsumo);
+    const onClickEntrarMenuesFiltrados = () => {
+        entradaMenuesFiltrados(true);
     }
 
     return (

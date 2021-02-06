@@ -68,6 +68,7 @@ const CreateMenu = () => {
 
     let cerrar_modal_state_store = useSelector(state => state.admin.abrir_agregar_menu);
     const errores = useSelector(state => state.admin.errores);
+    const error = useSelector(state => state.admin.error);
     const msj_error = useSelector(state => state.admin.mensaje);
     const categoriasSelect = useSelector(state => state.admin.categoriasSelect);
     const menu_editar_store = useSelector(state => state.admin.menu_editar);
@@ -155,8 +156,7 @@ const CreateMenu = () => {
     // METODO PARA CREAR MENU.
     const handleSubmitAgregarMenu = e => {
         e.preventDefault();
-        console.log(ingredientes);
-        console.log(IngredientesDB);
+
         if (menu_editar_store) {
             menu._id = menu_editar_store._id;
             menu_editar_action(menu, imageFile, IngredientesDB, ingredientes);

@@ -215,14 +215,17 @@ const CreateInsumos = () => {
                             </div>
                             <div className="form-row">
                                 <label>Unidad de Medida</label>
-                                <input
-                                    type="text"
+                                <select
                                     className="form-control"
-                                    placeholder="Unidad de Medida"
                                     name="unit_measurement"
                                     value={unit_measurement}
                                     onChange={handleChange}
-                                />
+                                >
+                                    <option value="">-- Seleccione una unidad de medida --</option>
+                                    <option value="litros">litros</option>
+                                    <option value="kilogramos">kilogramos</option>
+                                    <option value="unidades">unidades</option>
+                                </select>
                             </div>
                             <div className="form-row">
                                 <label>¿Es ingrediente?</label>
