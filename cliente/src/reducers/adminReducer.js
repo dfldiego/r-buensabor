@@ -96,6 +96,13 @@ import {
     DESCARGA_LISTADO_MENU_DETALLE,
     DESCARGA_MENU_DETALLE_ERROR,
     OBTENER_MENU_DETALLE_EDITAR,
+    ABRIR_MODAL_DETALLE_PEDIDO,
+    CERRAR_MODAL_DETALLE_PEDIDO,
+    OBTENER_INSUMO_POR_ID,
+    OBTENER_INSUMO_POR_ID_ERROR,
+    OBTENER_MENU_POR_ID,
+    OBTENER_MENU_POR_ID_ERROR,
+    GUARDA_DETALLE_PEDIDO,
 } from '../types';
 
 const initialState = {
@@ -111,11 +118,13 @@ const initialState = {
     abrir_agregar_menu: false,
     abrir_agregar_categoria_insumo: false,
     abrir_agregar_insumo: false,
+    abrir_modal_detalle_pedido: false,
     usuarios: [],
     listausuarios: [],
     categorias: [],
     categoriasSelect: [],
     menus: [],
+    menu_detalles_pedido: [],
     menusSelect: [],
     categorias_insumo: [],
     categoriasInsumoSelect: [],
@@ -136,6 +145,7 @@ const initialState = {
     menu_detalle_editar: [],
     categoria_insumo_editar: null,
     insumo_editar: null,
+    insumo_detalles_pedido: [],
     mostrarUsuarios: false,
     mostrarCategorias: false,
     mostrarMenus: false,
@@ -147,6 +157,7 @@ const initialState = {
     paginaCorriente: 0,
     desde: 0,
     limite: 5,
+    detalles_pedido: [],
 }
 
 export default function (state = initialState, action) {
@@ -302,6 +313,8 @@ export default function (state = initialState, action) {
         case INSUMO_EDITADO_ERROR:
         case DESCARGA_PEDIDOS_ERROR:
         case DESCARGA_MENU_DETALLE_ERROR:
+        case OBTENER_INSUMO_POR_ID_ERROR:
+        case OBTENER_MENU_POR_ID_ERROR:
             return {
                 ...state,
                 loading: false,
@@ -705,7 +718,31 @@ export default function (state = initialState, action) {
                 ...state,
                 menu_detalle_editar: [...state.menu_detalle_editar, action.payload],
             }
+        case ABRIR_MODAL_DETALLE_PEDIDO:
+        case CERRAR_MODAL_DETALLE_PEDIDO:
+            return {
+                ...state,
+                abrir_modal_detalle_pedido: action.payload,
+                errores: [],
+                mensaje: null,
+                error: null,
+            }
+        case OBTENER_INSUMO_POR_ID:
+            return {
+                ...state,
+                insumo_detalles_pedido: [...state.insumo_detalles_pedido, action.payload],
+            }
+        case OBTENER_MENU_POR_ID:
+            return {
+                ...state,
+                menu_detalles_pedido: [...state.menu_detalles_pedido, action.payload],
+            }
+        case GUARDA_DETALLE_PEDIDO:
+            return {
+                ...state,
+                detalles_pedido: action.payload,
+            }
         default:
             return state;
     }
-}
+} 

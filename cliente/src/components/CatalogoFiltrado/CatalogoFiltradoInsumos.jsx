@@ -56,7 +56,16 @@ const CatalogoFiltradoInsumos = ({ name }) => {
         }
 
         // eslint-disable-next-line
-    }, [insumos])
+    }, [])
+
+    useEffect(() => {
+        consultarInsumos()
+        if (insumos.length > 0) {
+            filtrarInsumosPorPadre(categoriaInsumoPadre)
+        }
+
+        // eslint-disable-next-line
+    }, [categoriaInsumoPadre])
 
     const handleClickAbrirModalDetalle = (insumo) => {
         guardarInsumo(insumo);

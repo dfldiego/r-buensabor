@@ -94,10 +94,108 @@ import {
     DESCARGA_LISTADO_MENU_DETALLE,
     DESCARGA_MENU_DETALLE_ERROR,
     OBTENER_MENU_DETALLE_EDITAR,
+    ABRIR_MODAL_DETALLE_PEDIDO,
+    CERRAR_MODAL_DETALLE_PEDIDO,
+    OBTENER_INSUMO_POR_ID,
+    OBTENER_INSUMO_POR_ID_ERROR,
+    OBTENER_MENU_POR_ID,
+    OBTENER_MENU_POR_ID_ERROR,
+    GUARDA_DETALLE_PEDIDO,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
 import { authorizationHeader } from '../helpers/authorization_header';
+
+
+export function guardarDetallePedidoAction(detalles) {
+    return async (dispatch) => {
+        dispatch(guardarDetallePedido(detalles));
+    }
+}
+
+const guardarDetallePedido = idMenu => ({
+    type: GUARDA_DETALLE_PEDIDO,
+    payload: idMenu
+})
+/**********************  para obtener los menu del detalle pedido de la BBDD ********************************/
+export function obtenerMenuPorIdAction(idMenu) {
+    return async (dispatch) => {
+
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            await clienteAxios.get(`/api/menu/${idMenu}`, header)
+                .then(response => {
+                    console.log(response.data);
+                    dispatch(obtenerMenuPorIdExito(response.data.menu));
+                })
+        } catch (err) {
+            console.log(err);
+            dispatch(obtenerMenuPorIdError('Error al obtener insumo por id'));
+        }
+    }
+}
+
+const obtenerMenuPorIdExito = idMenu => ({
+    type: OBTENER_MENU_POR_ID,
+    payload: idMenu
+})
+
+const obtenerMenuPorIdError = msj => ({
+    type: OBTENER_MENU_POR_ID_ERROR,
+    payload: msj
+})
+
+
+/**********************  para obtener los producto del detalle pedido de la BBDD ********************************/
+export function obtenerProductoPorIdAction(idInsumo) {
+    return async (dispatch) => {
+
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            await clienteAxios.get(`/api/product/${idInsumo}`, header)
+                .then(response => {
+                    console.log(response.data);
+                    dispatch(obtenerInsumoPorIdExito(response.data.product));
+                })
+        } catch (err) {
+            console.log(err);
+            dispatch(obtenerInsumoPorIdError('Error al obtener insumo por id'));
+        }
+    }
+}
+
+const obtenerInsumoPorIdExito = datos_insumos => ({
+    type: OBTENER_INSUMO_POR_ID,
+    payload: datos_insumos
+})
+
+const obtenerInsumoPorIdError = msj => ({
+    type: OBTENER_INSUMO_POR_ID_ERROR,
+    payload: msj
+})
+
+/**********************  para abrir modal de nro orden con detalle del pedido ********************************/
+export function abrirCerrarModalDetallePedidoAction(estadoModalNroOrden) {
+    return (dispatch) => {
+        if (estadoModalNroOrden) {
+            dispatch(abrirModalDetallePedido(estadoModalNroOrden));
+        } else {
+            dispatch(cerrarModalDetallePedido(estadoModalNroOrden));
+        }
+    }
+}
+
+const abrirModalDetallePedido = estadoModalNroOrden => ({
+    type: ABRIR_MODAL_DETALLE_PEDIDO,
+    payload: estadoModalNroOrden
+})
+
+const cerrarModalDetallePedido = estadoModalNroOrden => ({
+    type: CERRAR_MODAL_DETALLE_PEDIDO,
+    payload: estadoModalNroOrden
+})
 
 /**********************  para obtener los ingredientes de la BBDD ********************************/
 export function obtenerIngredientesAction() {

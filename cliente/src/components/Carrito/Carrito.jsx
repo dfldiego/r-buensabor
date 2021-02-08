@@ -32,7 +32,7 @@ const Carrito = () => {
 
     const cerrar_modal_carrito = estadoCarrito => dispatch(abrirModalCarritoAction(estadoCarrito));
     const eliminarProductoCarrito = datosProductoCarrito => dispatch(eliminarProductoCarritoAction(datosProductoCarrito));
-    const crearNuevaOrdenDePedido = datosOrden => dispatch(crearNuevaOrdenAction(datosOrden));
+    const crearNuevaOrdenDePedido = (datosOrden, productos_menus) => dispatch(crearNuevaOrdenAction(datosOrden, productos_menus));
 
     let CerrarModalCarrito = useSelector(state => state.home.abrir_modal_carrito);
     let MenusDeCarrito = useSelector(state => state.home.carrito);
@@ -147,7 +147,6 @@ const Carrito = () => {
         }
 
         crearNuevaOrdenDePedido(order);
-
     }
 
     return (
@@ -173,7 +172,6 @@ const Carrito = () => {
                                                     <th>Acciones</th>
                                                 </tr>
                                                 {
-
                                                     MenusDeCarrito.map((menu, index) => (
                                                         <tr key={index}>
                                                             <td className="cart_info">

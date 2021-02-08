@@ -27,6 +27,7 @@ import {
     AGREGAR_ORDEN,
     AGREGAR_ORDEN_EXITO,
     AGREGAR_ORDEN_ERROR,
+    GUARDAR_PRODUCTO_MENU_DETALLEPEDIDO,
 } from '../types';
 
 const initialState = {
@@ -45,6 +46,7 @@ const initialState = {
     carrito: [],
     ordenes: [],
     producto_carrito_eliminar: null,
+    productos_menus_detallePedido: null,
 }
 
 export default function (state = initialState, action) {
@@ -179,6 +181,11 @@ export default function (state = initialState, action) {
                 ...state,
                 abrir_modal_perfil: false,
                 perfil: null,
+            }
+        case GUARDAR_PRODUCTO_MENU_DETALLEPEDIDO:
+            return {
+                ...state,
+                productos_menus_detallePedido: action.payload,
             }
         default:
             return state;

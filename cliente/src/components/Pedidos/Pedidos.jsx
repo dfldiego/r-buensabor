@@ -1,23 +1,40 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import './Pedidos.css';
 
+import ModalContainer from '../ModalContainer/ModalContainer';
+import DetallePedido from '../Pedidos/DetallePedido';
 import GetPedidos from './GetPedidos';
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
     obtenerPedidosAction,
 } from '../../actions/adminActions';
 
 const Pedidos = () => {
+
+    const [openModal, setOpenModal] = useState(false);
     const dispatch = useDispatch();
 
     const cargarPedidos = () => dispatch(obtenerPedidosAction());
+
+    let modalDetallePedido = useSelector(state => state.admin.abrir_modal_detalle_pedido);
+    let details = useSelector(state => state.admin.detalles_pedido);
 
     useEffect(() => {
         cargarPedidos();
 
         // eslint-disable-next-line
     }, []);
+
+    const closeModal = () => {
+        setOpenModal(false);
+    }
+
+    // le pasa el state principal al state local
+    useEffect(() => {
+        setOpenModal(modalDetallePedido);
+        // eslint-disable-next-line
+    }, [modalDetallePedido])
 
     return (
         <Fragment>
@@ -37,6 +54,17 @@ const Pedidos = () => {
                 </div>
                 <GetPedidos />
             </div>
+            { modalDetallePedido ?
+                <ModalContainer
+                    openModal={openModal}
+                    closeModal={closeModal}
+                >
+                    <DetallePedido
+                        details={details}
+                    />
+                </ModalContainer>
+                : null
+            }
         </Fragment>
     )
 }

@@ -159,10 +159,29 @@ const search = async (req, res) => {
     }
 }
 
+const getById = async (req, res) => {
+    let productId = req.params.id;
+
+    Product.findById(productId).exec((err, product) => {
+        if (err) {
+            return res.status(500).json({
+                ok: false,
+                msg: err
+            });
+        }
+
+        res.json({
+            ok: true,
+            product
+        });
+    });
+};
+
 module.exports = {
     list,
     create,
     update,
     remove,
     search,
+    getById,
 }

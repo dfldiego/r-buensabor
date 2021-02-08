@@ -1,11 +1,22 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 
-import { useSelector } from 'react-redux';
-import { } from '../../actions/adminActions';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    abrirCerrarModalDetallePedidoAction,
+    guardarDetallePedidoAction,
+} from '../../actions/adminActions';
 
 const PedidosDB = ({ orden }) => {
 
+    const [openModal, setOpenModal] = useState(false);
     let { number, user, orderDate, endDate, status, shippingType, details } = orden;
+
+    const dispatch = useDispatch();
+
+    const EstadoModalNroOrden = estadoModalNroOrden => dispatch(abrirCerrarModalDetallePedidoAction(estadoModalNroOrden));
+    const envioDetallePedido = details => dispatch(guardarDetallePedidoAction(details));
+
+    const modalDetallePedido = useSelector(state => state.admin.abrir_modal_detalle_pedido);
 
     const cortadohoraEntrada = orderDate.slice(11);
     const horaEntrada = cortadohoraEntrada.slice(0, 5);
@@ -13,9 +24,27 @@ const PedidosDB = ({ orden }) => {
     const handleClickDetallePedido = e => {
         e.preventDefault();
 
-        console.log("Ingresa a Detalle Pedido");
+        envioDetallePedido(details);
+
+        if (openModal === false) {
+            setOpenModal(true);
+            EstadoModalNroOrden(true);
+        } else {
+            closeModal();
+            EstadoModalNroOrden(false);
+        }
 
     }
+
+    const closeModal = () => {
+        setOpenModal(false);
+    }
+
+    // le pasa el state principal al state local
+    useEffect(() => {
+        setOpenModal(modalDetallePedido);
+        // eslint-disable-next-line
+    }, [modalDetallePedido])
 
     return (
         <Fragment>
