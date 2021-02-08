@@ -5,26 +5,20 @@ import '../Carrito/Carrito.css';
 //Actions de Redux
 import {
     abrirCerrarModalDetallePedidoAction,
-    obtenerProductoPorIdAction,
-    obtenerMenuPorIdAction,
 } from '../../actions/adminActions';
 import { useDispatch, useSelector } from 'react-redux';
 
 const DetallePedido = ({ details }) => {
 
     const [totalDetallePedido, setTotalDetallePedido] = useState(0);
-    const [nombreDetallePedido, setNombreDetallePedido] = useState([]);
 
     const dispatch = useDispatch();
 
     const EstadoModalNroOrden = estadoModalNroOrden => dispatch(abrirCerrarModalDetallePedidoAction(estadoModalNroOrden));
-    const obtenerProductoPorId = idInsumo => dispatch(obtenerProductoPorIdAction(idInsumo));
-    const obtenerMenuPorId = idMenu => dispatch(obtenerMenuPorIdAction(idMenu));
 
     let modalDetallePedido = useSelector(state => state.admin.abrir_modal_detalle_pedido);
     let DatosPedidoInsumo = useSelector(state => state.admin.insumo_detalles_pedido);
     let DatosPedidoMenu = useSelector(state => state.admin.menu_detalles_pedido);
-
 
     const cerrar_modal = () => {
         if (modalDetallePedido) {
@@ -35,21 +29,7 @@ const DetallePedido = ({ details }) => {
     }
 
     useEffect(() => {
-        console.log(details);
-        details.map((detalle) => {
-            if (detalle.menu) {
-                obtenerMenuPorId(detalle.menu);
-            } else if (detalle.product) {
-                obtenerProductoPorId(detalle.product);
-            }
-        })
-
-    }, [])
-
-    useEffect(() => {
         let total = 0;
-
-        console.log(details);
         details.map((detalle) => {
             if (detalle.menu) {
                 DatosPedidoMenu.map(DatoMenu => {
@@ -70,10 +50,7 @@ const DetallePedido = ({ details }) => {
 
         setTotalDetallePedido(total)
 
-    }, [DatosPedidoMenu, DatosPedidoInsumo])
-
-    console.log(DatosPedidoInsumo);
-    console.log(DatosPedidoMenu);
+    }, [])
 
     return (
         <Fragment>

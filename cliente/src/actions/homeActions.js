@@ -26,7 +26,6 @@ import {
     AGREGAR_ORDEN,
     AGREGAR_ORDEN_EXITO,
     AGREGAR_ORDEN_ERROR,
-    GUARDAR_PRODUCTO_MENU_DETALLEPEDIDO,
 } from '../types';
 import clienteAxios from '../config/axios';
 import { desencriptarToken } from '../helpers/desencriptar_token';

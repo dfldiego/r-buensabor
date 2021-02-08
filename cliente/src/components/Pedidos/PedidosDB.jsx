@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     abrirCerrarModalDetallePedidoAction,
     guardarDetallePedidoAction,
+    obtenerProductoPorIdAction,
+    obtenerMenuPorIdAction,
 } from '../../actions/adminActions';
 
 const PedidosDB = ({ orden }) => {
@@ -15,6 +17,8 @@ const PedidosDB = ({ orden }) => {
 
     const EstadoModalNroOrden = estadoModalNroOrden => dispatch(abrirCerrarModalDetallePedidoAction(estadoModalNroOrden));
     const envioDetallePedido = details => dispatch(guardarDetallePedidoAction(details));
+    const obtenerProductoPorId = idInsumo => dispatch(obtenerProductoPorIdAction(idInsumo));
+    const obtenerMenuPorId = idMenu => dispatch(obtenerMenuPorIdAction(idMenu));
 
     const modalDetallePedido = useSelector(state => state.admin.abrir_modal_detalle_pedido);
 
@@ -23,6 +27,15 @@ const PedidosDB = ({ orden }) => {
 
     const handleClickDetallePedido = e => {
         e.preventDefault();
+
+        //codigo para tener apenas clickeamos en detallePedido.
+        details.map((detalle) => {
+            if (detalle.menu) {
+                obtenerMenuPorId(detalle.menu);
+            } else if (detalle.product) {
+                obtenerProductoPorId(detalle.product);
+            }
+        })
 
         envioDetallePedido(details);
 
