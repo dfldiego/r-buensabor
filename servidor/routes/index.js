@@ -14,5 +14,6 @@ app.use('/api/upload', require('./upload.routes'));
 app.use('/api/image', require('./image.routes'));
 app.use('/api/order', require('./order.routes'));
 app.use('/api/order-detail', require('./order-detail.routes'));
+app.use('/api/config', require('./config.routes'));
 
 module.exports = app;
