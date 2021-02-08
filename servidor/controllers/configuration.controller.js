@@ -9,7 +9,6 @@ const list = async (req, res = response) => {
         res.json({
             ok: true,
             config,
-            total,
         });
     } catch (err) {
         console.log(err);
@@ -64,8 +63,39 @@ const update = async (req, res = response) => {
     });
 };
 
+const remove = async (req, res = response) => {
+    let id = req.params.id;
+
+    try {
+
+        const configDB = await Configuration.findById(id);
+
+        if (!configDB) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'No existe un registro de configuracion con ese id'
+            });
+        }
+
+        // borrar usuario de la DB
+        await Configuration.findByIdAndDelete(id);
+
+        res.json({
+            ok: true,
+            msg: 'Registro de Configuracion Eliminada'
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            ok: false,
+            msg: error
+        });
+    }
+}
+
 module.exports = {
     list,
     create,
     update,
+    remove,
 }

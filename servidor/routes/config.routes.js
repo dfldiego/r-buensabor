@@ -9,5 +9,6 @@ const app = express();
 app.get('/', configController.list);
 app.post('/', configController.create);
 app.put('/:id', configController.update);
+app.delete('/:id', configController.remove);
 
 module.exports = app;
