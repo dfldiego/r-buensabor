@@ -104,6 +104,10 @@ import {
     OBTENER_MENU_POR_ID_ERROR,
     GUARDA_DETALLE_PEDIDO,
     ENTRAR_CRUD_CONFIGURACION,
+    CONFIGURACION_EDITADO_EXITO,
+    CONFIGURACION_EDITADO_ERROR,
+    DESCARGA_LISTADO_CONFIGURACION,
+    OBTENER_CONFIGURACION_ERROR,
 } from '../types';
 
 const initialState = {
@@ -135,6 +139,7 @@ const initialState = {
     ingredientes_menu_detalle: [],
     error: null,
     errores: [],
+    configuracion: null,
     mensaje: null,
     usuario_eliminar: null,
     categoria_eliminar: null,
@@ -148,6 +153,7 @@ const initialState = {
     categoria_insumo_editar: null,
     insumo_editar: null,
     insumo_detalles_pedido: [],
+    configuracion_editar: null,
     mostrarUsuarios: false,
     mostrarCategorias: false,
     mostrarMenus: false,
@@ -336,6 +342,8 @@ export default function (state = initialState, action) {
         case DESCARGA_MENU_DETALLE_ERROR:
         case OBTENER_INSUMO_POR_ID_ERROR:
         case OBTENER_MENU_POR_ID_ERROR:
+        case OBTENER_CONFIGURACION_ERROR:
+        case CONFIGURACION_EDITADO_ERROR:
             return {
                 ...state,
                 loading: false,
@@ -763,7 +771,17 @@ export default function (state = initialState, action) {
                 ...state,
                 detalles_pedido: action.payload,
             }
+        case DESCARGA_LISTADO_CONFIGURACION:
+            return {
+                ...state,
+                configuracion: action.payload,
+            }
+        case CONFIGURACION_EDITADO_EXITO:
+            return {
+                ...state,
+                configuracion_editar: action.payload,
+            }
         default:
             return state;
     }
-} 
+}

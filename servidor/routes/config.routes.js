@@ -3,12 +3,13 @@
  */
 
 const express = require('express');
+const { checkAdminRole, checkToken } = require('../middlewares/authentication');
 const configController = require('../controllers/configuration.controller');
 const app = express();
 
-app.get('/', configController.list);
-app.post('/', configController.create);
-app.put('/:id', configController.update);
-app.delete('/:id', configController.remove);
+app.get('/', [checkToken], configController.list);
+app.post('/', [checkToken], configController.create);
+app.put('/:id', [checkToken], configController.update);
+app.delete('/:id', [checkToken], configController.remove);
 
 module.exports = app;

@@ -102,10 +102,73 @@ import {
     OBTENER_MENU_POR_ID_ERROR,
     GUARDA_DETALLE_PEDIDO,
     ENTRAR_CRUD_CONFIGURACION,
+    CONFIGURACION_EDITADO_EXITO,
+    CONFIGURACION_EDITADO_ERROR,
+    DESCARGA_LISTADO_CONFIGURACION,
+    OBTENER_CONFIGURACION_ERROR,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
 import { authorizationHeader } from '../helpers/authorization_header';
+
+/********************** Editar una cuenta de Configuracion ***********************/
+export function editarConfiguracionAction(datosConfiguracion) {
+    return async (dispatch) => {
+        console.log(datosConfiguracion);
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            await clienteAxios.put(`/api/config/${datosConfiguracion._id}`, datosConfiguracion, header)
+                .then(response => {
+                    dispatch(editarConfiguracionExito(response.data.config));
+                })
+        } catch (error) {
+            console.log(error);
+            dispatch(editarConfiguracionError('Error al editar la configuracion'));
+        }
+    }
+}
+
+const editarConfiguracionExito = config => ({
+    type: CONFIGURACION_EDITADO_EXITO,
+    payload: config
+})
+
+const editarConfiguracionError = msj => ({
+    type: CONFIGURACION_EDITADO_ERROR,
+    payload: msj
+})
+
+/**********************  para obtener la configuracion desde la BBDD ********************************/
+export function obtenerConfiguracionAction() {
+    return async (dispatch) => {
+
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+
+            await clienteAxios.get(`/api/config`, header)
+                .then(response => {
+                    dispatch(obtenerDatoConfiguracion(response.data.config));
+                })
+
+        } catch (err) {
+            console.log(err);
+            dispatch(descargarConfiguracionError("Error al obtener la configuracion"));
+        }
+
+    }
+}
+
+const obtenerDatoConfiguracion = config => ({
+    type: DESCARGA_LISTADO_CONFIGURACION,
+    payload: config
+})
+
+const descargarConfiguracionError = msj => ({
+    type: OBTENER_CONFIGURACION_ERROR,
+    payload: msj
+})
 
 /********************** Entrar a CRUD CONFIGURACION ***********************/
 export function pantallaConfiguracionAction(estadoConfiguracion) {
