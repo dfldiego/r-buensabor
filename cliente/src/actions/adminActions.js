@@ -101,11 +101,23 @@ import {
     OBTENER_MENU_POR_ID,
     OBTENER_MENU_POR_ID_ERROR,
     GUARDA_DETALLE_PEDIDO,
+    ENTRAR_CRUD_CONFIGURACION,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
 import { authorizationHeader } from '../helpers/authorization_header';
 
+/********************** Entrar a CRUD CONFIGURACION ***********************/
+export function pantallaConfiguracionAction(estadoConfiguracion) {
+    return (dispatch) => {
+        dispatch(pantallaConfiguracion(estadoConfiguracion))
+    }
+}
+
+const pantallaConfiguracion = estadoConfiguracion => ({
+    type: ENTRAR_CRUD_CONFIGURACION,
+    payload: estadoConfiguracion
+})
 
 export function guardarDetallePedidoAction(detalles) {
     return async (dispatch) => {

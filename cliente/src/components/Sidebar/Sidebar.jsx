@@ -9,6 +9,7 @@ import {
     pantallaInsumosAction,
     pantallaCategoriaInsumoAction,
     pantallaPedidosAction,
+    pantallaConfiguracionAction,
 } from '../../actions/adminActions';
 
 const Sidebar = () => {
@@ -22,6 +23,7 @@ const Sidebar = () => {
     const entrar_insumos_crud = estadoInsumos => dispatch(pantallaInsumosAction(estadoInsumos));
     const entrar_categoria_insumos_crud = estadoCategoriaInsumo => dispatch(pantallaCategoriaInsumoAction(estadoCategoriaInsumo));
     const entrar_pedidos_crud = estadoPedidos => dispatch(pantallaPedidosAction(estadoPedidos));
+    const entrar_configuracion_crud = estadoConfiguracion => dispatch(pantallaConfiguracionAction(estadoConfiguracion));
 
     // OBTENEMOS DATOS DESDE STORE
     const entrar_usuario_store = useSelector(state => state.admin.en_usuario);
@@ -30,6 +32,7 @@ const Sidebar = () => {
     const entrar_insumos_store = useSelector(state => state.admin.en_insumos);
     const entrar_categoria_insumos_store = useSelector(state => state.admin.en_categoria_insumos);
     const entrar_pedidos_store = useSelector(state => state.admin.en_pedidos);
+    const entrar_configuracion_store = useSelector(state => state.admin.en_configuracion);
 
     // metodo que corrobora si mostrar CRUD de usuarios.
     const entra_usuarios = e => {
@@ -97,6 +100,17 @@ const Sidebar = () => {
         }
     }
 
+    // metodo que corrobora si mostrar CRUD de configuracion.
+    const entra_configuracion = e => {
+        e.preventDefault();
+
+        if (entrar_configuracion_store) {
+            entrar_configuracion_crud(false);
+        } else {
+            entrar_configuracion_crud(true);
+        }
+    }
+
     return (
         <div id="sidebar">
             <ul>
@@ -106,6 +120,7 @@ const Sidebar = () => {
                 <li onClick={entra_categoria_insumos}>Categoria Insumo</li>
                 <li onClick={entra_insumos}>Insumos</li>
                 <li onClick={entra_pedidos}>Pedidos</li>
+                <li onClick={entra_configuracion}>Configuración</li>
             </ul>
         </div>
     );

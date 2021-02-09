@@ -103,6 +103,7 @@ import {
     OBTENER_MENU_POR_ID,
     OBTENER_MENU_POR_ID_ERROR,
     GUARDA_DETALLE_PEDIDO,
+    ENTRAR_CRUD_CONFIGURACION,
 } from '../types';
 
 const initialState = {
@@ -112,6 +113,7 @@ const initialState = {
     en_insumos: null,
     en_categoria_insumos: null,
     en_pedidos: null,
+    en_configuracion: null,
     loading: false,
     abrir_agregar_usuario: false,
     abrir_agregar_categoria: false,
@@ -173,6 +175,7 @@ export default function (state = initialState, action) {
                 paginaCorriente: 0,
                 palabraBuscar: null,
                 en_pedidos: null,
+                en_configuracion: null,
             }
         case ENTRAR_CRUD_MENU:
             return {
@@ -185,6 +188,7 @@ export default function (state = initialState, action) {
                 paginaCorriente: 0,
                 palabraBuscar: null,
                 en_pedidos: null,
+                en_configuracion: null,
             }
         case ENTRAR_CRUD_CATEGORIA:
             return {
@@ -197,6 +201,7 @@ export default function (state = initialState, action) {
                 paginaCorriente: 0,
                 palabraBuscar: null,
                 en_pedidos: null,
+                en_configuracion: null,
             }
         case ENTRAR_CRUD_INSUMOS:
             return {
@@ -209,6 +214,7 @@ export default function (state = initialState, action) {
                 paginaCorriente: 0,
                 palabraBuscar: null,
                 en_pedidos: null,
+                en_configuracion: null,
             }
         case ENTRAR_CRUD_CATEGORIA_INSUMOS:
             return {
@@ -222,6 +228,7 @@ export default function (state = initialState, action) {
                 palabraBuscar: null,
                 categoriasInsumoSelect: [],
                 en_pedidos: null,
+                en_configuracion: null,
             }
         case ENTRAR_CRUD_PEDIDOS:
             return {
@@ -234,6 +241,20 @@ export default function (state = initialState, action) {
                 paginaCorriente: 0,
                 palabraBuscar: null,
                 en_pedidos: true,
+                en_configuracion: null,
+            }
+        case ENTRAR_CRUD_CONFIGURACION:
+            return {
+                ...state,
+                en_usuario: null,
+                en_menu: null,
+                en_categoria: null,
+                en_insumos: null,
+                en_categoria_insumos: null,
+                paginaCorriente: 0,
+                palabraBuscar: null,
+                en_pedidos: null,
+                en_configuracion: true,
             }
         case CERRAR_AGREGAR_USUARIOS:
             return {
