@@ -82,7 +82,6 @@ const Configuracion = () => {
                                         type="password"
                                         name="password"
                                         placeholder="Ingrese su Contraseña"
-                                        value={configuracion.password}
                                         onChange={handleChange}
                                     />
                                 </div>
