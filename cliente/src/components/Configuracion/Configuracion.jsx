@@ -65,7 +65,7 @@ const Configuracion = () => {
                     {
                         configuracion ?
                             <div>
-                                <div className="form-row">
+                                <div className="form-row-config">
                                     <label>Email:</label>
                                     <input
                                         type="email"
@@ -76,7 +76,7 @@ const Configuracion = () => {
                                         onChange={handleChange}
                                     />
                                 </div>
-                                <div className="form-row">
+                                <div className="form-row-config">
                                     <label>Contraseña:</label>
                                     <input
                                         type="password"

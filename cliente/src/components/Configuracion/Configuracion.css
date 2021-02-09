@@ -23,3 +23,9 @@
     border-radius: 1rem;
     text-align: center;
 }
+
+.form-row-config {
+    width: 465px;
+    display: flex;
+    justify-content: space-between;
+}

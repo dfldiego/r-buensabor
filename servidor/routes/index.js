@@ -15,5 +15,6 @@ app.use('/api/image', require('./image.routes'));
 app.use('/api/order', require('./order.routes'));
 app.use('/api/order-detail', require('./order-detail.routes'));
 app.use('/api/config', require('./config.routes'));
+app.use('/api/send-email', require('./email.routes'));
 
 module.exports = app;
