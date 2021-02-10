@@ -1,6 +1,6 @@
 const response = require('express');
 const Configuration = require('../models/configuration.model');
-const bcrypt = require('bcryptjs');
+/* const bcrypt = require('bcryptjs'); */
 
 const list = async (req, res = response) => {
 
@@ -30,9 +30,9 @@ const create = async (req, res = response) => {
         password
     });
 
-    // encriptar contraseña
-    const salt = bcrypt.genSaltSync();
-    config.password = bcrypt.hashSync(password, salt);
+    /*     // encriptar contraseña
+        const salt = bcrypt.genSaltSync();
+        config.password = bcrypt.hashSync(password, salt); */
 
     config.save((err, configStored) => {
         if (err) {
