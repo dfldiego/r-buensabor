@@ -3,10 +3,10 @@
  */
 
 const express = require('express');
-const { checkToken } = require('../middlewares/authentication');
+/* const { checkToken } = require('../middlewares/authentication'); */
 const pdfController = require('../controllers/pdf-generator.controller');
 const app = express();
 
-app.post('/', [checkToken], pdfController.create);
+app.post('/', pdfController.create);
 
 module.exports = app;
