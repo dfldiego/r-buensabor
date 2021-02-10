@@ -48,8 +48,6 @@ const list = async (req, res = response) => {
 
 const create = async (req, res = response) => {
     let body = req.body;
-    console.log("req.body");
-    console.log(body);
 
     try {
         // recorre todas las camidas del pedido

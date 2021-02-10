@@ -7,8 +7,6 @@ const path = require('path');
 // solo tiene un metodo de envio
 const send = async (req, res) => {
     const body = req.body;
-    console.log("email");
-    console.log(body);
     //findOne xq sabemos que configuracion solo tendrá un solo registro
     Configuration.findOne((err, config) => {
         if (err) {

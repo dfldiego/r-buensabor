@@ -27,13 +27,11 @@ const list = async (req, res = response) => {
 }
 
 const create = async (req, res = response) => {
-    console.log(req.body);
     const { product, menu } = req.body;
 
     try {
 
         const existeDetalleMenu = await MenuDetail.findOne({ product, menu });
-        console.log(existeDetalleMenu);
         if (existeDetalleMenu) {
             if (existeDetalleMenu.status === true) {
                 return res.status(400).json({

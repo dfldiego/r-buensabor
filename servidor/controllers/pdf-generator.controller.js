@@ -5,8 +5,6 @@ const emailController = require('../controllers/email.controller');
 
 const create = async (req, res) => {
     let body = req.body;
-    console.log("pdf body");
-    console.log(body);
 
     let filterByOrder = {
         order: body.order
@@ -52,8 +50,6 @@ const create = async (req, res) => {
                      *  le agrego al request una propiedad pdf con la response del pdf si se creó bien. 
                      */
                     req.body.pdf = resPDF;
-                    console.log("pdf req.body");
-                    console.log(req.body);
                     /**
                      * Desde pdfController llamamos a emailController.
                      * 1)se ejecuta billController(crea una factura)

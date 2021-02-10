@@ -59,12 +59,12 @@ const PedidosDB = ({ orden }) => {
         // eslint-disable-next-line
     }, [modalDetallePedido])
 
-    /* const handleClickCambiarEstadoPedido = (e, estado) => {
+    const handleClickCambiarEstadoPedido = (e, estado) => {
         e.preventDefault();
 
-        // llamar al PUT de ORDER
+        // llamar al PUT de ORDER y que reciba el estado como param
 
-    } */
+    }
 
     return (
         <Fragment>
@@ -93,18 +93,7 @@ const PedidosDB = ({ orden }) => {
                 }</td>
                 <td>
                     <div className="acciones">
-
-
-                    </div>
-                </td>
-            </tr>
-        </Fragment>
-    )
-}
-
-export default PedidosDB
-/**
- * {
+                        {
                             status === 'PENDIENTE' ?
                                 <span>
                                     <button className="boton_editar" onClick={e => handleClickCambiarEstadoPedido(e, 'APROBADO')}>APROBAR</button>
@@ -125,4 +114,11 @@ export default PedidosDB
                                                 :
                                                 null
                         }
- */
+                    </div>
+                </td>
+            </tr>
+        </Fragment>
+    )
+}
+
+export default PedidosDB

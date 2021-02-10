@@ -34,8 +34,7 @@ const create = async (req, res) => {
             status: true,
             order: body.order
         });
-        console.log(billNumber);
-        console.log(bill.number);
+
         bill.save((err, billStored) => {
             if (err) {
                 return res.status(500).json({
@@ -45,8 +44,6 @@ const create = async (req, res) => {
             }
 
             req.body.billNumber = billNumber;
-            console.log("bill");
-            console.log(req.body);
             pdfController.create(req, res);
         });
     } catch (err) {

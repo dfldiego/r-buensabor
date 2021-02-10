@@ -16,7 +16,6 @@ const filter = async (req, res = response) => {
             filter.parent = idParent;
         }
 
-        console.log(filter);
         const [productCategories, total] = await Promise.all([
             ProductCategory.find(filter)
                 .populate('parent', 'description'),
