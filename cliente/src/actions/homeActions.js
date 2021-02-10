@@ -176,20 +176,26 @@ const cerrarModalCarrito = estadoCarrito => ({
 export function actualizarPerfilAction(perfil, imageFile) {
     return async (dispatch) => {
         try {
+            console.log(perfil);
+            console.log(imageFile);
             const token = localStorage.getItem('token');
-            const response = await desencriptarToken(token);
             const header = authorizationHeader(token);
-            const formData = new FormData();
-            formData.append('file', imageFile.img);
-            await clienteAxios.put(`/api/upload/users/${response.user._id}`, formData, header)
-                .then(responses => {
-                    clienteAxios.put(`/api/users/${response.user._id}`, perfil, header)
+            const responseToken = await desencriptarToken(token);
+            console.log(responseToken);
+            if (imageFile !== null) {
+                const formData = new FormData();
+                formData.append('file', imageFile.img);
 
-                })
-                .then(res => {
-                    dispatch(actualizarPerfil(true));
-                })
-
+                await clienteAxios.put(`/api/upload/users/${responseToken.user._id}`, formData, header)
+                    .then(response => {
+                        console.log(response);
+                        clienteAxios.put(`/api/users/${response.data.result._id}`, perfil, header)
+                        dispatch(actualizarPerfilExito(true));
+                    })
+            } else {
+                await clienteAxios.put(`/api/users/${responseToken.user._id}`, perfil, header)
+                dispatch(actualizarPerfilExito(true));
+            }
         } catch (err) {
             console.log(err);
             dispatch(actualizarPerfilError("Error al actualizar Perfil"));
@@ -197,7 +203,7 @@ export function actualizarPerfilAction(perfil, imageFile) {
     }
 }
 
-const actualizarPerfil = respuesta => ({
+const actualizarPerfilExito = respuesta => ({
     type: ACTUALIZADO_PERFIL,
     payload: respuesta
 })
@@ -218,16 +224,12 @@ export function perfilAction(estadoPerfil) {
                 var usuarioBase64 = token.split('.')[1];
                 usuarioBase64 = usuarioBase64.replace('-', '+').replace('_', '/');
                 var response = await JSON.parse(window.atob(usuarioBase64));
-
+                console.log(response);
                 //obtenemos los datos del id desde la DB - getOne User
                 //añadimos header para obtener autorizacion
-                const header = {
-                    headers: {
-                        'Authorization': `${token}`
-                    }
-                }
+                const header = authorizationHeader(token);
                 const respuesta = await clienteAxios.get(`/api/users/${response.user._id}`, header);
-
+                console.log(respuesta);
                 // enviamos la respuesta del getOne al reducer.
                 dispatch(abrirModalPerfil(respuesta.data.user));
 

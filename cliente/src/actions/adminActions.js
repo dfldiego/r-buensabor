@@ -306,6 +306,8 @@ export function obtenerPedidosAction() {
     return async (dispatch) => {
         dispatch(descargarPedidos());
 
+        // dependiendo del rol del usuario logueado _> muestro una orden u otra.
+
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);

@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 
 let status = {
-    values: ['PENDIENTE', 'APROBADO', 'EN_PROGRESO', 'TERMINADO', 'FACTURADO', 'EN_DELIVERY'],
+    values: ['PENDIENTE', 'APROBADO', 'EN_PROGRESO', 'TERMINADO', 'FACTURADO', 'EN_DELIVERY', 'CANCELADO'],
     message: '{VALUE} no es un estado de orden válida'
 };
 

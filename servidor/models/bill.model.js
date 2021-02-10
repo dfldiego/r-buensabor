@@ -29,7 +29,7 @@ let billSchema = new Schema({
     },
     nroCard: {
         type: String,
-        required: [true, 'El numero de tarjeta es requerido']
+        required: false
     },
     status: {
         type: Boolean,

@@ -59,6 +59,13 @@ const PedidosDB = ({ orden }) => {
         // eslint-disable-next-line
     }, [modalDetallePedido])
 
+    /* const handleClickCambiarEstadoPedido = (e, estado) => {
+        e.preventDefault();
+
+        // llamar al PUT de ORDER
+
+    } */
+
     return (
         <Fragment>
             <tr key={number}>
@@ -81,13 +88,13 @@ const PedidosDB = ({ orden }) => {
                         :
                         shippingType = "Por Local"
                 }</td>
-                <td>{status}</td>
+                <td>{
+                    { status }
+                }</td>
                 <td>
                     <div className="acciones">
-                        <button
-                            className="boton_editar"
-                        >C
-                        </button>
+
+
                     </div>
                 </td>
             </tr>
@@ -96,3 +103,26 @@ const PedidosDB = ({ orden }) => {
 }
 
 export default PedidosDB
+/**
+ * {
+                            status === 'PENDIENTE' ?
+                                <span>
+                                    <button className="boton_editar" onClick={e => handleClickCambiarEstadoPedido(e, 'APROBADO')}>APROBAR</button>
+                                    <button className="boton_editar" onClick={e => handleClickCambiarEstadoPedido(e, 'CANCELADO')}>CANCELAR</button>
+                                </span>
+                                :
+                                status === 'APROBADO' ?
+                                    <button className="boton_editar" onClick={e => handleClickCambiarEstadoPedido(e, 'TERMINADO')}>TERMINADO</button>
+                                    :
+                                    status === 'TERMINADO' && shippingType === 0 ?
+                                        <button className="boton_editar" onClick={e => handleClickCambiarEstadoPedido(e, 'EN_DELIVERY')}>DELIVERY</button>
+                                        :
+                                        status === 'TERMINADO' && shippingType === 1 ?
+                                            <button className="boton_editar" onClick={e => handleClickCambiarEstadoPedido(e, 'FACTURADO')}>FACTURAR</button>
+                                            :
+                                            status === 'EN_DELIVERY' ?
+                                                <button className="boton_editar" onClick={e => handleClickCambiarEstadoPedido(e, 'FACTURADO')}>FACTURAR</button>
+                                                :
+                                                null
+                        }
+ */

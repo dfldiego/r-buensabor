@@ -1,4 +1,5 @@
-var nodemailer = require('nodemailer');
+require('dotenv').config();
+const nodemailer = require('nodemailer');
 const Configuration = require('../models/configuration.model');
 const path = require('path');
 
@@ -6,7 +7,8 @@ const path = require('path');
 // solo tiene un metodo de envio
 const send = async (req, res) => {
     const body = req.body;
-
+    console.log("email");
+    console.log(body);
     //findOne xq sabemos que configuracion solo tendrá un solo registro
     Configuration.findOne((err, config) => {
         if (err) {
@@ -15,16 +17,14 @@ const send = async (req, res) => {
                 err
             });
         }
-
         //autenticacion con correo de la empresa.
-        var transporter = nodemailer.createTransport({
+        let transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
                 user: config.email,
                 pass: config.password
             }
         });
-
         /**
          * from: desde donde se envia el email
          * to: a quien se le envia el email
@@ -33,18 +33,17 @@ const send = async (req, res) => {
          *      path: xq tenemos una pdfs folder (enviamos la direccion del folder)
          */
 
-        var mailOptions = {
+        let mailOptions = {
             from: config.email,
             to: body.clientEmail,
             subject: 'Comprobante de compra El buen sabor',
             text: 'Gracias por su compra.',
             attachments: [{
                 filename: body.billNumber + '.pdf',
-                path: path.resolve(__dirname, `../../pdfs/${body.billNumber}.pdf`),
+                path: path.resolve(__dirname, `../pdfs/${body.billNumber}.pdf`),
                 contentType: 'application/pdf'
             }],
         };
-
         /**
          * sendMail(): metodo para enviar un email
          */
@@ -55,6 +54,7 @@ const send = async (req, res) => {
                     error
                 });
             }
+
             res.json({
                 ok: true,
                 detail: 'Email sent: ' + info.response,

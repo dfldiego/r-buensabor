@@ -197,7 +197,7 @@ const Navbar = () => {
                                                         to={'#'}
                                                         className="sub-menu-li"
                                                         onClick={handleClick_cerrar_sesion}
-                                                        value="Cerrar Sesión"
+                                                        defaultValue="Cerrar Sesión"
                                                     />
                                                 </li>
                                             </div>

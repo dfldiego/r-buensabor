@@ -16,7 +16,7 @@ import {
 
 
 const Perfil = () => {
-    const [imageFile, setimageFile] = useState({});
+    const [imageFile, setimageFile] = useState(null);
     const [perfil, setPerfil] = useState({
         name: '',
         email: '',
@@ -188,7 +188,7 @@ const Perfil = () => {
                                         className="form-control"
                                         placeholder="Nombre Domicilio"
                                         name="nameStreet"
-                                        value={nameStreet}
+                                        value={nameStreet || ''}
                                         onChange={handleChange_perfil}
                                     />
                                 </div>
@@ -199,7 +199,7 @@ const Perfil = () => {
                                         className="form-control"
                                         placeholder="Numero Domicilio"
                                         name="numberStreet"
-                                        value={numberStreet}
+                                        value={numberStreet || ''}
                                         onChange={handleChange_perfil}
                                     />
                                 </div>
@@ -210,7 +210,7 @@ const Perfil = () => {
                                         className="form-control"
                                         placeholder="Departamento"
                                         name="location"
-                                        value={location}
+                                        value={location || ''}
                                         onChange={handleChange_perfil}
                                     />
                                 </div>
