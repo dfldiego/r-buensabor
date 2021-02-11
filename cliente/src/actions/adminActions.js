@@ -106,6 +106,9 @@ import {
     CONFIGURACION_EDITADO_ERROR,
     DESCARGA_LISTADO_CONFIGURACION,
     OBTENER_CONFIGURACION_ERROR,
+    ORDEN_EDITADO_EXITO,
+    ORDEN_EDITADO_ERRORES,
+    ORDEN_EDITADO_ERROR,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
@@ -300,6 +303,47 @@ const descargarMenuDetalleError = errores => ({
     type: DESCARGA_MENU_DETALLE_ERROR,
     payload: errores,
 });
+
+/**********************  para editar la orden en la BBDD ********************************/
+export function editarOrdenAction(nuevaOrden) {
+    return async (dispatch) => {
+        console.log(nuevaOrden);
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+
+            await clienteAxios.put(`/api/order/${nuevaOrden._id}`, nuevaOrden, header)
+                .then(response => {
+                    const { order } = response.data;
+                    dispatch(editarOrdenExito(order));
+                })
+        } catch (err) {
+            console.log(err);
+            if (err.response.data.msg !== undefined) {
+                dispatch(editarOrdenError(err.response.data.msg));
+            } else {
+                if (err.response.data.err.errors) {
+                    dispatch(editarOrdenErrores(err.response.data.err.errors));
+                }
+            }
+        }
+    }
+}
+
+const editarOrdenExito = categoriaInsumo => ({
+    type: ORDEN_EDITADO_EXITO,
+    payload: categoriaInsumo
+})
+
+const editarOrdenErrores = errores => ({
+    type: ORDEN_EDITADO_ERRORES,
+    payload: errores,
+});
+
+const editarOrdenError = msj => ({
+    type: ORDEN_EDITADO_ERROR,
+    payload: msj
+})
 
 /**********************  para obtener los pedidos de la BBDD ********************************/
 export function obtenerPedidosAction() {

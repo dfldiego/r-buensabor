@@ -19,12 +19,13 @@ const Pedidos = () => {
 
     let modalDetallePedido = useSelector(state => state.admin.abrir_modal_detalle_pedido);
     let details = useSelector(state => state.admin.detalles_pedido);
+    const pedidos_state = useSelector(state => state.admin.pedidos);
 
     useEffect(() => {
         cargarPedidos();
 
         // eslint-disable-next-line
-    }, []);
+    }, [pedidos_state]);
 
     const closeModal = () => {
         setOpenModal(false);

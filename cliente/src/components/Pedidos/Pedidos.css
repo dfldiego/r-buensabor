@@ -46,12 +46,10 @@ td {
         justify-content: space-around;
     }
 
-    .boton_editar {
+    .boton_editar_pedidos {
         background: rgb(93, 201, 72);
         border: none;
         border-radius: 0px;
-        padding: 10px 5px;
-        width: 40%;
     }
 
     .boton_borrar {
@@ -160,4 +158,24 @@ select {
     background-color: #fff;
     border: none;
     border-radius: none;
+}
+
+.fondo_rojo {
+    background-color: red;
+}
+
+.fondo_azul {
+    background-color: rgb(29, 29, 233);
+}
+
+.fondo_violeta {
+    background-color: rgb(133, 24, 235);
+}
+
+.fondo_naranja {
+    background-color: rgb(235, 168, 24);
+}
+
+.fondo_rosado {
+    background-color: rgb(235, 24, 200);
 }

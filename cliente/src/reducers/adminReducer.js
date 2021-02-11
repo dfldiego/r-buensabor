@@ -108,6 +108,9 @@ import {
     CONFIGURACION_EDITADO_ERROR,
     DESCARGA_LISTADO_CONFIGURACION,
     OBTENER_CONFIGURACION_ERROR,
+    ORDEN_EDITADO_EXITO,
+    ORDEN_EDITADO_ERRORES,
+    ORDEN_EDITADO_ERROR,
 } from '../types';
 
 const initialState = {
@@ -338,6 +341,7 @@ export default function (state = initialState, action) {
         case DESCARGA_INSUMO_ERROR:
         case INSUMO_ELIMINADO_ERROR:
         case INSUMO_EDITADO_ERROR:
+        case ORDEN_EDITADO_ERROR:
         case DESCARGA_PEDIDOS_ERROR:
         case DESCARGA_MENU_DETALLE_ERROR:
         case OBTENER_INSUMO_POR_ID_ERROR:
@@ -513,6 +517,7 @@ export default function (state = initialState, action) {
         case AGREGAR_INSUMO_ERRORES:
         case INSUMO_EDITADO_ERRORES:
         case CATEGORIA_EDITADO_ERRORES:
+        case ORDEN_EDITADO_ERRORES:
             return {
                 ...state,
                 errores: [action.payload],
@@ -780,6 +785,16 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 configuracion_editar: action.payload,
+            }
+        case ORDEN_EDITADO_EXITO:
+            return {
+                ...state,
+                pedidos: state.pedidos.map(pedido =>
+                    pedido._id === action.payload._id ?
+                        pedido = action.payload
+                        :
+                        pedido
+                )
             }
         default:
             return state;

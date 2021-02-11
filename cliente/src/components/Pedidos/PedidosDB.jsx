@@ -6,10 +6,10 @@ import {
     guardarDetallePedidoAction,
     obtenerProductoPorIdAction,
     obtenerMenuPorIdAction,
+    editarOrdenAction,
 } from '../../actions/adminActions';
 
 const PedidosDB = ({ orden }) => {
-
     const [openModal, setOpenModal] = useState(false);
     let { number, user, orderDate, endDate, status, shippingType, details } = orden;
 
@@ -19,6 +19,7 @@ const PedidosDB = ({ orden }) => {
     const envioDetallePedido = details => dispatch(guardarDetallePedidoAction(details));
     const obtenerProductoPorId = idInsumo => dispatch(obtenerProductoPorIdAction(idInsumo));
     const obtenerMenuPorId = idMenu => dispatch(obtenerMenuPorIdAction(idMenu));
+    const editarOrden = (nuevaOrden) => dispatch(editarOrdenAction(nuevaOrden));
 
     const modalDetallePedido = useSelector(state => state.admin.abrir_modal_detalle_pedido);
 
@@ -59,10 +60,13 @@ const PedidosDB = ({ orden }) => {
         // eslint-disable-next-line
     }, [modalDetallePedido])
 
-    const handleClickCambiarEstadoPedido = (e, estado) => {
+    const handleClickCambiarEstadoPedido = (e, nuevoEstadoPedido, ordenPedido) => {
         e.preventDefault();
 
+        //editamos estado de la orden
+        ordenPedido.status = nuevoEstadoPedido;
         // llamar al PUT de ORDER y que reciba el estado como param
+        editarOrden(ordenPedido);
 
     }
 
@@ -88,31 +92,47 @@ const PedidosDB = ({ orden }) => {
                         :
                         shippingType = "Por Local"
                 }</td>
-                <td>{
-                    { status }
-                }</td>
+                <td>{status}</td>
                 <td>
                     <div className="acciones">
                         {
                             status === 'PENDIENTE' ?
-                                <span>
-                                    <button className="boton_editar" onClick={e => handleClickCambiarEstadoPedido(e, 'APROBADO')}>APROBAR</button>
-                                    <button className="boton_editar" onClick={e => handleClickCambiarEstadoPedido(e, 'CANCELADO')}>CANCELAR</button>
+                                <span className="botonesPendiente">
+                                    <button className="boton_editar_pedidos" onClick={e => handleClickCambiarEstadoPedido(e, 'APROBADO', orden)}>APROBAR</button>
+                                    <button className="boton_editar_pedidos fondo_rojo" onClick={e => handleClickCambiarEstadoPedido(e, 'CANCELADO', orden)}>CANCELAR</button>
                                 </span>
+                                : null
+
+                        }
+                        {
+                            status === 'APROBADO' ?
+                                <button className="boton_editar_pedidos fondo_azul" onClick={e => handleClickCambiarEstadoPedido(e, 'EN_PROGRESO', orden)}>COCINAR</button>
                                 :
-                                status === 'APROBADO' ?
-                                    <button className="boton_editar" onClick={e => handleClickCambiarEstadoPedido(e, 'TERMINADO')}>TERMINADO</button>
-                                    :
-                                    status === 'TERMINADO' && shippingType === 0 ?
-                                        <button className="boton_editar" onClick={e => handleClickCambiarEstadoPedido(e, 'EN_DELIVERY')}>DELIVERY</button>
-                                        :
-                                        status === 'TERMINADO' && shippingType === 1 ?
-                                            <button className="boton_editar" onClick={e => handleClickCambiarEstadoPedido(e, 'FACTURADO')}>FACTURAR</button>
-                                            :
-                                            status === 'EN_DELIVERY' ?
-                                                <button className="boton_editar" onClick={e => handleClickCambiarEstadoPedido(e, 'FACTURADO')}>FACTURAR</button>
-                                                :
-                                                null
+                                null
+                        }
+                        {
+                            status === 'EN_PROGRESO' ?
+                                <button className="boton_editar_pedidos fondo_rosado" onClick={e => handleClickCambiarEstadoPedido(e, 'TERMINADO', orden)}>TERMINAR</button>
+                                :
+                                null
+                        }
+                        {
+                            status == 'TERMINADO' && shippingType == "Por Delivery" ?
+                                <button className="boton_editar_pedidos fondo_violeta" onClick={e => handleClickCambiarEstadoPedido(e, 'EN_DELIVERY', orden)}>DELIVERY</button>
+                                :
+                                null
+                        }
+                        {
+                            status == 'TERMINADO' && shippingType == "Por Local" ?
+                                <button className="boton_editar_pedidos fondo_naranja" onClick={e => handleClickCambiarEstadoPedido(e, 'FACTURADO', orden)}>FACTURAR</button>
+                                :
+                                null
+                        }
+                        {
+                            status === 'EN_DELIVERY' ?
+                                <button className="boton_editar_pedidos fondo_naranja" onClick={e => handleClickCambiarEstadoPedido(e, 'FACTURADO', orden)}>FACTURAR</button>
+                                :
+                                null
                         }
                     </div>
                 </td>
