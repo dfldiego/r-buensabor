@@ -14,6 +14,7 @@ import {
 
 const Sidebar = () => {
 
+    const rolUser = JSON.parse(localStorage.getItem('user')).role;
     const dispatch = useDispatch();
 
     // ENVIAR ESTADOS AL ACTION -> ADMINACTION.
@@ -114,13 +115,24 @@ const Sidebar = () => {
     return (
         <div id="sidebar">
             <ul>
-                <li onClick={entra_usuarios}>Usuarios</li>
-                <li onClick={entra_categoria}>Categoria</li>
-                <li onClick={entra_menu}>Menu</li>
-                <li onClick={entra_categoria_insumos}>Categoria Insumo</li>
-                <li onClick={entra_insumos}>Insumos</li>
-                <li onClick={entra_pedidos}>Pedidos</li>
-                <li onClick={entra_configuracion}>Configuración</li>
+                {
+                    rolUser === 'ADMIN_ROLE' || rolUser === 'SUPER_ADMIN_ROLE' ?
+                        <span>
+                            <li onClick={entra_usuarios}>Usuarios</li>
+                            <li onClick={entra_categoria}>Categoria</li>
+                            <li onClick={entra_menu}>Menu</li>
+                            <li onClick={entra_categoria_insumos}>Categoria Insumo</li>
+                            <li onClick={entra_insumos}>Insumos</li>
+                            <li onClick={entra_pedidos}>Pedidos</li>
+                            <li onClick={entra_configuracion}>Configuración</li>
+                        </span>
+                        : null
+                }
+                {
+                    rolUser === 'CASHIER_ROLE' || rolUser === 'CHEF_ROLE' ?
+                        <li onClick={entra_pedidos}>Pedidos</li>
+                        : null
+                }
             </ul>
         </div>
     );

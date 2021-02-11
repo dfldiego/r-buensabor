@@ -26,9 +26,9 @@ const Admin = () => {
     const entrar_configuracion_store = useSelector(state => state.admin.en_configuracion);
 
     const [isValid, setIsValid] = useState('loading');
+    const rolUser = JSON.parse(localStorage.getItem('user')).role;
 
     useEffect(() => {
-        const rolUser = JSON.parse(localStorage.getItem('user')).role;
         const validateLogin = async (rolUser) => {
             if (rolUser === 'ADMIN_ROLE' || rolUser === 'CASHIER_ROLE' || rolUser === 'CHEF_ROLE' || rolUser === 'SUPER_ADMIN_ROLE') {
                 const is_valid = await validarRol(rolUser);
