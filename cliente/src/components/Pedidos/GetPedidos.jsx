@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 
 const GetPedidos = () => {
 
+    const userStorage = JSON.parse(localStorage.getItem('user'));
     const pedidos_state = useSelector(state => state.admin.pedidos);
 
     if (!pedidos_state) {
@@ -34,10 +35,19 @@ const GetPedidos = () => {
                     {
                         pedidos_state.length === 0 ? <tr><td>No hay Pedidos</td></tr> :
                             pedidos_state.map(orden => (
-                                <PedidosDB
-                                    key={orden._id}
-                                    orden={orden}
-                                />
+                                (userStorage.role === 'ADMIN_ROLE') || (userStorage.role === 'SUPER_ADMIN_ROLE') ||
+                                    (userStorage.role === 'CASHIER_ROLE' && orden.status !== 'APROBADO') ||
+                                    (userStorage.role === 'CASHIER_ROLE' && orden.status !== 'EN_PROGRESO') ||
+                                    (userStorage.role === 'CHEF_ROLE' && orden.status === 'APROBADO') ||
+                                    (userStorage.role === 'CHEF_ROLE' && orden.status === 'EN_PROGRESO')
+                                    ?
+                                    <PedidosDB
+                                        key={orden._id}
+                                        orden={orden}
+                                        userStorage={userStorage}
+                                    />
+                                    :
+                                    null
                             ))
                     }
                 </tbody>

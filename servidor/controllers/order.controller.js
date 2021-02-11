@@ -91,7 +91,7 @@ const create = async (req, res = response) => {
                 return res.status(400).json({
                     ok: false,
                     err: {
-                        message: 'No hay stock disponible para ' + productData.description
+                        msg: 'No hay stock disponible para ' + productData.description
                     }
                 });
             }

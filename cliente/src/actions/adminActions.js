@@ -1800,7 +1800,7 @@ const obtenerUsuarioEliminar = idUsuario => ({
     payload: idUsuario
 })
 
-/**********************  para obtener usuarios por id de la BBDD ********************************/
+/**********************  para obtener usuarios de la BBDD ********************************/
 export function obtenerUsuariosAction() {
     return async (dispatch) => {
         dispatch(descargarUsuarios());
@@ -1815,7 +1815,7 @@ export function obtenerUsuariosAction() {
                 })
         } catch (error) {
             console.log(error);
-            dispatch(descargarUsuariosError('Error al descargar el id del usuario'));
+            dispatch(descargarUsuariosError('Error al descargar usuario'));
         }
     }
 }
