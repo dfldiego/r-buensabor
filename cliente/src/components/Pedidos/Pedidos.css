@@ -179,3 +179,7 @@ select {
 .fondo_rosado {
     background-color: rgb(235, 24, 200);
 }
+
+.fondo_negro {
+    background-color: rgb(44, 38, 43);
+}

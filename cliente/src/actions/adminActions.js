@@ -109,6 +109,7 @@ import {
     ORDEN_EDITADO_EXITO,
     ORDEN_EDITADO_ERRORES,
     ORDEN_EDITADO_ERROR,
+    ORDEN_EDITAR,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
@@ -305,9 +306,20 @@ const descargarMenuDetalleError = errores => ({
 });
 
 /**********************  para editar la orden en la BBDD ********************************/
+export function obtenerUnaOrdenAction(orden) {
+    return async (dispatch) => {
+        dispatch(editarOrden(orden))
+    }
+}
+
+const editarOrden = orden => ({
+    type: ORDEN_EDITAR,
+    payload: orden
+})
+
 export function editarOrdenAction(nuevaOrden) {
     return async (dispatch) => {
-        console.log(nuevaOrden);
+
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
@@ -357,6 +369,7 @@ export function obtenerPedidosAction() {
             const header = authorizationHeader(token);
             await clienteAxios.get('/api/order', header)
                 .then(response => {
+                    console.log(response.data);
                     // obtenemos datos del response
                     const { orders } = response.data;
                     // si todo sale bien

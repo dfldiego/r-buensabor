@@ -7,6 +7,7 @@ import {
     obtenerProductoPorIdAction,
     obtenerMenuPorIdAction,
     editarOrdenAction,
+    obtenerUnaOrdenAction,
 } from '../../actions/adminActions';
 
 const PedidosDB = ({ orden }) => {
@@ -20,6 +21,7 @@ const PedidosDB = ({ orden }) => {
     const obtenerProductoPorId = idInsumo => dispatch(obtenerProductoPorIdAction(idInsumo));
     const obtenerMenuPorId = idMenu => dispatch(obtenerMenuPorIdAction(idMenu));
     const editarOrden = (nuevaOrden) => dispatch(editarOrdenAction(nuevaOrden));
+    const obtenerOrdenEditar = (OrdenEditar) => dispatch(obtenerUnaOrdenAction(OrdenEditar));
 
     const modalDetallePedido = useSelector(state => state.admin.abrir_modal_detalle_pedido);
 
@@ -63,6 +65,7 @@ const PedidosDB = ({ orden }) => {
     const handleClickCambiarEstadoPedido = (e, nuevoEstadoPedido, ordenPedido) => {
         e.preventDefault();
 
+        obtenerOrdenEditar(ordenPedido);
         //editamos estado de la orden
         ordenPedido.status = nuevoEstadoPedido;
         // llamar al PUT de ORDER y que reciba el estado como param
@@ -131,6 +134,12 @@ const PedidosDB = ({ orden }) => {
                         {
                             status === 'EN_DELIVERY' ?
                                 <button className="boton_editar_pedidos fondo_naranja" onClick={e => handleClickCambiarEstadoPedido(e, 'FACTURADO', orden)}>FACTURAR</button>
+                                :
+                                null
+                        }
+                        {
+                            status === 'FACTURADO' ?
+                                <button className="boton_editar_pedidos fondo_negro">GENERAR FACTURA</button>
                                 :
                                 null
                         }

@@ -111,6 +111,7 @@ import {
     ORDEN_EDITADO_EXITO,
     ORDEN_EDITADO_ERRORES,
     ORDEN_EDITADO_ERROR,
+    ORDEN_EDITAR,
 } from '../types';
 
 const initialState = {
@@ -153,6 +154,7 @@ const initialState = {
     categoria_editar: null,
     menu_editar: null,
     menu_detalle_editar: [],
+    pedido_editar: null,
     categoria_insumo_editar: null,
     insumo_editar: null,
     insumo_detalles_pedido: [],
@@ -786,6 +788,11 @@ export default function (state = initialState, action) {
                 ...state,
                 configuracion_editar: action.payload,
             }
+        case ORDEN_EDITAR:
+            return {
+                ...state,
+                pedido_editar: action.payload,
+            }
         case ORDEN_EDITADO_EXITO:
             return {
                 ...state,
@@ -794,7 +801,8 @@ export default function (state = initialState, action) {
                         pedido = action.payload
                         :
                         pedido
-                )
+                ),
+                pedido_editar: null,
             }
         default:
             return state;
