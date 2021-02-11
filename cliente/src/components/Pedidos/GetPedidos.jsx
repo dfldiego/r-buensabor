@@ -14,6 +14,8 @@ const GetPedidos = () => {
         return;
     }
 
+    console.log(userStorage.role);
+    console.log(pedidos_state);
     return (
         <Fragment>
             <h2 className="titulo">Listado de Pedidos</h2>
@@ -36,8 +38,11 @@ const GetPedidos = () => {
                         pedidos_state.length === 0 ? <tr><td>No hay Pedidos</td></tr> :
                             pedidos_state.map(orden => (
                                 (userStorage.role === 'ADMIN_ROLE') || (userStorage.role === 'SUPER_ADMIN_ROLE') ||
-                                    (userStorage.role === 'CASHIER_ROLE' && orden.status !== 'APROBADO') ||
-                                    (userStorage.role === 'CASHIER_ROLE' && orden.status !== 'EN_PROGRESO') ||
+                                    (userStorage.role === 'CASHIER_ROLE' && orden.status === 'PENDIENTE') ||
+                                    (userStorage.role === 'CASHIER_ROLE' && orden.status === 'TERMINADO') ||
+                                    (userStorage.role === 'CASHIER_ROLE' && orden.status === 'FACTURADO') ||
+                                    (userStorage.role === 'CASHIER_ROLE' && orden.status === 'EN_DELIVERY') ||
+                                    (userStorage.role === 'CASHIER_ROLE' && orden.status === 'CANCELADO') ||
                                     (userStorage.role === 'CHEF_ROLE' && orden.status === 'APROBADO') ||
                                     (userStorage.role === 'CHEF_ROLE' && orden.status === 'EN_PROGRESO')
                                     ?

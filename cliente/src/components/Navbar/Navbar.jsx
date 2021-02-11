@@ -32,7 +32,10 @@ const Navbar = () => {
     const [openModalPerfil, setOpenModalPerfil] = useState(null);
     const [openDropDown, setOpenDropDown] = useState(false);
     const [openModalCarrito, setOpenModalCarrito] = useState(false);
-
+    const [isAdmin, setIsAdmin] = useState('loading');
+    const [isCashier, setIsCashier] = useState('loading');
+    const [isChef, setIsChef] = useState('loading');
+    const [isSuper, setIsSuper] = useState('loading');
     // utilizar useDispatch y te crea una funcion
     const dispatch = useDispatch();
 
@@ -120,10 +123,16 @@ const Navbar = () => {
         // eslint-disable-next-line
     }, [abrir_modal_perfil_store])
 
-    const [isAdmin, setIsAdmin] = React.useState('loading');
+
     const validateRol = async () => {
         const isAdmin = await validarRol('ADMIN_ROLE');
         setIsAdmin(isAdmin);
+        const isCashier = await validarRol('CASHIER_ROLE');
+        setIsCashier(isCashier);
+        const isChef = await validarRol('CHEF_ROLE');
+        setIsChef(isChef);
+        const isSuper = await validarRol('SUPER_ADMIN_ROLE');
+        setIsSuper(isSuper);
     };
     validateRol();
 
@@ -157,7 +166,7 @@ const Navbar = () => {
                 <nav className="nav">
                     <ul className="barra__div">
                         {
-                            isAdmin ?
+                            isAdmin || isCashier || isChef || isSuper ?
                                 <li><Link to={"/admin"}>Admin</Link></li>
                                 :
                                 null

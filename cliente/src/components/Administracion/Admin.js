@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import Navbar from '../Navbar/Navbar';
 import Sidebar from '../Sidebar/Sidebar';
 import Usuario from '../Usuario/Usuario';
@@ -25,13 +25,17 @@ const Admin = () => {
     const entrar_pedidos_store = useSelector(state => state.admin.en_pedidos);
     const entrar_configuracion_store = useSelector(state => state.admin.en_configuracion);
 
-    const [isValid, setIsValid] = React.useState('loading');
-    React.useEffect(() => {
-        const validateLogin = async () => {
-            const is_valid = await validarRol('ADMIN_ROLE');
-            setIsValid(is_valid);
+    const [isValid, setIsValid] = useState('loading');
+
+    useEffect(() => {
+        const rolUser = JSON.parse(localStorage.getItem('user')).role;
+        const validateLogin = async (rolUser) => {
+            if (rolUser === 'ADMIN_ROLE' || rolUser === 'CASHIER_ROLE' || rolUser === 'CHEF_ROLE' || rolUser === 'SUPER_ADMIN_ROLE') {
+                const is_valid = await validarRol(rolUser);
+                setIsValid(is_valid);
+            }
         };
-        validateLogin();
+        validateLogin(rolUser);
     }, [setIsValid])
 
     if (isValid === 'loading') {
