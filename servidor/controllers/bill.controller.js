@@ -43,8 +43,7 @@ const create = async (req, res) => {
                 });
             }
 
-            req.body.billNumber = billNumber;
-            pdfController.create(req, res);
+
         });
     } catch (err) {
         return res.status(500).json({
@@ -66,6 +65,11 @@ const update = async (req, res) => {
                 ok: false,
                 err
             });
+        }
+
+        if (body.status === "FACTURADO") {
+            req.body.billNumber = billNumber;
+            pdfController.create(req, res);
         }
 
         res.json({

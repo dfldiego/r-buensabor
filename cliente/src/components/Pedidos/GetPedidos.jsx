@@ -14,8 +14,6 @@ const GetPedidos = () => {
         return;
     }
 
-    console.log(userStorage.role);
-    console.log(pedidos_state);
     return (
         <Fragment>
             <h2 className="titulo">Listado de Pedidos</h2>

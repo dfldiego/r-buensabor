@@ -25,7 +25,7 @@ let billSchema = new Schema({
     paymentType: {
         type: String,
         default: 'CASH',
-        enum: payments
+        enum: payments,
     },
     nroCard: {
         type: String,

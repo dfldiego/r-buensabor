@@ -16,15 +16,17 @@ const Carrito = () => {
     const [totales, setTotales] = useState({
         subtotal: "0",
         total: "0",
+        discount: "0",
     });
-    const { subTotal, total } = totales;
+    const { subTotal, total, discount } = totales;
 
 
     const [pedido, setPedido] = useState({
         shippingType: "0",
         paymentType: null,
+        nroCard: 0,
     });
-    const { shippingType, paymentType } = pedido;
+    let { shippingType, paymentType, nroCard } = pedido;
 
     const [error, setError] = useState(null);
 
@@ -32,7 +34,7 @@ const Carrito = () => {
 
     const cerrar_modal_carrito = estadoCarrito => dispatch(abrirModalCarritoAction(estadoCarrito));
     const eliminarProductoCarrito = datosProductoCarrito => dispatch(eliminarProductoCarritoAction(datosProductoCarrito));
-    const crearNuevaOrdenDePedido = (datosOrden, productos_menus) => dispatch(crearNuevaOrdenAction(datosOrden, productos_menus));
+    const crearNuevaOrdenDePedido = (datosOrden, bill) => dispatch(crearNuevaOrdenAction(datosOrden, bill));
 
     let CerrarModalCarrito = useSelector(state => state.home.abrir_modal_carrito);
     let MenusDeCarrito = useSelector(state => state.home.carrito);
@@ -50,13 +52,15 @@ const Carrito = () => {
     useEffect(() => {
         let subtotalCarrito = 0;
         let totalCarrito = 0;
+        let discountCarrito = 0;
 
         MenusDeCarrito.map(menu => {
             subtotalCarrito += Number(menu.price);
         })
 
         if (shippingType === "1") {
-            totalCarrito = subtotalCarrito - (subtotalCarrito * 0.1);
+            discountCarrito = (subtotalCarrito * 0.1);
+            totalCarrito = subtotalCarrito - discountCarrito;
         } else {
             totalCarrito = subtotalCarrito;
 
@@ -70,13 +74,13 @@ const Carrito = () => {
             ...totales,
             total: String(totalCarrito),
             subTotal: String(subtotalCarrito),
+            discount: String(discountCarrito),
         });
 
         // eslint-disable-next-line
     }, [MenusDeCarrito, pedido.shippingType])
 
     const handleClickQuitarDelCarrito = datosProductoCarrito => {
-        console.log(datosProductoCarrito);
         eliminarProductoCarrito(datosProductoCarrito);
     }
 
@@ -88,7 +92,6 @@ const Carrito = () => {
     }
 
     const handleClickConfirmar = (MenusDeCarrito) => {
-        console.log(MenusDeCarrito);
         let foods = [];
         let drinks = [];
 
@@ -108,8 +111,6 @@ const Carrito = () => {
             ...groups,
             [item._id]: [...(groups[item._id] || []), item]
         }), {});
-
-        console.log(groups);
 
         for (let orderID in groups) {
             for (const order of groups[orderID]) {
@@ -146,7 +147,24 @@ const Carrito = () => {
             drinks,
         }
 
-        crearNuevaOrdenDePedido(order);
+        if (paymentType === "0") {
+            paymentType = "DEBIT"
+        } else if (paymentType === "1") {
+            paymentType = "CREDIT"
+        } else {
+            paymentType = "CASH"
+        }
+
+        const bill = {
+            date: orderDate,
+            number,
+            discount,
+            total,
+            paymentType,
+            nroCard
+        }
+
+        crearNuevaOrdenDePedido(order, bill);
     }
 
     return (
@@ -268,6 +286,27 @@ const Carrito = () => {
                                                                     checked={paymentType === "2"}
                                                                     onChange={handleChangePedido}
                                                                 />Efectivo
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            : null
+                                    }
+                                    {
+                                        paymentType === "0" || paymentType === "1" ?
+                                            <div className="tablaCarrito">
+                                                <table>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>N° de Tarjeta:</td>
+                                                            <td>
+                                                                <input
+                                                                    type="number"
+                                                                    name="nroCard"
+                                                                    value={nroCard}
+                                                                    onChange={handleChangePedido}
+                                                                />
                                                             </td>
                                                         </tr>
                                                     </tbody>

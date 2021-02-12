@@ -32,7 +32,7 @@ import { desencriptarToken } from '../helpers/desencriptar_token';
 import { authorizationHeader } from '../helpers/authorization_header';
 
 /**********************  para crear una nueva orden ********************************/
-export function crearNuevaOrdenAction(datosOrden) {
+export function crearNuevaOrdenAction(datosOrden, datosFactura) {
     return async (dispatch) => {
         dispatch(agregarOrden());
         console.log(datosOrden);
@@ -45,6 +45,9 @@ export function crearNuevaOrdenAction(datosOrden) {
                 .then(response => {
                     dispatch(agregarOrdenExito(response.data.order));
                     localStorage.setItem("carrito", "[]");
+
+                    datosFactura.order = response.data.order._id;
+                    clienteAxios.post('/api/bill', datosFactura, header)
                 })
         } catch (err) {
             console.log(err.response.data);
