@@ -8,17 +8,19 @@ import {
 } from '../../actions/adminActions';
 import { useDispatch, useSelector } from 'react-redux';
 
-const DetallePedido = ({ details }) => {
+const DetallePedido = () => {
 
     const [totalDetallePedido, setTotalDetallePedido] = useState(0);
-
+    const [descuento, setDescuento] = useState(0);
+    const [detalleCadena, setDetalleCadena] = useState([]);
     const dispatch = useDispatch();
 
     const EstadoModalNroOrden = estadoModalNroOrden => dispatch(abrirCerrarModalDetallePedidoAction(estadoModalNroOrden));
 
-    let modalDetallePedido = useSelector(state => state.admin.abrir_modal_detalle_pedido);
     let DatosPedidoInsumo = useSelector(state => state.admin.insumo_detalles_pedido);
     let DatosPedidoMenu = useSelector(state => state.admin.menu_detalles_pedido);
+    let modalDetallePedido = useSelector(state => state.admin.abrir_modal_detalle_pedido);
+    let details = useSelector(state => state.admin.detalles_pedido);
 
     const cerrar_modal = () => {
         if (modalDetallePedido) {
@@ -30,27 +32,40 @@ const DetallePedido = ({ details }) => {
 
     useEffect(() => {
         let total = 0;
-        details.map((detalle) => {
-            if (detalle.menu) {
-                DatosPedidoMenu.map(DatoMenu => {
-                    if (detalle.menu === DatoMenu._id) {
-                        detalle.description = DatoMenu.description
+        console.log(details);
+        if (details.length > 0) {
+            const obtenerDetallePedido = (details) => {
+                details.map((detalle) => {
+                    if (detalle.menu || detalle.product) {
+                        DatosPedidoMenu.map(DatoMenu => {
+                            if (detalle.menu === DatoMenu._id) {
+                                detalle.description = DatoMenu.description;
+                                setDetalleCadena([...detalleCadena, detalle]);
+                            }
+                        })
+                        DatosPedidoInsumo.map(DatoInsumo => {
+                            if (detalle.product === DatoInsumo._id) {
+                                detalle.description = DatoInsumo.description;
+                                setDetalleCadena([...detalleCadena, detalle]);
+                            }
+                        })
                     }
-                })
-            }
-            if (detalle.product) {
-                DatosPedidoInsumo.map(DatoInsumo => {
-                    if (detalle.product === DatoInsumo._id) {
-                        detalle.description = DatoInsumo.description;
-                    }
-                })
-            }
-            total = total + detalle.quantity * detalle.subTotal;
-        })
 
-        setTotalDetallePedido(total)
+                    total = total + detalle.subTotal;
+                })
 
-    }, [])
+            }
+            obtenerDetallePedido(details);
+
+            let descuento = total * 0.1;
+            setDescuento(descuento);
+
+            total = total - descuento;
+            setTotalDetallePedido(total);
+        }
+
+    }, [DatosPedidoMenu, DatosPedidoInsumo]);
+    console.log(details);
 
     return (
         <Fragment>
@@ -72,7 +87,7 @@ const DetallePedido = ({ details }) => {
                                         <th>Sub-Total</th>
                                     </tr>
                                     {
-                                        details.map(detalle =>
+                                        detalleCadena.map(detalle =>
                                             detalle.menu ?
                                                 <tr>
                                                     <td>
@@ -85,26 +100,32 @@ const DetallePedido = ({ details }) => {
                                                         <h4>{detalle.subTotal}</h4>
                                                     </td>
                                                 </tr>
-                                                : null
+                                                : detalle.product ?
+                                                    <tr>
+                                                        <td>
+                                                            <h4>{detalle.description}</h4>
+                                                        </td>
+                                                        <td>
+                                                            <h4>{detalle.quantity}</h4>
+                                                        </td>
+                                                        <td>
+                                                            <h4>{detalle.subTotal}</h4>
+                                                        </td>
+                                                    </tr>
+                                                    : null
                                         )
                                     }
-                                    {
-                                        details.map(detalle =>
-                                            detalle.product ?
-                                                <tr>
-                                                    <td>
-                                                        <h4>{detalle.description}</h4>
-                                                    </td>
-                                                    <td>
-                                                        <h4>{detalle.quantity}</h4>
-                                                    </td>
-                                                    <td>
-                                                        <h4>{detalle.subTotal}</h4>
-                                                    </td>
-                                                </tr>
-                                                : null
-                                        )
-                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className="total-price">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td className="total">Descuento</td>
+                                        <td className="total">${descuento}</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>

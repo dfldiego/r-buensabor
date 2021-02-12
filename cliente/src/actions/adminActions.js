@@ -186,6 +186,7 @@ const pantallaConfiguracion = estadoConfiguracion => ({
     payload: estadoConfiguracion
 })
 
+/********************** GUARDAR DETALLE PEDIDO ***********************/
 export function guardarDetallePedidoAction(detalles) {
     return async (dispatch) => {
         dispatch(guardarDetallePedido(detalles));

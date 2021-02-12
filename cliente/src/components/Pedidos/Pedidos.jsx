@@ -18,7 +18,6 @@ const Pedidos = () => {
     const cargarPedidos = () => dispatch(obtenerPedidosAction());
 
     let modalDetallePedido = useSelector(state => state.admin.abrir_modal_detalle_pedido);
-    let details = useSelector(state => state.admin.detalles_pedido);
     const pedidoEditar = useSelector(state => state.admin.pedido_editar);
 
     useEffect(() => {
@@ -61,7 +60,6 @@ const Pedidos = () => {
                     closeModal={closeModal}
                 >
                     <DetallePedido
-                        details={details}
                     />
                 </ModalContainer>
                 : null

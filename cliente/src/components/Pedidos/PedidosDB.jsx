@@ -11,6 +11,7 @@ import {
 } from '../../actions/adminActions';
 
 const PedidosDB = ({ orden }) => {
+
     const [openModal, setOpenModal] = useState(false);
     let { number, user, orderDate, endDate, status, shippingType, details } = orden;
 
@@ -23,6 +24,8 @@ const PedidosDB = ({ orden }) => {
     const editarOrden = (nuevaOrden) => dispatch(editarOrdenAction(nuevaOrden));
     const obtenerOrdenEditar = (OrdenEditar) => dispatch(obtenerUnaOrdenAction(OrdenEditar));
 
+    let DatosPedidoInsumo = useSelector(state => state.admin.insumo_detalles_pedido);
+    let DatosPedidoMenu = useSelector(state => state.admin.menu_detalles_pedido);
     const modalDetallePedido = useSelector(state => state.admin.abrir_modal_detalle_pedido);
 
     const cortadohoraEntrada = orderDate.slice(11);
@@ -30,6 +33,7 @@ const PedidosDB = ({ orden }) => {
 
     const handleClickDetallePedido = e => {
         e.preventDefault();
+        let total = 0;
 
         //codigo para tener apenas clickeamos en detallePedido.
         details.map((detalle) => {
@@ -38,6 +42,23 @@ const PedidosDB = ({ orden }) => {
             } else if (detalle.product) {
                 obtenerProductoPorId(detalle.product);
             }
+        })
+
+        details.map((detalle) => {
+            if (detalle.menu || detalle.product) {
+                DatosPedidoMenu.map(DatoMenu => {
+                    if (detalle.menu === DatoMenu._id) {
+                        detalle.description = DatoMenu.description
+                    }
+                })
+                DatosPedidoInsumo.map(DatoInsumo => {
+                    if (detalle.product === DatoInsumo._id) {
+                        detalle.description = DatoInsumo.description;
+                    }
+                })
+            }
+
+            total = total + detalle.subTotal;
         })
 
         envioDetallePedido(details);
@@ -73,11 +94,11 @@ const PedidosDB = ({ orden }) => {
 
     }
 
-    /*  const handleClickEnviarEmail = (e, nuevoEstadoPedido, ordenPedido) => {
-         e.preventDefault();
- 
- 
-     } */
+    const handleClickEnviarEmail = (e, nuevoEstadoPedido, ordenPedido) => {
+        e.preventDefault();
+
+
+    }
 
     return (
         <Fragment>

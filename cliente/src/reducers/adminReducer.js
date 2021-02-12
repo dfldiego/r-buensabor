@@ -762,6 +762,8 @@ export default function (state = initialState, action) {
                 errores: [],
                 mensaje: null,
                 error: null,
+                insumo_detalles_pedido: [],
+                menu_detalles_pedido: [],
             }
         case OBTENER_INSUMO_POR_ID:
             return {

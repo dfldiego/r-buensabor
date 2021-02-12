@@ -43,7 +43,10 @@ const create = async (req, res) => {
                 });
             }
 
-
+            res.json({
+                ok: true,
+                bill: billStored
+            });
         });
     } catch (err) {
         return res.status(500).json({

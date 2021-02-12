@@ -135,7 +135,7 @@ const Carrito = () => {
         }
 
         let orderDate = new Date().toISOString();
-        let number = Math.floor(Math.random() * 10000000000);
+        let number = Math.floor(Math.random() * 100000000);
         const user = JSON.parse(localStorage.getItem("user"));
 
         const order = {

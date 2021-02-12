@@ -47,7 +47,6 @@ const GetPedidos = () => {
                                     <PedidosDB
                                         key={orden._id}
                                         orden={orden}
-                                        userStorage={userStorage}
                                     />
                                     :
                                     null
