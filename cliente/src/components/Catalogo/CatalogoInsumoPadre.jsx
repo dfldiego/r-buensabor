@@ -5,8 +5,9 @@ import { Link } from 'react-router-dom';
 
 import Navbar from '../Navbar/Navbar';
 
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux';
 import {
+    obtenerInsumosAction,
     obtenerCategoriaInsumoFiltradasPorParentAction,
 } from '../../actions/adminActions';
 
@@ -21,13 +22,14 @@ const CatalogoInsumoPadre = () => {
     const consultar_categoriasInsumo = (idParent) => dispatch(obtenerCategoriaInsumoFiltradasPorParentAction(idParent));
     const entradaMenusInsumosFiltrados = estado => dispatch(paginaMenuesInsumosFiltradosAction(estado));
     const guardarCategoriaInsumoPadre = categoriaInsumoPadre => dispatch(guardarCategoriaInsumoPadreAction(categoriaInsumoPadre));
+    const consultarInsumos = () => dispatch(obtenerInsumosAction());
 
     const categoriasInsumo = useSelector(state => state.admin.categoriasInsumoSelect);
     const categoriaInsumoPadre = useSelector(state => state.catalogo.categoria_insumo_padre);
 
     useEffect(() => {
         consultar_categoriasInsumo(categoriaInsumoPadre._id);
-
+        consultarInsumos();
         // eslint-disable-next-line
     }, [])
 

@@ -10,7 +10,7 @@ const generateJWT = (uid) => {
 
         // firma: payload,llave secreta, duracion del token, callback
         jwt.sign(payload, process.env.SEED, {
-            expiresIn: '24h'
+            expiresIn: '30m'
         }, (err, token) => {
 
             if (err) {

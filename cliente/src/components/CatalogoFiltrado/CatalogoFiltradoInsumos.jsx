@@ -10,9 +10,6 @@ import MenuDetalle from '../CatalogoFiltrado/MenuDetalle';
 
 import { useSelector, useDispatch } from 'react-redux'
 import {
-    obtenerInsumosAction,
-} from '../../actions/adminActions';
-import {
     abrirCerrarDetalleMenuAction,
     guardarInsumoDetalleAction
 } from '../../actions/catalogoActions';
@@ -29,7 +26,6 @@ const CatalogoFiltradoInsumos = ({ name }) => {
     const dispatch = useDispatch();
 
     const abrirModalMenuDetalle = (estadoDetalleMenu) => dispatch(abrirCerrarDetalleMenuAction(estadoDetalleMenu));
-    const consultarInsumos = () => dispatch(obtenerInsumosAction());
     const guardarInsumo = (insumo) => dispatch(guardarInsumoDetalleAction(insumo));
     const agregarInsumoACarrito = orden => dispatch(agregarMenuACarritoAction(orden));
 
@@ -37,35 +33,23 @@ const CatalogoFiltradoInsumos = ({ name }) => {
     const insumos = useSelector(state => state.admin.insumos);
     const categoriaInsumoPadre = useSelector(state => state.catalogo.categoria_insumo_padre);
 
-    const filtrarInsumosPorPadre = categoriaInsumoPadre => {
-        console.log(categoriaInsumoPadre);
-        console.log(insumos);
-        const insumosPorPadre = insumos.filter(insumo => (
-            insumo.is_supplies ?
-                null
-                :
-                insumo.category._id === categoriaInsumoPadre._id
-        ));
-        setInsumoFiltrado(insumosPorPadre)
-    }
-
     useEffect(() => {
-        consultarInsumos()
+        const filtrarInsumosPorPadre = categoriaInsumoPadre => {
+            const insumosPorPadre = insumos.filter(insumo => (
+                insumo.is_supplies ?
+                    null
+                    :
+                    insumo.category._id === categoriaInsumoPadre._id
+            ));
+            setInsumoFiltrado(insumosPorPadre)
+        }
+
         if (insumos.length > 0) {
             filtrarInsumosPorPadre(categoriaInsumoPadre)
         }
 
         // eslint-disable-next-line
-    }, [])
-
-    useEffect(() => {
-        consultarInsumos()
-        if (insumos.length > 0) {
-            filtrarInsumosPorPadre(categoriaInsumoPadre)
-        }
-
-        // eslint-disable-next-line
-    }, [categoriaInsumoPadre])
+    }, []);
 
     const handleClickAbrirModalDetalle = (insumo) => {
         guardarInsumo(insumo);
