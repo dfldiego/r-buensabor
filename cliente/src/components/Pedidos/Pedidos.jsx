@@ -8,6 +8,7 @@ import GetPedidos from './GetPedidos';
 import { useDispatch, useSelector } from 'react-redux'
 import {
     obtenerPedidosAction,
+    obtenerFacturasAction
 } from '../../actions/adminActions';
 
 const Pedidos = () => {
@@ -16,6 +17,7 @@ const Pedidos = () => {
     const dispatch = useDispatch();
 
     const cargarPedidos = () => dispatch(obtenerPedidosAction());
+    const obtenerFacturas = () => dispatch(obtenerFacturasAction());
 
     let modalDetallePedido = useSelector(state => state.admin.abrir_modal_detalle_pedido);
     const pedidoEditar = useSelector(state => state.admin.pedido_editar);
@@ -25,6 +27,10 @@ const Pedidos = () => {
 
         // eslint-disable-next-line
     }, [pedidoEditar]);
+
+    useEffect(() => {
+        obtenerFacturas();
+    }, []);
 
     const closeModal = () => {
         setOpenModal(false);

@@ -112,6 +112,8 @@ import {
     ORDEN_EDITADO_ERRORES,
     ORDEN_EDITADO_ERROR,
     ORDEN_EDITAR,
+    DESCARGA_LISTADO_FACTURAS,
+    DESCARGA_FACTURAS_ERROR,
 } from '../types';
 
 const initialState = {
@@ -141,6 +143,7 @@ const initialState = {
     pedidos: [],
     insumos: [],
     ingredientes_menu_detalle: [],
+    facturas: [],
     error: null,
     errores: [],
     configuracion: null,
@@ -350,6 +353,7 @@ export default function (state = initialState, action) {
         case OBTENER_MENU_POR_ID_ERROR:
         case OBTENER_CONFIGURACION_ERROR:
         case CONFIGURACION_EDITADO_ERROR:
+        case DESCARGA_FACTURAS_ERROR:
             return {
                 ...state,
                 loading: false,
@@ -805,6 +809,15 @@ export default function (state = initialState, action) {
                         pedido
                 ),
                 pedido_editar: null,
+            }
+        case DESCARGA_LISTADO_FACTURAS:
+            return {
+                ...state,
+                loading: false,
+                error: null,
+                mensaje: null,
+                errores: [],
+                facturas: action.payload,
             }
         default:
             return state;

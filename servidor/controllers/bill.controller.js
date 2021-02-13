@@ -1,5 +1,6 @@
 const Bill = require('../models/bill.model');
 const pdfController = require('../controllers/pdf-generator.controller');
+const Order = require('../models/order.model');
 
 const list = async (req, res) => {
     Bill.find({ status: true }).exec((err, bills) => {
@@ -58,11 +59,11 @@ const create = async (req, res) => {
 
 const update = async (req, res) => {
     let id = req.params.id;
-    let body = _.pick(req.body, ['date', 'number', 'discount',
-        'total', 'paymentType', 'nroCard', 'status', 'order'
-    ]);
 
-    Bill.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, billStored) => {
+    const orderById = await Order.findById(req.body.order)
+        .populate("user", "name email telephoneNumber");
+
+    Bill.findByIdAndUpdate(id, req.body, { new: true, runValidators: true }, (err, billStored) => {
         if (err) {
             return res.status(400).json({
                 ok: false,
@@ -70,8 +71,9 @@ const update = async (req, res) => {
             });
         }
 
-        if (body.status === "FACTURADO") {
-            req.body.billNumber = billNumber;
+        if (orderById.status === "FACTURADO") {
+            req.body.billNumber = req.body.number;
+            req.body.clientEmail = orderById.user.email;
             pdfController.create(req, res);
         }
 

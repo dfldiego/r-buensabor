@@ -110,10 +110,42 @@ import {
     ORDEN_EDITADO_ERRORES,
     ORDEN_EDITADO_ERROR,
     ORDEN_EDITAR,
+    DESCARGA_LISTADO_FACTURAS,
+    DESCARGA_FACTURAS_ERROR,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
 import { authorizationHeader } from '../helpers/authorization_header';
+
+/**********************  para obtener las facturas(bills) de la BBDD ********************************/
+export function obtenerFacturasAction() {
+    return async (dispatch) => {
+
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            await clienteAxios.get(`/api/bill`, header)
+                .then(response => {
+                    dispatch(descargarListadoFacturasExito(response.data.bills));
+                })
+        } catch (err) {
+            console.log(err);
+            dispatch(descargarFacturasError('Error al descargar las facturas'));
+        }
+
+    }
+}
+
+const descargarListadoFacturasExito = lista_Facturas => ({
+    type: DESCARGA_LISTADO_FACTURAS,
+    payload: lista_Facturas
+})
+
+const descargarFacturasError = errores => ({
+    type: DESCARGA_FACTURAS_ERROR,
+    payload: errores,
+});
+
 
 /********************** Editar una cuenta de Configuracion ***********************/
 export function editarConfiguracionAction(datosConfiguracion) {
@@ -318,7 +350,7 @@ const editarOrden = orden => ({
     payload: orden
 })
 
-export function editarOrdenAction(nuevaOrden) {
+export function editarOrdenAction(nuevaOrden, facturas) {
     return async (dispatch) => {
 
         try {
@@ -329,6 +361,13 @@ export function editarOrdenAction(nuevaOrden) {
                 .then(response => {
                     const { order } = response.data;
                     dispatch(editarOrdenExito(order));
+                    if (facturas) {
+                        for (const factura of facturas) {
+                            if (factura.order === order._id) {
+                                clienteAxios.put(`/api/bill/${factura._id}`, factura, header);
+                            }
+                        }
+                    }
                 })
         } catch (err) {
             console.log(err);
