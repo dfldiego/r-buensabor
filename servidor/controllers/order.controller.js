@@ -70,6 +70,12 @@ const create = async (req, res = response) => {
                 let quantity = menuDetail.quantity * food.quantity;
 
                 // si la cantidad necesaria para producir el producto es menor al que hay-> enviar error
+                console.log("menuDetail");
+                console.log(menuDetail);
+                console.log("quantity");
+                console.log(quantity);
+                console.log("menuDetail.product.current_stock");
+                console.log(menuDetail.product.current_stock);
                 if (quantity > menuDetail.product.current_stock) {
                     return res.status(400).json({
                         ok: false,
@@ -171,11 +177,11 @@ const update = async (req, res = response) => {
                 drink.current_stock = drink.current_stock - detail.quantity;
                 drink.save();
             } else if (detail.menu != null) {
-                const menuDetails = await MenuDetail.find({ menu: detail.menu })
+                const menuDetails = await MenuDetail.find({ menu: detail.menu, status: true })
                     .populate('product', 'current_stock');
                 for (let menu of menuDetails) {
                     let food = menu.product;
-                    food.current_stock = food.current_stock - (detail.quantity * menu.quantity);
+                    food.current_stock = (food.current_stock - (detail.quantity * menu.quantity)).toFixed(2);
                     food.save();
                 }
             }
