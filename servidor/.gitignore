@@ -27,3 +27,4 @@ yarn-error.log*
 .zzz.js
 /tmp
 /uploads
+/pdfs
