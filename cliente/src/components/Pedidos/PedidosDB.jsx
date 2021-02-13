@@ -95,12 +95,6 @@ const PedidosDB = ({ orden }) => {
 
     }
 
-    const handleClickEnviarEmail = (e, nuevoEstadoPedido, ordenPedido) => {
-        e.preventDefault();
-
-
-    }
-
     return (
         <Fragment>
             <tr key={number}>
@@ -162,12 +156,6 @@ const PedidosDB = ({ orden }) => {
                         {
                             status === 'EN_DELIVERY' ?
                                 <button className="boton_editar_pedidos fondo_negro" onClick={e => handleClickCambiarEstadoPedido(e, 'FACTURADO', orden)}>FACTURAR</button>
-                                :
-                                null
-                        }
-                        {
-                            status === 'FACTURADO' ?
-                                <button className="boton_editar_pedidos fondo_negro" onClick={e => handleClickEnviarEmail(e, 'FACTURADO', orden)}>GENERAR FACTURA</button>
                                 :
                                 null
                         }
