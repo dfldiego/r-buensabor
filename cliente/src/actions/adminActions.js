@@ -112,6 +112,7 @@ import {
     ORDEN_EDITAR,
     DESCARGA_LISTADO_FACTURAS,
     DESCARGA_FACTURAS_ERROR,
+    AGREGAR_ORDEN_DETALLE_PEDIDO,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
@@ -289,15 +290,21 @@ const obtenerInsumoPorIdError = msj => ({
 })
 
 /**********************  para abrir modal de nro orden con detalle del pedido ********************************/
-export function abrirCerrarModalDetallePedidoAction(estadoModalNroOrden) {
+export function abrirCerrarModalDetallePedidoAction(estadoModalNroOrden, orden) {
     return (dispatch) => {
         if (estadoModalNroOrden) {
             dispatch(abrirModalDetallePedido(estadoModalNroOrden));
+            dispatch(agregarOrdenDetallePedido(orden));
         } else {
             dispatch(cerrarModalDetallePedido(estadoModalNroOrden));
         }
     }
 }
+
+const agregarOrdenDetallePedido = orden => ({
+    type: AGREGAR_ORDEN_DETALLE_PEDIDO,
+    payload: orden
+})
 
 const abrirModalDetallePedido = estadoModalNroOrden => ({
     type: ABRIR_MODAL_DETALLE_PEDIDO,

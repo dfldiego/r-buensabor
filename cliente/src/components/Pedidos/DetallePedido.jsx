@@ -21,6 +21,7 @@ const DetallePedido = () => {
     let DatosPedidoMenu = useSelector(state => state.admin.menu_detalles_pedido);
     let modalDetallePedido = useSelector(state => state.admin.abrir_modal_detalle_pedido);
     let details = useSelector(state => state.admin.detalles_pedido);
+    const orden = useSelector(state => state.admin.orden);
 
     const cerrar_modal = () => {
         if (modalDetallePedido) {
@@ -57,15 +58,18 @@ const DetallePedido = () => {
             }
             obtenerDetallePedido(details);
 
-            let descuento = total * 0.1;
-            setDescuento(descuento);
+            if (orden.shippingType === 1) {
+                let descuento = total * 0.1;
+                setDescuento(descuento);
+            } else {
+                setDescuento(0);
+            }
 
             total = total - descuento;
             setTotalDetallePedido(total);
         }
 
     }, [DatosPedidoMenu, DatosPedidoInsumo]);
-    console.log(details);
 
     return (
         <Fragment>

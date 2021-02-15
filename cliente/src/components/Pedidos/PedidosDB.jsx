@@ -17,7 +17,7 @@ const PedidosDB = ({ orden }) => {
 
     const dispatch = useDispatch();
 
-    const EstadoModalNroOrden = estadoModalNroOrden => dispatch(abrirCerrarModalDetallePedidoAction(estadoModalNroOrden));
+    const EstadoModalNroOrden = (estadoModalNroOrden, orden) => dispatch(abrirCerrarModalDetallePedidoAction(estadoModalNroOrden, orden));
     const envioDetallePedido = details => dispatch(guardarDetallePedidoAction(details));
     const obtenerProductoPorId = idInsumo => dispatch(obtenerProductoPorIdAction(idInsumo));
     const obtenerMenuPorId = idMenu => dispatch(obtenerMenuPorIdAction(idMenu));
@@ -32,7 +32,7 @@ const PedidosDB = ({ orden }) => {
     const cortadohoraEntrada = orderDate.slice(11);
     const horaEntrada = cortadohoraEntrada.slice(0, 5);
 
-    const handleClickDetallePedido = e => {
+    const handleClickDetallePedido = (e, orden) => {
         e.preventDefault();
         let total = 0;
 
@@ -66,10 +66,10 @@ const PedidosDB = ({ orden }) => {
 
         if (openModal === false) {
             setOpenModal(true);
-            EstadoModalNroOrden(true);
+            EstadoModalNroOrden(true, orden);
         } else {
             closeModal();
-            EstadoModalNroOrden(false);
+            EstadoModalNroOrden(false, null);
         }
 
     }
@@ -102,7 +102,7 @@ const PedidosDB = ({ orden }) => {
                     <a
                         href="#"
                         className="color_azul"
-                        onClick={e => handleClickDetallePedido(e)}
+                        onClick={e => handleClickDetallePedido(e, orden)}
                     >{number}
                     </a>
                 </td>
@@ -154,8 +154,8 @@ const PedidosDB = ({ orden }) => {
                                 null
                         }
                         {
-                            status === 'EN_DELIVERY' ?
-                                <button className="boton_editar_pedidos fondo_negro" onClick={e => handleClickCambiarEstadoPedido(e, 'FACTURADO', orden)}>FACTURAR</button>
+                            status === 'EN_DELIVERY' && shippingType == "Por Delivery" ?
+                                <button className="boton_editar_pedidos fondo_negro" onClick={e => handleClickCambiarEstadoPedido(e, 'FACTURADO', orden, facturasDB)}>FACTURAR</button>
                                 :
                                 null
                         }

@@ -114,6 +114,7 @@ import {
     ORDEN_EDITAR,
     DESCARGA_LISTADO_FACTURAS,
     DESCARGA_FACTURAS_ERROR,
+    AGREGAR_ORDEN_DETALLE_PEDIDO,
 } from '../types';
 
 const initialState = {
@@ -174,6 +175,7 @@ const initialState = {
     desde: 0,
     limite: 5,
     detalles_pedido: [],
+    orden: null,
 }
 
 export default function (state = initialState, action) {
@@ -759,6 +761,15 @@ export default function (state = initialState, action) {
                 menu_detalle_editar: [...state.menu_detalle_editar, action.payload],
             }
         case ABRIR_MODAL_DETALLE_PEDIDO:
+            return {
+                ...state,
+                abrir_modal_detalle_pedido: action.payload,
+                errores: [],
+                mensaje: null,
+                error: null,
+                insumo_detalles_pedido: [],
+                menu_detalles_pedido: [],
+            }
         case CERRAR_MODAL_DETALLE_PEDIDO:
             return {
                 ...state,
@@ -768,6 +779,7 @@ export default function (state = initialState, action) {
                 error: null,
                 insumo_detalles_pedido: [],
                 menu_detalles_pedido: [],
+                orden: null,
             }
         case OBTENER_INSUMO_POR_ID:
             return {
@@ -818,6 +830,11 @@ export default function (state = initialState, action) {
                 mensaje: null,
                 errores: [],
                 facturas: action.payload,
+            }
+        case AGREGAR_ORDEN_DETALLE_PEDIDO:
+            return {
+                ...state,
+                orden: action.payload,
             }
         default:
             return state;
