@@ -10,7 +10,7 @@ const generateJWT = (uid) => {
 
         // firma: payload,llave secreta, duracion del token, callback
         jwt.sign(payload, process.env.SEED, {
-            expiresIn: '15s'
+            expiresIn: '30m'
         }, (err, token) => {
 
             if (err) {
@@ -43,7 +43,23 @@ const signRefreshToken = (uid) => {
     });
 }
 
+const verifyRefreshToken = (refreshToken) => {
+
+    return new Promise((resolve, reject) => {
+        jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, payload) => {
+            if (err) {
+                console.log(err);
+                reject('No se pudo refrestar el JWT. No autorizado');
+            }
+            //  signRefreshToken -> payload.user
+            const user = payload.user;
+            resolve(user);
+        });
+    });
+}
+
 module.exports = {
     generateJWT,
     signRefreshToken,
+    verifyRefreshToken,
 }

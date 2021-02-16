@@ -1,7 +1,7 @@
 const User = require('../models/user.model');
 const bcrypt = require('bcryptjs');
 const { googleVerify } = require('../helpers/google-verify');
-const { generateJWT, signRefreshToken } = require('../helpers/generate-jwt');
+const { generateJWT, signRefreshToken, verifyRefreshToken } = require('../helpers/generate-jwt');
 
 const login = async (req, res) => {
     let body = req.body;
@@ -130,7 +130,34 @@ const loginGoogle = async (req, res) => {
     });
 };
 
+const renewToken = async (req, res, next) => {
+    try {
+        const { refreshToken } = req.body;
+        if (!refreshToken) {
+            return res.status(400).json({
+                ok: false,
+                err: {
+                    msg: "No hay Token de refresco"
+                }
+            })
+        }
+        const user = await verifyRefreshToken(refreshToken);
+        const token = await generateJWT(user);
+        const refToken = await signRefreshToken(user);
+
+        res.json({
+            ok: true,
+            user,
+            token,
+            refreshToken: refToken,
+        });
+    } catch (err) {
+        next(err);
+    }
+};
+
 module.exports = {
     login,
-    loginGoogle
+    loginGoogle,
+    renewToken,
 }
