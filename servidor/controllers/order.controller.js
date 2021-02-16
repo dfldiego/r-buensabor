@@ -70,12 +70,6 @@ const create = async (req, res = response) => {
                 let quantity = menuDetail.quantity * food.quantity;
 
                 // si la cantidad necesaria para producir el producto es menor al que hay-> enviar error
-                console.log("menuDetail");
-                console.log(menuDetail);
-                console.log("quantity");
-                console.log(quantity);
-                console.log("menuDetail.product.current_stock");
-                console.log(menuDetail.product.current_stock);
                 if (quantity > menuDetail.product.current_stock) {
                     return res.status(400).json({
                         ok: false,
