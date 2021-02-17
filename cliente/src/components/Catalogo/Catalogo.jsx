@@ -53,7 +53,7 @@ const Catalogo = () => {
     }
 
     const validarHorarioRestaurante = (diaActual, horaActual) => {
-        const estaAbierto = false;
+        let estaAbierto = false;
 
         if (diaActual === 0 || diaActual === 6) {
             if (horaActual >= 11 && horaActual < 15) {
