@@ -32,6 +32,9 @@ const CatalogoFiltradoInsumos = ({ name }) => {
     const modalMenuDetalle = useSelector(state => state.catalogo.abrir_detalle_menu);
     const insumos = useSelector(state => state.admin.insumos);
     const categoriaInsumoPadre = useSelector(state => state.catalogo.categoria_insumo_padre);
+    const mensaje = useSelector(state => state.catalogo.mensaje);
+    const estaAbiertoRestaurante = useSelector(state => state.catalogo.estadoHorariosRestaurante);
+    const errorCatalogo = useSelector(state => state.catalogo.error);
 
     useEffect(() => {
         const filtrarInsumosPorPadre = categoriaInsumoPadre => {
@@ -87,7 +90,9 @@ const CatalogoFiltradoInsumos = ({ name }) => {
 
             <div className="catalogo seccion contenedor">
                 <h2 className="fw-300 centrar-texto">{name}</h2>
-
+                {
+                    errorCatalogo ? <p className="error">{mensaje}</p> : null
+                }
                 <div className="row">
                     {
                         insumoFiltrado ?
@@ -105,7 +110,7 @@ const CatalogoFiltradoInsumos = ({ name }) => {
                                     <div className="titulos">
                                         <h3 className="fw-300">{insumo.description}</h3>
                                         {
-                                            insumo.current_stock === 0 ?
+                                            insumo.current_stock === 0 || !estaAbiertoRestaurante ?
                                                 <h3 className="color_rojo">No Disponible</h3>
                                                 : null
                                         }
@@ -124,7 +129,7 @@ const CatalogoFiltradoInsumos = ({ name }) => {
                                             className="btn_agregar_carrito"
                                             onClick={() => handleClickAgregarAlCarrito(insumo)}
                                             value="Agregar al Carrito"
-                                            disabled={insumo.current_stock === 0}
+                                            disabled={insumo.current_stock === 0 || !estaAbiertoRestaurante}
                                         />
                                     </div>
                                 </div>

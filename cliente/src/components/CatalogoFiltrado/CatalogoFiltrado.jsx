@@ -35,6 +35,9 @@ const CatalogoFiltrado = ({ name }) => {
     const menus = useSelector(state => state.admin.menusSelect);
     const modalMenuDetalle = useSelector(state => state.catalogo.abrir_detalle_menu);
     const IngredientesDB = useSelector(state => state.admin.ingredientes_menu_detalle);
+    const mensaje = useSelector(state => state.catalogo.mensaje);
+    const estaAbiertoRestaurante = useSelector(state => state.catalogo.estadoHorariosRestaurante);
+    const errorCatalogo = useSelector(state => state.catalogo.error);
 
     const filtrarCategoriaPorName = nombreCategoria => {
         const categoriaEncontradaPorName = categorias.filter(categoria => categoria.name === nombreCategoria);
@@ -59,6 +62,9 @@ const CatalogoFiltrado = ({ name }) => {
         //recorro los menus y si el array de menues de los ingredientes contiene al menu devuelvo un true sino false.
         menusCategorizados.map(menu => {
             if (menuesIngredientes.includes(menu.description)) {
+                /* if (!estaAbiertoRestaurante) {
+                    menu.mensaje = "NO DISPONIBLE";
+                } */
                 menusFiltradosPorIngredientes.push(menu);
             } else {
                 menu.mensaje = "NO DISPONIBLE";
@@ -130,7 +136,9 @@ const CatalogoFiltrado = ({ name }) => {
 
             <div className="catalogo seccion contenedor">
                 <h2 className="fw-300 centrar-texto">{name}</h2>
-
+                {
+                    errorCatalogo ? <p className="error">{mensaje}</p> : null
+                }
                 <div className="row">
                     {
                         menusUnicosFiltradosPorIngredientes ?
@@ -148,7 +156,7 @@ const CatalogoFiltrado = ({ name }) => {
                                     <div className="titulos">
                                         <h3 className="fw-300">{menu.description}</h3>
                                         {
-                                            menu.mensaje === "NO DISPONIBLE" ?
+                                            menu.mensaje === "NO DISPONIBLE" || !estaAbiertoRestaurante ?
                                                 <h3 className="color_rojo">No Disponible</h3>
                                                 : null
                                         }
@@ -166,7 +174,7 @@ const CatalogoFiltrado = ({ name }) => {
                                             className="btn_agregar_carrito"
                                             value="Agregar al Carrito"
                                             onClick={() => handleClickAgregarAlCarrito(menu)}
-                                            disabled={menu.mensaje === "NO DISPONIBLE"}
+                                            disabled={menu.mensaje === "NO DISPONIBLE" || !estaAbiertoRestaurante}
                                         />
                                     </div>
                                 </div>

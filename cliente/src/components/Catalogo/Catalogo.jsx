@@ -24,8 +24,8 @@ const Catalogo = () => {
 
     const consultar_categorias = () => dispatch(obtenerCategoriasAction());
     const consultar_categoriasInsumo = (idParent) => dispatch(obtenerCategoriaInsumoFiltradasPorParentAction(idParent));
-    const entradaMenuesFiltrados = estado => dispatch(paginaMenuesFiltradosAction(estado));
-    const entradaCatalogoInsumoPadre = (estado, categoriaInsumoPadre) => dispatch(paginaCatalogoInsumoPadreAction(estado, categoriaInsumoPadre));
+    const entradaMenuesFiltrados = (estado, estaAbierto) => dispatch(paginaMenuesFiltradosAction(estado, estaAbierto));
+    const entradaCatalogoInsumoPadre = (estado, categoriaInsumoPadre, estaAbierto) => dispatch(paginaCatalogoInsumoPadreAction(estado, categoriaInsumoPadre, estaAbierto));
     const consultarMenus = () => dispatch(obtenerMenuAction());
     const obtenerIngredientes = () => dispatch(obtenerIngredientesAction());
 
@@ -40,12 +40,47 @@ const Catalogo = () => {
         // eslint-disable-next-line
     }, [])
 
+    const obtenerDiaActual = () => {
+        //obtener dia
+        let diaActual = new Date().getDay();    // 0D-1L-2M-3M-4J-5V-6S
+        return diaActual;
+    }
+
+    const obtenerHoraActual = () => {
+        //obtener dia
+        let horaActual = new Date().getHours();    // 0-23
+        return horaActual;
+    }
+
+    const validarHorarioRestaurante = (diaActual, horaActual) => {
+        const estaAbierto = false;
+
+        if (diaActual === 0 || diaActual === 6) {
+            if (horaActual >= 11 && horaActual < 15) {
+                estaAbierto = true;
+            }
+        }
+        if (horaActual >= 20 && horaActual <= 23) {
+            estaAbierto = true;
+        }
+
+        return estaAbierto;
+    }
+
     const onClickEntrarCatalogoInsumoPadre = (categoriaInsumo) => {
-        entradaCatalogoInsumoPadre(true, categoriaInsumo);
+        const diaActual = obtenerDiaActual();
+        const horaActual = obtenerHoraActual();
+        const estaAbierto = validarHorarioRestaurante(diaActual, horaActual);
+        console.log(estaAbierto);
+        entradaCatalogoInsumoPadre(true, categoriaInsumo, estaAbierto);
     }
 
     const onClickEntrarMenuesFiltrados = () => {
-        entradaMenuesFiltrados(true);
+        const diaActual = obtenerDiaActual();
+        const horaActual = obtenerHoraActual();
+        const estaAbierto = validarHorarioRestaurante(diaActual, horaActual);
+        console.log(estaAbierto);
+        entradaMenuesFiltrados(true, estaAbierto);
     }
 
     return (

@@ -7,6 +7,8 @@ import {
     GUARDAR_CATEGORIA_INSUMO_PADRE,
     PAGINA_MENUES_INSUMO_FILTRADOS,
     OBTENER_INSUMO,
+    RESTAURANTE_ABIERTO,
+    MENSAJE_RESTAURANTE_ABIERTO,
 } from '../types';
 
 /**********************  para obtener el menu x id de la BBDD ********************************/
@@ -68,9 +70,13 @@ const entradaPaginaMenuesInsumoFiltrados = (estado) => ({
 
 
 /**********************  para ingresar a pagina de menues filtrados ********************************/
-export function paginaMenuesFiltradosAction(estado) {
+export function paginaMenuesFiltradosAction(estado, estaAbierto) {
     return async (dispatch) => {
         dispatch(entradaPaginaMenuesFiltrados(estado))
+        if (!estaAbierto) {
+            dispatch(estadoAperturaCierreRestaurante(estaAbierto))
+            dispatch(mensajeAperturaCierreRestaurante("Buen Sabor está cerrado. Horarios: Lunes a Domingo de 20 a 00. Sábado y Domingo 11 a 15"))
+        }
     }
 }
 
@@ -86,13 +92,26 @@ export function guardarCategoriaInsumoPadreAction(categoriaInsumoPadre) {
 }
 
 /**********************  para ingresar a pagina de menues filtrados ********************************/
-export function paginaCatalogoInsumoPadreAction(estado, categoriaInsumoPadre) {
+export function paginaCatalogoInsumoPadreAction(estado, categoriaInsumoPadre, estaAbierto) {
     return async (dispatch) => {
         dispatch(entradaCatalogoInsumoPadre(estado))
-
         dispatch(guardarCategoriaInsumoPadreClickeado(categoriaInsumoPadre))
+        if (!estaAbierto) {
+            dispatch(estadoAperturaCierreRestaurante(estaAbierto))
+            dispatch(mensajeAperturaCierreRestaurante("Buen Sabor está cerrado. Horarios: Lunes a Domingo de 20 a 00. Sábado y Domingo 11 a 15"))
+        }
     }
 }
+
+const estadoAperturaCierreRestaurante = estado => ({
+    type: RESTAURANTE_ABIERTO,
+    payload: estado
+})
+
+const mensajeAperturaCierreRestaurante = msj => ({
+    type: MENSAJE_RESTAURANTE_ABIERTO,
+    payload: msj
+})
 
 const entradaCatalogoInsumoPadre = (estado) => ({
     type: PAGINA_CATALOGO_INSUMOS_PADRES,

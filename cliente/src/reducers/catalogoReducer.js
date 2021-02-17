@@ -8,6 +8,8 @@ import {
     GUARDAR_CATEGORIA_INSUMO_PADRE,
     PAGINA_MENUES_INSUMO_FILTRADOS,
     OBTENER_INSUMO,
+    RESTAURANTE_ABIERTO,
+    MENSAJE_RESTAURANTE_ABIERTO,
 } from '../types';
 
 const initialState = {
@@ -23,6 +25,7 @@ const initialState = {
     categoria_insumo_padre: null,
     insumo_detalle: null,
     menu_detalle: null,
+    estadoHorariosRestaurante: false,
 }
 
 export default function (state = initialState, action) {
@@ -53,6 +56,7 @@ export default function (state = initialState, action) {
                 ...state,
                 abrir_detalle_menu: action.payload,
                 menu: null,
+                menu_detalle: null,
                 insumo_detalle: null,
                 ingredientes: [],
             }
@@ -78,6 +82,17 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 categoria_insumo_padre: action.payload,
+            }
+        case RESTAURANTE_ABIERTO:
+            return {
+                ...state,
+                estadoHorariosRestaurante: action.payload,
+            }
+        case MENSAJE_RESTAURANTE_ABIERTO:
+            return {
+                ...state,
+                mensaje: action.payload,
+                error: true
             }
         default:
             return state;

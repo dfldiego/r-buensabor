@@ -22,6 +22,7 @@ const MenuDetalle = () => {
     let cerrar_modal_state_store = useSelector(state => state.catalogo.abrir_detalle_menu);
     const menu = useSelector(state => state.catalogo.menu_detalle);
     const insumo = useSelector(state => state.catalogo.insumo_detalle);
+    const estaAbiertoRestaurante = useSelector(state => state.catalogo.estadoHorariosRestaurante);
 
     const cerrar_modal = e => {
         e.preventDefault();
@@ -52,7 +53,7 @@ const MenuDetalle = () => {
                                 <h3 className="fw-300 menu_detalle_descripcion">
                                     {menu.description}
                                     {
-                                        menu.mensaje === "NO DISPONIBLE" ?
+                                        menu.mensaje === "NO DISPONIBLE" | !estaAbiertoRestaurante ?
                                             <h3 className="color_rojo">No Disponible</h3>
                                             : null
                                     }
@@ -82,7 +83,7 @@ const MenuDetalle = () => {
                                                 className="btn_agregar_carrito"
                                                 value="Agregar al Carrito"
                                                 onClick={() => handleClickAgregarAlCarrito(menu)}
-                                                disabled={menu.mensaje === "NO DISPONIBLE"}
+                                                disabled={menu.mensaje === "NO DISPONIBLE" || !estaAbiertoRestaurante}
                                             />
                                         </div>
                                     </div>
@@ -97,7 +98,7 @@ const MenuDetalle = () => {
                             <h3 className="fw-300 menu_detalle_descripcion">
                                 {insumo.description}
                                 {
-                                    insumo.current_stock === 0 ?
+                                    insumo.current_stock === 0 || !estaAbiertoRestaurante ?
                                         <h3 className="color_rojo">No Disponible</h3>
                                         : null
                                 }
@@ -127,7 +128,7 @@ const MenuDetalle = () => {
                                             className="btn_agregar_carrito"
                                             value="Agregar al Carrito"
                                             onClick={() => handleClickAgregarAlCarrito(insumo)}
-                                            disabled={insumo.current_stock === 0}
+                                            disabled={insumo.current_stock === 0 || !estaAbiertoRestaurante}
                                         />
                                     </div>
                                 </div>
