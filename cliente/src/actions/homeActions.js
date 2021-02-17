@@ -362,7 +362,7 @@ export function loginAction(datos) {
             await clienteAxios.post('/login', datos)
                 .then(response => {
                     // obtenemos datos del response
-                    const { token, user, refreshToken } = response.data;
+                    const { token, user } = response.data;
                     // guardamos token en el localStorage
                     localStorage.setItem('token', token);
                     localStorage.setItem('user', JSON.stringify(user));
