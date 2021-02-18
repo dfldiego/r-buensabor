@@ -69,6 +69,7 @@ nav ul li a {
     justify-content: space-between;
     min-width: 50px;
     padding-right: 5px;
+    position: relative;
 }
 
 .cart__count {
@@ -80,4 +81,7 @@ nav ul li a {
     background-color: red;
     vertical-align: center;
     color: #fff;
+    position: absolute;
+    top: 0;
+    right: 30px;
 }
