@@ -9,7 +9,49 @@ import {
     OBTENER_INSUMO,
     RESTAURANTE_ABIERTO,
     MENSAJE_RESTAURANTE_ABIERTO,
+    DESCARGA_MENU_DETALLE_DE_MENU,
+    DESCARGA_MENU_DETALLE_DE_MENU_ERROR,
 } from '../types';
+
+import clienteAxios from '../config/axios';
+import { authorizationHeader } from '../helpers/authorization_header';
+
+/**********************  para obtener ingredientes del menu de la BBDD ********************************/
+export function obtenerIngredientesDelMenuAction(menu) {
+    return async (dispatch) => {
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+
+            await clienteAxios.get(`/api/menudetail`, header)
+                .then(response => {
+                    console.log(response.data.menudetails);
+                    console.log(menu);
+                    const ingredientes = response.data.menudetails;
+                    let ingredientesMenu = [];
+                    for (const ingrediente of ingredientes) {
+                        if (ingrediente.menu._id === menu._id) {
+                            ingredientesMenu.push(ingrediente.product.description);
+                        }
+                    }
+                    dispatch(obtenerIngredientesMenuExito(ingredientesMenu));
+                })
+        } catch (err) {
+            console.log(err);
+            dispatch(obtenerIngredientesMenuError('Error al descargar los menu detalle del menu'));
+        }
+    }
+}
+
+const obtenerIngredientesMenuExito = ingredientesMenu => ({
+    type: DESCARGA_MENU_DETALLE_DE_MENU,
+    payload: ingredientesMenu
+})
+
+const obtenerIngredientesMenuError = errores => ({
+    type: DESCARGA_MENU_DETALLE_DE_MENU_ERROR,
+    payload: errores,
+});
 
 /**********************  para obtener el menu x id de la BBDD ********************************/
 export function guardarMenuDetalleAction(menu) {

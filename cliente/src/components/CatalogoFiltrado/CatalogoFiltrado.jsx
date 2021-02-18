@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
     abrirCerrarDetalleMenuAction,
     guardarMenuDetalleAction,
+    obtenerIngredientesDelMenuAction,
 } from '../../actions/catalogoActions';
 import {
     agregarMenuACarritoAction,
@@ -30,6 +31,7 @@ const CatalogoFiltrado = ({ name }) => {
     const abrirModalMenuDetalle = (estadoDetalleMenu) => dispatch(abrirCerrarDetalleMenuAction(estadoDetalleMenu));
     const guardarMenu = menu => dispatch(guardarMenuDetalleAction(menu));
     const agregarMenuACarrito = menu => dispatch(agregarMenuACarritoAction(menu));
+    const obtenerIngredientesDelMenu = (menu) => dispatch(obtenerIngredientesDelMenuAction(menu));
 
     const categorias = useSelector(state => state.admin.categoriasSelect);
     const menus = useSelector(state => state.admin.menusSelect);
@@ -102,6 +104,8 @@ const CatalogoFiltrado = ({ name }) => {
     const handleClickAbrirModalDetalle = menu => {
         console.log(menu);
         guardarMenu(menu);
+        /**********aqui debemos agregar un metodo que llame a los ingredientes del menu y debemos obtener estos ingredientes en el useEffect() de MenuDetalle y luego recorrerlos con un map en el html */
+        obtenerIngredientesDelMenu(menu);
 
         if (openModal === false) {
             setOpenModal(true);

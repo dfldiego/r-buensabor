@@ -23,6 +23,7 @@ const MenuDetalle = () => {
     const menu = useSelector(state => state.catalogo.menu_detalle);
     const insumo = useSelector(state => state.catalogo.insumo_detalle);
     const estaAbiertoRestaurante = useSelector(state => state.catalogo.estadoHorariosRestaurante);
+    const ingredientesDelMenu = useSelector(state => state.catalogo.ingredientes);
 
     const cerrar_modal = e => {
         e.preventDefault();
@@ -71,7 +72,9 @@ const MenuDetalle = () => {
                                                 <h4 className="fw-300">Ingredientes:</h4>
                                                 <div className="flex_menu_detalle">
                                                     <ul>
-                                                        <li className="fw-300 li_ingredientes"></li>
+                                                        {
+                                                            ingredientesDelMenu.map((ingrediente) => <li className="fw-300 li_ingredientes">{ingrediente}</li>)
+                                                        }
                                                     </ul>
                                                 </div>
                                             </div>

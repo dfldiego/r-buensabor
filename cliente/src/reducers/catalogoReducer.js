@@ -10,6 +10,8 @@ import {
     OBTENER_INSUMO,
     RESTAURANTE_ABIERTO,
     MENSAJE_RESTAURANTE_ABIERTO,
+    DESCARGA_MENU_DETALLE_DE_MENU,
+    DESCARGA_MENU_DETALLE_DE_MENU_ERROR,
 } from '../types';
 
 const initialState = {
@@ -93,6 +95,18 @@ export default function (state = initialState, action) {
                 ...state,
                 mensaje: action.payload,
                 error: true
+            }
+        case DESCARGA_MENU_DETALLE_DE_MENU_ERROR:
+            return {
+                ...state,
+                error: false,
+                errores: [],
+                mensaje: "",
+            }
+        case DESCARGA_MENU_DETALLE_DE_MENU:
+            return {
+                ...state,
+                ingredientes: action.payload,
             }
         default:
             return state;

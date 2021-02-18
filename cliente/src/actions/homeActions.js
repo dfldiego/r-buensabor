@@ -322,17 +322,14 @@ const cerrar_sesion = () => ({
 export function estaLogueadoAction() {
     return (dispatch) => {
         var token = localStorage.getItem('token');
-        console.log(token);
         if (token === null) {
             dispatch(noestalogueado(null))
         } else {
             dispatch(estaloguado(token));
-            console.log(token);
 
             desencriptarToken(token)
                 .then(async responseToken => {
                     const estaExpirado = await validateTimeTokens(responseToken);
-                    console.log(estaExpirado);
                     if (estaExpirado) {
                         localStorage.clear();
                         dispatch(cerrar_sesion());
