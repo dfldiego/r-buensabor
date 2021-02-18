@@ -15,13 +15,9 @@ let checkToken = (req, res, next) => {
                 }
             });
         }
-        console.log(decoded);
         // si el token es válido
-
-
         // le pasamos los datos decodificados del token al objeto user.
         req.user = decoded.user;
-        /* req.dateExpiration = decoded.dateExpiration; */
 
         // salir de la funcion e ir a la siguiente.
         next();

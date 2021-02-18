@@ -9,9 +9,8 @@ const generateJWT = (uid) => {
             dateExpiration: uid.dateExpiration
         }
 
-        /* const expirationTime = uid.expiration; */
         // firma: payload,llave secreta, duracion del token, callback
-        jwt.sign(payload, process.env.SEED, { expiresIn: '1m' }, (err, token) => {
+        jwt.sign(payload, process.env.SEED, { expiresIn: '360m' }, (err, token) => {
             if (err) {
                 console.log(err);
                 reject('No se pudo generar el JWT');

@@ -39,25 +39,19 @@ const login = async (req, res) => {
             });
         }
 
-        // si email y password es correcto
-        // creamos el token. 
-        // GENERAR UN TOKEN -- JWT
-
-
         // seteo tiempo de expiracion
         let fechaActual = new Date();
-        //Date.setMinutes(minutos[, segundos, milisegundos]) : Establece los minutos 
-        //Date.getMinutes(); : Obtiene los minutos, de 0 a 59
-        console.log(fechaActual.getHours() + ':' + fechaActual.getMinutes()); // Hora actual
-        fechaActual.setMinutes(fechaActual.getMinutes() + 1); // Añadiendo 360 minutos(6h) a la fecha actual
-        console.log(fechaActual.getHours() + ':' + fechaActual.getMinutes());
-        console.log(fechaActual);
+        fechaActual.setMinutes(fechaActual.getMinutes() + 360); // Añadiendo 360 minutos(6h) a la fecha actual
         let dateExpiration = fechaActual;
 
         let datosToken = {
             user,
             dateExpiration
         }
+
+        // si email y password es correcto
+        // creamos el token. 
+        // GENERAR UN TOKEN -- JWT
         const token = await generateJWT(datosToken);
 
         res.json({
