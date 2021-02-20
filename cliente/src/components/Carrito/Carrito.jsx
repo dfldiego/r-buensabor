@@ -107,6 +107,7 @@ const Carrito = () => {
     const handleClickConfirmar = (MenusDeCarrito) => {
         let foods = [];
         let drinks = [];
+        let contadorTiempoEstimado = 0;
 
         if (shippingType !== "0" && shippingType !== "1") {
             setError("Debe ingresar una forma de envío correcta");
@@ -151,28 +152,16 @@ const Carrito = () => {
         let number = Math.floor(Math.random() * 100000000);
         const user = JSON.parse(localStorage.getItem("user"));
 
-        /**
-         * aqui debo obtener endDate
-         * 1) OBTENER TIEMPO ESTIMADO DE LOS MENUES SELECCIONADOS
-         * 2) SI HAY DELIVERY
-         * 3) OBTENER TIEMPO ESTIMADO DE MENUES "EN PROGRESO" / CANTIDAD COCINEROS
-         */
-        debugger;
-        let contadorTiempoEstimado = 0;
-
-        //sumatoria de tiempo estimado de menus
         MenusDeCarrito.map(elementoCarrito => {
             if (elementoCarrito.finished_time) {
                 contadorTiempoEstimado += elementoCarrito.finished_time / datoConfiguracion.quantityCooks;
             }
         });
 
-        //si hay delivery
         if (shippingType === "0") {
             contadorTiempoEstimado += 10;
         }
 
-        //3
         pedidos_state.map(pedido => {
             if (pedido.status === "EN_PROGRESO") {
                 contadorTiempoEstimado += Number.parseInt(pedido.endDate) / datoConfiguracion.quantityCooks;
