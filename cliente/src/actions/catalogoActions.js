@@ -118,6 +118,8 @@ export function paginaMenuesFiltradosAction(estado, estaAbierto) {
         if (!estaAbierto) {
             dispatch(estadoAperturaCierreRestaurante(estaAbierto))
             dispatch(mensajeAperturaCierreRestaurante("Buen Sabor está cerrado. Horarios: Lunes a Domingo de 20 a 00. Sábado y Domingo 11 a 15"))
+        } else {
+            dispatch(estadoAperturaCierreRestaurante(estaAbierto))
         }
     }
 }
@@ -141,6 +143,8 @@ export function paginaCatalogoInsumoPadreAction(estado, categoriaInsumoPadre, es
         if (!estaAbierto) {
             dispatch(estadoAperturaCierreRestaurante(estaAbierto))
             dispatch(mensajeAperturaCierreRestaurante("Buen Sabor está cerrado. Horarios: Lunes a Domingo de 20 a 00. Sábado y Domingo 11 a 15"))
+        } else {
+            dispatch(estadoAperturaCierreRestaurante(estaAbierto));
         }
     }
 }
