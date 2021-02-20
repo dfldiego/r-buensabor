@@ -9,6 +9,10 @@ import {
     eliminarProductoCarritoAction,
     crearNuevaOrdenAction,
 } from '../../actions/homeActions';
+import {
+    obtenerConfiguracionAction,
+    obtenerPedidosAction,
+} from '../../actions/adminActions';
 import { useDispatch, useSelector } from 'react-redux';
 
 const Carrito = () => {
@@ -35,11 +39,15 @@ const Carrito = () => {
     const cerrar_modal_carrito = estadoCarrito => dispatch(abrirModalCarritoAction(estadoCarrito));
     const eliminarProductoCarrito = datosProductoCarrito => dispatch(eliminarProductoCarritoAction(datosProductoCarrito));
     const crearNuevaOrdenDePedido = (datosOrden, bill) => dispatch(crearNuevaOrdenAction(datosOrden, bill));
+    const cargarPedidos = () => dispatch(obtenerPedidosAction());
+    const obtenerCantidadCocineros = () => dispatch(obtenerConfiguracionAction());
 
     let CerrarModalCarrito = useSelector(state => state.home.abrir_modal_carrito);
     let MenusDeCarrito = useSelector(state => state.home.carrito);
     let mensaje = useSelector(state => state.home.mensaje);
     let alerta = useSelector(state => state.home.alerta);
+    const pedidos_state = useSelector(state => state.admin.pedidos);
+    const datoConfiguracion = useSelector(state => state.admin.configuracion);
 
     const cerrar_modal = () => {
         if (CerrarModalCarrito) {
@@ -48,6 +56,11 @@ const Carrito = () => {
         }
         return;
     }
+
+    useEffect(() => {
+        cargarPedidos();
+        obtenerCantidadCocineros();
+    }, [])
 
     useEffect(() => {
         let subtotalCarrito = 0;
@@ -138,11 +151,42 @@ const Carrito = () => {
         let number = Math.floor(Math.random() * 100000000);
         const user = JSON.parse(localStorage.getItem("user"));
 
+        /**
+         * aqui debo obtener endDate
+         * 1) OBTENER TIEMPO ESTIMADO DE LOS MENUES SELECCIONADOS
+         * 2) SI HAY DELIVERY
+         * 3) OBTENER TIEMPO ESTIMADO DE MENUES "EN PROGRESO" / CANTIDAD COCINEROS
+         */
+        debugger;
+        let contadorTiempoEstimado = 0;
+
+        //sumatoria de tiempo estimado de menus
+        MenusDeCarrito.map(elementoCarrito => {
+            if (elementoCarrito.finished_time) {
+                contadorTiempoEstimado += elementoCarrito.finished_time / datoConfiguracion.quantityCooks;
+            }
+        });
+
+        //si hay delivery
+        if (shippingType === "0") {
+            contadorTiempoEstimado += 10;
+        }
+
+        //3
+        pedidos_state.map(pedido => {
+            if (pedido.status === "EN_PROGRESO") {
+                contadorTiempoEstimado += Number.parseInt(pedido.endDate) / datoConfiguracion.quantityCooks;
+            }
+        })
+
+        console.log(contadorTiempoEstimado);
+
         const order = {
             orderDate,
             number,
             shippingType: Number.parseInt(shippingType),
             user: user._id,
+            endDate: contadorTiempoEstimado,
             foods,
             drinks,
         }

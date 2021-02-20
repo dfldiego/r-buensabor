@@ -16,7 +16,7 @@ let configSchema = new Schema({
 });
 
 configSchema.method('toJSON', function () {
-    const { __v, ...object } = this.toObject();
+    const { __v, password, ...object } = this.toObject();
     return object;
 })
 

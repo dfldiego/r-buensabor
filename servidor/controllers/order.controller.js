@@ -99,7 +99,7 @@ const create = async (req, res = response) => {
 
         let order = new Order({
             orderDate: body.orderDate,
-            endDate: 'calcular',
+            endDate: body.endDate,
             number: body.number,
             shippingType: body.shippingType,
             user: body.user
