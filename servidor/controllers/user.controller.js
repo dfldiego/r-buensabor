@@ -95,7 +95,7 @@ const create = async (req, res = response) => {
 }
 
 const update = async (req, res = response) => {
-
+    console.log(req.body);
     // obtenemos el id por parametro
     const id = req.params.id;
 
@@ -150,15 +150,33 @@ const update = async (req, res = response) => {
             }
         }
 
-        //actualizamos
-        const userStored = await User.findByIdAndUpdate(id, campos, { new: true });
-
         const camposAddress = {};
+        let addressStored = {};
+        let address = '';
+        let userStored = '';
+
         // actualizar Address del usuario
         camposAddress.location = location;
         camposAddress.nameStreet = nameStreet;
         camposAddress.numberStreet = numberStreet;
-        const addressStored = await Address.findByIdAndUpdate(userDB.address, camposAddress, { new: true });
+
+        if (nameStreet === undefined || location === undefined || numberStreet === undefined) {
+            // crear una instancia del nuevo User
+            address = new Address(camposAddress);
+
+            // guardar user en la BD
+            await address.save()
+                .then(async response => {
+                    campos.address = response._id;
+                    userStored = await User.findByIdAndUpdate(id, campos, { new: true });
+                })
+        } else {
+            addressStored = await Address.findByIdAndUpdate(userDB.address, camposAddress, { new: true })
+                .then(async response => {
+                    campos.address = response._id;
+                    userStored = await User.findByIdAndUpdate(id, campos, { new: true });
+                })
+        }
 
         res.json({
             ok: true,

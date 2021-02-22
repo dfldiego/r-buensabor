@@ -44,18 +44,32 @@ const Perfil = () => {
     /*************USAR USE SELECTOR: capturo el valor de state del store  *******************/
     let abrir_modal_perfil_store = useSelector(state => state.home.abrir_modal_perfil);
     let perfil_usuario_store = useSelector(state => state.home.perfil);
+    let mensaje = useSelector(state => state.home.mensaje);
+    let alerta = useSelector(state => state.home.alerta);
 
     /************** METODO USE EFFECT ********************************/
     useEffect(() => {
-        setPerfil({
-            ...perfil,
-            name: perfil_usuario_store.name,
-            email: perfil_usuario_store.email,
-            telephoneNumber: perfil_usuario_store.telephoneNumber,
-            nameStreet: perfil_usuario_store.address.nameStreet,
-            numberStreet: perfil_usuario_store.address.numberStreet,
-            location: perfil_usuario_store.address.location
-        });
+        console.log(perfil_usuario_store);
+
+        if (perfil_usuario_store.address.nameStreet !== undefined && perfil_usuario_store.address.numberStreet !== undefined && perfil_usuario_store.address.location !== undefined) {
+            setPerfil({
+                ...perfil,
+                name: perfil_usuario_store.name,
+                email: perfil_usuario_store.email,
+                telephoneNumber: perfil_usuario_store.telephoneNumber,
+                nameStreet: perfil_usuario_store.address.nameStreet,
+                numberStreet: perfil_usuario_store.address.numberStreet,
+                location: perfil_usuario_store.address.location,
+            })
+        } else {
+            setPerfil({
+                ...perfil,
+                name: perfil_usuario_store.name,
+                email: perfil_usuario_store.email,
+                telephoneNumber: perfil_usuario_store.telephoneNumber,
+            });
+        }
+
         setimagen({
             img: perfil_usuario_store.img
         });
@@ -219,6 +233,9 @@ const Perfil = () => {
                                         className="boton_actualizar_perfil"
                                     >Guardar</button>
                                 </div>
+                                {
+                                    alerta ? <p className="error">{mensaje}</p> : null
+                                }
                             </form>
                         </div>
                     </div>

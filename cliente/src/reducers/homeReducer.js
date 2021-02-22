@@ -181,6 +181,8 @@ export default function (state = initialState, action) {
                 ...state,
                 abrir_modal_perfil: false,
                 perfil: null,
+                alerta: null,
+                mensaje: null,
             }
         case GUARDAR_PRODUCTO_MENU_DETALLEPEDIDO:
             return {

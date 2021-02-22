@@ -186,19 +186,27 @@ export function actualizarPerfilAction(perfil, imageFile) {
             const header = authorizationHeader(token);
             const responseToken = await desencriptarToken(token);
             console.log(responseToken);
+
             if (imageFile !== null) {
                 const formData = new FormData();
                 formData.append('file', imageFile.img);
 
                 await clienteAxios.put(`/api/upload/users/${responseToken.user._id}`, formData, header)
                     .then(response => {
-                        console.log(response);
+                        console.log(response.data);
+                        if (response.data.msg) {
+                            dispatch(actualizarPerfilError(response.data.msg));
+                            return;
+                        }
                         clienteAxios.put(`/api/users/${response.data.result._id}`, perfil, header)
                         dispatch(actualizarPerfilExito(true));
                     })
             } else {
                 await clienteAxios.put(`/api/users/${responseToken.user._id}`, perfil, header)
-                dispatch(actualizarPerfilExito(true));
+                    .then(response => {
+                        console.log(response.data);
+                        dispatch(actualizarPerfilExito(true));
+                    })
             }
         } catch (err) {
             console.log(err);
@@ -232,10 +240,13 @@ export function perfilAction(estadoPerfil) {
                 //obtenemos los datos del id desde la DB - getOne User
                 //añadimos header para obtener autorizacion
                 const header = authorizationHeader(token);
-                const respuesta = await clienteAxios.get(`/api/users/${response.user._id}`, header);
-                console.log(respuesta);
-                // enviamos la respuesta del getOne al reducer.
-                dispatch(abrirModalPerfil(respuesta.data.user));
+                await clienteAxios.get(`/api/users/${response.user._id}`, header)
+                    .then(response => {
+                        console.log(response.data);
+                        // enviamos la respuesta del getOne al reducer.
+                        dispatch(abrirModalPerfil(response.data.user));
+                    })
+
 
             } catch (error) {
                 console.log(error);
