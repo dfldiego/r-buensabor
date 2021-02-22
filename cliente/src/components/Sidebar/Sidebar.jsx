@@ -129,7 +129,15 @@ const Sidebar = () => {
                         : null
                 }
                 {
-                    rolUser === 'CASHIER_ROLE' || rolUser === 'CHEF_ROLE' ?
+                    rolUser === 'CHEF_ROLE' ?
+                        <span>
+                            <li onClick={entra_menu}>Menu</li>
+                            <li onClick={entra_pedidos}>Pedidos</li>
+                        </span>
+                        : null
+                }
+                {
+                    rolUser === 'CASHIER_ROLE' ?
                         <li onClick={entra_pedidos}>Pedidos</li>
                         : null
                 }
