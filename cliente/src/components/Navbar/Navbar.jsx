@@ -11,6 +11,7 @@ import Login from '../auth/Login';
 import Register from '../auth/Register';
 import Perfil from '../Perfil/Perfil';
 import Carrito from '../Carrito/Carrito';
+import MisPedidos from '../MisPedidos/MisPedidos';
 import { validarRol } from "../../helpers/helpers";
 import { useHistory } from "react-router-dom";
 // Redux
@@ -23,6 +24,7 @@ import {
     cerrarSesionAction,
     perfilAction,
     abrirModalCarritoAction,
+    misPedidosAction,
 } from '../../actions/homeActions';
 
 const Navbar = () => {
@@ -30,6 +32,7 @@ const Navbar = () => {
     //useState locales
     const [openModal, setOpenModal] = useState(false);
     const [openModalPerfil, setOpenModalPerfil] = useState(null);
+    const [openModalPedido, setOpenModalPedido] = useState(false);
     const [openDropDown, setOpenDropDown] = useState(false);
     const [openModalCarrito, setOpenModalCarrito] = useState(false);
     const [isAdmin, setIsAdmin] = useState('loading');
@@ -44,6 +47,7 @@ const Navbar = () => {
     const abrir_cerrar_Modal = estado_modal => dispatch(abrirCerrarModalAction(estado_modal));
     const cerrar_sesion_callAction = () => dispatch(cerrarSesionAction());
     const perfil_callAction = estadoPerfil => dispatch(perfilAction(estadoPerfil));
+    const pedido_callAction = estadoPedido => dispatch(misPedidosAction(estadoPedido));
     const carrito_action = estadoCarrito => dispatch(abrirModalCarritoAction(estadoCarrito));
 
     /*************USAR USE SELECTOR: capturo el valor de state del store  *******************/
@@ -55,6 +59,7 @@ const Navbar = () => {
     const AbrirModalCarrito = useSelector(state => state.home.abrir_modal_carrito);
     const abrir_modal_perfil_store = useSelector(state => state.home.abrir_modal_perfil);
     const MenusDeCarrito = useSelector(state => state.home.carrito);
+    const abrir_modal_pedidos_store = useSelector(state => state.home.abrir_modal_pedidos);
 
     useEffect(() => {
         setOpenDropDown(false);
@@ -157,6 +162,27 @@ const Navbar = () => {
         // eslint-disable-next-line
     }, [AbrirModalCarrito])
 
+    // MODAL DE "MIS PEDIDOS"
+    const handleclick_openPedidos = () => {
+        if (openModalPedido === false || openModalPedido === null) {
+            setOpenModalPedido(true);
+            pedido_callAction(true);
+        } else {
+            closeModalPedido();
+            pedido_callAction(false);
+        }
+    }
+
+    const closeModalPedido = () => {
+        setOpenModalPedido(false);
+    }
+
+    useEffect(() => {
+        setOpenModalPedido(abrir_modal_pedidos_store);
+        // eslint-disable-next-line
+    }, [abrir_modal_pedidos_store])
+
+
     return (
         <Fragment>
             <div className="navbar contenedor">
@@ -199,6 +225,14 @@ const Navbar = () => {
                                                         className="sub-menu-li"
                                                         onClick={handleclick_openPerfil}
                                                         value="Perfil"
+                                                    />
+                                                </li>
+                                                <li>
+                                                    <input
+                                                        type="button"
+                                                        className="sub-menu-li"
+                                                        onClick={handleclick_openPedidos}
+                                                        value="Mis Pedidos"
                                                     />
                                                 </li>
                                                 <li>
@@ -279,6 +313,16 @@ const Navbar = () => {
                         closeModal={closeModalPerfil}
                     >
                         <Perfil />
+                    </ModalContainer>
+                    : null
+            }
+            {
+                abrir_modal_pedidos_store ?
+                    <ModalContainer
+                        openModal={openModalPedido}
+                        closeModal={closeModalPedido}
+                    >
+                        <MisPedidos />
                     </ModalContainer>
                     : null
             }

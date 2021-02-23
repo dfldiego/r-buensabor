@@ -26,11 +26,69 @@ import {
     AGREGAR_ORDEN,
     AGREGAR_ORDEN_EXITO,
     AGREGAR_ORDEN_ERROR,
+    ABRIR_MODAL_MIS_PEDIDOS,
+    CERRAR_MODAL_MIS_PEDIDOS,
+    GUARDAR_PEDIDOS_USUARIO,
 } from '../types';
 import clienteAxios from '../config/axios';
 import { validateTimeTokens } from '../helpers/validateTime_token';
 import { desencriptarToken } from '../helpers/desencriptar_token';
 import { authorizationHeader } from '../helpers/authorization_header';
+
+/************ ABRIR/CERRAR MIS PEDIDOS ***************/
+export function misPedidosAction(estadoPedido) {
+    return async (dispatch) => {
+        let pedidosUser = [];
+        var response = null;
+        console.log(estadoPedido);
+        if (estadoPedido) {
+            try {
+                //obtenemos el id del perfil desde el token
+                const token = localStorage.getItem('token');
+                var usuarioBase64 = token.split('.')[1];
+                usuarioBase64 = usuarioBase64.replace('-', '+').replace('_', '/');
+                response = await JSON.parse(window.atob(usuarioBase64));
+                console.log(response);  //response.user._id
+                //obtenemos los datos del id desde la DB - getOne User
+                //añadimos header para obtener autorizacion
+                const header = authorizationHeader(token);
+                await clienteAxios.get('/api/order', header)
+                    .then(responser => {
+                        console.log(responser.data.orders);
+                        const ordenes = responser.data.orders;
+                        for (const orden of ordenes) {
+                            if (orden.user._id === response.user._id) {
+                                pedidosUser.push(orden);
+                            }
+                        }
+                        dispatch(guardarMisPedidos(pedidosUser));
+                        dispatch(abrirModalPedidos(estadoPedido));
+                    })
+
+
+            } catch (error) {
+                console.log(error);
+            }
+        } else {
+            dispatch(cerrarModalPedidos(estadoPedido));
+        }
+    }
+}
+
+const guardarMisPedidos = pedidosUser => ({
+    type: GUARDAR_PEDIDOS_USUARIO,
+    payload: pedidosUser
+})
+
+const abrirModalPedidos = estadoPedido => ({
+    type: ABRIR_MODAL_MIS_PEDIDOS,
+    payload: estadoPedido
+})
+
+const cerrarModalPedidos = estadoPedido => ({
+    type: CERRAR_MODAL_MIS_PEDIDOS,
+    payload: estadoPedido
+})
 
 /**********************  para crear una nueva orden ********************************/
 export function crearNuevaOrdenAction(datosOrden, datosFactura) {

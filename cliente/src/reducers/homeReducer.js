@@ -28,6 +28,9 @@ import {
     AGREGAR_ORDEN_EXITO,
     AGREGAR_ORDEN_ERROR,
     GUARDAR_PRODUCTO_MENU_DETALLEPEDIDO,
+    ABRIR_MODAL_MIS_PEDIDOS,
+    CERRAR_MODAL_MIS_PEDIDOS,
+    GUARDAR_PEDIDOS_USUARIO,
 } from '../types';
 
 const initialState = {
@@ -35,6 +38,7 @@ const initialState = {
     abrir_registrarse: false,
     esta_logueado: false,
     abrir_modal_carrito: false,
+    abrir_modal_pedidos: false,
     alerta: null,
     mensaje: null,
     error: null,
@@ -45,6 +49,7 @@ const initialState = {
     perfil: null,
     carrito: [],
     ordenes: [],
+    pedidos_user: [],
     producto_carrito_eliminar: null,
     productos_menus_detallePedido: null,
 }
@@ -159,6 +164,7 @@ export default function (state = initialState, action) {
                 rol: null,
                 perfil: null,
                 carrito: [],
+                pedidos_user: [],
             }
         case ROL_USUARIO:
             return {
@@ -188,6 +194,21 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 productos_menus_detallePedido: action.payload,
+            }
+        case ABRIR_MODAL_MIS_PEDIDOS:
+            return {
+                ...state,
+                abrir_modal_pedidos: action.payload,
+            }
+        case CERRAR_MODAL_MIS_PEDIDOS:
+            return {
+                ...state,
+                abrir_modal_pedidos: action.payload,
+            }
+        case GUARDAR_PEDIDOS_USUARIO:
+            return {
+                ...state,
+                pedidos_user: action.payload,
             }
         default:
             return state;
