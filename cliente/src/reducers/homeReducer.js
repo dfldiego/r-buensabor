@@ -204,6 +204,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 abrir_modal_pedidos: action.payload,
+                pedidos_user: null,
             }
         case GUARDAR_PEDIDOS_USUARIO:
             return {

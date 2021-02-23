@@ -10,10 +10,10 @@ import {
     obtenerUnaOrdenAction,
 } from '../../actions/adminActions';
 
-const PedidosDB = ({ orden }) => {
+const MisPedidosDB = ({ pedidoUser }) => {
 
     const [openModal, setOpenModal] = useState(false);
-    let { number, user, orderDate, endDate, status, shippingType, details } = orden;
+    let { number, user, orderDate, endDate, status, shippingType, details } = pedidoUser;
 
     const dispatch = useDispatch();
 
@@ -66,7 +66,7 @@ const PedidosDB = ({ orden }) => {
 
         if (openModal === false) {
             setOpenModal(true);
-            EstadoModalNroOrden(true, orden);
+            EstadoModalNroOrden(true, pedidoUser);
         } else {
             closeModal();
             EstadoModalNroOrden(false, null);
@@ -102,7 +102,7 @@ const PedidosDB = ({ orden }) => {
                     <a
                         href="#"
                         className="color_azul"
-                        onClick={e => handleClickDetallePedido(e, orden)}
+                        onClick={e => handleClickDetallePedido(e, pedidoUser)}
                     >{number}
                     </a>
                 </td>
@@ -121,47 +121,8 @@ const PedidosDB = ({ orden }) => {
                 <td>
                     <div className="acciones">
                         {
-                            status === 'PENDIENTE' ?
-                                <span className="botonesPendiente">
-                                    <button className="boton_editar_pedidos" onClick={e => handleClickCambiarEstadoPedido(e, 'APROBADO', orden)}>APROBAR</button>
-                                    <button className="boton_editar_pedidos fondo_rojo" onClick={e => handleClickCambiarEstadoPedido(e, 'CANCELADO', orden)}>CANCELAR</button>
-                                </span>
-                                : null
-
-                        }
-                        {
-                            status === 'APROBADO' ?
-                                <button className="boton_editar_pedidos fondo_azul" onClick={e => handleClickCambiarEstadoPedido(e, 'EN_PROGRESO', orden)}>COCINAR</button>
-                                :
-                                null
-                        }
-                        {
-                            status === 'EN_PROGRESO' ?
-                                <button className="boton_editar_pedidos fondo_rosado" onClick={e => handleClickCambiarEstadoPedido(e, 'TERMINADO', orden)}>TERMINAR</button>
-                                :
-                                null
-                        }
-                        {
-                            status == 'TERMINADO' && shippingType == "Por Delivery" ?
-                                <button className="boton_editar_pedidos fondo_violeta" onClick={e => handleClickCambiarEstadoPedido(e, 'EN_DELIVERY', orden)}>DELIVERY</button>
-                                :
-                                null
-                        }
-                        {
-                            status == 'TERMINADO' && shippingType == "Por Local" ?
-                                <button className="boton_editar_pedidos fondo_naranja" onClick={e => handleClickCambiarEstadoPedido(e, 'FACTURADO', orden, facturasDB)}>FACTURAR</button>
-                                :
-                                null
-                        }
-                        {
-                            status === 'EN_DELIVERY' && shippingType == "Por Delivery" ?
-                                <button className="boton_editar_pedidos fondo_negro" onClick={e => handleClickCambiarEstadoPedido(e, 'FACTURADO', orden, facturasDB)}>FACTURAR</button>
-                                :
-                                null
-                        }
-                        {
                             status === 'FACTURADO' ?
-                                <button className="boton_editar_pedidos fondo_negro" onClick={e => handleClickCambiarEstadoPedido(e, 'FACTURADO', orden, facturasDB)}>FACTURAR</button>
+                                <button className="boton_editar_pedidos fondo_negro" onClick={e => handleClickCambiarEstadoPedido(e, 'FACTURADO', pedidoUser, facturasDB)}>FACTURAR</button>
                                 :
                                 null
                         }
@@ -172,4 +133,4 @@ const PedidosDB = ({ orden }) => {
     )
 }
 
-export default PedidosDB
+export default MisPedidosDB

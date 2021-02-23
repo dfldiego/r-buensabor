@@ -20,6 +20,11 @@ table {
     width: 100%;
 }
 
+.tabla_mis_pedidos {
+    width: 80%;
+    margin: 0 auto;
+}
+
 th,
 td {
     width: 16.66%;

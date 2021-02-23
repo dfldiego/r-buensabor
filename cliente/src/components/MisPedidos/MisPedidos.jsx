@@ -3,7 +3,7 @@ import React, { Fragment, useState, useEffect } from 'react';
 // Estilos
 import './MisPedidos.css';
 import '../../assets/css/styles.css';
-
+import GetPedidos from '../Pedidos/GetPedidos';
 // Material Icons
 import ClearIcon from '@material-ui/icons/Clear';
 
@@ -14,29 +14,28 @@ import {
 } from '../../actions/homeActions';
 
 
-const Perfil = () => {
-    const [pedidosUser, setPedidosUser] = useState({
-        status: '',
-        details: [],
-        orderDate: '',
-        endDate: '',
-        number: 0,
-        shippingType: 0,
-        user: [],
-    });
-    const { status, details, orderDate, endDate, number, shippingType, user } = pedidosUser;
+const MisPedidos = () => {
+    /*  const [pedidosUser, setPedidosUser] = useState({
+         status: '',
+         details: [],
+         orderDate: '',
+         endDate: '',
+         number: 0,
+         shippingType: 0,
+         user: [],
+     }); */
 
     const dispatch = useDispatch();
 
     const pedido_callAction = estadoPedido => dispatch(misPedidosAction(estadoPedido));
 
     let abrir_modal_pedidos_store = useSelector(state => state.home.abrir_modal_pedidos);
-    let pedidos_user_usuario_store = useSelector(state => state.home.pedidos_user);
+    /* let pedidos_user_usuario_store = useSelector(state => state.home.pedidos_user); */
     let mensaje = useSelector(state => state.home.mensaje);
     let alerta = useSelector(state => state.home.alerta);
 
     /************** METODO USE EFFECT ********************************/
-    useEffect(() => {
+    /* useEffect(() => {
         console.log(pedidos_user_usuario_store);
 
         setPedidosUser({
@@ -51,7 +50,7 @@ const Perfil = () => {
         })
 
         // eslint-disable-next-line
-    }, [pedidos_user_usuario_store])
+    }, [pedidos_user_usuario_store]) */
 
     /************** METODO PARA CERRAR MODAL *************************/
     const cerrar_modal = e => {
@@ -72,11 +71,12 @@ const Perfil = () => {
                         onClick={cerrar_modal}
                     />
                     <h3 className="centrar-texto fw-300">Mis Pedidos</h3>
-
+                    <GetPedidos
+                    />
                 </div>
             </div>
         </Fragment>
     )
 }
 
-export default Perfil
+export default MisPedidos;
