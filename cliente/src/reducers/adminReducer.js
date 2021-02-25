@@ -780,6 +780,7 @@ export default function (state = initialState, action) {
                 insumo_detalles_pedido: [],
                 menu_detalles_pedido: [],
                 orden: null,
+                detalles_pedido: [],
             }
         case OBTENER_INSUMO_POR_ID:
             return {

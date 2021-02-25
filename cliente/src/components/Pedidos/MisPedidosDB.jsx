@@ -32,7 +32,7 @@ const MisPedidosDB = ({ pedidoUser }) => {
     const cortadohoraEntrada = orderDate.slice(11);
     const horaEntrada = cortadohoraEntrada.slice(0, 5);
 
-    const handleClickDetallePedido = (e, orden) => {
+    const handleClickDetallePedido = (e, pedidoUser) => {
         e.preventDefault();
         let total = 0;
 
@@ -87,6 +87,9 @@ const MisPedidosDB = ({ pedidoUser }) => {
     const handleClickCambiarEstadoPedido = (e, nuevoEstadoPedido, ordenPedido, facturas) => {
         e.preventDefault();
 
+        console.log(nuevoEstadoPedido);
+        console.log(ordenPedido);
+        console.log(facturas);  //viene []
         obtenerOrdenEditar(ordenPedido);
         //editamos estado de la orden
         ordenPedido.status = nuevoEstadoPedido;

@@ -15,7 +15,7 @@ const GetPedidos = () => {
 
     return (
         <Fragment>
-            {!pedidos_user_usuario_store ?
+            {pedidos_user_usuario_store.length === 0 ?
                 <div>
                     <h2 className="titulo">Listado de Pedidos</h2>
                     <table className="tabla_mis_pedidos">
@@ -62,7 +62,7 @@ const GetPedidos = () => {
             }
 
             {
-                pedidos_user_usuario_store ?
+                pedidos_user_usuario_store.length !== 0 ?
                     <div>
                         <table className="tabla_mis_pedidos">
                             <thead>

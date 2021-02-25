@@ -4,6 +4,8 @@ import React, { Fragment, useState, useEffect } from 'react';
 import './MisPedidos.css';
 import '../../assets/css/styles.css';
 import GetPedidos from '../Pedidos/GetPedidos';
+import ModalContainer from '../ModalContainer/ModalContainer';
+import DetallePedido from '../Pedidos/DetallePedido';
 // Material Icons
 import ClearIcon from '@material-ui/icons/Clear';
 
@@ -15,42 +17,17 @@ import {
 
 
 const MisPedidos = () => {
-    /*  const [pedidosUser, setPedidosUser] = useState({
-         status: '',
-         details: [],
-         orderDate: '',
-         endDate: '',
-         number: 0,
-         shippingType: 0,
-         user: [],
-     }); */
+
+    const [openModal, setOpenModal] = useState(false);
 
     const dispatch = useDispatch();
 
     const pedido_callAction = estadoPedido => dispatch(misPedidosAction(estadoPedido));
 
     let abrir_modal_pedidos_store = useSelector(state => state.home.abrir_modal_pedidos);
-    /* let pedidos_user_usuario_store = useSelector(state => state.home.pedidos_user); */
     let mensaje = useSelector(state => state.home.mensaje);
     let alerta = useSelector(state => state.home.alerta);
-
-    /************** METODO USE EFFECT ********************************/
-    /* useEffect(() => {
-        console.log(pedidos_user_usuario_store);
-
-        setPedidosUser({
-            ...pedidosUser,
-            status: pedidos_user_usuario_store.status,
-            details: pedidos_user_usuario_store.details,
-            orderDate: pedidos_user_usuario_store.orderDate,
-            endDate: pedidos_user_usuario_store.endDate,
-            number: pedidos_user_usuario_store.number,
-            shippingType: pedidos_user_usuario_store.shippingType,
-            user: pedidos_user_usuario_store.user,
-        })
-
-        // eslint-disable-next-line
-    }, [pedidos_user_usuario_store]) */
+    let modalDetallePedido = useSelector(state => state.admin.abrir_modal_detalle_pedido);
 
     /************** METODO PARA CERRAR MODAL *************************/
     const cerrar_modal = e => {
@@ -61,6 +38,16 @@ const MisPedidos = () => {
         }
         return;
     }
+
+    /************** METODO PARA CERRAR/ABRIR MODAL DETALLE *************************/
+    const closeModal = () => {
+        setOpenModal(false);
+    }
+    // le pasa el state principal al state local
+    useEffect(() => {
+        setOpenModal(modalDetallePedido);
+        // eslint-disable-next-line
+    }, [modalDetallePedido])
 
     return (
         <Fragment>
@@ -74,6 +61,16 @@ const MisPedidos = () => {
                     <GetPedidos
                     />
                 </div>
+                {modalDetallePedido ?
+                    <ModalContainer
+                        openModal={openModal}
+                        closeModal={closeModal}
+                    >
+                        <DetallePedido
+                        />
+                    </ModalContainer>
+                    : null
+                }
             </div>
         </Fragment>
     )
