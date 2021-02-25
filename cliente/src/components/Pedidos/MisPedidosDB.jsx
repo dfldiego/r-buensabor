@@ -29,6 +29,10 @@ const MisPedidosDB = ({ pedidoUser }) => {
     const modalDetallePedido = useSelector(state => state.admin.abrir_modal_detalle_pedido);
     const facturasDB = useSelector(state => state.admin.facturas);
 
+    const fecha = orderDate.slice(0, 10);
+    const arrayFecha = fecha.split("-");
+    const fechaDiaMesAño = arrayFecha[2] + "/" + arrayFecha[1] + "/" + arrayFecha[0];
+
     const cortadohoraEntrada = orderDate.slice(11);
     const horaEntrada = cortadohoraEntrada.slice(0, 5);
 
@@ -110,8 +114,7 @@ const MisPedidosDB = ({ pedidoUser }) => {
                     </a>
                 </td>
                 <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.telephoneNumber}</td>
+                <td>{fechaDiaMesAño}</td>
                 <td>{horaEntrada}</td>
                 <td>{endDate}</td>
                 <td>{

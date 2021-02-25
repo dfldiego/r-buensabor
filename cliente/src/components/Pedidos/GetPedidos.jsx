@@ -69,8 +69,7 @@ const GetPedidos = () => {
                                 <tr>
                                     <th scope="col">N° Orden</th>
                                     <th scope="col">Nombre Cliente</th>
-                                    <th scope="col">Email Cliente</th>
-                                    <th scope="col">Teléfono</th>
+                                    <th scope="col">Fecha</th>
                                     <th scope="col">Hora Entrada</th>
                                     <th scope="col">Tiempo Estimado</th>
                                     <th scope="col">Tipo de Envío</th>
