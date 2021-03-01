@@ -21,4 +21,6 @@ app.get('/income-day', [checkToken], orderDetailController.incomesDay);
 
 app.get('/income-month', [checkToken], orderDetailController.incomesMonth);
 
+app.get('/orders-client', [checkToken], orderDetailController.sizeofOrdersByClient);
+
 module.exports = app;

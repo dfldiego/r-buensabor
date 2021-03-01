@@ -1,5 +1,6 @@
 const response = require('express');
 const OrderDetail = require('../models/order-detail.model');
+const User = require('../models/user.model');
 
 const list = async (req, res = response) => {
     OrderDetail.find({ status: true }).exec((err, orderDetails) => {
@@ -118,21 +119,16 @@ const rank = async (req, res) => {
 
             //OBTENER LA FECHAS DE LOS PEDIDOS
             let pedidosFiltradosPorFechas = [];
-            let contador = 0;
             for (const pedido of details) {
                 let FechaPedidoTimeStamp = Date.parse(pedido.order.orderDate);
 
                 if (FechaPedidoTimeStamp < FechaFinalTimeStamp && FechaPedidoTimeStamp > FechaInicialTimeStamp) {
                     pedidosFiltradosPorFechas.push(pedido);
-                    contador++;
                 }
             }
 
             console.log("pedidosFiltradosPorFechas");
             console.log(pedidosFiltradosPorFechas);
-            console.log(contador);
-
-            // Debemos ahora hacer un reduce de pedidosFiltradosPorFechas
 
             pedidosFiltradosPorFechas.reduce(function (res, value) {
                 if (!res[value.menu._id]) {
@@ -206,6 +202,64 @@ const incomesMonth = async (req, res) => {
         });
 }
 
+const sizeofOrdersByClient = async (req, res) => {
+    //OBTENER LA FECHA INICIO DESDE EL BODY
+    const FechaInicial = new Date("2021/01/23 23:30:14");
+    let FechaInicialTimeStamp = Date.parse(FechaInicial);
+    //OBTENER LA FECHA FIN DESDE EL BODY
+    const FechaFinal = new Date("2021/02/28 23:30:14");
+    let FechaFinalTimeStamp = Date.parse(FechaFinal);
+
+    OrderDetail.find({ status: true })
+        .populate('menu description')
+        .populate('order orderDate')
+        .exec(async (err, details) => {
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    err
+                });
+            }
+
+            console.log("details");
+            console.log(details);
+
+            //OBTENER LA FECHAS DE LOS PEDIDOS
+            let orderFilterByDate = [];
+            for (const pedido of details) {
+                let FechaPedidoTimeStamp = Date.parse(pedido.order.orderDate);
+
+                if (FechaPedidoTimeStamp < FechaFinalTimeStamp && FechaPedidoTimeStamp > FechaInicialTimeStamp) {
+                    const user = await User.findById(pedido.order.user);
+                    orderFilterByDate.push({ pedido, user });
+                }
+            }
+
+            console.log("orderFilterByDate");
+            console.log(orderFilterByDate);
+
+            // Ahora debo hacer un reduce q filtre por id de user de las ordenes
+
+            const result = orderFilterByDate
+                .map(function (user) { return user.user.email })
+                .reduce(function (res, value) {
+                    if (res[value]) {
+                        res[value] = res[value] + 1;
+                    } else {
+                        res[value] = 1;
+                    }
+                    return res;
+                }, {});
+
+            res.json({
+                ok: true,
+                result: result,
+                size: result.length,
+            });
+        });
+
+}
+
 function filterOrderAndGetIncomes(details, yearDate, monthDate, dayDate) {
     let orderFilter = [];
     let data = {
@@ -255,4 +309,5 @@ module.exports = {
     rank,
     incomesDay,
     incomesMonth,
+    sizeofOrdersByClient,
 }
