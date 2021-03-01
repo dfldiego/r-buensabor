@@ -151,10 +151,101 @@ const rank = async (req, res) => {
         });
 };
 
+const incomesDay = async (req, res) => {
+
+    //OBTENER LA FECHA INICIO DESDE EL BODY -- FECHA DE RECAUDACION DIARIA //enero=0
+    const initialDate = new Date(2021, 01, 6);
+    const dayinitialDateTimeStamp = initialDate.getDay();
+    const monthInitialDateTimeStamp = initialDate.getMonth();
+    const yearinitialDateTimeStamp = initialDate.getFullYear();
+
+    OrderDetail.find({ status: true, menu: { $ne: null } })
+        .populate('order orderDate')
+        .exec((err, detailsIncomeDay) => {
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    err
+                });
+            }
+
+            let orderFilterByDay = [];
+            let count = 0;
+            for (const orderDetail of detailsIncomeDay) {
+                let orderDateTimeStamp = Date.parse(orderDetail.order.orderDate);
+                let dayOrderDate = new Date(orderDateTimeStamp).getDay();
+                let monthOrderDate = new Date(orderDateTimeStamp).getMonth();
+                let yearOrderDate = new Date(orderDateTimeStamp).getFullYear();
+
+                if (dayinitialDateTimeStamp === dayOrderDate && monthInitialDateTimeStamp === monthOrderDate && yearinitialDateTimeStamp === yearOrderDate) {
+                    orderFilterByDay.push(orderDetail);
+                    count++;
+                }
+            }
+
+            // Debemos ahora hacer un reduce de orderFilterByDay
+            const totalDailyIncomes = orderFilterByDay.reduce(function (res, value) {
+                return res + value.subTotal;
+            }, 0);
+
+            res.json({
+                ok: true,
+                result: totalDailyIncomes,
+                size: count
+            });
+        });
+}
+
+const incomesMonth = async (req, res) => {
+
+    //OBTENER LA FECHA INICIO DESDE EL BODY -- FECHA DE RECAUDACION DIARIA //enero=0
+    const initialDate = new Date(2021, 01);
+    const monthInitialDateTimeStamp = initialDate.getMonth();
+    const yearinitialDateTimeStamp = initialDate.getFullYear();
+
+    OrderDetail.find({ status: true, menu: { $ne: null } })
+        .populate('order orderDate')
+        .exec((err, detailsIncomeMonth) => {
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    err
+                });
+            }
+
+            // 
+            let orderFilterByMonth = [];
+            let count = 0;
+            for (const orderDetail of detailsIncomeMonth) {
+                let orderDateTimeStamp = Date.parse(orderDetail.order.orderDate);
+                let monthOrderDate = new Date(orderDateTimeStamp).getMonth();
+                let yearOrderDate = new Date(orderDateTimeStamp).getFullYear();
+
+                if (monthInitialDateTimeStamp === monthOrderDate && yearinitialDateTimeStamp === yearOrderDate) {
+                    orderFilterByMonth.push(orderDetail);
+                    count++;
+                }
+            }
+
+            // Debemos ahora hacer un reduce de orderFilterByMonth
+            const totalMonthIncomes = orderFilterByMonth.reduce(function (res, value) {
+                return res + value.subTotal;
+            }, 0);
+
+            res.json({
+                ok: true,
+                result: totalMonthIncomes,
+                size: count
+            });
+        });
+}
+
 module.exports = {
     list,
     create,
     update,
     remove,
-    rank
+    rank,
+    incomesDay,
+    incomesMonth,
 }
