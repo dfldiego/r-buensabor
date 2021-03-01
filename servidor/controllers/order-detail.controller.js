@@ -169,29 +169,12 @@ const incomesDay = async (req, res) => {
                 });
             }
 
-            let orderFilterByDay = [];
-            let count = 0;
-            for (const orderDetail of detailsIncomeDay) {
-                let orderDateTimeStamp = Date.parse(orderDetail.order.orderDate);
-                let dayOrderDate = new Date(orderDateTimeStamp).getDay();
-                let monthOrderDate = new Date(orderDateTimeStamp).getMonth();
-                let yearOrderDate = new Date(orderDateTimeStamp).getFullYear();
-
-                if (dayinitialDateTimeStamp === dayOrderDate && monthInitialDateTimeStamp === monthOrderDate && yearinitialDateTimeStamp === yearOrderDate) {
-                    orderFilterByDay.push(orderDetail);
-                    count++;
-                }
-            }
-
-            // Debemos ahora hacer un reduce de orderFilterByDay
-            const totalDailyIncomes = orderFilterByDay.reduce(function (res, value) {
-                return res + value.subTotal;
-            }, 0);
+            const totalDailyIncomes = filterOrderAndGetIncomes(detailsIncomeDay, yearinitialDateTimeStamp, monthInitialDateTimeStamp, dayinitialDateTimeStamp);
 
             res.json({
                 ok: true,
-                result: totalDailyIncomes,
-                size: count
+                result: totalDailyIncomes.totalIncomes,
+                size: totalDailyIncomes.count
             });
         });
 }
@@ -213,31 +196,55 @@ const incomesMonth = async (req, res) => {
                 });
             }
 
-            // 
-            let orderFilterByMonth = [];
-            let count = 0;
-            for (const orderDetail of detailsIncomeMonth) {
-                let orderDateTimeStamp = Date.parse(orderDetail.order.orderDate);
-                let monthOrderDate = new Date(orderDateTimeStamp).getMonth();
-                let yearOrderDate = new Date(orderDateTimeStamp).getFullYear();
-
-                if (monthInitialDateTimeStamp === monthOrderDate && yearinitialDateTimeStamp === yearOrderDate) {
-                    orderFilterByMonth.push(orderDetail);
-                    count++;
-                }
-            }
-
-            // Debemos ahora hacer un reduce de orderFilterByMonth
-            const totalMonthIncomes = orderFilterByMonth.reduce(function (res, value) {
-                return res + value.subTotal;
-            }, 0);
+            const totalMonthIncomes = filterOrderAndGetIncomes(detailsIncomeMonth, yearinitialDateTimeStamp, monthInitialDateTimeStamp, null);
 
             res.json({
                 ok: true,
-                result: totalMonthIncomes,
-                size: count
+                result: totalMonthIncomes.totalIncomes,
+                size: totalMonthIncomes.count
             });
         });
+}
+
+function filterOrderAndGetIncomes(details, yearDate, monthDate, dayDate) {
+    let orderFilter = [];
+    let data = {
+        totalIncomes: 0,
+        count: 0
+    }
+    let orderDateTimeStamp = '';
+    let dayOrderDate = '';
+    let monthOrderDate = '';
+    let yearOrderDate = '';
+
+    for (const orderDetail of details) {
+
+        orderDateTimeStamp = Date.parse(orderDetail.order.orderDate);
+        if (dayDate !== null) {
+            dayOrderDate = new Date(orderDateTimeStamp).getDay();
+        }
+        monthOrderDate = new Date(orderDateTimeStamp).getMonth();
+        yearOrderDate = new Date(orderDateTimeStamp).getFullYear();
+
+        if (dayDate !== null) {
+            if (dayDate === dayOrderDate && monthDate === monthOrderDate && yearDate === yearOrderDate) {
+                orderFilter.push(orderDetail);
+                data.count++;
+            }
+        } else {
+            if (monthDate === monthOrderDate && yearDate === yearOrderDate) {
+                orderFilter.push(orderDetail);
+                data.count++;
+            }
+        }
+    }
+
+    // Debemos ahora hacer un reduce de orderFilter
+    data.totalIncomes = orderFilter.reduce(function (res, value) {
+        return res + value.subTotal;
+    }, 0);
+
+    return data
 }
 
 module.exports = {
