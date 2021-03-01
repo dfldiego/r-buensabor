@@ -93,9 +93,68 @@ const remove = async (req, res = response) => {
     });
 };
 
+const rank = async (req, res) => {
+    //OBTENER LA FECHA INICIO DESDE EL BODY
+    const FechaInicial = new Date("2021/02/23 23:30:14");
+    let FechaInicialTimeStamp = Date.parse(FechaInicial);
+    //OBTENER LA FECHA FIN DESDE EL BODY
+    const FechaFinal = new Date("2021/02/26 23:30:14");
+    let FechaFinalTimeStamp = Date.parse(FechaFinal);
+
+    OrderDetail.find({ status: true, menu: { $ne: null } })
+        .populate('menu description')
+        .populate('order orderDate')
+        .exec((err, details) => {
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    err
+                });
+            }
+
+            var result = [];
+            console.log("details");
+            console.log(details);
+
+            //OBTENER LA FECHAS DE LOS PEDIDOS
+            let pedidosFiltradosPorFechas = [];
+            let contador = 0;
+            for (const pedido of details) {
+                let FechaPedidoTimeStamp = Date.parse(pedido.order.orderDate);
+
+                if (FechaPedidoTimeStamp < FechaFinalTimeStamp && FechaPedidoTimeStamp > FechaInicialTimeStamp) {
+                    pedidosFiltradosPorFechas.push(pedido);
+                    contador++;
+                }
+            }
+
+            console.log("pedidosFiltradosPorFechas");
+            console.log(pedidosFiltradosPorFechas);
+            console.log(contador);
+
+            // Debemos ahora hacer un reduce de pedidosFiltradosPorFechas
+
+            pedidosFiltradosPorFechas.reduce(function (res, value) {
+                if (!res[value.menu._id]) {
+                    res[value.menu._id] = { menu: value.menu._id, quantity: 0, description: value.menu.description };
+                    result.push(res[value.menu._id])
+                }
+                res[value.menu._id].quantity += value.quantity;
+                return res;
+            }, {});
+
+            res.json({
+                ok: true,
+                result: result.sort((a, b) => b.quantity - a.quantity),
+                size: result.length
+            });
+        });
+};
+
 module.exports = {
     list,
     create,
     update,
-    remove
+    remove,
+    rank
 }

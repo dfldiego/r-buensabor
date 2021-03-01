@@ -17,4 +17,6 @@ app.put('/:id', [checkToken], orderController.update);
 
 app.delete('/:id', [checkToken], orderController.remove);
 
+/* app.get('/rank', [checkToken], orderController.rank); */
+
 module.exports = app;

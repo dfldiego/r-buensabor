@@ -1,5 +1,5 @@
 /**
- *  path: /api/order
+ *  path: /api/order-detail
  */
 
 const express = require('express');
@@ -14,5 +14,7 @@ app.post('/', [checkToken], orderDetailController.create);
 app.put('/:id', [checkToken], orderDetailController.update);
 
 app.delete('/:id', [checkToken], orderDetailController.remove);
+
+app.get('/rank', [checkToken], orderDetailController.rank);
 
 module.exports = app;
