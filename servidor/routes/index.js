@@ -18,5 +18,6 @@ app.use('/api/config', require('./config.routes'));
 app.use('/api/send-email', require('./email.routes'));
 app.use('/api/pdf', require('./pdf-generator.routes'));
 app.use('/api/bill', require('./bill.routes'));
+app.use('/api/excel', require('./excel.routes'));
 
 module.exports = app;
