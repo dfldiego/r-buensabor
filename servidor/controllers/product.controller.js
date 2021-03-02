@@ -116,6 +116,37 @@ const remove = async (req, res = response) => {
     });
 }
 
+//CONTROL DE STOCK. MOSTRAR ARTICULOS POR DEBAJO DEL STOCK MINIMO
+const scarse = async (req, res = response) => {
+    let scarseProducts = [];
+    try {
+        const products = await Product.find({ status: true });
+        console.log(products);
+
+        for (let product of products) {
+            if (product.current_stock < product.min_stock) {
+                scarseProducts.push(product);
+            }
+        }
+
+        if (scarseProducts === []) {
+            console.log("No hay insumos escasos");
+        }
+
+        res.json({
+            ok: true,
+            scarseProducts,
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: error
+        });
+    }
+}
+
 const search = async (req, res) => {
 
     let from = Number(req.query.from) || 0;
@@ -184,4 +215,5 @@ module.exports = {
     remove,
     search,
     getById,
+    scarse,
 }

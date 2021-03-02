@@ -149,16 +149,17 @@ function saveOrderDetail(orderId, detail, flag) {
     orderDetail.save();
 }
 
+//CONTROL DE STOCK. MOSTRAR ARTICULOS POR DEBAJO DEL STOCK MINIMO
 const update = async (req, res = response) => {
     const id = req.params.id;
-
     // obtengo estado de la orden desde el cliente
     const status = req.body.status;
+    let scarseProducts = [];
 
     if (status === 'TERMINADO') {
         //busco y obtengo detalles de la orden desde la BD
         const orderDetails = await OrderDetail.find({ order: id })
-            .populate('product', 'current_stock');
+            .populate('product', 'current_stock min_stock');
 
         //recorro cada detalle de los detalles de la orden
         for (let detail of orderDetails) {
@@ -170,13 +171,26 @@ const update = async (req, res = response) => {
                 // stock actual = stock actual del producto - cant. del detalle
                 drink.current_stock = drink.current_stock - detail.quantity;
                 drink.save();
+
+                //validation current stock & min stock
+                if (drink.current_stock < drink.min_stock) {
+                    scarseProducts.push(drink);
+                }
+
+                // si el detalle de la orden es de un ingrediente
             } else if (detail.menu != null) {
                 const menuDetails = await MenuDetail.find({ menu: detail.menu, status: true })
-                    .populate('product', 'current_stock');
+                    .populate('product', 'current_stock min_stock');
                 for (let menu of menuDetails) {
                     let food = menu.product;
                     food.current_stock = (food.current_stock - (detail.quantity * menu.quantity)).toFixed(2);
                     food.save();
+
+                    //validation current stock & min stock
+                    if (food.current_stock < food.min_stock) {
+                        scarseProducts.push(food);
+                    }
+
                 }
             }
         }
@@ -192,7 +206,8 @@ const update = async (req, res = response) => {
 
         res.json({
             ok: true,
-            order: orderStored
+            order: orderStored,
+            scarseProducts
         });
     });
 }

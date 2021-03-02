@@ -7,6 +7,7 @@ const { checkToken, checkAdminRole } = require('../middlewares/authentication');
 const productController = require('../controllers/product.controller');
 const router = Router();
 
+router.get('/scarse', [checkToken], productController.scarse);
 router.get('/', [checkToken], productController.list);
 router.post('/', [checkToken], productController.create);
 router.put('/:id', [checkToken], productController.update);

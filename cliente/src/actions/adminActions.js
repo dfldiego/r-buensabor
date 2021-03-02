@@ -113,6 +113,7 @@ import {
     DESCARGA_LISTADO_FACTURAS,
     DESCARGA_FACTURAS_ERROR,
     AGREGAR_ORDEN_DETALLE_PEDIDO,
+    PRODUCTOS_ESCASOS_CARGADOS,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
@@ -366,8 +367,9 @@ export function editarOrdenAction(nuevaOrden, facturas) {
 
             await clienteAxios.put(`/api/order/${nuevaOrden._id}`, nuevaOrden, header)
                 .then(response => {
-                    const { order } = response.data;
+                    const { order, scarseProducts } = response.data;
                     dispatch(editarOrdenExito(order));
+                    dispatch(productosEscasos(scarseProducts));
                     if (facturas) {
                         for (const factura of facturas) {
                             if (factura.order === order._id) {
@@ -392,6 +394,11 @@ export function editarOrdenAction(nuevaOrden, facturas) {
 const editarOrdenExito = categoriaInsumo => ({
     type: ORDEN_EDITADO_EXITO,
     payload: categoriaInsumo
+})
+
+const productosEscasos = productos => ({
+    type: PRODUCTOS_ESCASOS_CARGADOS,
+    payload: productos
 })
 
 const editarOrdenErrores = errores => ({

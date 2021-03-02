@@ -115,6 +115,7 @@ import {
     DESCARGA_LISTADO_FACTURAS,
     DESCARGA_FACTURAS_ERROR,
     AGREGAR_ORDEN_DETALLE_PEDIDO,
+    PRODUCTOS_ESCASOS_CARGADOS,
 } from '../types';
 
 const initialState = {
@@ -176,6 +177,7 @@ const initialState = {
     limite: 5,
     detalles_pedido: [],
     orden: null,
+    productos_escasos: [],
 }
 
 export default function (state = initialState, action) {
@@ -836,6 +838,11 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 orden: action.payload,
+            }
+        case PRODUCTOS_ESCASOS_CARGADOS:
+            return {
+                ...state,
+                productos_escasos: action.payload,
             }
         default:
             return state;
