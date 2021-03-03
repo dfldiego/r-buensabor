@@ -116,6 +116,7 @@ import {
     DESCARGA_FACTURAS_ERROR,
     AGREGAR_ORDEN_DETALLE_PEDIDO,
     PRODUCTOS_ESCASOS_CARGADOS,
+    ENTRAR_REPORTES,
 } from '../types';
 
 const initialState = {
@@ -126,6 +127,7 @@ const initialState = {
     en_categoria_insumos: null,
     en_pedidos: null,
     en_configuracion: null,
+    en_reportes: null,
     loading: false,
     abrir_agregar_usuario: false,
     abrir_agregar_categoria: false,
@@ -194,6 +196,7 @@ export default function (state = initialState, action) {
                 palabraBuscar: null,
                 en_pedidos: null,
                 en_configuracion: null,
+                en_reportes: null,
             }
         case ENTRAR_CRUD_MENU:
             return {
@@ -207,6 +210,7 @@ export default function (state = initialState, action) {
                 palabraBuscar: null,
                 en_pedidos: null,
                 en_configuracion: null,
+                en_reportes: null,
             }
         case ENTRAR_CRUD_CATEGORIA:
             return {
@@ -220,6 +224,7 @@ export default function (state = initialState, action) {
                 palabraBuscar: null,
                 en_pedidos: null,
                 en_configuracion: null,
+                en_reportes: null,
             }
         case ENTRAR_CRUD_INSUMOS:
             return {
@@ -233,6 +238,7 @@ export default function (state = initialState, action) {
                 palabraBuscar: null,
                 en_pedidos: null,
                 en_configuracion: null,
+                en_reportes: null,
             }
         case ENTRAR_CRUD_CATEGORIA_INSUMOS:
             return {
@@ -247,6 +253,7 @@ export default function (state = initialState, action) {
                 categoriasInsumoSelect: [],
                 en_pedidos: null,
                 en_configuracion: null,
+                en_reportes: null,
             }
         case ENTRAR_CRUD_PEDIDOS:
             return {
@@ -260,6 +267,7 @@ export default function (state = initialState, action) {
                 palabraBuscar: null,
                 en_pedidos: true,
                 en_configuracion: null,
+                en_reportes: null,
             }
         case ENTRAR_CRUD_CONFIGURACION:
             return {
@@ -273,6 +281,21 @@ export default function (state = initialState, action) {
                 palabraBuscar: null,
                 en_pedidos: null,
                 en_configuracion: true,
+                en_reportes: null,
+            }
+        case ENTRAR_REPORTES:
+            return {
+                ...state,
+                en_usuario: null,
+                en_menu: null,
+                en_categoria: null,
+                en_insumos: null,
+                en_categoria_insumos: null,
+                paginaCorriente: 0,
+                palabraBuscar: null,
+                en_pedidos: null,
+                en_configuracion: null,
+                en_reportes: true,
             }
         case CERRAR_AGREGAR_USUARIOS:
             return {

@@ -10,6 +10,7 @@ import {
     pantallaCategoriaInsumoAction,
     pantallaPedidosAction,
     pantallaConfiguracionAction,
+    pantallaReportesAction,
 } from '../../actions/adminActions';
 
 const Sidebar = () => {
@@ -25,6 +26,7 @@ const Sidebar = () => {
     const entrar_categoria_insumos_crud = estadoCategoriaInsumo => dispatch(pantallaCategoriaInsumoAction(estadoCategoriaInsumo));
     const entrar_pedidos_crud = estadoPedidos => dispatch(pantallaPedidosAction(estadoPedidos));
     const entrar_configuracion_crud = estadoConfiguracion => dispatch(pantallaConfiguracionAction(estadoConfiguracion));
+    const entrar_reportes = estadoReportes => dispatch(pantallaReportesAction(estadoReportes));
 
     // OBTENEMOS DATOS DESDE STORE
     const entrar_usuario_store = useSelector(state => state.admin.en_usuario);
@@ -34,6 +36,7 @@ const Sidebar = () => {
     const entrar_categoria_insumos_store = useSelector(state => state.admin.en_categoria_insumos);
     const entrar_pedidos_store = useSelector(state => state.admin.en_pedidos);
     const entrar_configuracion_store = useSelector(state => state.admin.en_configuracion);
+    const entrar_reportes_store = useSelector(state => state.admin.en_reportes);
 
     // metodo que corrobora si mostrar CRUD de usuarios.
     const entra_usuarios = e => {
@@ -112,6 +115,17 @@ const Sidebar = () => {
         }
     }
 
+    // metodo que corrobora si mostrar REPORTES.
+    const entra_reportes = e => {
+        e.preventDefault();
+
+        if (entrar_reportes_store) {
+            entrar_reportes(false);
+        } else {
+            entrar_reportes(true);
+        }
+    }
+
     return (
         <div id="sidebar">
             <ul>
@@ -125,6 +139,7 @@ const Sidebar = () => {
                             <li onClick={entra_insumos}>Insumos</li>
                             <li onClick={entra_pedidos}>Pedidos</li>
                             <li onClick={entra_configuracion}>Configuración</li>
+                            <li onClick={entra_reportes}>Reportes</li>
                         </span>
                         : null
                 }

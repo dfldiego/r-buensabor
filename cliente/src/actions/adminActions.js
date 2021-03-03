@@ -114,10 +114,23 @@ import {
     DESCARGA_FACTURAS_ERROR,
     AGREGAR_ORDEN_DETALLE_PEDIDO,
     PRODUCTOS_ESCASOS_CARGADOS,
+    ENTRAR_REPORTES,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
 import { authorizationHeader } from '../helpers/authorization_header';
+
+/********************** Entrar a REPORTES ***********************/
+export function pantallaReportesAction(estadoReportes) {
+    return (dispatch) => {
+        dispatch(pantallaReportes(estadoReportes))
+    }
+}
+
+const pantallaReportes = estadoReportes => ({
+    type: ENTRAR_REPORTES,
+    payload: estadoReportes
+})
 
 /**********************  para obtener las facturas(bills) de la BBDD ********************************/
 export function obtenerFacturasAction() {

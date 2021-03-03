@@ -8,6 +8,7 @@ import Insumos from '../Insumos/Insumos';
 import InsumosCategoria from '../InsumosCategorias/InsumosCategorias';
 import Pedidos from '../Pedidos/Pedidos';
 import Configuracion from '../Configuracion/Configuracion';
+import Reportes from '../Reportes/Reportes';
 import './Admin.css';
 import { validarRol } from "../../helpers/helpers";
 import { Redirect } from 'react-router';
@@ -24,6 +25,7 @@ const Admin = () => {
     const entrar_categoria_insumos_store = useSelector(state => state.admin.en_categoria_insumos);
     const entrar_pedidos_store = useSelector(state => state.admin.en_pedidos);
     const entrar_configuracion_store = useSelector(state => state.admin.en_configuracion);
+    const entrar_reportes_store = useSelector(state => state.admin.en_reportes);
 
     const [isValid, setIsValid] = useState('loading');
     const rolUser = JSON.parse(localStorage.getItem('user')).role;
@@ -57,7 +59,7 @@ const Admin = () => {
                     <Sidebar />
                 </div>
                 <div>
-                    {!en_usuario_state_store && !en_menu_state_store && !en_categoria_state_store && !entrar_categoria_insumos_store && !en_insumos_state_store && !entrar_pedidos_store && !entrar_configuracion_store ? <h1>Página de Administración</h1> : null}
+                    {!en_usuario_state_store && !en_menu_state_store && !en_categoria_state_store && !entrar_categoria_insumos_store && !en_insumos_state_store && !entrar_pedidos_store && !entrar_configuracion_store && !entrar_reportes_store ? <h1>Página de Administración</h1> : null}
                     {en_usuario_state_store ? <Usuario /> : null}
                     {en_categoria_state_store ? <Categorias /> : null}
                     {en_menu_state_store ? <Menu /> : null}
@@ -65,6 +67,7 @@ const Admin = () => {
                     {en_insumos_state_store ? <Insumos /> : null}
                     {entrar_pedidos_store ? <Pedidos /> : null}
                     {entrar_configuracion_store ? <Configuracion /> : null}
+                    {entrar_reportes_store ? <Reportes /> : null}
                 </div>
             </div>
         </Fragment>
