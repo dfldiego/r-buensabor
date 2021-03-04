@@ -1,4 +1,5 @@
 const validateTimeTokens = async (responseToken) => {
+    console.log(responseToken);
     let momentoActual = new Date();
 
     let expirationTimeStamp = Date.parse(responseToken.dateExpiration);

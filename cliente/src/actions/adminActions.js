@@ -115,10 +115,44 @@ import {
     AGREGAR_ORDEN_DETALLE_PEDIDO,
     PRODUCTOS_ESCASOS_CARGADOS,
     ENTRAR_REPORTES,
+    RANKING_EXCEL_EXPORTADO_EXITO,
+    RANKING_EXCEL_EXPORTADO_ERROR,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
 import { authorizationHeader } from '../helpers/authorization_header';
+
+/********************** Ranking: Fechas ***********************/
+export function guardarFechasReporteRankingAction(intervaloFechas) {
+    return async (dispatch) => {
+
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            console.log("header", header);
+            await clienteAxios.post(`/api/order-detail/rank`, intervaloFechas, header)
+                .then(response => {
+                    console.log("response.data", response.data);
+                    /* dispatch(reporteRankingExito(response.data.bills)); */
+                })
+        } catch (err) {
+            console.log(err);
+            dispatch(reporteRankingError('Error al realizar reporte de ranking'));
+        }
+
+    }
+}
+
+/* const reporteRankingExito = msj => ({
+    type: RANKING_EXCEL_EXPORTADO_EXITO,
+    payload: msj
+}) */
+
+const reporteRankingError = msj => ({
+    type: RANKING_EXCEL_EXPORTADO_ERROR,
+    payload: msj
+})
+
 
 /********************** Entrar a REPORTES ***********************/
 export function pantallaReportesAction(estadoReportes) {

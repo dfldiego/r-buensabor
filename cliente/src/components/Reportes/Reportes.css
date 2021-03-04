@@ -3,6 +3,11 @@
     padding: 2rem;
 }
 
+.titulo_reporte {
+    margin: 3rem 0;
+    text-align: center;
+}
+
 .fila_reportes {
     display: flex;
     justify-content: space-around;
@@ -27,4 +32,52 @@
     align-items: center;
     padding: 0 20px;
     text-align: center;
+}
+
+/****FORMULARIO****/
+.form-report {
+    margin: 2rem 0;
+}
+
+.form-row-report {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 70%;
+    margin-top: 3rem;
+}
+
+.input-report {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    background-color: #e1e1e1;
+    border: none;
+    margin: 0 !important;
+    padding: 1rem;
+}
+
+.label-report {
+    font-weight: 700;
+    text-transform: uppercase;
+    min-width: 30%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-report {
+    display: inline-block;
+    background: #00940c;
+    color: white;
+    padding: 1rem;
+    margin: 3rem 1rem;
+    border-radius: 30px;
+    border: none;
+}
+
+.row-report {
+    display: flex;
+    justify-content: center;
 }

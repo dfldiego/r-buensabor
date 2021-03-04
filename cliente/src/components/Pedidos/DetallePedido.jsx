@@ -33,7 +33,6 @@ const DetallePedido = () => {
 
     useEffect(() => {
         let total = 0;
-        console.log(details);
         if (details.length > 0) {
             const obtenerDetallePedido = (details) => {
                 details.map((detalle) => {

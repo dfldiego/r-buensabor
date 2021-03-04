@@ -4,9 +4,10 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "start": "npm run dev-debug",
     "start:dev": "nodemon server.js",
-    "dev": "npm run dev-debug",
-    "dev-debug": "nodemon --inspect ./server.js"
+    "dev": "nodemon",
+    "dev-debug": "nodemon --inspect=9000 ./server.js"
   },
   "keywords": [],
   "author": "",

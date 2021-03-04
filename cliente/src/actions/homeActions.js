@@ -399,6 +399,7 @@ export function estaLogueadoAction() {
             desencriptarToken(token)
                 .then(async responseToken => {
                     const estaExpirado = await validateTimeTokens(responseToken);
+                    console.log("estaExpirado", estaExpirado);
                     if (estaExpirado) {
                         localStorage.clear();
                         dispatch(cerrar_sesion());
