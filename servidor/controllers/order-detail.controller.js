@@ -1,6 +1,7 @@
 const response = require('express');
 const OrderDetail = require('../models/order-detail.model');
 const User = require('../models/user.model');
+const excelController = require('../controllers/excel.controller');
 
 const list = async (req, res = response) => {
     OrderDetail.find({ status: true }).exec((err, orderDetails) => {
@@ -114,7 +115,7 @@ const rank = async (req, res = response) => {
             }
 
             var result = [];
-            console.log("details", details);
+            /*  console.log("details", details); */
 
             //OBTENER LA FECHAS DE LOS PEDIDOS
             let filterOrderByDate = [];
@@ -126,7 +127,7 @@ const rank = async (req, res = response) => {
                 }
             }
 
-            console.log("filterOrderByDate", filterOrderByDate);
+            /* console.log("filterOrderByDate", filterOrderByDate); */
 
             filterOrderByDate.reduce(function (res, value) {
                 if (!res[value.menu._id]) {
@@ -137,11 +138,19 @@ const rank = async (req, res = response) => {
                 return res;
             }, {});
 
-            res.json({
+            const resultSort = result.sort((a, b) => b.quantity - a.quantity);
+
+            // save data of ranking in request and send to excelController
+            req.body.ranking = resultSort;
+            req.body.initialDate = initialDate;
+            req.body.finalDate = finalDate;
+            excelController.create(req, res);
+
+            /* res.json({
                 ok: true,
-                result: result.sort((a, b) => b.quantity - a.quantity),
+                result: resultSort,
                 size: result.length
-            });
+            }); */
         });
 };
 

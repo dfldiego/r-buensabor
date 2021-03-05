@@ -125,14 +125,14 @@ import { authorizationHeader } from '../helpers/authorization_header';
 /********************** Ranking: Fechas ***********************/
 export function guardarFechasReporteRankingAction(intervaloFechas) {
     return async (dispatch) => {
-
+        console.log('intervaloFechas', intervaloFechas);
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            console.log("header", header);
             await clienteAxios.post(`/api/order-detail/rank`, intervaloFechas, header)
-                .then(response => {
+                .then(async response => {
                     console.log("response.data", response.data);
+                    /* await clienteAxios.post(`/api/excel`, response.data.result); */
                     /* dispatch(reporteRankingExito(response.data.bills)); */
                 })
         } catch (err) {

@@ -2,48 +2,48 @@
 var xl = require('excel4node');
 
 const create = async (req, res) => {
+    const data = req.body.ranking;
+    console.log("req.body.ranking", req.body.ranking);
+
+    //transformar un array de objetos ==> un array de array(matriz) para poder recorrer 2 for.
+    let matriz = [];
+
+    // first row
+    let títulos = ["Descripcion", "Cantidad"]
+    matriz.unshift(títulos);
+
+    // data in matriz
+    const getData = data.map(item => [item.description, item.quantity]);
+    matriz.push(getData);
+
+    // kill inside arrays of matriz
+    let newMatriz = matriz.flat(2);
+
     // Create a new instance of a Workbook class
     var wb = new xl.Workbook();
 
     // Add Worksheets to the workbook
-    var ws = wb.addWorksheet('Sheet 1');
+    var ws = wb.addWorksheet('Ranking Menus');
 
     // Create a reusable style
     var style = wb.createStyle({
         font: {
-            color: '#FF0800',
-            size: 12,
-        },
-        /* numberFormat: '$#,##0.00; ($#,##0.00); -', */
+            color: '#171113',
+            size: 10,
+        }
     });
 
-    // Set value of cell A1 to 100 as a number type styled with paramaters of style
-    ws.cell(1, 1)
-        .number(100)
-        .style(style);
+    let contador = 0;
+    for (let i = 1; i <= newMatriz.length / 2; i++) {
+        for (let j = 1; j <= 2; j++) {
+            ws.cell(i, j)
+                .string(`${newMatriz[contador]}`)
+                .style(style);
+            contador += 1;
+        }
+    }
 
-    // Set value of cell B1 to 200 as a number type styled with paramaters of style
-    ws.cell(1, 2)
-        .number(200)
-        .style(style);
-
-    // Set value of cell C1 to a formula styled with paramaters of style
-    ws.cell(1, 3)
-        .formula('A1 + B1')
-        .style(style);
-
-    // Set value of cell A2 to 'string' styled with paramaters of style
-    ws.cell(2, 1)
-        .string('string')
-        .style(style);
-
-    // Set value of cell A3 to true as a boolean type styled with paramaters of style but with an adjustment to the font size.
-    ws.cell(3, 1)
-        .bool(true)
-        .style(style)
-        .style({ font: { size: 14 } });
-
-    wb.write('Excel.xlsx', res);
+    wb.write('Ranking.xlsx', res);
 }
 
 module.exports = {

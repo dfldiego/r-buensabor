@@ -6,8 +6,7 @@
   "scripts": {
     "start": "npm run dev-debug",
     "start:dev": "nodemon server.js",
-    "dev": "nodemon",
-    "dev-debug": "nodemon --inspect=9000 ./server.js"
+    "dev-debug": "nodemon --inspect=9000 server.js"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +26,7 @@
     "mongoose": "^5.10.9",
     "mongoose-unique-validator": "^2.0.3",
     "nodemailer": "^6.4.17",
+    "nodemon": "^2.0.7",
     "underscore": "^1.12.0"
   }
 }
