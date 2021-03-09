@@ -1,7 +1,6 @@
 const response = require('express');
 const OrderDetail = require('../models/order-detail.model');
 const User = require('../models/user.model');
-const excelController = require('../controllers/excel.controller');
 
 // Require library
 var xl = require('excel4node');
@@ -100,10 +99,10 @@ const remove = async (req, res = response) => {
 
 const rank = async (req, res = response) => {
     //OBTENER LA FECHA INICIO DESDE EL BODY
-    const initialDate = req.body.desde;
+    const initialDate = req.query.desde;
     let initialDateTimeStamp = Date.parse(initialDate);
     //OBTENER LA FECHA FIN DESDE EL BODY
-    const finalDate = req.body.hasta;
+    const finalDate = req.query.hasta;
     let finalDateTimeStamp = Date.parse(finalDate);
 
     OrderDetail.find({ status: true, menu: { $ne: null } })
@@ -118,7 +117,7 @@ const rank = async (req, res = response) => {
             }
 
             var result = [];
-            /*  console.log("details", details); */
+            /* console.log("details", details); */
 
             //OBTENER LA FECHAS DE LOS PEDIDOS
             let filterOrderByDate = [];
@@ -143,14 +142,22 @@ const rank = async (req, res = response) => {
 
             const resultSort = result.sort((a, b) => b.quantity - a.quantity);
 
-            req.body.ranking = resultSort;
-            excelController.create(req, res);
+            const data = resultSort;
 
-            /* res.json({
-                ok: true,
-                result: resultSort,
-                size: result.length
-            }); */
+            // data in matriz
+            const rows = data.map(item => [item.description, String(item.quantity)]);
+
+            let csvData = "Descripcion, Cantidad, \n";
+
+            for (const row of rows) {
+                csvData += row.join(",");
+                csvData += "\n";
+            }
+
+            console.log(csvData)
+
+            res.set('Content-Type', 'text/csv');
+            res.send(csvData);
         });
 };
 

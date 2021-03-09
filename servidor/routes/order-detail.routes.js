@@ -15,7 +15,7 @@ app.put('/:id', [checkToken], orderDetailController.update);
 
 app.delete('/:id', [checkToken], orderDetailController.remove);
 
-app.post('/rank', [checkToken], orderDetailController.rank);
+app.get('/rank', [checkToken], orderDetailController.rank);
 
 app.get('/income-day', [checkToken], orderDetailController.incomesDay);
 

@@ -115,12 +115,12 @@ import {
     AGREGAR_ORDEN_DETALLE_PEDIDO,
     PRODUCTOS_ESCASOS_CARGADOS,
     ENTRAR_REPORTES,
-    RANKING_EXCEL_EXPORTADO_EXITO,
     RANKING_EXCEL_EXPORTADO_ERROR,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
 import { authorizationHeader } from '../helpers/authorization_header';
+import fileDownload from 'js-file-download';
 
 /********************** Ranking: Fechas ***********************/
 export function guardarFechasReporteRankingAction(intervaloFechas) {
@@ -129,11 +129,10 @@ export function guardarFechasReporteRankingAction(intervaloFechas) {
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            await clienteAxios.post(`/api/order-detail/rank`, intervaloFechas, header)
+            await clienteAxios.get(`/api/order-detail/rank`, { params: { ...intervaloFechas }, ...header })
                 .then(async response => {
                     console.log("response", response);
-                    /* await clienteAxios.get(`/api/excel`, response.data.result, header); */
-                    /*  dispatch(reporteRankingExito(blob)); */
+                    fileDownload(response.data, "ranking.csv");
                 })
         } catch (err) {
             console.log(err);
@@ -141,11 +140,6 @@ export function guardarFechasReporteRankingAction(intervaloFechas) {
         }
     }
 }
-
-/* const reporteRankingExito = archivo => ({
-    type: RANKING_EXCEL_EXPORTADO_EXITO,
-    payload: archivo
-}) */
 
 const reporteRankingError = msj => ({
     type: RANKING_EXCEL_EXPORTADO_ERROR,

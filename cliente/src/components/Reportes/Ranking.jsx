@@ -20,34 +20,6 @@ const Ranking = () => {
     const dispatch = useDispatch();
 
     const guardarFechasReporteRanking = intervaloFechas => dispatch(guardarFechasReporteRankingAction(intervaloFechas));
-    const archivo = useSelector(state => state.admin.archivo);
-
-    useEffect(() => {
-        if (archivo !== null) {
-            console.log(archivo);
-            /* const myJsonString = JSON.stringify(archivo.data); */
-            /* const blob = new Blob([archivo.data], {
-                type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
-            });
-            saveAs(blob, "Ranking.xlsx"); */
-
-            /* var type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8";
-            var blob = new Blob([archivo], { type: type });
-            FileSaver.saveAs(blob, "ranking.xlsx"); */
-
-            /* var file = new File([archivo.data], "hello world.xlsx", { type: "application/vnd.ms-excel;charset=utf-8" });
-            saveAs(file); */
-
-            /*  
-               let blob = new Blob([archivo], { type: "text/plain;charset=utf-8" });
-               console.log(blob);
-               var file = new File([archivo], "hello world.xlsx", { type: "text/plain;charset=utf-8" });
-               FileSaver.saveAs(file); 
-            */
-        }
-
-        // eslint-disable-next-line
-    }, [archivo])
 
     const handleChange = e => {
         setFechas({
