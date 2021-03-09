@@ -8,7 +8,7 @@ const generateJWT = (uid) => {
             user: uid.user,
             dateExpiration: uid.dateExpiration
         }
-        console.log("payload", payload);
+        /* console.log("payload", payload); */
         // firma: payload,llave secreta, duracion del token, callback
         jwt.sign(payload, process.env.SEED, { expiresIn: '30m' }, (err, token) => {
             if (err) {

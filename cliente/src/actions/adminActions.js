@@ -131,21 +131,20 @@ export function guardarFechasReporteRankingAction(intervaloFechas) {
             const header = authorizationHeader(token);
             await clienteAxios.post(`/api/order-detail/rank`, intervaloFechas, header)
                 .then(async response => {
-                    console.log("response.data", response.data);
-                    /* await clienteAxios.post(`/api/excel`, response.data.result); */
-                    /* dispatch(reporteRankingExito(response.data.bills)); */
+                    console.log("response", response);
+                    /* await clienteAxios.get(`/api/excel`, response.data.result, header); */
+                    /*  dispatch(reporteRankingExito(blob)); */
                 })
         } catch (err) {
             console.log(err);
             dispatch(reporteRankingError('Error al realizar reporte de ranking'));
         }
-
     }
 }
 
-/* const reporteRankingExito = msj => ({
+/* const reporteRankingExito = archivo => ({
     type: RANKING_EXCEL_EXPORTADO_EXITO,
-    payload: msj
+    payload: archivo
 }) */
 
 const reporteRankingError = msj => ({

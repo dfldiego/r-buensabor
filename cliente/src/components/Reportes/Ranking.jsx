@@ -1,5 +1,7 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import './Reportes.css';
+import { saveAs, FileSaver } from 'file-saver';
+
 
 //Actions de Redux
 import {
@@ -18,6 +20,34 @@ const Ranking = () => {
     const dispatch = useDispatch();
 
     const guardarFechasReporteRanking = intervaloFechas => dispatch(guardarFechasReporteRankingAction(intervaloFechas));
+    const archivo = useSelector(state => state.admin.archivo);
+
+    useEffect(() => {
+        if (archivo !== null) {
+            console.log(archivo);
+            /* const myJsonString = JSON.stringify(archivo.data); */
+            /* const blob = new Blob([archivo.data], {
+                type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8"
+            });
+            saveAs(blob, "Ranking.xlsx"); */
+
+            /* var type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8";
+            var blob = new Blob([archivo], { type: type });
+            FileSaver.saveAs(blob, "ranking.xlsx"); */
+
+            /* var file = new File([archivo.data], "hello world.xlsx", { type: "application/vnd.ms-excel;charset=utf-8" });
+            saveAs(file); */
+
+            /*  
+               let blob = new Blob([archivo], { type: "text/plain;charset=utf-8" });
+               console.log(blob);
+               var file = new File([archivo], "hello world.xlsx", { type: "text/plain;charset=utf-8" });
+               FileSaver.saveAs(file); 
+            */
+        }
+
+        // eslint-disable-next-line
+    }, [archivo])
 
     const handleChange = e => {
         setFechas({
@@ -34,7 +64,6 @@ const Ranking = () => {
             return;
         }
         setError(false);
-
         guardarFechasReporteRanking(fechas);
     }
 
@@ -72,7 +101,9 @@ const Ranking = () => {
                             />
                         </div>
                         <div className="row-report">
-                            <button type="submit" className="btn-report">Exportar a Excel</button>
+                            <button className="btn-report">
+                                Exportar a excel
+                            </button>
                         </div>
                         {
                             error ? <p className="error">Las fechas son obligatorias</p> : null

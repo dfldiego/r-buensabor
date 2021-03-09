@@ -3,7 +3,7 @@
  */
 
 const { Router } = require("express");
-const { checkToken, checkAdminRole } = require('../middlewares/authentication');
+const { checkToken } = require('../middlewares/authentication');
 const menuDetailController = require('../controllers/menu-details.controller');
 const router = Router();
 

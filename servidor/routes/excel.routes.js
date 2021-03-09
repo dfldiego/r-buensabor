@@ -6,6 +6,6 @@ const express = require('express');
 const excelController = require('../controllers/excel.controller');
 const app = express();
 
-app.post('/', excelController.create);
+app.get('/', excelController.create);
 
 module.exports = app;

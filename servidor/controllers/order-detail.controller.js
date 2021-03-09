@@ -3,6 +3,9 @@ const OrderDetail = require('../models/order-detail.model');
 const User = require('../models/user.model');
 const excelController = require('../controllers/excel.controller');
 
+// Require library
+var xl = require('excel4node');
+
 const list = async (req, res = response) => {
     OrderDetail.find({ status: true }).exec((err, orderDetails) => {
         if (err) {
@@ -127,7 +130,7 @@ const rank = async (req, res = response) => {
                 }
             }
 
-            /* console.log("filterOrderByDate", filterOrderByDate); */
+            /*  console.log("filterOrderByDate", filterOrderByDate); */
 
             filterOrderByDate.reduce(function (res, value) {
                 if (!res[value.menu._id]) {
@@ -140,10 +143,7 @@ const rank = async (req, res = response) => {
 
             const resultSort = result.sort((a, b) => b.quantity - a.quantity);
 
-            // save data of ranking in request and send to excelController
             req.body.ranking = resultSort;
-            req.body.initialDate = initialDate;
-            req.body.finalDate = finalDate;
             excelController.create(req, res);
 
             /* res.json({

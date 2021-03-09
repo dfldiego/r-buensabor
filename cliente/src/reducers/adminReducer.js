@@ -117,6 +117,8 @@ import {
     AGREGAR_ORDEN_DETALLE_PEDIDO,
     PRODUCTOS_ESCASOS_CARGADOS,
     ENTRAR_REPORTES,
+    RANKING_EXCEL_EXPORTADO_EXITO,
+    RANKING_EXCEL_EXPORTADO_ERROR,
 } from '../types';
 
 const initialState = {
@@ -180,6 +182,7 @@ const initialState = {
     detalles_pedido: [],
     orden: null,
     productos_escasos: [],
+    archivo: null,
 }
 
 export default function (state = initialState, action) {
@@ -381,6 +384,7 @@ export default function (state = initialState, action) {
         case OBTENER_CONFIGURACION_ERROR:
         case CONFIGURACION_EDITADO_ERROR:
         case DESCARGA_FACTURAS_ERROR:
+        case RANKING_EXCEL_EXPORTADO_ERROR:
             return {
                 ...state,
                 loading: false,
@@ -867,6 +871,12 @@ export default function (state = initialState, action) {
                 ...state,
                 productos_escasos: action.payload,
             }
+        case RANKING_EXCEL_EXPORTADO_EXITO:
+            return {
+                ...state,
+                archivo: action.payload,
+            }
+
         default:
             return state;
     }
