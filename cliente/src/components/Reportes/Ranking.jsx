@@ -1,13 +1,11 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState } from 'react';
 import './Reportes.css';
-import { saveAs, FileSaver } from 'file-saver';
-
 
 //Actions de Redux
 import {
     guardarFechasReporteRankingAction,
 } from '../../actions/adminActions';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 const Ranking = () => {
 

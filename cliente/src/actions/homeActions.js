@@ -387,17 +387,22 @@ const cerrar_sesion = () => ({
     payload: null,
 })
 
+
+
 /*************VERIFICA SI ESTA LOGUEADO OBTENIENDO TOKEN DEL LOCALSTORAGE ***/
 export function estaLogueadoAction() {
     return (dispatch) => {
         var token = localStorage.getItem('token');
         if (token === null) {
-            dispatch(noestalogueado(null))
+            dispatch(noestalogueado(null));
+            localStorage.clear();
+            dispatch(cerrar_sesion());
         } else {
             dispatch(estaloguado(token));
 
             desencriptarToken(token)
                 .then(async responseToken => {
+                    console.log("responseToken", responseToken);
                     const estaExpirado = await validateTimeTokens(responseToken);
                     console.log("estaExpirado", estaExpirado);
                     if (estaExpirado) {

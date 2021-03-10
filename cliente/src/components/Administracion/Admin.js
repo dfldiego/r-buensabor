@@ -14,9 +14,15 @@ import { validarRol } from "../../helpers/helpers";
 import { Redirect } from 'react-router';
 
 // REDUX
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+
+import {
+    estaLogueadoAction,
+} from '../../actions/homeActions';
 
 const Admin = () => {
+    const dispatch = useDispatch();
+    const estaLogueado_callAction = () => dispatch(estaLogueadoAction());
     /*USAR USE SELECTOR*/
     const en_usuario_state_store = useSelector(state => state.admin.en_usuario);
     const en_categoria_state_store = useSelector(state => state.admin.en_categoria);
@@ -26,9 +32,16 @@ const Admin = () => {
     const entrar_pedidos_store = useSelector(state => state.admin.en_pedidos);
     const entrar_configuracion_store = useSelector(state => state.admin.en_configuracion);
     const entrar_reportes_store = useSelector(state => state.admin.en_reportes);
+    const estaLogueado_token = useSelector(state => state.home.token);
+    const estaLogueado_estado = useSelector(state => state.home.esta_logueado);
 
     const [isValid, setIsValid] = useState('loading');
     const rolUser = JSON.parse(localStorage.getItem('user')).role;
+
+    useEffect(() => {
+        estaLogueado_callAction();
+        // eslint-disable-next-line
+    }, [estaLogueado_token, estaLogueado_estado, en_usuario_state_store, en_categoria_state_store, en_menu_state_store, en_insumos_state_store, entrar_categoria_insumos_store, entrar_pedidos_store, entrar_configuracion_store, entrar_reportes_store]);
 
     useEffect(() => {
         const validateLogin = async (rolUser) => {
