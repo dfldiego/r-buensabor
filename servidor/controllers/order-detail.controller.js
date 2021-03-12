@@ -194,7 +194,6 @@ const incomes = async (req, res) => {
 
             const totalIncomesReport = filterOrderAndGetIncomes(detailsIncome, yearinitialDateTimeStamp, monthInitialDateTimeStamp, dayinitialDateTimeStamp);
 
-            console.log("totalIncomesReport", totalIncomesReport);
             // data in matriz
             const rows = totalIncomesReport.map(item => [item.orderDate, item.menu, item.menuPrice, item.totalIncomes]);
 
@@ -205,16 +204,8 @@ const incomes = async (req, res) => {
                 csvData += "\n";
             }
 
-            console.log(csvData)
-
             res.set('Content-Type', 'text/csv');
             res.send(csvData);
-
-            /*             res.json({
-                            ok: true,
-                            result: totalIncomesReport.totalIncomes,
-                            size: totalIncomesReport.count
-                        }); */
         });
 }
 
@@ -330,11 +321,8 @@ function filterOrderAndGetIncomes(details, yearDate, monthDate, dayDate) {
         dataOrder.push(objectOrder);
     });
 
-    console.log("dataOrder", dataOrder);
-    console.log("dataIncomes", dataIncomes);
     // join two objects: dataOrder & dataIncomes
-    let data = [...dataOrder, dataIncomes];
-    console.log("data", data);
+    let data = [dataIncomes, ...dataOrder];
     return data
 }
 
