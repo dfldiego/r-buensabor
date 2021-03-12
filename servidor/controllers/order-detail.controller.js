@@ -161,17 +161,30 @@ const rank = async (req, res = response) => {
         });
 };
 
-const incomesDay = async (req, res) => {
-
+const incomes = async (req, res) => {
     //OBTENER LA FECHA INICIO DESDE EL BODY -- FECHA DE RECAUDACION DIARIA //enero=0
-    const initialDate = new Date(2021, 01, 6);
-    const dayinitialDateTimeStamp = initialDate.getDay();
-    const monthInitialDateTimeStamp = initialDate.getMonth();
-    const yearinitialDateTimeStamp = initialDate.getFullYear();
+    const initialDateClient = req.query.desde;
+
+    let initialDate = new Date(initialDateClient);
+    let dayinitialDateTimeStamp = '';
+    let monthInitialDateTimeStamp = '';
+    let yearinitialDateTimeStamp = '';
+
+    if (!req.query.desde) {
+        dayinitialDateTimeStamp = null;
+        monthInitialDateTimeStamp = req.query.month;
+        yearinitialDateTimeStamp = req.query.year;
+    } else {
+        dayinitialDateTimeStamp = initialDate.getDate() + 1;
+        monthInitialDateTimeStamp = initialDate.getMonth();
+        yearinitialDateTimeStamp = initialDate.getFullYear();
+    }
 
     OrderDetail.find({ status: true, menu: { $ne: null } })
         .populate('order orderDate')
-        .exec((err, detailsIncomeDay) => {
+        .populate('menu description price')
+        .populate('product description price')
+        .exec((err, detailsIncome) => {
             if (err) {
                 return res.status(500).json({
                     ok: false,
@@ -179,40 +192,29 @@ const incomesDay = async (req, res) => {
                 });
             }
 
-            const totalDailyIncomes = filterOrderAndGetIncomes(detailsIncomeDay, yearinitialDateTimeStamp, monthInitialDateTimeStamp, dayinitialDateTimeStamp);
+            const totalIncomesReport = filterOrderAndGetIncomes(detailsIncome, yearinitialDateTimeStamp, monthInitialDateTimeStamp, dayinitialDateTimeStamp);
 
-            res.json({
-                ok: true,
-                result: totalDailyIncomes.totalIncomes,
-                size: totalDailyIncomes.count
-            });
-        });
-}
+            console.log("totalIncomesReport", totalIncomesReport);
+            // data in matriz
+            const rows = totalIncomesReport.map(item => [item.orderDate, item.menu, item.menuPrice, item.totalIncomes]);
 
-const incomesMonth = async (req, res) => {
+            let csvData = "Fecha, Descripcion, Precio, Total \n";
 
-    //OBTENER LA FECHA INICIO DESDE EL BODY -- FECHA DE RECAUDACION DIARIA //enero=0
-    const initialDate = new Date(2021, 01);
-    const monthInitialDateTimeStamp = initialDate.getMonth();
-    const yearinitialDateTimeStamp = initialDate.getFullYear();
-
-    OrderDetail.find({ status: true, menu: { $ne: null } })
-        .populate('order orderDate')
-        .exec((err, detailsIncomeMonth) => {
-            if (err) {
-                return res.status(500).json({
-                    ok: false,
-                    err
-                });
+            for (const row of rows) {
+                csvData += row.join(",");
+                csvData += "\n";
             }
 
-            const totalMonthIncomes = filterOrderAndGetIncomes(detailsIncomeMonth, yearinitialDateTimeStamp, monthInitialDateTimeStamp, null);
+            console.log(csvData)
 
-            res.json({
-                ok: true,
-                result: totalMonthIncomes.totalIncomes,
-                size: totalMonthIncomes.count
-            });
+            res.set('Content-Type', 'text/csv');
+            res.send(csvData);
+
+            /*             res.json({
+                            ok: true,
+                            result: totalIncomesReport.totalIncomes,
+                            size: totalIncomesReport.count
+                        }); */
         });
 }
 
@@ -276,20 +278,22 @@ const sizeofOrdersByClient = async (req, res) => {
 
 function filterOrderAndGetIncomes(details, yearDate, monthDate, dayDate) {
     let orderFilter = [];
-    let data = {
-        totalIncomes: 0,
-        count: 0
-    }
+    let dataIncomes = {
+        count: 0,
+        totalIncomes: 0
+    };
+    let dataOrder = [];
     let orderDateTimeStamp = '';
     let dayOrderDate = '';
     let monthOrderDate = '';
     let yearOrderDate = '';
 
+    // details have data of menu, product and orderDate of the order.
     for (const orderDetail of details) {
 
         orderDateTimeStamp = Date.parse(orderDetail.order.orderDate);
         if (dayDate !== null) {
-            dayOrderDate = new Date(orderDateTimeStamp).getDay();
+            dayOrderDate = new Date(orderDateTimeStamp).getDate();
         }
         monthOrderDate = new Date(orderDateTimeStamp).getMonth();
         yearOrderDate = new Date(orderDateTimeStamp).getFullYear();
@@ -297,21 +301,40 @@ function filterOrderAndGetIncomes(details, yearDate, monthDate, dayDate) {
         if (dayDate !== null) {
             if (dayDate === dayOrderDate && monthDate === monthOrderDate && yearDate === yearOrderDate) {
                 orderFilter.push(orderDetail);
-                data.count++;
+                dataIncomes.count++;
             }
         } else {
-            if (monthDate === monthOrderDate && yearDate === yearOrderDate) {
+            if (Number(monthDate) === monthOrderDate && Number(yearDate) === yearOrderDate) {
                 orderFilter.push(orderDetail);
-                data.count++;
+                dataIncomes.count++;
             }
         }
     }
 
     // Debemos ahora hacer un reduce de orderFilter
-    data.totalIncomes = orderFilter.reduce(function (res, value) {
+    dataIncomes.totalIncomes = orderFilter.reduce(function (res, value) {
         return res + value.subTotal;
     }, 0);
+    // datos a obtener: order.orderDate - menu description(or product.description) - menu price(or product.price)
+    orderFilter.map(orden => {
+        let objectOrder = {};
 
+        objectOrder.orderDate = new Date(orden.order.orderDate).toLocaleDateString();
+        if (orden.menu) {
+            objectOrder.menu = orden.menu.description;
+            objectOrder.menuPrice = orden.menu.price;
+        } else {
+            objectOrder.menu = orden.product.description;
+            objectOrder.menuPrice = orden.product.price;
+        }
+        dataOrder.push(objectOrder);
+    });
+
+    console.log("dataOrder", dataOrder);
+    console.log("dataIncomes", dataIncomes);
+    // join two objects: dataOrder & dataIncomes
+    let data = [...dataOrder, dataIncomes];
+    console.log("data", data);
     return data
 }
 
@@ -321,7 +344,6 @@ module.exports = {
     update,
     remove,
     rank,
-    incomesDay,
-    incomesMonth,
+    incomes,
     sizeofOrdersByClient,
 }

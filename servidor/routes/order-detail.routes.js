@@ -17,9 +17,7 @@ app.delete('/:id', [checkToken], orderDetailController.remove);
 
 app.get('/rank', [checkToken], orderDetailController.rank);
 
-app.get('/income-day', [checkToken], orderDetailController.incomesDay);
-
-app.get('/income-month', [checkToken], orderDetailController.incomesMonth);
+app.get('/incomes', [checkToken], orderDetailController.incomes);
 
 app.get('/orders-client', [checkToken], orderDetailController.sizeofOrdersByClient);
 
