@@ -122,6 +122,23 @@ import Swal from 'sweetalert2';
 import { authorizationHeader } from '../helpers/authorization_header';
 import fileDownload from 'js-file-download';
 
+/********************** Control de Stock: Reportes ***********************/
+export function controlarStockAction() {
+    return async (dispatch) => {
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            await clienteAxios.get(`/api/product/scarse`, header)
+                .then(async response => {
+                    console.log("response", response);
+                    fileDownload(response.data, "ControlStock.csv");
+                })
+        } catch (err) {
+            console.log(err);
+        }
+    }
+}
+
 /********************** Cantidad Pedidos por Cliente: Fechas ***********************/
 export function guardarCantidadPedidosClientePorFechasAction(intervaloFechas) {
     return async (dispatch) => {

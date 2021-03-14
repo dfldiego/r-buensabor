@@ -1,5 +1,5 @@
 /**
- *  path: /api/product'
+ *  path: /api/product
  */
 
 const { Router } = require("express");

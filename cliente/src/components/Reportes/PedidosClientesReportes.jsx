@@ -78,7 +78,7 @@ const PedidosClientesReportes = () => {
                         </div>
                         <div className="row-report">
                             <button className="btn-report">
-                                Recaudación Diaria
+                                Pedidos Diarios
                             </button>
                         </div>
                         <div className="form-row-report">
@@ -119,7 +119,7 @@ const PedidosClientesReportes = () => {
                         </div>
                         <div className="row-report">
                             <button className="btn-report">
-                                Recaudación Mensual
+                                Pedidos Mensuales
                             </button>
                         </div>
                     </form>

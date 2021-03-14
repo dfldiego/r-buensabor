@@ -119,6 +119,7 @@ const remove = async (req, res = response) => {
 //CONTROL DE STOCK. MOSTRAR ARTICULOS POR DEBAJO DEL STOCK MINIMO
 const scarse = async (req, res = response) => {
     let scarseProducts = [];
+    let rows = [];
     try {
         const products = await Product.find({ status: true });
         console.log(products);
@@ -133,10 +134,19 @@ const scarse = async (req, res = response) => {
             console.log("No hay insumos escasos");
         }
 
-        res.json({
-            ok: true,
-            scarseProducts,
+        rows = scarseProducts.map(function (item) {
+            return [item.description, item.min_stock, item.current_stock]
         });
+
+        let csvData = "Descripcion Producto, Stock mínimo, Stock actual \n";
+
+        for (const row of rows) {
+            csvData += row.join(",");
+            csvData += "\n";
+        }
+
+        res.set('Content-Type', 'text/csv');
+        res.send(csvData);
 
     } catch (error) {
         console.log(error);
