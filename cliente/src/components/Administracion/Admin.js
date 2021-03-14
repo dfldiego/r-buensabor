@@ -58,6 +58,8 @@ const Admin = () => {
             }
         };
         validateLogin(rolUser);
+
+        // eslint-disable-next-line
     }, [setIsValid])
 
     if (isValid === 'loading') {

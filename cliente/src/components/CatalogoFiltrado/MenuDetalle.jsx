@@ -73,7 +73,12 @@ const MenuDetalle = () => {
                                                 <div className="flex_menu_detalle">
                                                     <ul>
                                                         {
-                                                            ingredientesDelMenu.map((ingrediente) => <li className="fw-300 li_ingredientes">{ingrediente}</li>)
+                                                            ingredientesDelMenu.map(ingrediente =>
+                                                                <li
+                                                                    key={ingrediente}
+                                                                    className="fw-300 li_ingredientes"
+                                                                >{ingrediente}</li>
+                                                            )
                                                         }
                                                     </ul>
                                                 </div>

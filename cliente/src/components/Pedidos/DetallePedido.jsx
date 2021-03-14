@@ -35,24 +35,24 @@ const DetallePedido = () => {
         let total = 0;
         if (details.length > 0) {
             const obtenerDetallePedido = (details) => {
-                details.map((detalle) => {
+                for (const detalle of details) {
                     if (detalle.menu || detalle.product) {
-                        DatosPedidoMenu.map(DatoMenu => {
+                        for (const DatoMenu of DatosPedidoMenu) {
                             if (detalle.menu === DatoMenu._id) {
                                 detalle.description = DatoMenu.description;
                                 setDetalleCadena([...detalleCadena, detalle]);
                             }
-                        })
-                        DatosPedidoInsumo.map(DatoInsumo => {
+                        }
+                        for (const DatoInsumo of DatosPedidoInsumo) {
                             if (detalle.product === DatoInsumo._id) {
                                 detalle.description = DatoInsumo.description;
                                 setDetalleCadena([...detalleCadena, detalle]);
                             }
-                        })
+                        }
                     }
 
                     total = total + detalle.subTotal;
-                })
+                }
 
             }
             obtenerDetallePedido(details);
@@ -68,6 +68,7 @@ const DetallePedido = () => {
             setTotalDetallePedido(total);
         }
 
+        // eslint-disable-next-line
     }, [DatosPedidoMenu, DatosPedidoInsumo]);
 
     return (
@@ -92,7 +93,7 @@ const DetallePedido = () => {
                                     {
                                         detalleCadena.map(detalle =>
                                             detalle.menu ?
-                                                <tr>
+                                                <tr key={detalle._id}>
                                                     <td>
                                                         <h4>{detalle.description}</h4>
                                                     </td>

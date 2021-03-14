@@ -58,26 +58,22 @@ const CatalogoFiltrado = ({ name }) => {
 
     const filtrarMenuPorIngrediente = (IngredientesDB, menusCategorizados) => {
         const menuesIngredientes = [];
-
         //recorro los ingredientes y guardo en un array el menu del ingrediente
-        IngredientesDB.map(ingrediente => {
+        for (const ingrediente of IngredientesDB) {
             if (ingrediente.menu.description) {
                 menuesIngredientes.push(ingrediente.menu.description);
             }
-        })
+        }
 
         //recorro los menus y si el array de menues de los ingredientes contiene al menu devuelvo un true sino false.
-        menusCategorizados.map(menu => {
+        for (const menu of menusCategorizados) {
             if (menuesIngredientes.includes(menu.description)) {
-                /* if (!estaAbiertoRestaurante) {
-                    menu.mensaje = "NO DISPONIBLE";
-                } */
                 menusFiltradosPorIngredientes.push(menu);
             } else {
                 menu.mensaje = "NO DISPONIBLE";
                 menusFiltradosPorIngredientes.push(menu);
             }
-        })
+        }
 
         // codigo para eliminar elementos repetidos de un array
         const menusUnicosFiltrados = [...new Set(menusFiltradosPorIngredientes)];

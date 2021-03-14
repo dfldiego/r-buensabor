@@ -60,6 +60,8 @@ const Carrito = () => {
     useEffect(() => {
         cargarPedidos();
         obtenerCantidadCocineros();
+
+        // eslint-disable-next-line
     }, [])
 
     useEffect(() => {
@@ -67,9 +69,9 @@ const Carrito = () => {
         let totalCarrito = 0;
         let discountCarrito = 0;
 
-        MenusDeCarrito.map(menu => {
+        for (const menu of MenusDeCarrito) {
             subtotalCarrito += Number(menu.price);
-        })
+        }
 
         if (shippingType === "1") {
             discountCarrito = (subtotalCarrito * 0.1);
@@ -152,21 +154,21 @@ const Carrito = () => {
         let number = Math.floor(Math.random() * 100000000);
         const user = JSON.parse(localStorage.getItem("user"));
 
-        MenusDeCarrito.map(elementoCarrito => {
+        for (const elementoCarrito of MenusDeCarrito) {
             if (elementoCarrito.finished_time) {
                 contadorTiempoEstimado += elementoCarrito.finished_time / datoConfiguracion.quantityCooks;
             }
-        });
+        }
 
         if (shippingType === "0") {
             contadorTiempoEstimado += 10;
         }
 
-        pedidos_state.map(pedido => {
+        for (const pedido of pedidos_state) {
             if (pedido.status === "EN_PROGRESO") {
                 contadorTiempoEstimado += Number.parseInt(pedido.endDate) / datoConfiguracion.quantityCooks;
             }
-        })
+        }
 
         const order = {
             orderDate,

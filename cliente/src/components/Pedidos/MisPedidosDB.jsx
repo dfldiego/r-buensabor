@@ -41,30 +41,30 @@ const MisPedidosDB = ({ pedidoUser }) => {
         let total = 0;
 
         //codigo para tener apenas clickeamos en detallePedido.
-        details.map((detalle) => {
+        for (const detalle of details) {
             if (detalle.menu) {
                 obtenerMenuPorId(detalle.menu);
             } else if (detalle.product) {
                 obtenerProductoPorId(detalle.product);
             }
-        })
+        }
 
-        details.map((detalle) => {
+        for (const detalle of details) {
             if (detalle.menu || detalle.product) {
-                DatosPedidoMenu.map(DatoMenu => {
+                for (const DatoMenu of DatosPedidoMenu) {
                     if (detalle.menu === DatoMenu._id) {
                         detalle.description = DatoMenu.description
                     }
-                })
-                DatosPedidoInsumo.map(DatoInsumo => {
+                }
+                for (const DatoInsumo of DatosPedidoInsumo) {
                     if (detalle.product === DatoInsumo._id) {
                         detalle.description = DatoInsumo.description;
                     }
-                })
+                }
             }
 
             total = total + detalle.subTotal;
-        })
+        }
 
         envioDetallePedido(details);
 
@@ -104,7 +104,7 @@ const MisPedidosDB = ({ pedidoUser }) => {
             <tr key={number}>
                 <td>
                     <a
-                        href="#"
+                        href={() => false}
                         className="color_azul"
                         onClick={e => handleClickDetallePedido(e, pedidoUser)}
                     >{number}

@@ -30,6 +30,8 @@ const Pedidos = () => {
 
     useEffect(() => {
         obtenerFacturas();
+
+        // eslint-disable-next-line
     }, []);
 
     const closeModal = () => {

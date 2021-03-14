@@ -21,6 +21,8 @@ const GetMenu = () => {
 
     useEffect(() => {
         obtenerIngredientes();
+
+        // eslint-disable-next-line
     }, [menus])
 
     if (!menus_state) {
