@@ -17,6 +17,9 @@ import {
 import {
     agregarMenuACarritoAction,
 } from '../../actions/homeActions';
+/* import {
+    obtenerInsumosAction,
+} from '../../actions/adminActions'; */
 
 const CatalogoFiltrado = ({ name }) => {
 
@@ -32,6 +35,7 @@ const CatalogoFiltrado = ({ name }) => {
     const guardarMenu = menu => dispatch(guardarMenuDetalleAction(menu));
     const agregarMenuACarrito = menu => dispatch(agregarMenuACarritoAction(menu));
     const obtenerIngredientesDelMenu = (menu) => dispatch(obtenerIngredientesDelMenuAction(menu));
+    /* const obtenerInsumos = () => dispatch(obtenerInsumosAction()); */
 
     const categorias = useSelector(state => state.admin.categoriasSelect);
     const menus = useSelector(state => state.admin.menusSelect);
@@ -40,6 +44,7 @@ const CatalogoFiltrado = ({ name }) => {
     const mensaje = useSelector(state => state.catalogo.mensaje);
     const estaAbiertoRestaurante = useSelector(state => state.catalogo.estadoHorariosRestaurante);
     const errorCatalogo = useSelector(state => state.catalogo.error);
+    /* const insumos = useSelector(state => state.admin.insumos); */
 
     const filtrarCategoriaPorName = nombreCategoria => {
         const categoriaEncontradaPorName = categorias.filter(categoria => categoria.name === nombreCategoria);
@@ -81,6 +86,7 @@ const CatalogoFiltrado = ({ name }) => {
 
     useEffect(() => {
         filtrarCategoriaPorName(name);
+        /* obtenerInsumos(); */
 
         // eslint-disable-next-line
     }, []);
@@ -131,7 +137,11 @@ const CatalogoFiltrado = ({ name }) => {
         menu.uuid = uuidv4();
         agregarMenuACarrito(menu);
     }
-
+    /* 
+        console.log("menusUnicosFiltradosPorIngredientes", menusUnicosFiltradosPorIngredientes);
+        console.log("IngredientesDB", IngredientesDB);  //quantity
+        console.log("insumos", insumos);  // product-current stock
+     */
     return (
         <Fragment>
             <div className="fondo-negro">
