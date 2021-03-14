@@ -12,10 +12,12 @@ import {
     pantallaConfiguracionAction,
     pantallaReportesAction,
 } from '../../actions/adminActions';
+import {
+    estaLogueadoAction,
+} from '../../actions/homeActions';
 
 const Sidebar = () => {
 
-    const rolUser = JSON.parse(localStorage.getItem('user')).role;
     const dispatch = useDispatch();
 
     // ENVIAR ESTADOS AL ACTION -> ADMINACTION.
@@ -27,6 +29,7 @@ const Sidebar = () => {
     const entrar_pedidos_crud = estadoPedidos => dispatch(pantallaPedidosAction(estadoPedidos));
     const entrar_configuracion_crud = estadoConfiguracion => dispatch(pantallaConfiguracionAction(estadoConfiguracion));
     const entrar_reportes = estadoReportes => dispatch(pantallaReportesAction(estadoReportes));
+    const estaLogueado_callAction = () => dispatch(estaLogueadoAction());
 
     // OBTENEMOS DATOS DESDE STORE
     const entrar_usuario_store = useSelector(state => state.admin.en_usuario);
@@ -37,6 +40,15 @@ const Sidebar = () => {
     const entrar_pedidos_store = useSelector(state => state.admin.en_pedidos);
     const entrar_configuracion_store = useSelector(state => state.admin.en_configuracion);
     const entrar_reportes_store = useSelector(state => state.admin.en_reportes);
+
+    let rolUser = null;
+    if (localStorage.getItem('user')) {
+        rolUser = JSON.parse(localStorage.getItem('user')).role;
+    } else {
+        /* res.Redirect('/'); */
+        /* return <Redirect to={'/'} /> */
+        estaLogueado_callAction();
+    }
 
     // metodo que corrobora si mostrar CRUD de usuarios.
     const entra_usuarios = e => {

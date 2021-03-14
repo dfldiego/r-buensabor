@@ -34,9 +34,16 @@ const Admin = () => {
     const entrar_reportes_store = useSelector(state => state.admin.en_reportes);
     const estaLogueado_token = useSelector(state => state.home.token);
     const estaLogueado_estado = useSelector(state => state.home.esta_logueado);
+    let rolUser = null;
 
     const [isValid, setIsValid] = useState('loading');
-    const rolUser = JSON.parse(localStorage.getItem('user')).role;
+    if (localStorage.getItem('user')) {
+        rolUser = JSON.parse(localStorage.getItem('user')).role;
+    } else {
+        /* res.Redirect('/'); */
+        /* return <Redirect to={'/'} /> */
+        estaLogueado_callAction();
+    }
 
     useEffect(() => {
         estaLogueado_callAction();

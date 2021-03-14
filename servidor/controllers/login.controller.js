@@ -41,7 +41,7 @@ const login = async (req, res) => {
 
         // seteo tiempo de expiracion
         let fechaActual = new Date();
-        fechaActual.setMinutes(fechaActual.getMinutes() + 360); // Añadiendo 360 minutos(6h) a la fecha actual
+        fechaActual.setMinutes(fechaActual.getMinutes() + 30); // Añadiendo 30 minutos(30m) a la fecha actual
         let dateExpiration = fechaActual;
 
         let datosToken = {
@@ -89,9 +89,20 @@ const loginGoogle = async (req, res) => {
                     err
                 });
             }
+
+            // seteo tiempo de expiracion
+            let fechaActual = new Date();
+            fechaActual.setMinutes(fechaActual.getMinutes() + 30); // Añadiendo 30 minutos(30m) a la fecha actual
+            let dateExpiration = fechaActual;
+
+            let datosToken = {
+                userDB,
+                dateExpiration
+            }
+
             // si usuario es de google
             // GENERAR UN TOKEN -- JWT
-            const token = await generateJWT(userDB);
+            const token = await generateJWT(datosToken);
             return res.json({
                 ok: true,
                 user: userDB,
@@ -121,9 +132,19 @@ const loginGoogle = async (req, res) => {
                 });
             };
 
+            // seteo tiempo de expiracion
+            let fechaActual = new Date();
+            fechaActual.setMinutes(fechaActual.getMinutes() + 30); // Añadiendo 30 minutos(30m) a la fecha actual
+            let dateExpiration = fechaActual;
+
+            let datosToken = {
+                userStored,
+                dateExpiration
+            }
+
             // si no hay error 
             // GENERAR UN TOKEN -- JWT
-            const token = await generateJWT(userStored);
+            const token = await generateJWT(datosToken);
 
             return res.json({
                 ok: true,
