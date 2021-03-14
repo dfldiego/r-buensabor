@@ -236,7 +236,7 @@ export function actualizarPerfilAction(perfil, imageFile) {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
             const responseToken = await desencriptarToken(token);
-
+            console.log("perfil", perfil);
             if (imageFile !== null) {
                 const formData = new FormData();
                 formData.append('file', imageFile.img);
@@ -251,14 +251,15 @@ export function actualizarPerfilAction(perfil, imageFile) {
                         dispatch(actualizarPerfilExito(true));
                     })
             } else {
+                console.log("responseToken", responseToken);
                 await clienteAxios.put(`/api/users/${responseToken.user._id}`, perfil, header)
                     .then(response => {
                         dispatch(actualizarPerfilExito(true));
                     })
             }
         } catch (err) {
-            console.log(err);
-            dispatch(actualizarPerfilError("Error al actualizar Perfil"));
+            console.log(err.response.data.msg._message);
+            dispatch(actualizarPerfilError(err.response.data.msg._message));
         }
     }
 }

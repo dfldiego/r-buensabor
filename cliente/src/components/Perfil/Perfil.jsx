@@ -49,8 +49,8 @@ const Perfil = () => {
 
     /************** METODO USE EFFECT ********************************/
     useEffect(() => {
-
-        if (perfil_usuario_store.address.nameStreet !== undefined && perfil_usuario_store.address.numberStreet !== undefined && perfil_usuario_store.address.location !== undefined) {
+        console.log("perfil_usuario_store", perfil_usuario_store);
+        if (perfil_usuario_store.address !== undefined) {
             setPerfil({
                 ...perfil,
                 name: perfil_usuario_store.name,
@@ -61,6 +61,7 @@ const Perfil = () => {
                 location: perfil_usuario_store.address.location,
             })
         } else {
+            console.log("entro aca");
             setPerfil({
                 ...perfil,
                 name: perfil_usuario_store.name,

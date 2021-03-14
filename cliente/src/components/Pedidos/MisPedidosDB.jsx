@@ -104,7 +104,7 @@ const MisPedidosDB = ({ pedidoUser }) => {
             <tr key={number}>
                 <td>
                     <a
-                        href={() => false}
+                        href="/#"
                         className="color_azul"
                         onClick={e => handleClickDetallePedido(e, pedidoUser)}
                     >{number}

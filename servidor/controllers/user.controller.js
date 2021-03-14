@@ -95,6 +95,7 @@ const create = async (req, res = response) => {
 }
 
 const update = async (req, res = response) => {
+    console.log(req.body);
     // obtenemos el id por parametro
     const id = req.params.id;
 
@@ -154,27 +155,39 @@ const update = async (req, res = response) => {
         let address = '';
         let userStored = '';
 
-        // actualizar Address del usuario
-        camposAddress.location = location;
-        camposAddress.nameStreet = nameStreet;
-        camposAddress.numberStreet = numberStreet;
+        const existeAddress = await Address.findOne({ nameStreet, numberStreet, location });
 
-        if (nameStreet === undefined || location === undefined || numberStreet === undefined) {
-            // crear una instancia del nuevo User
-            address = new Address(camposAddress);
+        if (existeAddress) {
 
-            // guardar user en la BD
-            await address.save()
-                .then(async response => {
-                    campos.address = response._id;
-                    userStored = await User.findByIdAndUpdate(id, campos, { new: true });
-                })
-        } else {
+            // actualizar Address del usuario
+            camposAddress.location = location;
+            camposAddress.nameStreet = nameStreet;
+            camposAddress.numberStreet = numberStreet;
+
             addressStored = await Address.findByIdAndUpdate(userDB.address, camposAddress, { new: true })
                 .then(async response => {
                     campos.address = response._id;
                     userStored = await User.findByIdAndUpdate(id, campos, { new: true });
-                })
+                });
+        } else {
+
+            // actualizar Address del usuario
+            camposAddress.location = location;
+            camposAddress.nameStreet = nameStreet;
+            camposAddress.numberStreet = numberStreet;
+
+            if (location !== '' || nameStreet !== '' || numberStreet > 0) {
+                // crear una instancia del nuevo User
+                address = new Address(camposAddress);
+
+                // guardar user en la BD
+                await address.save()
+                    .then(async response => {
+                        campos.address = response._id;
+                        userStored = await User.findByIdAndUpdate(id, campos, { new: true });
+                    })
+            }
+
         }
 
         res.json({
