@@ -40,13 +40,20 @@ const PedidosClientesReportes = () => {
     const handleSubmitExportarExcel = e => {
         e.preventDefault();
 
-        if (fechas.desde.trim() === '' && fechas.month.trim() === null && fechas.year.trim() === null) {
+        if (fechas.desde.trim() === '' && fechas.month.trim() === '') {
             setError(true);
             return;
         }
         setError(false);
 
         guardarCantidadPedidosClientePorFechas(fechas);
+
+        setFechas({
+            desde: '',
+            month: '',
+            year: 2021,
+        });
+
     }
 
     return (
