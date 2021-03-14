@@ -49,7 +49,6 @@ const Perfil = () => {
 
     /************** METODO USE EFFECT ********************************/
     useEffect(() => {
-        console.log(perfil_usuario_store);
 
         if (perfil_usuario_store.address.nameStreet !== undefined && perfil_usuario_store.address.numberStreet !== undefined && perfil_usuario_store.address.location !== undefined) {
             setPerfil({

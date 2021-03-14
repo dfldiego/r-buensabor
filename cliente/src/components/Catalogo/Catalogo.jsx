@@ -71,7 +71,6 @@ const Catalogo = () => {
         const diaActual = obtenerDiaActual();
         const horaActual = obtenerHoraActual();
         const estaAbierto = validarHorarioRestaurante(diaActual, horaActual);
-        console.log(estaAbierto);
         entradaCatalogoInsumoPadre(true, categoriaInsumo, estaAbierto);
     }
 
@@ -79,7 +78,6 @@ const Catalogo = () => {
         const diaActual = obtenerDiaActual();
         const horaActual = obtenerHoraActual();
         const estaAbierto = validarHorarioRestaurante(diaActual, horaActual);
-        console.log(estaAbierto);
         entradaMenuesFiltrados(true, estaAbierto);
     }
 

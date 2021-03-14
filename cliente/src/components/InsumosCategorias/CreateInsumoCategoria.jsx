@@ -66,7 +66,6 @@ const CreateInsumoCategoria = () => {
 
         const sinNulls = datosCategoriaInsumoPadre.filter(categoriaInsumo => categoriaInsumo != null)
 
-        console.log(sinNulls);
         setPadre(sinNulls);
         setPadre(categoriasInsumoSelect)
     }, [categoriasInsumoSelect])

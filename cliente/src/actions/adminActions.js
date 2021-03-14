@@ -130,7 +130,6 @@ export function controlarStockAction() {
             const header = authorizationHeader(token);
             await clienteAxios.get(`/api/product/scarse`, header)
                 .then(async response => {
-                    console.log("response", response);
                     fileDownload(response.data, "ControlStock.csv");
                 })
         } catch (err) {
@@ -142,13 +141,11 @@ export function controlarStockAction() {
 /********************** Cantidad Pedidos por Cliente: Fechas ***********************/
 export function guardarCantidadPedidosClientePorFechasAction(intervaloFechas) {
     return async (dispatch) => {
-        console.log('intervaloFechas', intervaloFechas);
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
             await clienteAxios.get(`/api/order-detail/orders-client`, { params: { ...intervaloFechas }, ...header })
                 .then(async response => {
-                    console.log("response", response);
                     fileDownload(response.data, "PedidosPorCliente.csv");
                 })
         } catch (err) {
@@ -160,13 +157,11 @@ export function guardarCantidadPedidosClientePorFechasAction(intervaloFechas) {
 /********************** Recaudacion: Fechas ***********************/
 export function guardarFechasReporteRecaudacionAction(intervaloFechas) {
     return async (dispatch) => {
-        console.log('intervaloFechas', intervaloFechas);
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
             await clienteAxios.get(`/api/order-detail/incomes`, { params: { ...intervaloFechas }, ...header })
                 .then(async response => {
-                    console.log("response", response);
                     fileDownload(response.data, "recaudacion.csv");
                 })
         } catch (err) {
@@ -178,13 +173,11 @@ export function guardarFechasReporteRecaudacionAction(intervaloFechas) {
 /********************** Ranking: Fechas ***********************/
 export function guardarFechasReporteRankingAction(intervaloFechas) {
     return async (dispatch) => {
-        console.log('intervaloFechas', intervaloFechas);
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
             await clienteAxios.get(`/api/order-detail/rank`, { params: { ...intervaloFechas }, ...header })
                 .then(async response => {
-                    console.log("response", response);
                     fileDownload(response.data, "ranking.csv");
                 })
         } catch (err) {
@@ -245,7 +238,6 @@ const descargarFacturasError = errores => ({
 /********************** Editar una cuenta de Configuracion ***********************/
 export function editarConfiguracionAction(datosConfiguracion) {
     return async (dispatch) => {
-        console.log(datosConfiguracion);
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
@@ -333,7 +325,6 @@ export function obtenerMenuPorIdAction(idMenu) {
             const header = authorizationHeader(token);
             await clienteAxios.get(`/api/menu/${idMenu}`, header)
                 .then(response => {
-                    console.log(response.data);
                     dispatch(obtenerMenuPorIdExito(response.data.menu));
                 })
         } catch (err) {
@@ -363,7 +354,6 @@ export function obtenerProductoPorIdAction(idInsumo) {
             const header = authorizationHeader(token);
             await clienteAxios.get(`/api/product/${idInsumo}`, header)
                 .then(response => {
-                    console.log(response.data);
                     dispatch(obtenerInsumoPorIdExito(response.data.product));
                 })
         } catch (err) {
@@ -516,7 +506,6 @@ export function obtenerPedidosAction() {
             const header = authorizationHeader(token);
             await clienteAxios.get('/api/order', header)
                 .then(response => {
-                    console.log(response.data);
                     // obtenemos datos del response
                     const { orders } = response.data;
                     // si todo sale bien
@@ -913,7 +902,6 @@ export function obtenerInsumosAction() {
             const header = authorizationHeader(token);
             await clienteAxios.get(`/api/product`, header)
                 .then(response => {
-                    console.log(response.data);
                     dispatch(descargarListadoInsumosExito(response.data));
                 })
         } catch (err) {
@@ -1274,11 +1262,9 @@ const cerrarAgregarCategoriaInsumo = estadoAgregarCategoriaInsumo => ({
 /**********************  para editar un menu de la BBDD ********************************/
 export function obtenerUnMenuAction(datos_menu, IngredientesDB) {
     return async (dispatch) => {
-        console.log(IngredientesDB);
         dispatch(editarMenu(datos_menu));
         for (const ingrediente of IngredientesDB) {
             if (ingrediente.menu._id === datos_menu._id) {
-                console.log(ingrediente);
                 dispatch(editarMenuIngredientes(ingrediente));
             }
         }
@@ -1292,8 +1278,6 @@ const editarMenuIngredientes = ingrediente => ({
 
 export function editarMenuAction(datos_menu, imageFile, ingredientesIniciales, ingredientesFinales) {
     return async (dispatch) => {
-        console.log(ingredientesIniciales);
-        console.log(ingredientesFinales);
 
         try {
             const token = localStorage.getItem('token');
@@ -1509,7 +1493,6 @@ export function crearNuevoMenuAction(datosNuevoMenu, imageFile, ingredientes) {
                             for (const ingrediente of ingredientes) {
                                 ingrediente.menu = menuStored._id;
                                 delete ingrediente.description;
-                                console.log(ingrediente);
                                 clienteAxios.post(`/api/menudetail`, ingrediente, header);
                             }
                         }

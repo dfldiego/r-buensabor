@@ -108,7 +108,6 @@ const CatalogoFiltrado = ({ name }) => {
     }, [menusFiltradosPorCategoria])
 
     const handleClickAbrirModalDetalle = menu => {
-        console.log(menu);
         guardarMenu(menu);
         /**********aqui debemos agregar un metodo que llame a los ingredientes del menu y debemos obtener estos ingredientes en el useEffect() de MenuDetalle y luego recorrerlos con un map en el html */
         obtenerIngredientesDelMenu(menu);
@@ -137,11 +136,7 @@ const CatalogoFiltrado = ({ name }) => {
         menu.uuid = uuidv4();
         agregarMenuACarrito(menu);
     }
-    /* 
-        console.log("menusUnicosFiltradosPorIngredientes", menusUnicosFiltradosPorIngredientes);
-        console.log("IngredientesDB", IngredientesDB);  //quantity
-        console.log("insumos", insumos);  // product-current stock
-     */
+
     return (
         <Fragment>
             <div className="fondo-negro">

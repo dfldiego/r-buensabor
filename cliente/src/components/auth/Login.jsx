@@ -76,7 +76,6 @@ const Login = () => {
 
     /**LOGIN CON GOOGLE **/
     const responseGoogle = (response) => {
-        console.log(response);
         loginGoogle_callAction(response);
     }
 

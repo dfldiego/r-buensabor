@@ -25,8 +25,6 @@ const MisPedidos = () => {
     const pedido_callAction = estadoPedido => dispatch(misPedidosAction(estadoPedido));
 
     let abrir_modal_pedidos_store = useSelector(state => state.home.abrir_modal_pedidos);
-    let mensaje = useSelector(state => state.home.mensaje);
-    let alerta = useSelector(state => state.home.alerta);
     let modalDetallePedido = useSelector(state => state.admin.abrir_modal_detalle_pedido);
 
     /************** METODO PARA CERRAR MODAL *************************/

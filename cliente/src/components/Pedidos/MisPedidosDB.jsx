@@ -91,9 +91,6 @@ const MisPedidosDB = ({ pedidoUser }) => {
     const handleClickCambiarEstadoPedido = (e, nuevoEstadoPedido, ordenPedido, facturas) => {
         e.preventDefault();
 
-        console.log(nuevoEstadoPedido);
-        console.log(ordenPedido);
-        console.log(facturas);  //viene []
         obtenerOrdenEditar(ordenPedido);
         //editamos estado de la orden
         ordenPedido.status = nuevoEstadoPedido;

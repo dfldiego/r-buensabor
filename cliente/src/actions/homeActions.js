@@ -40,7 +40,7 @@ export function misPedidosAction(estadoPedido) {
     return async (dispatch) => {
         let pedidosUser = [];
         var response = null;
-        console.log(estadoPedido);
+
         if (estadoPedido) {
             try {
                 //obtenemos el id del perfil desde el token
@@ -48,13 +48,12 @@ export function misPedidosAction(estadoPedido) {
                 var usuarioBase64 = token.split('.')[1];
                 usuarioBase64 = usuarioBase64.replace('-', '+').replace('_', '/');
                 response = await JSON.parse(window.atob(usuarioBase64));
-                console.log(response);  //response.user._id
+
                 //obtenemos los datos del id desde la DB - getOne User
                 //añadimos header para obtener autorizacion
                 const header = authorizationHeader(token);
                 await clienteAxios.get('/api/order', header)
                     .then(responser => {
-                        console.log(responser.data.orders);
                         const ordenes = responser.data.orders;
                         for (const orden of ordenes) {
                             if (orden.user._id === response.user._id) {
@@ -94,7 +93,6 @@ const cerrarModalPedidos = estadoPedido => ({
 export function crearNuevaOrdenAction(datosOrden, datosFactura) {
     return async (dispatch) => {
         dispatch(agregarOrden());
-        console.log(datosOrden);
 
         try {
             const token = localStorage.getItem('token');
@@ -153,15 +151,12 @@ const obtenerProductoCarrito = productoCarrito => ({
 /**********************  para eliminar los producto del carrito ********************************/
 export function eliminarProductoCarritoAction(productoCarrito) {
     return async (dispatch) => {
-        console.log(productoCarrito);
         dispatch(obtenerProductoCarritoEliminar(productoCarrito.uuid));
         if (localStorage.getItem('carrito')) {
             var carrito = JSON.parse(localStorage.getItem('carrito'));
-            console.log(carrito);
             // busco el producto donde coincidan el uuid
             // obtengo el indice donde coinciden los uuid
             const nuevoCarrito = carrito.filter(producto => producto.uuid !== productoCarrito.uuid);
-            console.log(nuevoCarrito);
             // vuelvo a setear un nuevo carrito.
             localStorage.setItem('carrito', JSON.stringify(nuevoCarrito))
             //envio el producto a eliminar al reducer.
@@ -238,12 +233,9 @@ const cerrarModalCarrito = estadoCarrito => ({
 export function actualizarPerfilAction(perfil, imageFile) {
     return async (dispatch) => {
         try {
-            console.log(perfil);
-            console.log(imageFile);
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
             const responseToken = await desencriptarToken(token);
-            console.log(responseToken);
 
             if (imageFile !== null) {
                 const formData = new FormData();
@@ -251,7 +243,6 @@ export function actualizarPerfilAction(perfil, imageFile) {
 
                 await clienteAxios.put(`/api/upload/users/${responseToken.user._id}`, formData, header)
                     .then(response => {
-                        console.log(response.data);
                         if (response.data.msg) {
                             dispatch(actualizarPerfilError(response.data.msg));
                             return;
@@ -262,7 +253,6 @@ export function actualizarPerfilAction(perfil, imageFile) {
             } else {
                 await clienteAxios.put(`/api/users/${responseToken.user._id}`, perfil, header)
                     .then(response => {
-                        console.log(response.data);
                         dispatch(actualizarPerfilExito(true));
                     })
             }
@@ -294,13 +284,11 @@ export function perfilAction(estadoPerfil) {
                 var usuarioBase64 = token.split('.')[1];
                 usuarioBase64 = usuarioBase64.replace('-', '+').replace('_', '/');
                 var response = await JSON.parse(window.atob(usuarioBase64));
-                console.log(response);
                 //obtenemos los datos del id desde la DB - getOne User
                 //añadimos header para obtener autorizacion
                 const header = authorizationHeader(token);
                 await clienteAxios.get(`/api/users/${response.user._id}`, header)
                     .then(response => {
-                        console.log(response.data);
                         // enviamos la respuesta del getOne al reducer.
                         dispatch(abrirModalPerfil(response.data.user));
                     })

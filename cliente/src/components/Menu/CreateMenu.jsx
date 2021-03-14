@@ -84,7 +84,6 @@ const CreateMenu = () => {
     }
 
     useEffect(() => {
-        console.log(IngredientesDB);
         obtenerCategorias();
         obtenerInsumos();
         obtenerIngredientes();
@@ -148,7 +147,6 @@ const CreateMenu = () => {
     const handleClickELiminarIngrediente = (e, ingrediente) => {
         e.preventDefault();
         const nuevosIngredientes = ingredientes.filter(item => item.product !== ingrediente.product);
-        console.log(nuevosIngredientes);
         setIngredientes(nuevosIngredientes);
     }
 

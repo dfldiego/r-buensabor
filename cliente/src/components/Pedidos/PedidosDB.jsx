@@ -87,9 +87,6 @@ const PedidosDB = ({ orden }) => {
     const handleClickCambiarEstadoPedido = (e, nuevoEstadoPedido, ordenPedido, facturas) => {
         e.preventDefault();
 
-        console.log(nuevoEstadoPedido);
-        console.log(ordenPedido);
-        console.log(facturas);
         obtenerOrdenEditar(ordenPedido);
         //editamos estado de la orden
         ordenPedido.status = nuevoEstadoPedido;

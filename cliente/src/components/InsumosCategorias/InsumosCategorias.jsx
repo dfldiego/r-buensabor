@@ -52,22 +52,6 @@ const InsumosCategorias = () => {
         // eslint-disable-next-line
     }, [recargarTablaCategoriaInsumo]);
 
-
-    /* useEffect(() => {
-        console.log(categoriasInsumoSelect);
-        buscarPadre();
-
-    }, [categoriasInsumoSelect]) */
-
-    /* const buscarPadre = () => {
-        const datosCategoriaInsumoPadre = categoriasInsumoSelect.map(categoriaInsumo => !categoriaInsumo.category && !categoriaInsumo.parent || categoriaInsumo.category && categoriaInsumo.parent ? categoriaInsumo : undefined);
-
-        const sinNulls = datosCategoriaInsumoPadre.filter(categoriaInsumo => categoriaInsumo != null)
-
-        console.log(sinNulls);
-        setPadre(sinNulls);
-    } */
-
     const handleClick_abrir_agregar_categoriaInsumo = e => {
         e.preventDefault();
 

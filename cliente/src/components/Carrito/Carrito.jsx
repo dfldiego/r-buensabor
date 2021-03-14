@@ -168,8 +168,6 @@ const Carrito = () => {
             }
         })
 
-        console.log(contadorTiempoEstimado);
-
         const order = {
             orderDate,
             number,

@@ -117,7 +117,6 @@ const rank = async (req, res = response) => {
             }
 
             var result = [];
-            /* console.log("details", details); */
 
             //OBTENER LA FECHAS DE LOS PEDIDOS
             let filterOrderByDate = [];
@@ -128,8 +127,6 @@ const rank = async (req, res = response) => {
                     filterOrderByDate.push(pedido);
                 }
             }
-
-            /*  console.log("filterOrderByDate", filterOrderByDate); */
 
             filterOrderByDate.reduce(function (res, value) {
                 if (!res[value.menu._id]) {
@@ -153,8 +150,6 @@ const rank = async (req, res = response) => {
                 csvData += row.join(",");
                 csvData += "\n";
             }
-
-            console.log(csvData)
 
             res.set('Content-Type', 'text/csv');
             res.send(csvData);

@@ -25,7 +25,7 @@ const Recaudacion = () => {
     }
 
     //codigo para select año
-    let minOffset = 0, maxOffset = 10;
+    let maxOffset = 10;
     let thisYear = (new Date()).getFullYear();
     let allYears = [];
     for (let x = 0; x <= maxOffset; x++) {

@@ -122,7 +122,6 @@ const scarse = async (req, res = response) => {
     let rows = [];
     try {
         const products = await Product.find({ status: true });
-        console.log(products);
 
         for (let product of products) {
             if (product.current_stock < product.min_stock) {
