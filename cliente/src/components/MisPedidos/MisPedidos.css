@@ -11,10 +11,10 @@
     background: #fff;
     border-radius: 10px;
     position: relative;
-    overflow: hidden;
+    overflow: scroll;
     width: 1140px;
     max-width: 100%;
-    min-height: 480px;
+    max-height: 520px;
 }
 
 .form_container_pedidos_user form {
