@@ -210,12 +210,27 @@ const incomes = async (req, res) => {
 }
 
 const sizeofOrdersByClient = async (req, res) => {
-    //OBTENER LA FECHA INICIO DESDE EL BODY
-    const FechaInicial = new Date("2021/01/23 23:30:14");
-    let FechaInicialTimeStamp = Date.parse(FechaInicial);
-    //OBTENER LA FECHA FIN DESDE EL BODY
-    const FechaFinal = new Date("2021/02/28 23:30:14");
-    let FechaFinalTimeStamp = Date.parse(FechaFinal);
+    //OBTENER LA FECHA INICIO DESDE EL BODY -- FECHA DE RECAUDACION DIARIA //enero=0
+    const initialDateClient = req.query.desde;
+
+    let initialDate = new Date(initialDateClient);
+    let dayinitialDateTimeStamp = '';
+    let monthInitialDateTimeStamp = '';
+    let yearinitialDateTimeStamp = '';
+    let orderDateTimeStamp = '';
+    let dayOrderDate = '';
+    let monthOrderDate = '';
+    let yearOrderDate = '';
+
+    if (!req.query.desde) {
+        dayinitialDateTimeStamp = null;
+        monthInitialDateTimeStamp = req.query.month;
+        yearinitialDateTimeStamp = req.query.year;
+    } else {
+        dayinitialDateTimeStamp = initialDate.getDate() + 1;
+        monthInitialDateTimeStamp = initialDate.getMonth();
+        yearinitialDateTimeStamp = initialDate.getFullYear();
+    }
 
     OrderDetail.find({ status: true })
         .populate('menu description')
@@ -228,25 +243,33 @@ const sizeofOrdersByClient = async (req, res) => {
                 });
             }
 
-            console.log("details");
-            console.log(details);
-
-            //OBTENER LA FECHAS DE LOS PEDIDOS
             let orderFilterByDate = [];
-            for (const pedido of details) {
-                let FechaPedidoTimeStamp = Date.parse(pedido.order.orderDate);
+            //get date of the orders
+            for (const orderDetail of details) {
 
-                if (FechaPedidoTimeStamp < FechaFinalTimeStamp && FechaPedidoTimeStamp > FechaInicialTimeStamp) {
-                    const user = await User.findById(pedido.order.user);
-                    orderFilterByDate.push({ pedido, user });
+                orderDateTimeStamp = Date.parse(orderDetail.order.orderDate);
+
+                // catch day, month & year of orderDate
+                if (dayinitialDateTimeStamp !== null) {
+                    dayOrderDate = new Date(orderDateTimeStamp).getDate();
+                }
+                monthOrderDate = new Date(orderDateTimeStamp).getMonth();
+                yearOrderDate = new Date(orderDateTimeStamp).getFullYear();
+
+                if (dayinitialDateTimeStamp !== null) {
+                    if (dayinitialDateTimeStamp === dayOrderDate && monthInitialDateTimeStamp === monthOrderDate && yearinitialDateTimeStamp === yearOrderDate) {
+                        const user = await User.findById(orderDetail.order.user);
+                        orderFilterByDate.push({ orderDetail, user });
+                    }
+                } else {
+                    if (Number(monthInitialDateTimeStamp) === monthOrderDate && Number(yearinitialDateTimeStamp) === yearOrderDate) {
+                        const user = await User.findById(orderDetail.order.user);
+                        orderFilterByDate.push({ orderDetail, user });
+                    }
                 }
             }
 
-            console.log("orderFilterByDate");
-            console.log(orderFilterByDate);
-
             // Ahora debo hacer un reduce q filtre por id de user de las ordenes
-
             const result = orderFilterByDate
                 .map(function (user) { return user.user.email })
                 .reduce(function (res, value) {
@@ -258,11 +281,19 @@ const sizeofOrdersByClient = async (req, res) => {
                     return res;
                 }, {});
 
-            res.json({
-                ok: true,
-                result: result,
-                size: result.length,
-            });
+            const data = Object.entries(result);
+            const rows = data.map(item => [Object.values(item)[0], Object.values(item)[1]]);
+
+            let csvData = "Email, Total Pedidos \n";
+
+            for (const row of rows) {
+                csvData += row.join(",");
+                csvData += "\n";
+            }
+
+            res.set('Content-Type', 'text/csv');
+            res.send(csvData);
+
         });
 
 }

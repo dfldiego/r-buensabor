@@ -122,6 +122,24 @@ import Swal from 'sweetalert2';
 import { authorizationHeader } from '../helpers/authorization_header';
 import fileDownload from 'js-file-download';
 
+/********************** Cantidad Pedidos por Cliente: Fechas ***********************/
+export function guardarCantidadPedidosClientePorFechasAction(intervaloFechas) {
+    return async (dispatch) => {
+        console.log('intervaloFechas', intervaloFechas);
+        try {
+            const token = localStorage.getItem('token');
+            const header = authorizationHeader(token);
+            await clienteAxios.get(`/api/order-detail/orders-client`, { params: { ...intervaloFechas }, ...header })
+                .then(async response => {
+                    console.log("response", response);
+                    fileDownload(response.data, "PedidosPorCliente.csv");
+                })
+        } catch (err) {
+            console.log(err);
+        }
+    }
+}
+
 /********************** Recaudacion: Fechas ***********************/
 export function guardarFechasReporteRecaudacionAction(intervaloFechas) {
     return async (dispatch) => {
