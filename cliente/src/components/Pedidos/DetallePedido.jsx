@@ -35,27 +35,26 @@ const DetallePedido = () => {
         let total = 0;
         if (details.length > 0) {
             const obtenerDetallePedido = (details) => {
-                for (let i = 0; i < details.length; i++) {
-                    console.log(details[i]);
-                    if (details[i].menu) {
+                details.map(detalle => {
+                    console.log(detalle);
+                    if (detalle.menu) {
                         for (const DatoMenu of DatosPedidoMenu) {
-                            if (details[i].menu === DatoMenu._id) {
-                                details[i].description = DatoMenu.description;
-                                setDetalleCadena([...detalleCadena, details[i]]);
+                            if (detalle.menu === DatoMenu._id) {
+                                detalle.description = DatoMenu.description;
+                                setDetalleCadena([...detalleCadena, detalle]);
                             }
                         }
-                    } else if (details[i].product) {
+                    } else if (detalle.product) {
                         for (const DatoInsumo of DatosPedidoInsumo) {
-                            if (details[i].product === DatoInsumo._id) {
-                                details[i].description = DatoInsumo.description;
-                                setDetalleCadena([...detalleCadena, details[i]]);
+                            if (detalle.product === DatoInsumo._id) {
+                                detalle.description = DatoInsumo.description;
+                                setDetalleCadena([...detalleCadena, detalle]);
                             }
                         }
                     }
 
-                    total = total + details[i].subTotal;
-                }
-
+                    total = total + detalle.subTotal;
+                });
             }
             obtenerDetallePedido(details);
 
@@ -71,7 +70,7 @@ const DetallePedido = () => {
         }
 
         // eslint-disable-next-line
-    }, [DatosPedidoMenu, DatosPedidoInsumo]);
+    }, [details, DatosPedidoMenu, DatosPedidoInsumo]);
 
     return (
         <Fragment>

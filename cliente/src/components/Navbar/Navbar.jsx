@@ -14,7 +14,6 @@ import Carrito from '../Carrito/Carrito';
 import MisPedidos from '../MisPedidos/MisPedidos';
 import { validarRol } from "../../helpers/helpers";
 import { useHistory } from "react-router-dom";
-import { Redirect } from 'react-router';
 // Redux
 import { useDispatch, useSelector } from 'react-redux';
 
