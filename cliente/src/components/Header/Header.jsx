@@ -48,17 +48,14 @@ const Header = () => {
                 <div className="contenedor">
                     <Navbar />
 
-                    <div className="row">
-                        <div className="col-2">
-                            <h1>¡Volá con tu delivery online!</h1>
+                    <div className="header__row">
+                        <div className="header_col_2">
+                            <h1 className="header__h1">¡Volá con tu delivery online!</h1>
                             <Link
                                 to={"#"}
-                                className="btn"
+                                className="header__btn"
                                 onClick={e => handleClick_abrir_catalogo()}
                             >Explorar Ahora &#8594;</Link>
-                        </div>
-                        <div className="col-2">
-                            {/* <img src={LogoHamburguesa} alt="imagen principal" /> */}
                         </div>
                     </div>
                 </div>

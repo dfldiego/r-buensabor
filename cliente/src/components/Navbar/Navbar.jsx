@@ -206,6 +206,29 @@ const Navbar = () => {
                         }
                         {
                             esta_logueado_state_store ?
+                                <li>
+                                    <p className="cart__count">{MenusDeCarrito.length}</p>
+                                </li>
+                                :
+                                null
+                        }
+                        {
+                            esta_logueado_state_store ?
+                                <li>
+                                    <Link to={'#'}>
+                                        <img
+                                            src={cart}
+                                            alt="imagen carrito"
+                                            className="tamañoImagen"
+                                            onClick={e => handleClickAbrirCarrito()}
+                                        />
+                                    </Link>
+                                </li>
+                                :
+                                null
+                        }
+                        {
+                            esta_logueado_state_store ?
                                 <div>
                                     <li>
                                         <Link to={'#'}>
@@ -254,29 +277,6 @@ const Navbar = () => {
                                     to={"#"}
                                     onClick={e => handleClick_abrir_modal()}
                                 >Ingresar</Link></li>
-                        }
-                        {
-                            esta_logueado_state_store ?
-                                <li>
-                                    <p className="cart__count">{MenusDeCarrito.length}</p>
-                                </li>
-                                :
-                                null
-                        }
-                        {
-                            esta_logueado_state_store ?
-                                <li>
-                                    <Link to={'#'}>
-                                        <img
-                                            src={cart}
-                                            alt="imagen carrito"
-                                            className="tamañoImagen"
-                                            onClick={e => handleClickAbrirCarrito()}
-                                        />
-                                    </Link>
-                                </li>
-                                :
-                                null
                         }
                     </ul>
                 </nav>

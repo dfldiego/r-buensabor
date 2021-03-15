@@ -5,9 +5,9 @@ import './Nosotros.css';
 const Nosotros = () => {
     return (
         <Fragment>
-            <section className="contenedor seccion nosotros">
+            <section className="contenedor_nosotros seccion nosotros">
                 <h2 className="fw-300 centrar-texto">Pasos a Seguir</h2>
-                <div className="row">
+                <div className="row_nosotros">
                     <div className="col-3">
                         <img src={require('../../assets/img/comida-rapida.svg')} alt="Icono elegi tu comida" />
                         <h3>1. Elegi tu comida</h3>

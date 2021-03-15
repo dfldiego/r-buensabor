@@ -8,7 +8,7 @@
 
 .navbar {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
 }
 
@@ -17,8 +17,37 @@
     margin: 0 !important;
 }
 
+@media (min-width: 768px) {
+    .navbar {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 5rem;
+    }
+
+    .navbar a img {
+        width: 12rem;
+        margin: 0 !important;
+    }
+}
 
 /**NAVEGACION: NAV**/
+
+nav {
+    width: 50%;
+}
+
+@media (min-width: 768px) {
+    nav {
+        width: 30%;
+    }
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 1.8rem;
+}
 
 .nav a:hover,
 .usercircle:hover {
@@ -27,16 +56,6 @@
 
 .sub-menu li input:hover {
     color: #ff6161;
-}
-
-nav {
-    width: 30%;
-}
-
-nav ul li a {
-    text-decoration: none;
-    color: #fff;
-    font-size: 1.8rem;
 }
 
 .tamañoImagen {
@@ -63,12 +82,26 @@ nav ul li a {
 
 .barra__div {
     display: flex;
-    flex-flow: row;
-    align-content: center;
+    flex-direction: column;
     align-items: center;
     justify-content: space-between;
     min-width: 50px;
     padding-right: 5px;
+}
+
+@media (min-width: 768px) {
+    .barra__div {
+        flex-flow: row;
+        align-content: center;
+        align-items: center;
+        justify-content: space-between;
+        min-width: 50px;
+        padding-right: 5px;
+        position: relative;
+    }
+}
+
+img .tamañoImagen {
     position: relative;
 }
 
@@ -82,6 +115,20 @@ nav ul li a {
     vertical-align: center;
     color: #fff;
     position: absolute;
-    top: 0;
-    right: 30px;
+}
+
+@media (min-width: 768px) {
+    .cart__count {
+        width: 20px;
+        height: 20px;
+        text-align: center;
+        border-radius: 100%;
+        cursor: default;
+        background-color: red;
+        vertical-align: center;
+        color: #fff;
+        position: absolute;
+        top: 0;
+        right: 70px;
+    }
 }
