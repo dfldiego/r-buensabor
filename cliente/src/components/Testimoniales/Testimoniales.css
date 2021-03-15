@@ -4,9 +4,17 @@
     margin-bottom: 5rem;
 }
 
-.testimonial .row {
+.testimonial_row {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+}
+
+@media (min-width: 768px) {
+    .testimonial_row {
+        justify-content: space-between;
+        flex-direction: row;
+    }
 }
 
 .testimonial .col-4 {
@@ -16,6 +24,7 @@
     box-shadow: 0 0 2rem 0 rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: transform 0.5s;
+    margin-top: 2rem;
 }
 
 .testimonial .col-4 img {
@@ -41,7 +50,6 @@
 .testimonial .col-4 p {
     font-size: 1.2rem;
     margin: 1.2rem 0;
-    color: #777777;
 }
 
 .testimonial .col-4 h4 {

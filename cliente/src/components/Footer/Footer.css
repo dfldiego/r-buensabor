@@ -8,6 +8,7 @@
 
 .footer p {
     color: #8a8a8a;
+    text-align: center;
 }
 
 .footer h3 {
@@ -16,21 +17,48 @@
 
 .row {
     display: flex;
+    flex-direction: column;
 }
 
 .footer__col__1 {
     flex: 1;
     text-align: center;
+    margin: 0 auto;
 }
 
 .footer__col__1 img {
     height: 100%;
 }
 
+.footer__col__2 {
+    margin: 0 auto;
+}
+
 .footer__col__1 .footer__col__2,
 .footer__col__3 {
     flex-basis: calc(33% - 1rem);
     text-align: center;
+}
+
+@media (min-width: 768px) {
+    .row {
+        flex-direction: row;
+    }
+
+    .footer__col__1 {
+        flex: 1;
+        text-align: center;
+    }
+
+    .footer__col__1 img {
+        height: 100%;
+    }
+
+    .footer__col__1 .footer__col__2,
+    .footer__col__3 {
+        flex-basis: calc(33% - 1rem);
+        text-align: center;
+    }
 }
 
 ul {

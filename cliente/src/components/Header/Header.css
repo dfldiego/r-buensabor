@@ -33,6 +33,7 @@
         display: block;
         flex-basis: 50%;
         min-width: 300px;
+        margin-top: 5rem;
     }
 
     .header_col_2 img {

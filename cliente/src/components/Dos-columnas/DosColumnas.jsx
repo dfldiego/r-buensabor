@@ -6,7 +6,7 @@ const DosColumnas = () => {
     return (
         <Fragment>
             <section className="contenedor seccion dos-columnas">
-                <div className="row">
+                <div className="doscolumnas_row">
                     <img src={require('../../assets/img/gentecomiendo.png')} alt="gente comiendo" />
                     <div>
                         <h2 className="fw-300 centrar-texto">El Buen Sabor que satisface tus necesidades</h2>

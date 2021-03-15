@@ -7,7 +7,7 @@ const Testimoniales = () => {
         <Fragment>
             <section className="testimonial seccion contenedor">
                 <h2 className="fw-300 centrar-texto">Nuestra Comunidad</h2>
-                <div className="row">
+                <div className="testimonial_row">
                     <div className="col-4">
                         <i className="fa fa-quote-left"></i>
                         <p>¡Muy buen servicio! y muy rápidos para atender. Los recomiendo mucho.</p>
