@@ -335,8 +335,11 @@ export function loginGoogleAction(datos) {
             dispatch(loginGoogleUsuario(true));
 
         } catch (error) {
-            console.log(error.response.data.msg);
-            console.log(error.response.data.err.errors.email.message);
+            if (error.response.data.msg) {
+                console.log(error.response.data.msg);
+            } else if (error.response.data.err.errors.email.message) {
+                console.log(error.response.data.err.errors.email.message);
+            }
             // si hay un error
             dispatch(loginGoogleUsuarioError(String(error.response.data.msg)));
         }
