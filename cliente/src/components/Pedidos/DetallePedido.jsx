@@ -35,23 +35,25 @@ const DetallePedido = () => {
         let total = 0;
         if (details.length > 0) {
             const obtenerDetallePedido = (details) => {
-                for (const detalle of details) {
-                    if (detalle.menu || detalle.product) {
+                for (let i = 0; i < details.length; i++) {
+                    console.log(details[i]);
+                    if (details[i].menu) {
                         for (const DatoMenu of DatosPedidoMenu) {
-                            if (detalle.menu === DatoMenu._id) {
-                                detalle.description = DatoMenu.description;
-                                setDetalleCadena([...detalleCadena, detalle]);
+                            if (details[i].menu === DatoMenu._id) {
+                                details[i].description = DatoMenu.description;
+                                setDetalleCadena([...detalleCadena, details[i]]);
                             }
                         }
+                    } else if (details[i].product) {
                         for (const DatoInsumo of DatosPedidoInsumo) {
-                            if (detalle.product === DatoInsumo._id) {
-                                detalle.description = DatoInsumo.description;
-                                setDetalleCadena([...detalleCadena, detalle]);
+                            if (details[i].product === DatoInsumo._id) {
+                                details[i].description = DatoInsumo.description;
+                                setDetalleCadena([...detalleCadena, details[i]]);
                             }
                         }
                     }
 
-                    total = total + detalle.subTotal;
+                    total = total + details[i].subTotal;
                 }
 
             }
@@ -84,12 +86,14 @@ const DetallePedido = () => {
 
                         <div className="tablaCarrito">
                             <table>
-                                <tbody>
+                                <thead>
                                     <tr>
                                         <th>Producto</th>
                                         <th>Cantidad</th>
                                         <th>Sub-Total</th>
                                     </tr>
+                                </thead>
+                                <tbody>
                                     {
                                         detalleCadena.map(detalle =>
                                             detalle.menu ?
@@ -104,19 +108,23 @@ const DetallePedido = () => {
                                                         <h4>{detalle.subTotal}</h4>
                                                     </td>
                                                 </tr>
-                                                : detalle.product ?
-                                                    <tr>
-                                                        <td>
-                                                            <h4>{detalle.description}</h4>
-                                                        </td>
-                                                        <td>
-                                                            <h4>{detalle.quantity}</h4>
-                                                        </td>
-                                                        <td>
-                                                            <h4>{detalle.subTotal}</h4>
-                                                        </td>
-                                                    </tr>
-                                                    : null
+                                                : null
+                                        )
+                                    } {
+                                        detalleCadena.map((detalle, index) =>
+                                            detalle.product ?
+                                                <tr key={index}>
+                                                    <td>
+                                                        <h4>{detalle.description}</h4>
+                                                    </td>
+                                                    <td>
+                                                        <h4>{detalle.quantity}</h4>
+                                                    </td>
+                                                    <td>
+                                                        <h4>{detalle.subTotal}</h4>
+                                                    </td>
+                                                </tr>
+                                                : null
                                         )
                                     }
                                 </tbody>
@@ -126,7 +134,7 @@ const DetallePedido = () => {
                             <table>
                                 <tbody>
                                     <tr>
-                                        <td></td>
+                                        <td><h4>-</h4></td>
                                         <td className="total">Descuento</td>
                                         <td className="total">${descuento}</td>
                                     </tr>
@@ -137,7 +145,7 @@ const DetallePedido = () => {
                             <table>
                                 <tbody>
                                     <tr>
-                                        <td></td>
+                                        <td><h4>-</h4></td>
                                         <td className="total">Total</td>
                                         <td className="total">${totalDetallePedido}</td>
                                     </tr>

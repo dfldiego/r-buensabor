@@ -14,6 +14,7 @@ import Carrito from '../Carrito/Carrito';
 import MisPedidos from '../MisPedidos/MisPedidos';
 import { validarRol } from "../../helpers/helpers";
 import { useHistory } from "react-router-dom";
+import { Redirect } from 'react-router';
 // Redux
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -102,9 +103,10 @@ const Navbar = () => {
         }
     }
 
-    const handleClick_cerrar_sesion = async (e) => {
+    const handleClick_cerrar_sesion = (e) => {
         e.preventDefault();
-        await cerrar_sesion_callAction();
+        cerrar_sesion_callAction();
+        history.push('/')
     }
 
     const handleclick_openPerfil = e => {

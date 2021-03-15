@@ -35,7 +35,7 @@ const GetPedidos = () => {
                         <tbody>
                             {
                                 pedidos_state.length === 0 ?
-                                    <tr><td>No hay Pedidos</td></tr>
+                                    <tr><td><p>No hay Pedidos</p></td></tr>
                                     :
                                     pedidos_state.map(orden => (
                                         (userStorage.role === 'ADMIN_ROLE') || (userStorage.role === 'SUPER_ADMIN_ROLE') ||
