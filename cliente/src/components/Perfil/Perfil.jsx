@@ -120,13 +120,13 @@ const Perfil = () => {
             <div className="perfil">
                 <div className="perfil_container">
                     <ClearIcon
-                        className="volver"
+                        className="volver_perfil"
                         onClick={cerrar_modal}
                     />
                     <h5 className="centrar-texto">Nuestro Perfil</h5>
-                    <div className="dos_columnas">
+                    <div className="dos_columnas_perfil">
                         <div className="form_container_perfil">
-                            <div className="circular">
+                            <div className="circular_perfil">
                                 <img src={`http://localhost:4000/api/image/users/${img}`} alt="" />
                             </div>
                         </div>
@@ -159,7 +159,7 @@ const Perfil = () => {
                                     <input
                                         type="password"
                                         className="form-control"
-                                        placeholder="Contraseña vieja"
+                                        placeholder="Contraseña nueva"
                                         name="new_password"
                                         value={new_password}
                                         onChange={handleChange_perfil}
@@ -170,7 +170,7 @@ const Perfil = () => {
                                     <input
                                         type="password"
                                         className="form-control"
-                                        placeholder="Contraseña vieja"
+                                        placeholder="Contraseña nueva"
                                         name="new_password_repeat"
                                         value={new_password_repeat}
                                         onChange={handleChange_perfil}
@@ -228,7 +228,7 @@ const Perfil = () => {
                                         onChange={handleChange_perfil}
                                     />
                                 </div>
-                                <div className="form-row">
+                                <div className="form-row-button">
                                     <button
                                         className="boton_actualizar_perfil"
                                     >Guardar</button>
