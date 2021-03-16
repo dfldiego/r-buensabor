@@ -83,7 +83,9 @@ const MenuDetalle = () => {
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <h4 className="price">${menu.price}</h4>
+                                        </div>
+                                        <div>
+                                            <h4 className="price">Precio: ${menu.price}</h4>
                                         </div>
                                         <div className="botones">
                                             <input
@@ -128,7 +130,7 @@ const MenuDetalle = () => {
                                                 </ul>
                                             </div>
                                         </div>
-                                        <h4 className="price">${insumo.price}</h4>
+                                        <h4 className="price">Precio: ${insumo.price}</h4>
                                     </div>
                                     <div className="botones">
                                         <input

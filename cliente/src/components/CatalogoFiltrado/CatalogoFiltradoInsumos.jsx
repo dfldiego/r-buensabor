@@ -93,7 +93,7 @@ const CatalogoFiltradoInsumos = ({ name }) => {
                 {
                     errorCatalogo ? <p className="error">{mensaje}</p> : null
                 }
-                <div className="row">
+                <div className="row_catalogo_filtrado">
                     {
                         insumoFiltrado ?
                             insumoFiltrado.map(insumo => (
@@ -104,6 +104,7 @@ const CatalogoFiltradoInsumos = ({ name }) => {
                                     <img
                                         src={`http://localhost:4000/api/image/products/${insumo.img}`}
                                         alt={insumo.description}
+                                        className="imagen_detalle"
                                         onClick={() => handleClickAbrirModalDetalle(insumo)}
                                     />
 
