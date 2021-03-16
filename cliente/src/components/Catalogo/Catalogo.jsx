@@ -60,7 +60,7 @@ const Catalogo = () => {
                 estaAbierto = true;
             }
         }
-        if (horaActual >= 8 && horaActual <= 23) {
+        if (horaActual >= 0 && horaActual <= 23) {
             estaAbierto = true;
         }
 

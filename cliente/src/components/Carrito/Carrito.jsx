@@ -364,7 +364,7 @@ const Carrito = () => {
                                     {
                                         alerta ? <p className="error">{mensaje}</p> : null
                                     }
-                                    <div>
+                                    <div className="botones_carrito">
                                         <button
                                             type="submit"
                                             className="btn_carrito"
