@@ -144,7 +144,7 @@ const CatalogoFiltrado = ({ name }) => {
                 {
                     errorCatalogo ? <p className="error">{mensaje}</p> : null
                 }
-                <div className="row">
+                <div className="row_catalogo_filtrado">
                     {
                         menusUnicosFiltradosPorIngredientes ?
                             menusUnicosFiltradosPorIngredientes.map(menu => (

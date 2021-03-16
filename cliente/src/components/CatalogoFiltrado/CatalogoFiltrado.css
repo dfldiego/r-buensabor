@@ -1,7 +1,16 @@
 /**CATALOGO FILTRADO**/
-.catalogo .row {
+.catalogo .row_catalogo_filtrado {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+}
+
+@media (min-width: 768px) {
+    .catalogo .row_catalogo_filtrado {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
 }
 
 .catalogo .col_3 {
