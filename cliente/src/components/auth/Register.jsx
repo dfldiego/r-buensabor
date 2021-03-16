@@ -127,7 +127,6 @@ const Register = () => {
                         {/** LEFT OVERLAY PANEL **/}
                         <div className="overlay-panel overlay-left">
                             <h1>¡Bienvenido de Vuelta!</h1>
-                            <p>Para mantenerte conectado con nosotros por favor logueate con tu información personal</p>
                             <button
                                 className="ghost"
                                 onClick={handleClickToLogin}

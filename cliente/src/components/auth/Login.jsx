@@ -132,7 +132,6 @@ const Login = () => {
                         {/** RIGHT OVERLAY PANEL **/}
                         <div className="overlay-panel overlay-right">
                             <h1>¡Hola Amigo!</h1>
-                            <p>Ingresá tus detalles personales y unete a nosotros</p>
                             <button
                                 className="ghost"
                                 onClick={handleClickToRegister}

@@ -236,7 +236,7 @@ const Carrito = () => {
                                                                 <p>{menu.description}</p>
                                                             </td>
                                                             <td>{menu.price}</td>
-                                                            <td>
+                                                            <td className="boton_quitar_carrito">
                                                                 <button
                                                                     href="#"
                                                                     onClick={() => handleClickQuitarDelCarrito(menu)}
