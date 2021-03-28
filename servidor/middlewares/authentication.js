@@ -8,8 +8,10 @@ let checkToken = (req, res, next) => {
     // metodo verify.(verificar el token)
     jwt.verify(token, process.env.SEED, (err, decoded) => {
         if (err) {
-            localStorage.setItem("token", []);
-            localStorage.setItem("user", '');
+            if (typeof window !== 'undefined') {
+                localStorage.setItem("token", []);
+                localStorage.setItem("user", '');
+            }
             return res.status(401).json({
                 ok: false,
                 err: {

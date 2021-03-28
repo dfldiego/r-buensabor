@@ -1278,7 +1278,8 @@ const editarMenuIngredientes = ingrediente => ({
 
 export function editarMenuAction(datos_menu, imageFile, ingredientesIniciales, ingredientesFinales) {
     return async (dispatch) => {
-
+        console.log(ingredientesIniciales);
+        console.log(ingredientesFinales);
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);

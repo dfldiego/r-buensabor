@@ -363,12 +363,16 @@ const CreateMenu = () => {
                                 </thead>
                                 <tbody>
                                     {
+
                                         ingredientes ?
                                             ingredientes.map((ingrediente, index) => (
                                                 <tr key={index}>
                                                     {
                                                         IngredientesEdit.length !== 0 ?
-                                                            <td>{ingrediente.product.description}</td>
+                                                            ingrediente.status ?
+                                                                <td>{ingrediente.product.description}</td>
+                                                                :
+                                                                <td>{ingrediente.description}</td>
                                                             :
                                                             <td>{ingrediente.description}</td>
                                                     }
