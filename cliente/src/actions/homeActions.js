@@ -324,7 +324,6 @@ export function loginGoogleAction(datos) {
             // buscar usuarios en la BD
             await clienteAxios.post('/login-google', datos)
                 .then(response => {
-                    console.log(response.data);
                     // obtenemos datos del response
                     const { token, user } = response.data;
                     // guardamos token en el localStorage
@@ -445,7 +444,6 @@ export function loginAction(datos) {
             // buscar usuarios en la BD
             await clienteAxios.post('/login', datos)
                 .then(response => {
-                    console.log(response.data);
                     // obtenemos datos del response
                     const { token, user } = response.data;
                     // guardamos token en el localStorage
