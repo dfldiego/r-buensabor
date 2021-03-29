@@ -96,13 +96,14 @@ const loginGoogle = async (req, res) => {
             let dateExpiration = fechaActual;
 
             let datosToken = {
-                userDB,
+                user: userDB,
                 dateExpiration
             }
 
             // si usuario es de google
             // GENERAR UN TOKEN -- JWT
             const token = await generateJWT(datosToken);
+
             return res.json({
                 ok: true,
                 user: userDB,

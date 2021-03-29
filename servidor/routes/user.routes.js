@@ -13,6 +13,7 @@ app.get('/', [checkToken], userController.list);
 app.post('/', [checkToken], userController.create);
 app.get('/:id', [checkToken], userController.getById);
 app.put('/:id', [checkToken], userController.update);
+app.put('/admin/:id', [checkToken], userController.updateAdmin);
 app.delete('/:id', [checkToken], userController.remove);
 app.get('/search/:words', userController.search);
 

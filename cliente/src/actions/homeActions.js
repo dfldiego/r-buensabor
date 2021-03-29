@@ -288,10 +288,12 @@ export function perfilAction(estadoPerfil) {
                 //obtenemos los datos del id desde la DB - getOne User
                 //añadimos header para obtener autorizacion
                 const header = authorizationHeader(token);
+                console.log("response:perfilAction:", response);
                 await clienteAxios.get(`/api/users/${response.user._id}`, header)
-                    .then(response => {
+                    .then(responses => {
+                        console.log("responses:perfilAction:", responses);
                         // enviamos la respuesta del getOne al reducer.
-                        dispatch(abrirModalPerfil(response.data.user));
+                        dispatch(abrirModalPerfil(responses.data.user));
                     })
 
 
@@ -322,17 +324,24 @@ export function loginGoogleAction(datos) {
             // buscar usuarios en la BD
             await clienteAxios.post('/login-google', datos)
                 .then(response => {
+                    console.log(response.data);
                     // obtenemos datos del response
                     const { token, user } = response.data;
-
                     // guardamos token en el localStorage
                     localStorage.setItem('token', token);
+                    localStorage.setItem('user', JSON.stringify(user));
                     dispatch(guardarTokenGoogle(token));
+                    console.log(user.role);
                     dispatch(guardarRol(user.role));
                 })
 
             // SI TODO SALE BIEN
             dispatch(loginGoogleUsuario(true));
+
+            // si no hay carrito en localstorage
+            if (!localStorage.getItem('carrito')) {
+                localStorage.setItem('carrito', '[]');
+            }
 
         } catch (error) {
             if (error.response.data.msg) {
@@ -436,6 +445,7 @@ export function loginAction(datos) {
             // buscar usuarios en la BD
             await clienteAxios.post('/login', datos)
                 .then(response => {
+                    console.log(response.data);
                     // obtenemos datos del response
                     const { token, user } = response.data;
                     // guardamos token en el localStorage
@@ -451,9 +461,7 @@ export function loginAction(datos) {
             // si no hay carrito en localstorage
             if (!localStorage.getItem('carrito')) {
                 localStorage.setItem('carrito', '[]');
-            }/*  else {
-                dispatch(obtenerProductoCarrito(localStorage.getItem('carrito')));
-            } */
+            }
 
         } catch (error) {
             console.log(error.response.data.err.msg);

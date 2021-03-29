@@ -40,8 +40,6 @@ const Admin = () => {
     if (localStorage.getItem('user')) {
         rolUser = JSON.parse(localStorage.getItem('user')).role;
     } else {
-        /* res.Redirect('/'); */
-        /* return <Redirect to={'/'} /> */
         estaLogueado_callAction();
     }
 

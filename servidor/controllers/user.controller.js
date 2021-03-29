@@ -94,6 +94,53 @@ const create = async (req, res = response) => {
     }
 }
 
+const updateAdmin = async (req, res = response) => {
+    // obtenemos el id por parametro
+    const id = req.params.id;
+
+    try {
+        // verificamos que el user con ese id exista en la BD
+        const userDB = await User.findById(id);
+        if (!userDB) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'There is no user with that id'
+            });
+        }
+
+        // El usuario existe y queremos actualizarlo
+        // destructuring al dato que actualizará el usuario
+        const { email, ...campos } = req.body;
+
+        // verificamos que el email del usuario no exista en la BD
+        if (userDB.email !== email) {
+            const existe_user = await User.findOne({ email });
+            if (existe_user) {
+                return res.status(400).json({
+                    ok: false,
+                    msg: 'The user already exists in the DB'
+                });
+            }
+        }
+
+        // debemos colocar el nombre de user que queremos actualizar
+        campos.email = email;
+
+        //actualizamos
+        const userStored = await User.findByIdAndUpdate(id, campos, { new: true });
+
+        res.json({
+            ok: true,
+            userStored
+        });
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            msg: error
+        });
+    }
+}
+
 const update = async (req, res = response) => {
     console.log(req.body);
     // obtenemos el id por parametro
@@ -303,6 +350,7 @@ module.exports = {
     create,
     getById,
     update,
+    updateAdmin,
     remove,
     search
 }

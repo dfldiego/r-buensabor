@@ -1867,7 +1867,7 @@ export function editarUsuarioAction(datos_usuario) {
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            await clienteAxios.put(`/api/users/${datos_usuario._id}`, datos_usuario, header);
+            await clienteAxios.put(`/api/users/admin/${datos_usuario._id}`, datos_usuario, header);
             dispatch(editarUsuarioExito(datos_usuario));
         } catch (error) {
             console.log(error);
@@ -1901,7 +1901,7 @@ export function eliminarUsuarioAction(datos_usuario) {
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
-            await clienteAxios.put(`/api/users/${datos_usuario._id}`, datos_usuario, header);
+            await clienteAxios.put(`/api/users/admin/${datos_usuario._id}`, datos_usuario, header);
             dispatch(usuarioEliminadoExito(datos_usuario));
             // si se elimina, mostrar alerta
             Swal.fire(
