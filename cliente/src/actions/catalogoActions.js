@@ -11,10 +11,38 @@ import {
     MENSAJE_RESTAURANTE_ABIERTO,
     DESCARGA_MENU_DETALLE_DE_MENU,
     DESCARGA_MENU_DETALLE_DE_MENU_ERROR,
+    OBTENER_DATA_USUARIO,
 } from '../types';
 
 import clienteAxios from '../config/axios';
 import { authorizationHeader } from '../helpers/authorization_header';
+
+/**********************  para obtener usuario a traves del token ********************************/
+export function obtenerDatosUsuarioAction() {
+    return async (dispatch) => {
+        try {
+            //obtenemos el id del perfil desde el token
+            const token = localStorage.getItem('token');
+            var usuarioBase64 = token.split('.')[1];
+            usuarioBase64 = usuarioBase64.replace('-', '+').replace('_', '/');
+            var response = await JSON.parse(window.atob(usuarioBase64));
+            const header = authorizationHeader(token);
+            await clienteAxios.get(`/api/users/${response.user._id}`, header)
+                .then(responses => {
+                    // enviamos la respuesta del getOne al reducer.
+                    dispatch(obtenerDataUsuario(responses.data.user));
+                })
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+const obtenerDataUsuario = data => ({
+    type: OBTENER_DATA_USUARIO,
+    payload: data
+})
 
 /**********************  para obtener ingredientes del menu de la BBDD ********************************/
 export function obtenerIngredientesDelMenuAction(menu) {

@@ -12,6 +12,7 @@ import {
     MENSAJE_RESTAURANTE_ABIERTO,
     DESCARGA_MENU_DETALLE_DE_MENU,
     DESCARGA_MENU_DETALLE_DE_MENU_ERROR,
+    OBTENER_DATA_USUARIO,
 } from '../types';
 
 const initialState = {
@@ -28,10 +29,16 @@ const initialState = {
     insumo_detalle: null,
     menu_detalle: null,
     estadoHorariosRestaurante: false,
+    usuarioData: null,
 }
 
 export default function (state = initialState, action) {
     switch (action.type) {
+        case OBTENER_DATA_USUARIO:
+            return {
+                ...state,
+                usuarioData: action.payload,
+            }
         case PAGINA_MENUES_FILTRADOS:
             return {
                 ...state,

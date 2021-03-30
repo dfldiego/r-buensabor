@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react';
-
+import { useHistory } from 'react-router';
 // Estilos
 import './Perfil.css';
 import '../../assets/img/sinuser.png';
@@ -15,7 +15,11 @@ import {
 } from '../../actions/homeActions';
 
 
+
 const Perfil = () => {
+
+    const history = useHistory();
+
     const [imageFile, setimageFile] = useState(null);
     const [perfil, setPerfil] = useState({
         name: '',
@@ -49,7 +53,6 @@ const Perfil = () => {
 
     /************** METODO USE EFFECT ********************************/
     useEffect(() => {
-        console.log("perfil_usuario_store", perfil_usuario_store);
         if (perfil_usuario_store.address !== undefined) {
             setPerfil({
                 ...perfil,
@@ -61,7 +64,6 @@ const Perfil = () => {
                 location: perfil_usuario_store.address.location,
             })
         } else {
-            console.log("entro aca");
             setPerfil({
                 ...perfil,
                 name: perfil_usuario_store.name,
@@ -96,10 +98,6 @@ const Perfil = () => {
 
     /************* METODO ONCHANGE PERFIL USUARIO ********************/
     var handleChange_imagen = (e) => {
-        /* setPerfil({
-            ...perfil,
-            [e.target.name]: e.target.files[0].name,
-        }); */
         setimageFile({
             ...imageFile,
             [e.target.name]: e.target.files[0],
@@ -109,9 +107,8 @@ const Perfil = () => {
     /************* METODO QUE GUARDA PERFIL USUARIO *******************/
     const handleSubmit_guardarPerfil = e => {
         e.preventDefault();
-
         actualizar_perfil_callAction(perfil, imageFile);
-
+        history.go(0);
     }
 
 

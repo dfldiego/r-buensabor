@@ -272,6 +272,7 @@ export function obtenerConfiguracionAction() {
 
             await clienteAxios.get(`/api/config`, header)
                 .then(response => {
+                    console.log("response.data", response.data);
                     dispatch(obtenerDatoConfiguracion(response.data.config));
                 })
 

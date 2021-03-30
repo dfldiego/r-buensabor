@@ -36,7 +36,6 @@ const DetallePedido = () => {
         if (details.length > 0) {
             const obtenerDetallePedido = (details) => {
                 details.map(detalle => {
-                    console.log(detalle);
                     if (detalle.menu) {
                         for (const DatoMenu of DatosPedidoMenu) {
                             if (detalle.menu === DatoMenu._id) {

@@ -142,7 +142,6 @@ const updateAdmin = async (req, res = response) => {
 }
 
 const update = async (req, res = response) => {
-    console.log(req.body);
     // obtenemos el id por parametro
     const id = req.params.id;
 

@@ -7,21 +7,25 @@ import Navbar from '../Navbar/Navbar';
 import ModalContainer from '../ModalContainer/ModalContainer';
 import MenuDetalle from '../CatalogoFiltrado/MenuDetalle';
 import { v4 as uuidv4 } from 'uuid';
+import Swal from 'sweetalert2';
+import { useHistory } from 'react-router';
 
 import { useSelector, useDispatch } from 'react-redux'
 import {
     abrirCerrarDetalleMenuAction,
     guardarMenuDetalleAction,
     obtenerIngredientesDelMenuAction,
+    obtenerDatosUsuarioAction,
 } from '../../actions/catalogoActions';
 import {
     agregarMenuACarritoAction,
 } from '../../actions/homeActions';
-/* import {
-    obtenerInsumosAction,
-} from '../../actions/adminActions'; */
+
 
 const CatalogoFiltrado = ({ name }) => {
+
+    // redireccionar a la pagina principal una vez que editamos el producto
+    const history = useHistory();
 
     const [categoriaFiltrada, setCategoriaFiltrada] = useState(null);   // categoriaSelect: _id-name-img
     const [menusFiltradosPorCategoria, setMenusFiltradosPorCategoria] = useState([]);
@@ -35,7 +39,7 @@ const CatalogoFiltrado = ({ name }) => {
     const guardarMenu = menu => dispatch(guardarMenuDetalleAction(menu));
     const agregarMenuACarrito = menu => dispatch(agregarMenuACarritoAction(menu));
     const obtenerIngredientesDelMenu = (menu) => dispatch(obtenerIngredientesDelMenuAction(menu));
-    /* const obtenerInsumos = () => dispatch(obtenerInsumosAction()); */
+    const obtenerDatosUsuario = () => dispatch(obtenerDatosUsuarioAction());
 
     const categorias = useSelector(state => state.admin.categoriasSelect);
     const menus = useSelector(state => state.admin.menusSelect);
@@ -44,7 +48,7 @@ const CatalogoFiltrado = ({ name }) => {
     const mensaje = useSelector(state => state.catalogo.mensaje);
     const estaAbiertoRestaurante = useSelector(state => state.catalogo.estadoHorariosRestaurante);
     const errorCatalogo = useSelector(state => state.catalogo.error);
-    /* const insumos = useSelector(state => state.admin.insumos); */
+    const usuarioData = useSelector(state => state.catalogo.usuarioData);
 
     const filtrarCategoriaPorName = nombreCategoria => {
         const categoriaEncontradaPorName = categorias.filter(categoria => categoria.name === nombreCategoria);
@@ -82,7 +86,7 @@ const CatalogoFiltrado = ({ name }) => {
 
     useEffect(() => {
         filtrarCategoriaPorName(name);
-        /* obtenerInsumos(); */
+        obtenerDatosUsuario();
 
         // eslint-disable-next-line
     }, []);
@@ -128,8 +132,21 @@ const CatalogoFiltrado = ({ name }) => {
         // eslint-disable-next-line
     }, [modalMenuDetalle])
 
-    const handleClickAgregarAlCarrito = menu => {
+    const handleClickAgregarAlCarrito = async menu => {
         menu.uuid = uuidv4();
+
+        // comprobar si tiene direccion y telefono asociado
+        console.log("usuarioData", usuarioData);
+        if (!usuarioData.telephoneNumber || !usuarioData.address) {
+            await Swal.fire({
+                icon: 'error',
+                title: 'No tienes tus datos completos',
+                text: 'Por favor, completa tus datos en Perfil para poder agregar al carrito menues e insumos',
+            });
+            history.go(0);
+            return;
+        }
+
         agregarMenuACarrito(menu);
     }
 

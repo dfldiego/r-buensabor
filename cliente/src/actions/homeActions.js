@@ -288,10 +288,8 @@ export function perfilAction(estadoPerfil) {
                 //obtenemos los datos del id desde la DB - getOne User
                 //añadimos header para obtener autorizacion
                 const header = authorizationHeader(token);
-                console.log("response:perfilAction:", response);
                 await clienteAxios.get(`/api/users/${response.user._id}`, header)
                     .then(responses => {
-                        console.log("responses:perfilAction:", responses);
                         // enviamos la respuesta del getOne al reducer.
                         dispatch(abrirModalPerfil(responses.data.user));
                     })

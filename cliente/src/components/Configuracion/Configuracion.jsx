@@ -55,7 +55,7 @@ const Configuracion = () => {
         }
 
         // eslint-disable-next-line
-    }, [datosConfiguracionDB])
+    }, [datosConfiguracionDB]);
 
     return (
         <Fragment>
