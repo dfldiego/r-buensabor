@@ -4,7 +4,7 @@ const MenuDetail = require('../models/menu-details.model');
 const list = async (req, res = response) => {
 
     MenuDetail.find({ status: true })
-        .populate('product', 'description')
+        .populate('product', 'description current_stock')
         .populate('menu', 'description')
         .exec((err, menudetails) => {
 

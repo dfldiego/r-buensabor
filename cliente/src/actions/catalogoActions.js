@@ -53,6 +53,7 @@ export function obtenerIngredientesDelMenuAction(menu) {
 
             await clienteAxios.get(`/api/menudetail`, header)
                 .then(response => {
+                    console.log("response:obtenerIngredientesDel menu:", response.data);
                     const ingredientes = response.data.menudetails;
                     let ingredientesMenu = [];
                     for (const ingrediente of ingredientes) {

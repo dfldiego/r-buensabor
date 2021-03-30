@@ -62,23 +62,21 @@ const CatalogoFiltrado = ({ name }) => {
 
     const filtrarMenuPorIngrediente = (IngredientesDB, menusCategorizados) => {
         const menuesIngredientes = [];
-        //recorro los ingredientes y guardo en un array el menu del ingrediente
-        for (const ingrediente of IngredientesDB) {
-            if (ingrediente.menu.description) {
-                menuesIngredientes.push(ingrediente.menu.description);
-            }
-        }
 
         //recorro los menus y si el array de menues de los ingredientes contiene al menu devuelvo un true sino false.
         for (const menu of menusCategorizados) {
-            if (menuesIngredientes.includes(menu.description)) {
-                menusFiltradosPorIngredientes.push(menu);
-            } else {
-                menu.mensaje = "NO DISPONIBLE";
-                menusFiltradosPorIngredientes.push(menu);
+            for (const ingrediente of IngredientesDB) {
+                if (ingrediente.menu.description === menu.description) {
+                    if (ingrediente.product.current_stock > ingrediente.quantity) {
+                        menusFiltradosPorIngredientes.push(menu);
+                    } else {
+                        menu.mensaje = "NO DISPONIBLE";
+                        menusFiltradosPorIngredientes.push(menu);
+                    }
+                }
             }
         }
-
+        console.log("menusFiltradosPorIngredientes", menusFiltradosPorIngredientes);
         // codigo para eliminar elementos repetidos de un array
         const menusUnicosFiltrados = [...new Set(menusFiltradosPorIngredientes)];
         setMenusUnicosFiltradosPorIngredientes(menusUnicosFiltrados);
@@ -97,7 +95,7 @@ const CatalogoFiltrado = ({ name }) => {
         }
 
         // eslint-disable-next-line
-    }, [categoriaFiltrada])
+    }, [setCategoriaFiltrada, categoriaFiltrada])
 
     useEffect(() => {
         if (menusFiltradosPorCategoria.length > 0) {
