@@ -86,7 +86,7 @@ const CatalogoFiltradoInsumos = ({ name }) => {
         // eslint-disable-next-line
     }, [modalMenuDetalle])
 
-    const handleClickAgregarAlCarrito = menu => {
+    const handleClickAgregarAlCarrito = async menu => {
         menu.uuid = uuidv4();
 
         // comprobar si tiene direccion y telefono asociado
