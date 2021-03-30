@@ -3,6 +3,8 @@ import '../../assets/css/styles.css';
 import '../Catalogo/Catalogo.css';
 import './CatalogoFiltrado.css';
 import { v4 as uuidv4 } from 'uuid';
+import Swal from 'sweetalert2';
+import { useHistory } from 'react-router';
 
 import Navbar from '../Navbar/Navbar';
 import ModalContainer from '../ModalContainer/ModalContainer';
@@ -11,13 +13,17 @@ import MenuDetalle from '../CatalogoFiltrado/MenuDetalle';
 import { useSelector, useDispatch } from 'react-redux'
 import {
     abrirCerrarDetalleMenuAction,
-    guardarInsumoDetalleAction
+    guardarInsumoDetalleAction,
+    obtenerDatosUsuarioAction,
 } from '../../actions/catalogoActions';
 import {
     agregarMenuACarritoAction,
 } from '../../actions/homeActions';
 
 const CatalogoFiltradoInsumos = ({ name }) => {
+
+    // redireccionar a la pagina principal una vez que editamos el producto
+    const history = useHistory();
 
     const [insumoFiltrado, setInsumoFiltrado] = useState(null);
 
@@ -28,6 +34,7 @@ const CatalogoFiltradoInsumos = ({ name }) => {
     const abrirModalMenuDetalle = (estadoDetalleMenu) => dispatch(abrirCerrarDetalleMenuAction(estadoDetalleMenu));
     const guardarInsumo = (insumo) => dispatch(guardarInsumoDetalleAction(insumo));
     const agregarInsumoACarrito = orden => dispatch(agregarMenuACarritoAction(orden));
+    const obtenerDatosUsuario = () => dispatch(obtenerDatosUsuarioAction());
 
     const modalMenuDetalle = useSelector(state => state.catalogo.abrir_detalle_menu);
     const insumos = useSelector(state => state.admin.insumos);
@@ -35,6 +42,7 @@ const CatalogoFiltradoInsumos = ({ name }) => {
     const mensaje = useSelector(state => state.catalogo.mensaje);
     const estaAbiertoRestaurante = useSelector(state => state.catalogo.estadoHorariosRestaurante);
     const errorCatalogo = useSelector(state => state.catalogo.error);
+    const usuarioData = useSelector(state => state.catalogo.usuarioData);
 
     useEffect(() => {
         const filtrarInsumosPorPadre = categoriaInsumoPadre => {
@@ -50,6 +58,7 @@ const CatalogoFiltradoInsumos = ({ name }) => {
         if (insumos.length > 0) {
             filtrarInsumosPorPadre(categoriaInsumoPadre)
         }
+        obtenerDatosUsuario();
 
         // eslint-disable-next-line
     }, []);
@@ -79,6 +88,19 @@ const CatalogoFiltradoInsumos = ({ name }) => {
 
     const handleClickAgregarAlCarrito = menu => {
         menu.uuid = uuidv4();
+
+        // comprobar si tiene direccion y telefono asociado
+        console.log("usuarioData", usuarioData);
+        if (!usuarioData.telephoneNumber || !usuarioData.address) {
+            await Swal.fire({
+                icon: 'error',
+                title: 'No tienes tus datos completos',
+                text: 'Por favor, completa tus datos en Perfil para poder agregar al carrito menues e insumos',
+            });
+            history.go(0);
+            return;
+        }
+
         agregarInsumoACarrito(menu);
     }
 
