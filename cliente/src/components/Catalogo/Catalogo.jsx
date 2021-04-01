@@ -52,6 +52,7 @@ const Catalogo = () => {
         return horaActual;
     }
 
+    // HORARIO DEL LOCAL
     const validarHorarioRestaurante = (diaActual, horaActual) => {
         let estaAbierto = false;
 

@@ -160,6 +160,7 @@ const Carrito = () => {
             }
         }
 
+        //Por Delivery
         if (shippingType === "0") {
             contadorTiempoEstimado += 10;
         }

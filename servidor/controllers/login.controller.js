@@ -138,8 +138,9 @@ const loginGoogle = async (req, res) => {
             fechaActual.setMinutes(fechaActual.getMinutes() + 30); // Añadiendo 30 minutos(30m) a la fecha actual
             let dateExpiration = fechaActual;
 
+            /* console.log("userStored", userStored); */
             let datosToken = {
-                userStored,
+                user: userStored,
                 dateExpiration
             }
 

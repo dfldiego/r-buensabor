@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const generateJWT = (uid) => {
     return new Promise((resolve, reject) => {
         // payload: no grabar info sensible
+       /*  console.log("uid", uid); */
         const payload = {
             user: uid.user,
             dateExpiration: uid.dateExpiration
