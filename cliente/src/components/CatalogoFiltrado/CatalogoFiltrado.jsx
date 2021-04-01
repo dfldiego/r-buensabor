@@ -61,7 +61,6 @@ const CatalogoFiltrado = ({ name }) => {
     }
 
     const filtrarMenuPorIngrediente = (IngredientesDB, menusCategorizados) => {
-        const menuesIngredientes = [];
 
         //recorro los menus y si el array de menues de los ingredientes contiene al menu devuelvo un true sino false.
         for (const menu of menusCategorizados) {

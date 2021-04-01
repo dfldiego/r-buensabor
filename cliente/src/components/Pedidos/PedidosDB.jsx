@@ -101,7 +101,7 @@ const PedidosDB = ({ orden }) => {
                 <td>
                     <a href="/#" className="color_azul" onClick={e => handleClickDetallePedido(e, orden)}>{number}</a>
                 </td>
-                <td>{user.name}</td>
+                <td>{user.name !== null ? <p>{user.name}</p> : <p>--</p>}</td>
                 <td>{user.email}</td>
                 <td>{user.telephoneNumber}</td>
                 <td>{horaEntrada}</td>
