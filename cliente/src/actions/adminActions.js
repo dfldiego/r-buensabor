@@ -116,6 +116,7 @@ import {
     PRODUCTOS_ESCASOS_CARGADOS,
     ENTRAR_REPORTES,
     RANKING_EXCEL_EXPORTADO_ERROR,
+    ENTRAR_ADMIN,
 } from '../types';
 import clienteAxios from '../config/axios';
 import Swal from 'sweetalert2';
@@ -444,13 +445,14 @@ const editarOrden = orden => ({
 
 export function editarOrdenAction(nuevaOrden, facturas) {
     return async (dispatch) => {
-
+        console.log("nuevaOrden", nuevaOrden);
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
 
             await clienteAxios.put(`/api/order/${nuevaOrden._id}`, nuevaOrden, header)
                 .then(response => {
+                    console.log("response.data", response.data);
                     const { order, scarseProducts } = response.data;
                     dispatch(editarOrdenExito(order));
                     dispatch(productosEscasos(scarseProducts));
@@ -2043,3 +2045,16 @@ const modificarEstadoUsuario = estadoNuevo => ({
     type: ENTRAR_CRUD_USUARIOS,
     payload: estadoNuevo
 })
+
+/********************** abrir admin ********************************/
+export function toAdminAction() {
+    return (dispatch) => {
+        dispatch(toAdmin());
+    }
+}
+
+const toAdmin = () => ({
+    type: ENTRAR_ADMIN,
+    payload: true
+})
+

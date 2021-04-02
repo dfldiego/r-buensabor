@@ -46,8 +46,8 @@ const Carrito = () => {
     let MenusDeCarrito = useSelector(state => state.home.carrito);
     let mensaje = useSelector(state => state.home.mensaje);
     let alerta = useSelector(state => state.home.alerta);
-    const pedidos_state = useSelector(state => state.admin.pedidos);
-    const datoConfiguracion = useSelector(state => state.admin.configuracion);
+    const pedidos_state = useSelector(state => state.admin.pedidos);    //
+    const datoConfiguracion = useSelector(state => state.admin.configuracion);  //
 
     const cerrar_modal = () => {
         if (CerrarModalCarrito) {
@@ -58,8 +58,8 @@ const Carrito = () => {
     }
 
     useEffect(() => {
-        cargarPedidos();
-        obtenerCantidadCocineros();
+        cargarPedidos();    //
+        obtenerCantidadCocineros(); //
 
         // eslint-disable-next-line
     }, [])
@@ -159,14 +159,14 @@ const Carrito = () => {
                 contadorTiempoEstimado += elementoCarrito.finished_time / datoConfiguracion.quantityCooks;
             }
         }
-
+        
         //Por Delivery
         if (shippingType === "0") {
             contadorTiempoEstimado += 10;
         }
 
         for (const pedido of pedidos_state) {
-            if (pedido.status === "EN_PROGRESO") {
+            if (pedido.status === "EN_PROGRESO" || pedido.status === "PENDIENTE" || pedido.status === "APROBADO" ) {
                 contadorTiempoEstimado += Number.parseInt(pedido.endDate) / datoConfiguracion.quantityCooks;
             }
         }

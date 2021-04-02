@@ -16,7 +16,6 @@ import { validarRol } from "../../helpers/helpers";
 import { useHistory } from "react-router-dom";
 // Redux
 import { useDispatch, useSelector } from 'react-redux';
-
 //Actions de Redux
 import {
     abrirCerrarModalAction,
@@ -26,6 +25,9 @@ import {
     abrirModalCarritoAction,
     misPedidosAction,
 } from '../../actions/homeActions';
+import {
+    toAdminAction
+} from '../../actions/adminActions';
 
 const Navbar = () => {
     let history = useHistory();
@@ -49,7 +51,7 @@ const Navbar = () => {
     const perfil_callAction = estadoPerfil => dispatch(perfilAction(estadoPerfil));
     const pedido_callAction = estadoPedido => dispatch(misPedidosAction(estadoPedido));
     const carrito_action = estadoCarrito => dispatch(abrirModalCarritoAction(estadoCarrito));
-
+    const toAdmin = () => dispatch(toAdminAction());
     /*************USAR USE SELECTOR: capturo el valor de state del store  *******************/
     const abrir_modal_state_store = useSelector(state => state.home.abrir_modal);
     const abrir_registrate_state_store = useSelector(state => state.home.abrir_registrarse);
@@ -183,6 +185,9 @@ const Navbar = () => {
         // eslint-disable-next-line
     }, [abrir_modal_pedidos_store])
 
+    const toAdminScreen = () => {
+        toAdmin();
+    }
 
     return (
         <Fragment>
@@ -194,7 +199,7 @@ const Navbar = () => {
                     <ul className="barra__div">
                         {
                             isAdmin || isCashier || isChef || isSuper ?
-                                <li><Link to={"/admin"}>Admin</Link></li>
+                                <li><Link to={"/admin"} onClick={toAdminScreen}>Admin</Link></li>
                                 :
                                 null
                         }

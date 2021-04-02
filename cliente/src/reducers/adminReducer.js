@@ -119,6 +119,7 @@ import {
     ENTRAR_REPORTES,
     RANKING_EXCEL_EXPORTADO_EXITO,
     RANKING_EXCEL_EXPORTADO_ERROR,
+    ENTRAR_ADMIN,
 } from '../types';
 
 const initialState = {
@@ -187,6 +188,20 @@ const initialState = {
 
 export default function (state = initialState, action) {
     switch (action.type) {
+        case ENTRAR_ADMIN:
+            return {
+                ...state,
+                en_usuario: null,
+                en_menu: null,
+                en_categoria: null,
+                en_insumos: null,
+                en_categoria_insumos: null,
+                paginaCorriente: 0,
+                palabraBuscar: null,
+                en_pedidos: null,
+                en_configuracion: null,
+                en_reportes: null,
+            }
         case ENTRAR_CRUD_USUARIOS:
             return {
                 ...state,
