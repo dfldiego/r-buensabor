@@ -111,6 +111,7 @@ const Login = () => {
                             name="email"
                             onChange={actualizarState}
                             value={email}
+                            autoComplete="off"
                         />
                         <input
                             type="password"
@@ -118,6 +119,7 @@ const Login = () => {
                             name="password"
                             onChange={actualizarState}
                             value={password}
+                            autoComplete="off"
                         />
 
                         <button type="submit">Iniciar Sesión</button>

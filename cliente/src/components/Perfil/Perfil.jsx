@@ -1,5 +1,4 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { useHistory } from 'react-router';
 // Estilos
 import './Perfil.css';
 import '../../assets/img/sinuser.png';
@@ -17,9 +16,6 @@ import {
 
 
 const Perfil = () => {
-
-    const history = useHistory();
-
     const [imageFile, setimageFile] = useState(null);
     const [perfil, setPerfil] = useState({
         name: '',
@@ -27,9 +23,9 @@ const Perfil = () => {
         password: '',
         new_password: '',
         new_password_repeat: '',
-        telephoneNumber: 0,
+        telephoneNumber: undefined,
         nameStreet: '',
-        numberStreet: 0,
+        numberStreet: undefined,
         location: '',
     });
     const { name, password, new_password, new_password_repeat, telephoneNumber, nameStreet, numberStreet, location } = perfil;
@@ -108,7 +104,6 @@ const Perfil = () => {
     const handleSubmit_guardarPerfil = e => {
         e.preventDefault();
         actualizar_perfil_callAction(perfil, imageFile);
-        history.go(0);
     }
 
 
@@ -138,6 +133,7 @@ const Perfil = () => {
                                         name="name"
                                         value={name}
                                         onChange={handleChange_perfil}
+                                        autoComplete="off"
                                     />
                                 </div>
                                 <div className="form-row">
@@ -149,6 +145,7 @@ const Perfil = () => {
                                         name="password"
                                         value={password}
                                         onChange={handleChange_perfil}
+                                        autoComplete="off"
                                     />
                                 </div>
                                 <div className="form-row">
@@ -160,6 +157,7 @@ const Perfil = () => {
                                         name="new_password"
                                         value={new_password}
                                         onChange={handleChange_perfil}
+                                        autoComplete="off"
                                     />
                                 </div>
                                 <div className="form-row">
@@ -171,6 +169,7 @@ const Perfil = () => {
                                         name="new_password_repeat"
                                         value={new_password_repeat}
                                         onChange={handleChange_perfil}
+                                        autoComplete="off"
                                     />
                                 </div>
                                 <div className="form-row">
@@ -184,12 +183,13 @@ const Perfil = () => {
                                 <div className="form-row">
                                     <label>Telefono</label>
                                     <input
-                                        type="tel"
+                                        type="number"
                                         className="form-control"
                                         placeholder="Telefono"
                                         name="telephoneNumber"
-                                        value={telephoneNumber}
+                                        value={telephoneNumber || 0}
                                         onChange={handleChange_perfil}
+                                        autoComplete="off"
                                     />
                                 </div>
                                 <div className="form-row">
@@ -201,6 +201,7 @@ const Perfil = () => {
                                         name="nameStreet"
                                         value={nameStreet || ''}
                                         onChange={handleChange_perfil}
+                                        autoComplete="off"
                                     />
                                 </div>
                                 <div className="form-row">
@@ -212,6 +213,7 @@ const Perfil = () => {
                                         name="numberStreet"
                                         value={numberStreet || ''}
                                         onChange={handleChange_perfil}
+                                        autoComplete="off"
                                     />
                                 </div>
                                 <div className="form-row">
@@ -223,6 +225,7 @@ const Perfil = () => {
                                         name="location"
                                         value={location || ''}
                                         onChange={handleChange_perfil}
+                                        autoComplete="off"
                                     />
                                 </div>
                                 <div className="form-row-button">

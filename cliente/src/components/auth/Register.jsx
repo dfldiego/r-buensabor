@@ -105,6 +105,7 @@ const Register = () => {
                             placeholder="Email"
                             onChange={actualizarState}
                             value={email}
+                            autoComplete="off"
                         />
                         <input
                             type="password"
@@ -112,6 +113,7 @@ const Register = () => {
                             placeholder="Password"
                             onChange={actualizarState}
                             value={password}
+                            autoComplete="off"
                         />
                         <button
                             type="submit"

@@ -329,7 +329,7 @@ export function loginGoogleAction(datos) {
                     localStorage.setItem('token', token);
                     localStorage.setItem('user', JSON.stringify(user));
                     dispatch(guardarTokenGoogle(token));
-                    console.log(user.role);
+                    /* console.log(user.role); */
                     dispatch(guardarRol(user.role));
                 })
 
