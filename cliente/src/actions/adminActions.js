@@ -273,7 +273,6 @@ export function obtenerConfiguracionAction() {
 
             await clienteAxios.get(`/api/config`, header)
                 .then(response => {
-                    console.log("response.data", response.data);
                     dispatch(obtenerDatoConfiguracion(response.data.config));
                 })
 
@@ -445,14 +444,12 @@ const editarOrden = orden => ({
 
 export function editarOrdenAction(nuevaOrden, facturas) {
     return async (dispatch) => {
-        console.log("nuevaOrden", nuevaOrden);
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
 
             await clienteAxios.put(`/api/order/${nuevaOrden._id}`, nuevaOrden, header)
                 .then(response => {
-                    console.log("response.data", response.data);
                     const { order, scarseProducts } = response.data;
                     dispatch(editarOrdenExito(order));
                     dispatch(productosEscasos(scarseProducts));
