@@ -6,7 +6,6 @@ const path = require('path');
 // envio de email
 // solo tiene un metodo de envio
 const send = async (req, res) => {
-    console.log("req.body:email", req.body);
     const body = req.body;
     //findOne xq sabemos que configuracion solo tendrá un solo registro
     Configuration.findOne((err, config) => {
@@ -20,12 +19,15 @@ const send = async (req, res) => {
         //autenticacion con correo de la empresa.
         let transporter = nodemailer.createTransport({
             service: 'gmail',
+            host: 'smtp.gmail.com',
+            port: 587,
+            secure: false,
+            requireTLS: true,
             auth: {
                 user: config.email,
                 pass: config.password
             }
         });
-        console.log("transporter", transporter);
         /**
          * from: desde donde se envia el email
          * to: a quien se le envia el email
@@ -45,20 +47,17 @@ const send = async (req, res) => {
                 contentType: 'application/pdf'
             }],
         };
-        console.log("mailOptions:", mailOptions);
         /**
          * sendMail(): metodo para enviar un email
          */
         transporter.sendMail(mailOptions, (error, info) => {
-            console.log("info", info);
             if (error) {
-                console.log("error:",error);
+                console.log("error:",error.message);
                 return res.json({
                     ok: false,
                     error
                 });
             }
-            console.log("info", info);
             return res.json({
                 ok: true,
                 detail: 'Email sent: ' + info.response,
