@@ -61,7 +61,9 @@ const create = async (req, res) => {
         });
 };
 
-var total = 0.0;
+var totallyIngredients = {
+    total: 0
+}
 
 function getContent(details, order, discount) {
     return `
@@ -162,7 +164,7 @@ function getContent(details, order, discount) {
             <tbody>
                 <tr>
                     <td><strong>Total:</strong></td>
-                    <td id="total_price">${total - discount}</td>
+                    <td id="total_price">${totallyIngredients.total - discount}</td>
                 </tr>
             </tbody>
         </table>
@@ -175,6 +177,7 @@ function getContent(details, order, discount) {
  */
 function generateDetail(details) {
     let result = "";
+    totallyIngredients.total =0;
     /**
      * Un detalle de pedido: puede ser un menu o un insumo.
      */
@@ -189,7 +192,7 @@ function generateDetail(details) {
                 <td>${price}</td>
                 <td>${detail.subTotal}</td>
             </tr>`
-        total += detail.subTotal;
+            totallyIngredients.total += detail.subTotal;
     }
     return result;
 }

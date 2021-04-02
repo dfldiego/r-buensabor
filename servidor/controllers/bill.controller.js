@@ -77,10 +77,10 @@ const update = async (req, res) => {
             pdfController.create(req, res);
         }
 
-        res.json({
+        /* res.json({
             ok: true,
             bill: billStored
-        });
+        }); */
     });
 };
 

@@ -8,8 +8,6 @@ import {
     obtenerMenuPorIdAction,
     editarOrdenAction,
     obtenerUnaOrdenAction,
-    obtenerConfiguracionAction,
-    obtenerPedidosAction,
 } from '../../actions/adminActions';
 
 const PedidosDB = ({ orden }) => {
@@ -24,22 +22,11 @@ const PedidosDB = ({ orden }) => {
     const obtenerMenuPorId = idMenu => dispatch(obtenerMenuPorIdAction(idMenu));
     const editarOrden = (nuevaOrden, facturas) => dispatch(editarOrdenAction(nuevaOrden, facturas));
     const obtenerOrdenEditar = (OrdenEditar) => dispatch(obtenerUnaOrdenAction(OrdenEditar));
-    const cargarPedidos = () => dispatch(obtenerPedidosAction());
-    const obtenerCantidadCocineros = () => dispatch(obtenerConfiguracionAction());
 
     let DatosPedidoInsumo = useSelector(state => state.admin.insumo_detalles_pedido);
     let DatosPedidoMenu = useSelector(state => state.admin.menu_detalles_pedido);
     const modalDetallePedido = useSelector(state => state.admin.abrir_modal_detalle_pedido);
     const facturasDB = useSelector(state => state.admin.facturas);
-    const pedidos_state = useSelector(state => state.admin.pedidos);
-    const datoConfiguracion = useSelector(state => state.admin.configuracion);
-
-    useEffect(() => {
-        cargarPedidos();    //
-        obtenerCantidadCocineros(); //
-
-        // eslint-disable-next-line
-    }, [])
 
     const cortadohoraEntrada = orderDate.slice(11);
     const horaEntrada = cortadohoraEntrada.slice(0, 5);
@@ -98,7 +85,6 @@ const PedidosDB = ({ orden }) => {
 
     const handleClickCambiarEstadoPedido = (e, nuevoEstadoPedido, ordenPedido, facturas) => {
         e.preventDefault();
-
         obtenerOrdenEditar(ordenPedido);
         //editamos estado de la orden
         ordenPedido.status = nuevoEstadoPedido;

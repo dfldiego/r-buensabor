@@ -444,12 +444,15 @@ const editarOrden = orden => ({
 
 export function editarOrdenAction(nuevaOrden, facturas) {
     return async (dispatch) => {
+        console.log("nuevaOrden", nuevaOrden);
+        console.log("facturas", facturas);
         try {
             const token = localStorage.getItem('token');
             const header = authorizationHeader(token);
 
             await clienteAxios.put(`/api/order/${nuevaOrden._id}`, nuevaOrden, header)
                 .then(response => {
+                    console.log("responseEditarOrden", response.data);
                     const { order, scarseProducts } = response.data;
                     dispatch(editarOrdenExito(order));
                     dispatch(productosEscasos(scarseProducts));
