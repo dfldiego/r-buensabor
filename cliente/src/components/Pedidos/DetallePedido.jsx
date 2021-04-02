@@ -17,10 +17,10 @@ const DetallePedido = () => {
 
     const EstadoModalNroOrden = estadoModalNroOrden => dispatch(abrirCerrarModalDetallePedidoAction(estadoModalNroOrden));
 
-    let DatosPedidoInsumo = useSelector(state => state.admin.insumo_detalles_pedido);
-    let DatosPedidoMenu = useSelector(state => state.admin.menu_detalles_pedido);
+    const DatosPedidoInsumo = useSelector(state => state.admin.insumo_detalles_pedido);
+    const DatosPedidoMenu = useSelector(state => state.admin.menu_detalles_pedido);
+    const details = useSelector(state => state.admin.detalles_pedido);
     let modalDetallePedido = useSelector(state => state.admin.abrir_modal_detalle_pedido);
-    let details = useSelector(state => state.admin.detalles_pedido);
     const orden = useSelector(state => state.admin.orden);
 
     const cerrar_modal = () => {
@@ -36,10 +36,13 @@ const DetallePedido = () => {
         if (details.length > 0) {
             const obtenerDetallePedido = (details) => {
                 details.map(detalle => {
+                   /*  console.log("detalle", detalle); */
                     if (detalle.menu) {
                         for (const DatoMenu of DatosPedidoMenu) {
                             if (detalle.menu === DatoMenu._id) {
                                 detalle.description = DatoMenu.description;
+                               /*  console.log("detalleCadena", detalleCadena);
+                                console.log("detalle", detalle); */
                                 setDetalleCadena([...detalleCadena, detalle]);
                             }
                         }
@@ -47,6 +50,8 @@ const DetallePedido = () => {
                         for (const DatoInsumo of DatosPedidoInsumo) {
                             if (detalle.product === DatoInsumo._id) {
                                 detalle.description = DatoInsumo.description;
+                               /*   console.log("detalleCadena", detalleCadena);
+                                console.log("detalle", detalle); */
                                 setDetalleCadena([...detalleCadena, detalle]);
                             }
                         }
@@ -55,6 +60,7 @@ const DetallePedido = () => {
                     total = total + detalle.subTotal;
                 });
             }
+            console.log("details:antes de obtenerDetallePedido",details);
             obtenerDetallePedido(details);
 
             if (orden.shippingType === 1) {
@@ -71,6 +77,7 @@ const DetallePedido = () => {
         // eslint-disable-next-line
     }, [details, DatosPedidoMenu, DatosPedidoInsumo]);
 
+    console.log(detalleCadena);
     return (
         <Fragment>
             <div className="modal-detalle_pedido">
@@ -108,7 +115,7 @@ const DetallePedido = () => {
                                                 </tr>
                                                 : null
                                         )
-                                    } {
+                                    }{
                                         detalleCadena.map((detalle, index) =>
                                             detalle.product ?
                                                 <tr key={index}>
