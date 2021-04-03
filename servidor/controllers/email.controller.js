@@ -9,7 +9,6 @@ const send = async (req, res) => {
     const body = req.body;
     //findOne xq sabemos que configuracion solo tendrá un solo registro
     Configuration.findOne((err, config) => {
-        console.log("config:email", config);
         if (err) {
             return res.status(500).json({
                 ok: false,

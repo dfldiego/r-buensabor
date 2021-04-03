@@ -178,10 +178,12 @@ const incomes = async (req, res) => {
         yearinitialDateTimeStamp = initialDate.getFullYear();
     }
 
-    OrderDetail.find({ status: true, menu: { $ne: null } })
-        .populate('order orderDate')
-        .populate('menu description price')
-        .populate('product description price')
+    // sin tener en cuenta a los pedidos 'cancelados'
+    /**OrderDetail.find({ status: true, menu: { $ne: null } }) */
+    OrderDetail.find({ status: true })
+        .populate("order", "orderDate status shippingType")
+        .populate("menu", "description price")
+        .populate("product", "description price")
         .exec((err, detailsIncome) => {
             if (err) {
                 return res.status(500).json({
@@ -189,7 +191,6 @@ const incomes = async (req, res) => {
                     err
                 });
             }
-
             const totalIncomesReport = filterOrderAndGetIncomes(detailsIncome, yearinitialDateTimeStamp, monthInitialDateTimeStamp, dayinitialDateTimeStamp);
 
             // data in matriz
@@ -308,31 +309,40 @@ function filterOrderAndGetIncomes(details, yearDate, monthDate, dayDate) {
     let monthOrderDate = '';
     let yearOrderDate = '';
 
+    // date filter
     // details have data of menu, product and orderDate of the order.
     for (const orderDetail of details) {
-
-        orderDateTimeStamp = Date.parse(orderDetail.order.orderDate);
-        if (dayDate !== null) {
-            dayOrderDate = new Date(orderDateTimeStamp).getDate();
-        }
-        monthOrderDate = new Date(orderDateTimeStamp).getMonth();
-        yearOrderDate = new Date(orderDateTimeStamp).getFullYear();
-
-        if (dayDate !== null) {
-            if (dayDate === dayOrderDate && monthDate === monthOrderDate && yearDate === yearOrderDate) {
-                orderFilter.push(orderDetail);
-                dataIncomes.count++;
+        if (orderDetail.order.status !== 'CANCELADO') {
+            orderDateTimeStamp = Date.parse(orderDetail.order.orderDate);
+            if (dayDate !== null) {
+                dayOrderDate = new Date(orderDateTimeStamp).getDate();
             }
-        } else {
-            if (Number(monthDate) === monthOrderDate && Number(yearDate) === yearOrderDate) {
-                orderFilter.push(orderDetail);
-                dataIncomes.count++;
+            monthOrderDate = new Date(orderDateTimeStamp).getMonth();
+            yearOrderDate = new Date(orderDateTimeStamp).getFullYear();
+
+            if (dayDate !== null) {
+                if (dayDate === dayOrderDate && monthDate === monthOrderDate && yearDate === yearOrderDate) {
+                    orderFilter.push(orderDetail);
+                    dataIncomes.count++;
+                }
+            } else {
+                if (Number(monthDate) === monthOrderDate && Number(yearDate) === yearOrderDate) {
+                    orderFilter.push(orderDetail);
+                    dataIncomes.count++;
+                }
             }
         }
     }
 
+    // ordenes filtradas por fecha
+
     // Debemos ahora hacer un reduce de orderFilter
+    // aqui debemos hacer el proceso para calcular el total de recaudacion
     dataIncomes.totalIncomes = orderFilter.reduce(function (res, value) {
+        if (value.order.shippingType === 1) {
+            value.subTotal = value.subTotal - value.subTotal * 0.1;
+            return res + value.subTotal;
+        }
         return res + value.subTotal;
     }, 0);
     // datos a obtener: order.orderDate - menu description(or product.description) - menu price(or product.price)
@@ -342,10 +352,18 @@ function filterOrderAndGetIncomes(details, yearDate, monthDate, dayDate) {
         objectOrder.orderDate = new Date(orden.order.orderDate).toLocaleDateString();
         if (orden.menu) {
             objectOrder.menu = orden.menu.description;
-            objectOrder.menuPrice = orden.menu.price;
+            if (orden.order.shippingType === 1) {
+                objectOrder.menuPrice = orden.menu.price - orden.menu.price * 0.1;
+            }else{
+                objectOrder.menuPrice = orden.menu.price;
+            }
         } else {
             objectOrder.menu = orden.product.description;
-            objectOrder.menuPrice = orden.product.price;
+            if (orden.order.shippingType === 1) {
+                objectOrder.menuPrice = orden.product.price - orden.product.price * 0.1;
+            } else {
+                objectOrder.menuPrice = orden.product.price;
+            }
         }
         dataOrder.push(objectOrder);
     });
