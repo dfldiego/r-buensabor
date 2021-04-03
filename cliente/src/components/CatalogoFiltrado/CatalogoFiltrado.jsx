@@ -66,7 +66,7 @@ const CatalogoFiltrado = ({ name }) => {
         for (const menu of menusCategorizados) {
             for (const ingrediente of IngredientesDB) {
                 if (ingrediente.menu.description === menu.description) {
-                    if (ingrediente.product.current_stock > ingrediente.quantity) {
+                    if (ingrediente.product.current_stock >= ingrediente.quantity) {
                         menusFiltradosPorIngredientes.push(menu);
                     } else {
                         menu.mensaje = "NO DISPONIBLE";

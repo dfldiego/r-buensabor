@@ -166,7 +166,7 @@ const Carrito = () => {
         }
 
         for (const pedido of pedidos_state) {
-            if (pedido.status === "EN_PROGRESO" || pedido.status === "PENDIENTE" || pedido.status === "APROBADO" ) {
+            if (pedido.status === "EN_PROGRESO" || pedido.status === "APROBADO" ) {
                 contadorTiempoEstimado += Number.parseInt(pedido.endDate) / datoConfiguracion.quantityCooks;
             }
         }
