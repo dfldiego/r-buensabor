@@ -107,7 +107,7 @@ const rank = async (req, res = response) => {
 
     OrderDetail.find({ status: true, menu: { $ne: null } })
         .populate('menu description')
-        .populate('order orderDate')
+        .populate("order", "orderDate status")
         .exec((err, details) => {
             if (err) {
                 return res.status(500).json({
@@ -128,12 +128,15 @@ const rank = async (req, res = response) => {
                 }
             }
 
+            // sin tener en cuenta a los pedidos 'cancelados'
             filterOrderByDate.reduce(function (res, value) {
-                if (!res[value.menu._id]) {
-                    res[value.menu._id] = { menu: value.menu._id, quantity: 0, description: value.menu.description };
-                    result.push(res[value.menu._id])
+                if (value.order.status != 'CANCELADO') {
+                    if (!res[value.menu._id]) {
+                        res[value.menu._id] = { menu: value.menu._id, quantity: 0, description: value.menu.description };
+                        result.push(res[value.menu._id])
+                    }
+                    res[value.menu._id].quantity += value.quantity;
                 }
-                res[value.menu._id].quantity += value.quantity;
                 return res;
             }, {});
 
