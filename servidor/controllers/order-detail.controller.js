@@ -232,8 +232,8 @@ const sizeofOrdersByClient = async (req, res) => {
     }
 
     OrderDetail.find({ status: true })
-        .populate('menu description')
-        .populate('order orderDate')
+        .populate("menu", "description")
+        .populate('order', 'orderDate status user')
         .exec(async (err, details) => {
             if (err) {
                 return res.status(500).json({
@@ -242,11 +242,17 @@ const sizeofOrdersByClient = async (req, res) => {
                 });
             }
 
+            const detailsByOrder = details
+                .map(detail => detail.order.status !== 'CANCELADO' ? detail.order : null)
+                .filter(Boolean);   //elimina valores como: false, null, undefined, 0, NaN.
+
+            const uniqueDetailsByOrder = [... new Set(detailsByOrder)];
+            
             let orderFilterByDate = [];
             //get date of the orders
-            for (const orderDetail of details) {
+            for (const orderDetail of uniqueDetailsByOrder) {
 
-                orderDateTimeStamp = Date.parse(orderDetail.order.orderDate);
+                orderDateTimeStamp = Date.parse(orderDetail.orderDate);
 
                 // catch day, month & year of orderDate
                 if (dayinitialDateTimeStamp !== null) {
@@ -257,12 +263,12 @@ const sizeofOrdersByClient = async (req, res) => {
 
                 if (dayinitialDateTimeStamp !== null) {
                     if (dayinitialDateTimeStamp === dayOrderDate && monthInitialDateTimeStamp === monthOrderDate && yearinitialDateTimeStamp === yearOrderDate) {
-                        const user = await User.findById(orderDetail.order.user);
+                        const user = await User.findById(orderDetail.user);
                         orderFilterByDate.push({ orderDetail, user });
                     }
                 } else {
                     if (Number(monthInitialDateTimeStamp) === monthOrderDate && Number(yearinitialDateTimeStamp) === yearOrderDate) {
-                        const user = await User.findById(orderDetail.order.user);
+                        const user = await User.findById(orderDetail.user);
                         orderFilterByDate.push({ orderDetail, user });
                     }
                 }
